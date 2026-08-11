@@ -1,0 +1,413 @@
+/* ====================================================
+   DHEERE STUDIO - MINIMALIST STUDIO ENGINE
+   ==================================================== */
+
+/* 1. FONTS & RESET */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #0b0c0e; /* Matte Obsidian Black */
+    color: #e2e8f0;            /* Soft Pearl White Text */
+    line-height: 1.7;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 2. LAYOUT & TYPOGRAPHY CONTAINER */
+main {
+    max-width: 900px; /* Compact & Reader-friendly Width */
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+section {
+    padding: 100px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* Subtle Separator */
+}
+
+section h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #f8fafc;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+
+p {
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+/* 3. MINIMAL NAVBAR */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 12, 14, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.nav-links ul {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 400;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #f8fafc;
+}
+
+/* Studio Button Style (No heavy gradients) */
+.button {
+    color: #0b0c0e;
+    background-color: #f8fafc;
+    border: 1px solid #f8fafc;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.button:hover {
+    background-color: #e2e8f0;
+    border-color: #e2e8f0;
+}
+
+.humbarger {
+    display: none;
+}
+
+/* 4. HERO SECTION */
+.hero-section {
+    padding: 140px 0 100px 0;
+}
+
+.hero-content h1 {
+    font-size: 2.75rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.hero-content p {
+    font-size: 1.15rem;
+    max-width: 540px;
+    margin-bottom: 32px;
+}
+
+/* 5. FEATURED PROJECT & CARDS */
+.project-card, .article-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 32px;
+    border-radius: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.project-card:hover, .article-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.project-card h3, .article-card h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.project-card p, .article-card p {
+    margin-bottom: 20px;
+}
+
+.project-card a, .article-card a {
+    color: #f8fafc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s ease;
+}
+
+.project-card a:hover, .article-card a:hover {
+    opacity: 0.7;
+}
+
+.article-card .category {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* 6. COMMUNITY PROJECT */
+.status-badge {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.status-badge strong {
+    color: #f8fafc;
+    font-weight: 500;
+}
+
+/* 7. FEEDBACK FORM */
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 500px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.feedback-form button {
+    align-self: flex-start;
+}
+
+/* 8. FOOTER */
+footer {
+    padding: 60px 0;
+    text-align: center;
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+/* 9. PAGE SWITCHER & AUTH (LOGIN/REGISTER) STYLES */
+.page-view {
+    display: block;
+}
+
+.page-view.hidden-page {
+    display: none !important;
+}
+
+#loginPage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+}
+
+.back-home-link {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 0.88rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.back-home-link:hover {
+    color: #ffffff;
+}
+
+.auth-page-container {
+    width: 100%;
+    max-width: 380px;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.88rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.tab-btn.active {
+    color: #ffffff;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ffffff;
+}
+
+.auth-form h2 {
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.auth-subtext {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-options {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.forgot-pass {
+    color: #64748b;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.forgot-pass:hover {
+    color: #94a3b8;
+}
+
+.button.full-width {
+    width: 100%;
+    text-align: center;
+}
+
+.auth-form.hidden-form {
+    display: none;
+}
+
+/* 10. RESPONSIVE */
+@media (max-width: 640px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+
+    section {
+        padding: 60px 0;
+    }
+}
+.feedback-success {
+    color: #34d399;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}

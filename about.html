@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Dheere Studio</title>
+    <link rel="stylesheet" href="homepage.css">
+    <meta name="description" content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences.">
+    <style>
+        /* Language Toggle Switch Style */
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: fit-content;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: #f8fafc;
+            color: #0b0c0e;
+        }
+
+        .hidden-about {
+            display: none !important;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Clean Quote Box Style */
+        .quote-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .quote-box p {
+            color: #f8fafc;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="aboutPage" class="page-view">
+        
+        <!-- HEADER / NAVIGATION BACK -->
+        <header>
+            <nav class="navbar">
+                <div class="nav-logo">
+                    <a href="Homepage.html">Dheere Studio</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <a href="Homepage.html" class="back-home-link static-link">&larr; Back to Dheere Studio</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- MAIN ABOUT CONTENT -->
+        <main>
+            
+            <!-- HERO SECTION & LANGUAGE TOGGLE -->
+            <section class="hero-section" style="padding-bottom: 30px; border-bottom: none;">
+                <div class="hero-content">
+                    <h1>ABOUT DHEERE STUDIO</h1>
+                    <p>An independent creative studio building original stories, worlds, and experiences.</p>
+                    
+                    <!-- LANGUAGE TOGGLE BUTTONS -->
+                    <div class="lang-switch">
+                        <button id="btnEnglish" class="lang-btn active">English</button>
+                        <button id="btnHinglish" class="lang-btn">In Hinglish</button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 1. ENGLISH VERSION
+                 ==================================================== -->
+            <div id="englishAbout">
+                
+                <!-- WHAT IS DHEERE STUDIO -->
+                <section id="what-is-studio">
+                    <h2>What is Dheere Studio?</h2>
+                    <p>
+                        Dheere Studio is an independent studio focused on building original stories, fantasy worlds, and creative experiences across different forms of media.
+                    </p>
+                    <br>
+                    <p>
+                        We aren't just a blog or a writing account. The goal is to take a single story and let it grow over time into books, artwork, animation, games, and other creative formats when the time is right.
+                    </p>
+                </section>
+
+                <!-- WHY DHEERE -->
+                <section id="why-dheere">
+                    <h2>Why "Dheere"?</h2>
+                    <p>
+                        Dheere means slowly, but the idea isn't to move without ambition. It is about giving an idea enough time to become what it is supposed to become.
+                    </p>
+                    <br>
+                    <p>
+                        Not everything needs to be rushed out for quick attention.
+                    </p>
+
+                    <div class="quote-box">
+                        <p>"Slow does not mean lazy. Slow means deliberate."</p>
+                    </div>
+
+                    <p>
+                        It means taking time to think through a story, rebuild its world, and make sure the foundation is solid before sharing it with the world.
+                    </p>
+                </section>
+
+                <!-- WHAT WE CREATE -->
+                <section id="what-we-create">
+                    <h2>What We Create</h2>
+                    <p>
+                        Over time, our work takes shape in a few different forms:
+                    </p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Stories</strong> — Original novels and narratives.</li>
+                        <li><strong>Worlds</strong> — Characters, mythology, lore, and world rules.</li>
+                        <li><strong>Experiences</strong> — Animation, games, and interactive projects.</li>
+                        <li><strong>Ideas</strong> — Studio updates, essays, and creative experiments.</li>
+                    </ul>
+                </section>
+
+                <!-- WHERE WE ARE STARTING -->
+                <section id="where-we-start">
+                    <h2>Where We're Starting</h2>
+                    <p>
+                        Our first major project is <strong>Shunyavas</strong>—an original fantasy universe currently in development.
+                    </p>
+                    <br>
+                    <p>
+                        We are starting with a story foundation because written words build the strongest base. Before a world can turn into visuals or games, its characters, history, and rules need to be clear first.
+                    </p>
+                </section>
+
+                <!-- WHAT'S NEXT -->
+                <section id="whats-next" style="border-bottom: none;">
+                    <h2>What's Next</h2>
+                    <p>
+                        Dheere Studio is still right at the beginning. The focus right now is simple: build Shunyavas, set up the studio foundations, and bring together a community of people who want to make things of their own.
+                    </p>
+                    <br>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;">
+                        <a href="shunyavas.html" class="button">Explore Our Projects &rarr;</a>
+                        <a href="community.html" class="button" style="background: transparent; color: #f8fafc; border-color: rgba(255,255,255,0.2);">Join The Community &rarr;</a>
+                    </div>
+                </section>
+
+            </div>
+
+
+            <!-- ====================================================
+                 2. HINGLISH VERSION (Hidden by default)
+                 ==================================================== -->
+            <div id="hinglishAbout" class="hidden-about">
+                
+                <!-- WHAT IS DHEERE STUDIO -->
+                <section id="what-is-studio-hi">
+                    <h2>Dheere Studio Kya Hai?</h2>
+                    <p>
+                        Dheere Studio ek independent creative studio hai jo original stories, fantasy worlds aur alag-alag tarah ke creative experiences banane par focus karta hai.
+                    </p>
+                    <br>
+                    <p>
+                        Yeh sirf koi writing account ya simple blog nahi hai. Maqsad ek kahani se shuru karke use waqt ke sath books, artwork, animation, games aur dusre formats tak le jana hai jab sahi time aaye.
+                    </p>
+                </section>
+
+                <!-- WHY DHEERE -->
+                <section id="why-dheere-hi">
+                    <h2>"Dheere" Hi Kyun?</h2>
+                    <p>
+                        Dheere ka matlab slow hota hai, lekin iska matlab bina kisi ambition ke chalna nahi hai. Iska matlab hai kisi idea ko utna waqt dena jitna use sach mein accha banne ke liye chahiye.
+                    </p>
+                    <br>
+                    <p>
+                        Har cheez ko jaldbazi mein bahar lana zaroori nahi hota.
+                    </p>
+
+                    <div class="quote-box">
+                        <p>"Dheere hone ka matlab lazy hona nahi hai. Dheere hone ka matlab soch-samajhkar kaam karna hai."</p>
+                    </div>
+
+                    <p>
+                        Iska matlab hai kahani ko waqt dena, uski duniya ko ache se samajhna, aur ek mazboot foundation taiyar karna pehle se bina kisi ghabrahat ke.
+                    </p>
+                </section>
+
+                <!-- WHAT WE CREATE -->
+                <section id="what-we-create-hi">
+                    <h2>Hum Kya Banate Hain</h2>
+                    <p>
+                        Waqt ke sath hamara kaam in alag-alag roop mein samne aayega:
+                    </p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Stories</strong> — Original novels aur main stories.</li>
+                        <li><strong>Worlds</strong> — Characters, mythology, lore aur universe ke rules.</li>
+                        <li><strong>Experiences</strong> — Animation, games aur interactive projects.</li>
+                        <li><strong>Ideas</strong> — Studio updates, essays aur creative experiments.</li>
+                    </ul>
+                </section>
+
+                <!-- WHERE WE ARE STARTING -->
+                <section id="where-we-start-hi">
+                    <h2>Hum Kahan Se Shuru Kar Rahe Hain</h2>
+                    <p>
+                        Hamara pehla major project hai <strong>Shunyavas</strong>—ek original fantasy universe jo abhi development mein hai.
+                    </p>
+                    <br>
+                    <p>
+                        Hum ek story foundation se shuru kar rahe hain kyunki likhi hui baatein sabse mazboot base banati hain. Kisi duniya ko animation ya game mein badalne se pehle uske characters, history aur rules ka pehle se clear hona zaroori hai.
+                    </p>
+                </section>
+
+                <!-- WHAT'S NEXT -->
+                <section id="whats-next-hi" style="border-bottom: none;">
+                    <h2>Aage Kya Aane Wala Hai</h2>
+                    <p>
+                        Dheere Studio abhi ekdum shuruwaat mein hai. Abhi ka focus ekdum simple hai: Shunyavas ko build karna, studio ki buniyaad rakhna, aur aise logo ko sath lana jo khud ka kuch original banana chahte hain.
+                    </p>
+                    <br>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;">
+                        <a href="shunyavas.html" class="button">Projects Dekhein &rarr;</a>
+                        <a href="community.html" class="button" style="background: transparent; color: #f8fafc; border-color: rgba(255,255,255,0.2);">Community Join Karein &rarr;</a>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 Dheere Studio. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR LANGUAGE TOGGLE -->
+    <script>
+        const btnEnglish = document.getElementById('btnEnglish');
+        const btnHinglish = document.getElementById('btnHinglish');
+        const englishAbout = document.getElementById('englishAbout');
+        const hinglishAbout = document.getElementById('hinglishAbout');
+
+        btnEnglish.addEventListener('click', () => {
+            btnEnglish.classList.add('active');
+            btnHinglish.classList.remove('active');
+            englishAbout.classList.remove('hidden-about');
+            hinglishAbout.classList.add('hidden-about');
+        });
+
+        btnHinglish.addEventListener('click', () => {
+            btnHinglish.classList.add('active');
+            btnEnglish.classList.remove('active');
+            hinglishAbout.classList.remove('hidden-about');
+            englishAbout.classList.add('hidden-about');
+        });
+    </script>
+</body>
+</html>

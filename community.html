@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community — Dheere Studio</title>
+    <link rel="stylesheet" href="homepage.css">
+    <meta name="description" content="A space for people interested in stories, worldbuilding, art, animation, and creative projects at Dheere Studio.">
+    <style>
+        /* Language Toggle Switch Style */
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: fit-content;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: #f8fafc;
+            color: #0b0c0e;
+        }
+
+        .hidden-community {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="communityPage" class="page-view">
+        
+        <!-- HEADER / NAVIGATION BACK -->
+        <header>
+            <nav class="navbar">
+                <div class="nav-logo">
+                    <a href="Homepage.html">Dheere Studio</a>
+                </div>
+                
+                <div>
+                    <a href="Homepage.html" class="back-home-link static-link">&larr; Back to Dheere Studio</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- MAIN COMMUNITY CONTENT -->
+        <main>
+            
+            <!-- HERO SECTION & LANGUAGE TOGGLE -->
+            <section class="hero-section" style="padding-bottom: 30px; border-bottom: none;">
+                <div class="hero-content">
+                    <h1>COMMUNITY</h1>
+                    <p>A space for people who want to create, share, learn, and build together.</p>
+                    
+                    <div class="status-badge" style="margin-bottom: 16px;">
+                        <strong>Status:</strong> In Development
+                    </div>
+
+                    <!-- LANGUAGE TOGGLE BUTTONS -->
+                    <div class="lang-switch">
+                        <button id="btnEnglish" class="lang-btn active">English</button>
+                        <button id="btnHinglish" class="lang-btn">In Hinglish</button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 1. ENGLISH VERSION
+                 ==================================================== -->
+            <div id="englishCommunity">
+                
+                <!-- THE PURPOSE -->
+                <section id="community-purpose">
+                    <h2>The Purpose</h2>
+                    <p>
+                        Dheere Studio Community is being built as a place for people interested in stories, worldbuilding, art, animation, games, and other forms of creative work.
+                    </p>
+                    <br>
+                    <p>
+                        The idea is simple: create a space where people can share what they are making, discuss ideas, ask for feedback, and find others who are interested in building something of their own.
+                    </p>
+                </section>
+
+                <!-- WHO IT'S FOR -->
+                <section id="community-for">
+                    <h2>Who It's For</h2>
+                    <p>
+                        The community is for anyone interested in creating and exploring ideas across different forms of media.
+                    </p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Writers</strong> — Stories, novels, characters and narrative ideas.</li>
+                        <li><strong>Artists</strong> — Illustration, concept art and visual development.</li>
+                        <li><strong>Worldbuilders</strong> — Worlds, cultures, mythology and lore.</li>
+                        <li><strong>Animators</strong> — Animation, motion and visual storytelling.</li>
+                        <li><strong>Game Creators</strong> — Game ideas, systems and interactive experiences.</li>
+                        <li><strong>Developers</strong> — Tools, websites and technology for creative projects.</li>
+                    </ul>
+                </section>
+
+                <!-- WHAT WE'RE BUILDING -->
+                <section id="community-building">
+                    <h2>What We're Building</h2>
+                    <p>
+                        We don't want the community to become just another place where people scroll through endless posts. We want to build a place where people can actually work on their ideas.
+                    </p>
+                    <br>
+                    <p>Initially, the community will focus on:</p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Discussions</strong> — Talk about stories, art, games, worldbuilding and creative processes.</li>
+                        <li><strong>Project Sharing</strong> — Share projects, concepts and work in progress.</li>
+                        <li><strong>Feedback</strong> — Get useful and honest feedback from other creators.</li>
+                        <li><strong>Collaboration</strong> — Find people who can help turn an idea into a project.</li>
+                        <li><strong>Discovering Creators</strong> — Find interesting people and projects from the community.</li>
+                    </ul>
+                </section>
+
+                <!-- GET INVOLVED EARLY -->
+                <section id="community-involved" style="border-bottom: none;">
+                    <h2>Get Involved Early</h2>
+                    <p>
+                        The community is still being built. We're starting small and figuring out what actually makes a creative community useful before adding more features.
+                    </p>
+                    <br>
+                    <p>
+                        If you'd like to be part of the early community or have an idea for what it should become, we'd like to hear from you.
+                    </p>
+                    <br>
+                    <a href="Homepage.html#feedback" class="button">Express Interest & Feedback &rarr;</a>
+                </section>
+
+            </div>
+
+
+            <!-- ====================================================
+                 2. HINGLISH VERSION (Hidden by default)
+                 ==================================================== -->
+            <div id="hinglishCommunity" class="hidden-community">
+                
+                <!-- THE PURPOSE -->
+                <section id="community-purpose-hi">
+                    <h2> Hamara Goal</h2>
+                    <p>
+                        Dheere Studio Community ko un logo ke liye ek jagah ke roop mein build kiya ja raha hai jo stories, worldbuilding, art, animation, games aur creative work mein interest rakhte hain.
+                    </p>
+                    <br>
+                    <p>
+                        Idea ekdum simple hai: ek aisi space banana jahan log apna kaam share kar sakein, ideas discuss kar sakein, feedback maang sakein, aur un logo ko dhoondh sakein jo khud ka kuch banana chahte hain.
+                    </p>
+                </section>
+
+                <!-- WHO IT'S FOR -->
+                <section id="community-for-hi">
+                    <h2>Yeh Kiske Liye Hai (Who It's For)</h2>
+                    <p>
+                        Yeh community un sabhi logo ke liye hai jo alag-alag media formats ke zariye ideas create aur explore karna chahte hain.
+                    </p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Writers</strong> — Stories, novels, characters aur narrative ideas.</li>
+                        <li><strong>Artists</strong> — Illustration, concept art aur visual development.</li>
+                        <li><strong>Worldbuilders</strong> — Worlds, cultures, mythology aur lore.</li>
+                        <li><strong>Animators</strong> — Animation, motion aur visual storytelling.</li>
+                        <li><strong>Game Creators</strong> — Game ideas, systems aur interactive experiences.</li>
+                        <li><strong>Developers</strong> — Creative projects ke liye tools, websites aur technology.</li>
+                    </ul>
+                </section>
+
+                <!-- WHAT WE'RE BUILDING -->
+                <section id="community-building-hi">
+                    <h2>Hum Kya Bana Rahe Hain (What We're Building)</h2>
+                    <p>
+                        Hum is community ko bas ek aur aisi jagah nahi banana chahte jahan log bas endless posts scroll karte rahein. Hum ek aisi jagah banana chahte hain jahan log sach mein apne ideas par kaam kar sakein.
+                    </p>
+                    <br>
+                    <p>Shuruwaat mein, community in baaton par focus karegi:</p>
+                    <br>
+                    <ul class="roadmap-list">
+                        <li><strong>Discussions</strong> — Stories, art, games, worldbuilding aur creative processes ke baare mein baat karna.</li>
+                        <li><strong>Project Sharing</strong> — Apne projects, concepts aur ongoing work-in-progress share karna.</li>
+                        <li><strong>Feedback</strong> — Dusre creators se useful aur honest feedback lena.</li>
+                        <li><strong>Collaboration</strong> — Aise logo ko dhoondhna jo ek idea ko project mein badalne mein madad kar sakein.</li>
+                        <li><strong>Discovering Creators</strong> — Community se naye aur interesting creators aur unke projects ko discover karna.</li>
+                    </ul>
+                </section>
+
+                <!-- GET INVOLVED EARLY -->
+                <section id="community-involved-hi" style="border-bottom: none;">
+                    <h2>Shuruwaat Mein Saath Judein (Get Involved Early)</h2>
+                    <p>
+                        Community abhi bhi build ho rahi hai. Hum chote level se shuru kar rahe hain aur yeh samajh rahe hain ki zyada features add karne se pehle ek creative community sach mein useful kaise banti hai.
+                    </p>
+                    <br>
+                    <p>
+                        Agar aap early community ka hissa banna chahte hain ya aapke paas koi idea hai ki is community ko kaisa hona chahiye, toh hum aapse sunna chahenge.
+                    </p>
+                    <br>
+                    <a href="Homepage.html#feedback" class="button">Express Interest & Feedback &rarr;</a>
+                </section>
+
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 Dheere Studio. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR LANGUAGE TOGGLE -->
+    <script>
+        const btnEnglish = document.getElementById('btnEnglish');
+        const btnHinglish = document.getElementById('btnHinglish');
+        const englishCommunity = document.getElementById('englishCommunity');
+        const hinglishCommunity = document.getElementById('hinglishCommunity');
+
+        btnEnglish.addEventListener('click', () => {
+            btnEnglish.classList.add('active');
+            btnHinglish.classList.remove('active');
+            englishCommunity.classList.remove('hidden-community');
+            hinglishCommunity.classList.add('hidden-community');
+        });
+
+        btnHinglish.addEventListener('click', () => {
+            btnHinglish.classList.add('active');
+            btnEnglish.classList.remove('active');
+            hinglishCommunity.classList.remove('hidden-community');
+            englishCommunity.classList.add('hidden-community');
+        });
+    </script>
+</body>
+</html>
