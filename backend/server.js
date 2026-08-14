@@ -88,7 +88,6 @@ app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        // Check required fields
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
@@ -96,7 +95,6 @@ app.post("/register", async (req, res) => {
             });
         }
 
-        // Check if email already exists
         const existingUser = await usersCollection.findOne({ email });
 
         if (existingUser) {
@@ -106,10 +104,8 @@ app.post("/register", async (req, res) => {
             });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user
         const user = {
             name,
             email,
@@ -117,7 +113,6 @@ app.post("/register", async (req, res) => {
             createdAt: new Date()
         };
 
-        // Save user to MongoDB
         await usersCollection.insertOne(user);
 
         console.log("New user registered:");
@@ -138,6 +133,7 @@ app.post("/register", async (req, res) => {
         });
     }
 });
+
 // ==========================================
 // LOGIN ROUTE
 // ==========================================
@@ -146,7 +142,6 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Check required fields
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -154,7 +149,6 @@ app.post("/login", async (req, res) => {
             });
         }
 
-        // Find user by email
         const user = await usersCollection.findOne({ email });
 
         if (!user) {
@@ -164,7 +158,6 @@ app.post("/login", async (req, res) => {
             });
         }
 
-        // Compare entered password with hashed password
         const passwordMatch = await bcrypt.compare(
             password,
             user.password
@@ -207,8 +200,10 @@ app.post("/login", async (req, res) => {
 async function startServer() {
     await connectDatabase();
 
-    app.listen(3000, () => {
-        console.log("Server running on http://localhost:3000");
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server running on port ${PORT}`);
     });
 }
 
