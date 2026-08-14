@@ -17,8 +17,8 @@ html {
 }
 
 body {
-    background-color: #0b0c0e; /* Matte Obsidian Black */
-    color: #e2e8f0;            /* Soft Pearl White Text */
+    background-color: #0b0c0e;
+    color: #e2e8f0;
     line-height: 1.7;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -26,14 +26,14 @@ body {
 
 /* 2. LAYOUT & TYPOGRAPHY CONTAINER */
 main {
-    max-width: 900px; /* Compact & Reader-friendly Width */
+    max-width: 900px;
     margin: 0 auto;
     padding: 0 24px;
 }
 
 section {
     padding: 100px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06); /* Subtle Separator */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 section h2 {
@@ -95,7 +95,7 @@ header {
     color: #f8fafc;
 }
 
-/* Studio Button Style (No heavy gradients) */
+/* Studio Button Style */
 .button {
     color: #0b0c0e;
     background-color: #f8fafc;
@@ -140,7 +140,8 @@ header {
 }
 
 /* 5. FEATURED PROJECT & CARDS */
-.project-card, .article-card {
+.project-card,
+.article-card {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.06);
     padding: 32px;
@@ -148,22 +149,26 @@ header {
     transition: border-color 0.3s ease;
 }
 
-.project-card:hover, .article-card:hover {
+.project-card:hover,
+.article-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
 }
 
-.project-card h3, .article-card h3 {
+.project-card h3,
+.article-card h3 {
     font-size: 1.25rem;
     font-weight: 500;
     color: #ffffff;
     margin-bottom: 8px;
 }
 
-.project-card p, .article-card p {
+.project-card p,
+.article-card p {
     margin-bottom: 20px;
 }
 
-.project-card a, .article-card a {
+.project-card a,
+.article-card a {
     color: #f8fafc;
     text-decoration: none;
     font-size: 0.9rem;
@@ -174,7 +179,8 @@ header {
     transition: opacity 0.2s ease;
 }
 
-.project-card a:hover, .article-card a:hover {
+.project-card a:hover,
+.article-card a:hover {
     opacity: 0.7;
 }
 
@@ -235,6 +241,13 @@ header {
     align-self: flex-start;
 }
 
+.feedback-success {
+    color: #34d399;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
 /* 8. FOOTER */
 footer {
     padding: 60px 0;
@@ -243,7 +256,7 @@ footer {
     font-size: 0.85rem;
 }
 
-/* 9. PAGE SWITCHER & AUTH (LOGIN/REGISTER) STYLES */
+/* 9. PAGE SWITCHER & AUTH */
 .page-view {
     display: block;
 }
@@ -391,8 +404,56 @@ footer {
     display: none;
 }
 
-/* 10. RESPONSIVE */
+/* 10. PASSWORD FIELD */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: #64748b;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    border-radius: 4px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #f8fafc;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.password-toggle:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+}
+
+/* 11. RESPONSIVE */
 @media (max-width: 640px) {
+
     .hero-content h1 {
         font-size: 2rem;
     }
@@ -404,10 +465,17 @@ footer {
     section {
         padding: 60px 0;
     }
-}
-.feedback-success {
-    color: #34d399;
-    margin-top: 12px;
-    font-size: 0.9rem;
-    font-weight: 500;
+
+    #loginPage {
+        padding: 20px;
+    }
+
+    .auth-card {
+        padding: 24px;
+    }
+
+    .back-home-link {
+        top: 20px;
+        left: 20px;
+    }
 }
