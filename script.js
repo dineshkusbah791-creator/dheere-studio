@@ -74,13 +74,16 @@ if (feedbackForm) {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/feedback', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
+            const response = await fetch(
+                'https://dheere-studio.onrender.com/feedback',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                }
+            );
 
             const result = await response.json();
 
@@ -130,13 +133,16 @@ if (registerForm) {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+            const response = await fetch(
+                'https://dheere-studio.onrender.com/register',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                }
+            );
 
             const result = await response.json();
 
@@ -180,13 +186,16 @@ if (loginForm) {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            });
+            const response = await fetch(
+                'https://dheere-studio.onrender.com/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                }
+            );
 
             const result = await response.json();
 
@@ -214,7 +223,8 @@ if (loginForm) {
 // PASSWORD SHOW / HIDE
 // ==========================================
 
-const passwordToggleButtons = document.querySelectorAll('.password-toggle');
+const passwordToggleButtons =
+    document.querySelectorAll('.password-toggle');
 
 passwordToggleButtons.forEach((button) => {
 
