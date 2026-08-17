@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Profile — Dheere Studio</title>
+
+    <meta
+        name="description"
+        content="Your Dheere Studio profile."
+    >
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <style>
+        /* ==========================================
+           PROFILE PAGE
+           ========================================== */
+
+        .profile-page {
+            min-height: calc(100vh - 80px);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 30px;
+        }
+
+        .profile-header {
+            margin-bottom: 40px;
+        }
+
+        .profile-header h1 {
+            margin: 0 0 10px;
+            font-size: 42px;
+        }
+
+        .profile-header p {
+            margin: 0;
+            color: #9299a8;
+            font-size: 16px;
+        }
+
+        /* ==========================================
+           PROFILE CARD
+           ========================================== */
+
+        .profile-card {
+            background: #151515;
+            border: 1px solid #2b2b2b;
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        /* ==========================================
+           AVATAR
+           ========================================== */
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #252525;
+            border: 1px solid #3a3a3a;
+
+            font-size: 30px;
+            font-weight: 600;
+
+            margin-bottom: 30px;
+        }
+
+        /* ==========================================
+           PROFILE INFORMATION
+           ========================================== */
+
+        .profile-info {
+            display: grid;
+            gap: 18px;
+        }
+
+        .profile-field {
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: 10px;
+            padding: 18px 20px;
+        }
+
+        .profile-label {
+            display: block;
+            margin-bottom: 7px;
+
+            font-size: 13px;
+            color: #777;
+        }
+
+        .profile-value {
+            display: block;
+
+            font-size: 17px;
+            color: #ffffff;
+
+            word-break: break-word;
+        }
+
+        /* ==========================================
+           ACTION BUTTONS
+           ========================================== */
+
+        .profile-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 35px;
+        }
+
+        .profile-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .profile-button:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .back-button {
+            background: #f5f5f5;
+            color: #111111;
+
+            border: 1px solid #f5f5f5;
+        }
+
+        .logout-button {
+            background: #252525;
+            color: #ffffff;
+
+            border: 1px solid #3a3a3a;
+        }
+
+        /* ==========================================
+           NOT LOGGED IN
+           ========================================== */
+
+        .login-message {
+            display: none;
+
+            padding: 30px;
+
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: 12px;
+
+            color: #9299a8;
+
+            line-height: 1.6;
+        }
+
+        .login-message strong {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .login-message a {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            padding: 12px 20px;
+
+            background: #f5f5f5;
+            color: #111111;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+        /* ==========================================
+           MOBILE
+           ========================================== */
+
+        @media (max-width: 600px) {
+
+            .profile-page {
+                padding: 50px 20px;
+            }
+
+            .profile-header h1 {
+                font-size: 32px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .profile-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="nav-logo">
+                <a href="index.html">
+                    Dheere Studio
+                </a>
+            </div>
+
+            <div class="nav-links">
+
+                <ul>
+
+                    <li>
+                        <a href="index.html#projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#articles">
+                            Articles
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="community.html">
+                            Community
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="about.html">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#feedback">
+                            Feedback
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==========================================
+         PROFILE
+         ========================================== -->
+
+    <main class="profile-page">
+
+        <div class="profile-header">
+
+            <h1>
+                Your Profile
+            </h1>
+
+            <p>
+                Manage your Dheere Studio account.
+            </p>
+
+        </div>
+
+
+        <!-- ======================================
+             LOGGED-IN PROFILE
+             ====================================== -->
+
+        <section
+            id="profileCard"
+            class="profile-card"
+        >
+
+            <!-- AVATAR -->
+
+            <div
+                id="profileAvatar"
+                class="profile-avatar"
+            >
+                ?
+            </div>
+
+
+            <!-- PROFILE INFORMATION -->
+
+            <div class="profile-info">
+
+                <!-- USERNAME -->
+
+                <div class="profile-field">
+
+                    <span class="profile-label">
+                        Username
+                    </span>
+
+                    <span
+                        id="profileUsername"
+                        class="profile-value"
+                    >
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="profile-field">
+
+                    <span class="profile-label">
+                        Email
+                    </span>
+
+                    <span
+                        id="profileEmail"
+                        class="profile-value"
+                    >
+                        Loading...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="profile-actions">
+
+                <a
+                    href="index.html"
+                    class="profile-button back-button"
+                >
+                    Back to Home
+                </a>
+
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="profile-button logout-button"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             NOT LOGGED IN
+             ====================================== -->
+
+        <section
+            id="loginMessage"
+            class="login-message"
+        >
+
+            <strong>
+                You're not logged in
+            </strong>
+
+            Please log in to view your Dheere Studio profile.
+
+            <br>
+
+            <a href="index.html">
+                Go to Login
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         PROFILE JAVASCRIPT
+         ========================================== -->
+
+    <script>
+
+        const STORAGE_KEY = "dheereStudioUser";
+
+
+        const profileCard =
+            document.getElementById("profileCard");
+
+
+        const loginMessage =
+            document.getElementById("loginMessage");
+
+
+        const usernameElement =
+            document.getElementById("profileUsername");
+
+
+        const emailElement =
+            document.getElementById("profileEmail");
+
+
+        const avatarElement =
+            document.getElementById("profileAvatar");
+
+
+        const logoutBtn =
+            document.getElementById("logoutBtn");
+
+
+        // ==========================================
+        // LOAD PROFILE
+        // ==========================================
+
+        function loadProfile() {
+
+            const savedUser =
+                localStorage.getItem(STORAGE_KEY);
+
+
+            /*
+             * IMPORTANT:
+             *
+             * We do NOT redirect to index.html here.
+             *
+             * This makes profile.html safe to open directly
+             * and clearly tells the user when they are not
+             * logged in.
+             */
+
+            if (!savedUser) {
+
+                profileCard.style.display = "none";
+
+                loginMessage.style.display = "block";
+
+                return;
+            }
+
+
+            try {
+
+                const user =
+                    JSON.parse(savedUser);
+
+
+                const username =
+                    user.name ||
+                    user.username ||
+                    "User";
+
+
+                const email =
+                    user.email ||
+                    "Not available";
+
+
+                // ======================================
+                // SHOW USERNAME
+                // ======================================
+
+                usernameElement.textContent =
+                    username;
+
+
+                // ======================================
+                // SHOW EMAIL
+                // ======================================
+
+                emailElement.textContent =
+                    email;
+
+
+                // ======================================
+                // SHOW AVATAR INITIAL
+                // ======================================
+
+                avatarElement.textContent =
+                    username
+                        .charAt(0)
+                        .toUpperCase();
+
+
+                // ======================================
+                // SHOW PROFILE
+                // ======================================
+
+                profileCard.style.display = "block";
+
+                loginMessage.style.display = "none";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Profile data error:",
+                    error
+                );
+
+
+                /*
+                 * Corrupt localStorage data.
+                 * Clear only the broken login data.
+                 */
+
+                localStorage.removeItem(
+                    STORAGE_KEY
+                );
+
+
+                profileCard.style.display = "none";
+
+                loginMessage.style.display = "block";
+            }
+        }
+
+
+        // ==========================================
+        // LOGOUT
+        // ==========================================
+
+        if (logoutBtn) {
+
+            logoutBtn.addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        STORAGE_KEY
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+                }
+            );
+        }
+
+
+        // ==========================================
+        // START
+        // ==========================================
+
+        loadProfile();
+
+    </script>
+
+</body>
+
+</html>
