@@ -1,255 +1,859 @@
-// Pages
+// ======================================================
+// PAGES
+// ======================================================
+
 const homePage = document.getElementById('homepage');
 const loginPage = document.getElementById('loginPage');
 
-// Navigation Buttons
+
+// ======================================================
+// NAVIGATION BUTTONS
+// ======================================================
+
 const goToLoginBtn = document.getElementById('goToLoginBtn');
 const backToHomeBtn = document.getElementById('backToHomeBtn');
 
-// Form Elements
+
+// ======================================================
+// AUTH FORMS
+// ======================================================
+
 const loginTabBtn = document.getElementById('loginTabBtn');
 const registerTabBtn = document.getElementById('registerTabBtn');
+
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 
-// ==========================================
-// PAGE SWITCHER
-// ==========================================
 
-if (goToLoginBtn && homePage && loginPage) {
-    goToLoginBtn.addEventListener('click', () => {
-        homePage.classList.add('hidden-page');
-        loginPage.classList.remove('hidden-page');
-        window.scrollTo(0, 0);
-    });
+// ======================================================
+// PROFILE NAVIGATION
+// ======================================================
+
+const profileBtn = document.getElementById('profileBtn');
+const navUsername = document.getElementById('navUsername');
+
+
+// ======================================================
+// LOGIN STATE
+// ======================================================
+
+let currentUser = null;
+
+
+// Restore saved login
+try {
+
+    const savedUser =
+        localStorage.getItem('dheereStudioUser');
+
+    if (savedUser) {
+
+        currentUser = JSON.parse(savedUser);
+
+    }
+
+} catch (error) {
+
+    console.error(
+        'Saved user data error:',
+        error
+    );
+
+    localStorage.removeItem(
+        'dheereStudioUser'
+    );
+
 }
 
-if (backToHomeBtn && homePage && loginPage) {
-    backToHomeBtn.addEventListener('click', () => {
-        loginPage.classList.add('hidden-page');
-        homePage.classList.remove('hidden-page');
-    });
+
+// ======================================================
+// USER HELPERS
+// ======================================================
+
+function getUserName(user) {
+
+    return (
+        user?.name ||
+        user?.username ||
+        user?.user?.name ||
+        user?.user?.username ||
+        'User'
+    );
+
 }
 
-// ==========================================
-// FORM TAB SWITCHER
-// ==========================================
 
-if (loginTabBtn && registerTabBtn && loginForm && registerForm) {
-    loginTabBtn.addEventListener('click', () => {
-        loginTabBtn.classList.add('active');
-        registerTabBtn.classList.remove('active');
+function getUserEmail(user) {
 
-        loginForm.classList.remove('hidden-form');
-        registerForm.classList.add('hidden-form');
-    });
+    return (
+        user?.email ||
+        user?.user?.email ||
+        'Not available'
+    );
 
-    registerTabBtn.addEventListener('click', () => {
-        registerTabBtn.classList.add('active');
-        loginTabBtn.classList.remove('active');
-
-        registerForm.classList.remove('hidden-form');
-        loginForm.classList.add('hidden-form');
-    });
 }
 
-// ==========================================
+
+// ======================================================
+// UPDATE NAVBAR
+// ======================================================
+
+function updateNavbar() {
+
+    const navLogin =
+        document.querySelector('.nav-login');
+
+    if (!navLogin) {
+        return;
+    }
+
+
+    if (currentUser) {
+
+        // Logged in
+        navLogin.innerHTML = `
+            <a
+                id="profileBtn"
+                class="button"
+                href="profile.html"
+            >
+                ${escapeHTML(getUserName(currentUser))}
+            </a>
+        `;
+
+    } else {
+
+        // Logged out
+        navLogin.innerHTML = `
+            <button
+                id="goToLoginBtn"
+                class="button"
+                type="button"
+            >
+                Login
+            </button>
+        `;
+
+
+        const newLoginBtn =
+            document.getElementById('goToLoginBtn');
+
+
+        if (newLoginBtn) {
+
+            newLoginBtn.addEventListener(
+                'click',
+                openLoginPage
+            );
+
+        }
+
+    }
+
+}
+
+
+// ======================================================
+// HTML ESCAPE
+// ======================================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent =
+        String(value ?? '');
+
+    return div.innerHTML;
+
+}
+
+
+// ======================================================
+// OPEN LOGIN PAGE
+// ======================================================
+
+function openLoginPage() {
+
+    if (!homePage || !loginPage) {
+        return;
+    }
+
+    homePage.classList.add(
+        'hidden-page'
+    );
+
+    loginPage.classList.remove(
+        'hidden-page'
+    );
+
+    window.scrollTo(0, 0);
+
+}
+
+
+// ======================================================
+// BACK TO HOME
+// ======================================================
+
+function backToHome() {
+
+    if (!homePage || !loginPage) {
+        return;
+    }
+
+    loginPage.classList.add(
+        'hidden-page'
+    );
+
+    homePage.classList.remove(
+        'hidden-page'
+    );
+
+    window.scrollTo(0, 0);
+
+}
+
+
+// ======================================================
+// INITIAL NAVIGATION
+// ======================================================
+
+if (goToLoginBtn) {
+
+    goToLoginBtn.addEventListener(
+        'click',
+        openLoginPage
+    );
+
+}
+
+
+if (backToHomeBtn) {
+
+    backToHomeBtn.addEventListener(
+        'click',
+        backToHome
+    );
+
+}
+
+
+// ======================================================
+// LOGIN / REGISTER TABS
+// ======================================================
+
+if (
+    loginTabBtn &&
+    registerTabBtn &&
+    loginForm &&
+    registerForm
+) {
+
+    loginTabBtn.addEventListener(
+        'click',
+        () => {
+
+            loginTabBtn.classList.add(
+                'active'
+            );
+
+            registerTabBtn.classList.remove(
+                'active'
+            );
+
+
+            loginForm.classList.remove(
+                'hidden-form'
+            );
+
+            registerForm.classList.add(
+                'hidden-form'
+            );
+
+        }
+    );
+
+
+    registerTabBtn.addEventListener(
+        'click',
+        () => {
+
+            registerTabBtn.classList.add(
+                'active'
+            );
+
+            loginTabBtn.classList.remove(
+                'active'
+            );
+
+
+            registerForm.classList.remove(
+                'hidden-form'
+            );
+
+            loginForm.classList.add(
+                'hidden-form'
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================================
 // FEEDBACK FORM
-// ==========================================
+// ======================================================
 
-const feedbackForm = document.querySelector('.feedback-form');
+const feedbackForm =
+    document.querySelector(
+        '.feedback-form'
+    );
+
 
 if (feedbackForm) {
-    feedbackForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const nameInput = feedbackForm.querySelector('input[type="text"]');
-        const emailInput = feedbackForm.querySelector('input[type="email"]');
-        const messageInput = feedbackForm.querySelector('textarea');
+    feedbackForm.addEventListener(
+        'submit',
+        async (e) => {
 
-        const formData = {
-            name: nameInput ? nameInput.value.trim() : '',
-            email: emailInput ? emailInput.value.trim() : '',
-            message: messageInput ? messageInput.value.trim() : ''
-        };
+            e.preventDefault();
 
-        try {
-            const response = await fetch(
-                'https://dheere-studio.onrender.com/feedback',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+
+            const nameInput =
+                feedbackForm.querySelector(
+                    'input[type="text"]'
+                );
+
+
+            const emailInput =
+                feedbackForm.querySelector(
+                    'input[type="email"]'
+                );
+
+
+            const messageInput =
+                feedbackForm.querySelector(
+                    'textarea'
+                );
+
+
+            const formData = {
+
+                name: nameInput
+                    ? nameInput.value.trim()
+                    : '',
+
+                email: emailInput
+                    ? emailInput.value.trim()
+                    : '',
+
+                message: messageInput
+                    ? messageInput.value.trim()
+                    : ''
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        'https://dheere-studio.onrender.com/feedback',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    formData
+                                )
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    alert(
+                        'Thank you! Your feedback has been received.'
+                    );
+
+                    feedbackForm.reset();
+
+                } else {
+
+                    alert(
+                        result.error ||
+                        'Unable to submit feedback.'
+                    );
+
                 }
-            );
 
-            const result = await response.json();
+            } catch (error) {
 
-            if (result.success) {
-                alert('Thank you! Your feedback has been received.');
-                feedbackForm.reset();
-            } else {
-                alert('Error: ' + result.error);
+                console.error(
+                    'Backend Connection Error:',
+                    error
+                );
+
+                alert(
+                    'Backend server se connect nahi ho paya.'
+                );
+
             }
 
-        } catch (error) {
-            console.error('Backend Connection Error:', error);
-            alert('Backend server se connect nahi ho paya.');
         }
-    });
+    );
+
 }
 
-// ==========================================
-// REGISTER FORM
-// ==========================================
+
+// ======================================================
+// REGISTER
+// ======================================================
 
 if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const usernameInput = registerForm.querySelector('input[type="text"]');
-        const emailInput = registerForm.querySelector('input[type="email"]');
+    registerForm.addEventListener(
+        'submit',
+        async (e) => {
 
-        const passwordInput = document.getElementById('registerPassword');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+            e.preventDefault();
 
-        const password = passwordInput ? passwordInput.value : '';
-        const confirmPassword = confirmPasswordInput
-            ? confirmPasswordInput.value
-            : '';
 
-        // Check passwords
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
+            const usernameInput =
+                document.getElementById(
+                    'registerName'
+                );
 
-        const userData = {
-            name: usernameInput ? usernameInput.value.trim() : '',
-            email: emailInput ? emailInput.value.trim() : '',
-            password: password
-        };
 
-        try {
-            const response = await fetch(
-                'https://dheere-studio.onrender.com/register',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userData)
-                }
-            );
+            const emailInput =
+                document.getElementById(
+                    'registerEmail'
+                );
 
-            const result = await response.json();
 
-            if (result.success) {
-                alert('Account created successfully!');
+            const passwordInput =
+                document.getElementById(
+                    'registerPassword'
+                );
 
-                registerForm.reset();
 
-                // Switch back to Login tab
-                registerTabBtn.classList.remove('active');
-                loginTabBtn.classList.add('active');
+            const confirmPasswordInput =
+                document.getElementById(
+                    'confirmPassword'
+                );
 
-                registerForm.classList.add('hidden-form');
-                loginForm.classList.remove('hidden-form');
 
-            } else {
-                alert('Registration failed: ' + result.error);
+            const name =
+                usernameInput
+                    ? usernameInput.value.trim()
+                    : '';
+
+
+            const email =
+                emailInput
+                    ? emailInput.value.trim()
+                    : '';
+
+
+            const password =
+                passwordInput
+                    ? passwordInput.value
+                    : '';
+
+
+            const confirmPassword =
+                confirmPasswordInput
+                    ? confirmPasswordInput.value
+                    : '';
+
+
+            // Required fields
+            if (!name || !email || !password) {
+
+                alert(
+                    'Please fill in all required fields.'
+                );
+
+                return;
+
             }
 
-        } catch (error) {
-            console.error('Registration Error:', error);
-            alert('Backend server se connect nahi ho paya.');
+
+            // Password confirmation
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                alert(
+                    'Passwords do not match.'
+                );
+
+                return;
+
+            }
+
+
+            const userData = {
+
+                name,
+                email,
+                password
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        'https://dheere-studio.onrender.com/register',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    userData
+                                )
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (result.success) {
+
+                    alert(
+                        'Account created successfully! Please login.'
+                    );
+
+
+                    registerForm.reset();
+
+
+                    // Switch to Login tab
+
+                    registerTabBtn.classList.remove(
+                        'active'
+                    );
+
+                    loginTabBtn.classList.add(
+                        'active'
+                    );
+
+
+                    registerForm.classList.add(
+                        'hidden-form'
+                    );
+
+                    loginForm.classList.remove(
+                        'hidden-form'
+                    );
+
+
+                    // Put registered email
+                    // into login field
+
+                    const loginEmail =
+                        document.getElementById(
+                            'loginEmail'
+                        );
+
+
+                    if (loginEmail) {
+
+                        loginEmail.value =
+                            email;
+
+                    }
+
+                } else {
+
+                    alert(
+                        result.error ||
+                        'Registration failed.'
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    'Registration Error:',
+                    error
+                );
+
+                alert(
+                    'Backend server se connect nahi ho paya.'
+                );
+
+            }
+
         }
-    });
+    );
+
 }
 
-// ==========================================
-// LOGIN FORM
-// ==========================================
+
+// ======================================================
+// LOGIN
+// ======================================================
 
 if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const emailInput = document.getElementById('loginEmail');
-        const passwordInput = document.getElementById('loginPassword');
+    loginForm.addEventListener(
+        'submit',
+        async (e) => {
 
-        const loginData = {
-            email: emailInput ? emailInput.value.trim() : '',
-            password: passwordInput ? passwordInput.value : ''
-        };
+            e.preventDefault();
 
-        try {
-            const response = await fetch(
-                'https://dheere-studio.onrender.com/login',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(loginData)
-                }
-            );
 
-            const result = await response.json();
+            const emailInput =
+                document.getElementById(
+                    'loginEmail'
+                );
 
-            if (result.success) {
-                alert('Login successful!');
 
-                loginForm.reset();
+            const passwordInput =
+                document.getElementById(
+                    'loginPassword'
+                );
 
-                // Login page se homepage par wapas jao
-                loginPage.classList.add('hidden-page');
-                homePage.classList.remove('hidden-page');
 
-            } else {
-                alert('Login failed: ' + result.error);
+            const email =
+                emailInput
+                    ? emailInput.value.trim()
+                    : '';
+
+
+            const password =
+                passwordInput
+                    ? passwordInput.value
+                    : '';
+
+
+            if (!email || !password) {
+
+                alert(
+                    'Email and password are required.'
+                );
+
+                return;
+
             }
 
-        } catch (error) {
-            console.error('Login Error:', error);
-            alert('Backend server se connect nahi ho paya.');
+
+            const loginData = {
+
+                email,
+                password
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        'https://dheere-studio.onrender.com/login',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    loginData
+                                )
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                // ==========================================
+                // LOGIN SUCCESS
+                // ==========================================
+
+                if (result.success) {
+
+                    currentUser =
+                        result.user;
+
+
+                    // Save login state
+
+                    localStorage.setItem(
+                        'dheereStudioUser',
+                        JSON.stringify(
+                            currentUser
+                        )
+                    );
+
+
+                    loginForm.reset();
+
+
+                    alert(
+                        'Login successful!'
+                    );
+
+
+                    // Return to homepage
+
+                    loginPage.classList.add(
+                        'hidden-page'
+                    );
+
+                    homePage.classList.remove(
+                        'hidden-page'
+                    );
+
+
+                    // Change Login → Username
+
+                    updateNavbar();
+
+
+                    window.scrollTo(
+                        0,
+                        0
+                    );
+
+
+                } else {
+
+                    // ==========================================
+                    // LOGIN FAILED
+                    // ==========================================
+
+                    alert(
+                        result.error ||
+                        'Login failed. Please try again.'
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    'Login Error:',
+                    error
+                );
+
+                alert(
+                    'Backend server se connect nahi ho paya. Please try again.'
+                );
+
+            }
+
         }
-    });
+    );
+
 }
 
-// ==========================================
+
+// ======================================================
 // PASSWORD SHOW / HIDE
-// ==========================================
+// ======================================================
 
 const passwordToggleButtons =
-    document.querySelectorAll('.password-toggle');
+    document.querySelectorAll(
+        '.password-toggle'
+    );
 
-passwordToggleButtons.forEach((button) => {
 
-    button.addEventListener('click', () => {
+passwordToggleButtons.forEach(
+    (button) => {
 
-        const targetId = button.dataset.target;
-        const passwordInput = document.getElementById(targetId);
+        button.addEventListener(
+            'click',
+            () => {
 
-        if (!passwordInput) {
-            return;
-        }
+                const targetId =
+                    button.dataset.target;
 
-        if (passwordInput.type === 'password') {
 
-            passwordInput.type = 'text';
-            button.textContent = '🙈';
-            button.setAttribute('aria-label', 'Hide password');
+                const passwordInput =
+                    document.getElementById(
+                        targetId
+                    );
 
-        } else {
 
-            passwordInput.type = 'password';
-            button.textContent = '👁';
-            button.setAttribute('aria-label', 'Show password');
+                if (!passwordInput) {
+                    return;
+                }
 
-        }
-    });
 
-});
+                if (
+                    passwordInput.type ===
+                    'password'
+                ) {
+
+                    passwordInput.type =
+                        'text';
+
+
+                    button.textContent =
+                        '🙈';
+
+
+                    button.setAttribute(
+                        'aria-label',
+                        'Hide password'
+                    );
+
+
+                } else {
+
+                    passwordInput.type =
+                        'password';
+
+
+                    button.textContent =
+                        '👁';
+
+
+                    button.setAttribute(
+                        'aria-label',
+                        'Show password'
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// ======================================================
+// INITIALIZE AUTH UI
+// ======================================================
+
+updateNavbar();
