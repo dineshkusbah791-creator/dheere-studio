@@ -183,7 +183,7 @@
 
 
         /* ==========================================
-           CREATE POST
+           POSTS SECTION
            ========================================== */
 
         .posts-section {
@@ -196,6 +196,10 @@
             font-size: 28px;
         }
 
+
+        /* ==========================================
+           CREATE POST
+           ========================================== */
 
         .create-post-card {
             background: #151515;
@@ -350,6 +354,19 @@
             border-radius: 12px;
 
             color: #777;
+
+            text-align: center;
+        }
+
+
+        .posts-error {
+            padding: 30px;
+
+            background: #101010;
+            border: 1px solid #4a2525;
+            border-radius: 12px;
+
+            color: #c9a0a0;
 
             text-align: center;
         }
@@ -514,6 +531,7 @@
     </header>
 
 
+
     <!-- ==========================================
          PROFILE
          ========================================== -->
@@ -534,6 +552,7 @@
         </div>
 
 
+
         <!-- ======================================
              LOGGED-IN PROFILE
              ====================================== -->
@@ -552,6 +571,7 @@
             >
                 ?
             </div>
+
 
 
             <!-- PROFILE INFORMATION -->
@@ -577,6 +597,7 @@
                 </div>
 
 
+
                 <!-- USERNAME -->
 
                 <div class="profile-field">
@@ -593,6 +614,7 @@
                     </span>
 
                 </div>
+
 
 
                 <!-- EMAIL -->
@@ -614,6 +636,7 @@
 
 
             </div>
+
 
 
             <!-- ACTIONS -->
@@ -642,6 +665,7 @@
         </section>
 
 
+
         <!-- ======================================
              POSTS
              ====================================== -->
@@ -655,6 +679,7 @@
             <h2>
                 Your Posts
             </h2>
+
 
 
             <!-- CREATE POST -->
@@ -692,6 +717,7 @@
             </div>
 
 
+
             <!-- POSTS -->
 
             <div
@@ -700,13 +726,14 @@
             >
 
                 <div class="empty-posts">
-                    No posts yet. Your first post can start here.
+                    Loading posts...
                 </div>
 
             </div>
 
 
         </section>
+
 
 
         <!-- ======================================
@@ -739,15 +766,29 @@
     </main>
 
 
+
     <!-- ==========================================
          PROFILE JAVASCRIPT
          ========================================== -->
 
     <script>
 
+        // ==========================================
+        // CONFIG
+        // ==========================================
+
+        const API_BASE =
+            "https://dheere-studio.onrender.com";
+
+
         const STORAGE_KEY =
             "dheereStudioUser";
 
+
+
+        // ==========================================
+        // ELEMENTS
+        // ==========================================
 
         const profileCard =
             document.getElementById(
@@ -821,11 +862,13 @@
             );
 
 
+
         // ==========================================
         // CURRENT USER
         // ==========================================
 
         let currentUser = null;
+
 
 
         // ==========================================
@@ -839,12 +882,53 @@
                     "div"
                 );
 
+
             div.textContent =
                 String(value ?? "");
 
 
             return div.innerHTML;
+
         }
+
+
+
+        // ==========================================
+        // FORMAT DATE
+        // ==========================================
+
+        function formatPostDate(dateValue) {
+
+            if (!dateValue) {
+
+                return "";
+
+            }
+
+
+            const date =
+                new Date(dateValue);
+
+
+            if (Number.isNaN(
+                date.getTime()
+            )) {
+
+                return "";
+
+            }
+
+
+            return date.toLocaleString(
+                undefined,
+                {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                }
+            );
+
+        }
+
 
 
         // ==========================================
@@ -871,6 +955,7 @@
                     "block";
 
                 return false;
+
             }
 
 
@@ -889,12 +974,37 @@
 
                 const username =
                     currentUser.username ||
-                    "username";
+                    "";
 
 
                 const email =
                     currentUser.email ||
                     "Not available";
+
+
+                // ======================================
+                // REQUIRE USERNAME
+                // ======================================
+
+                if (!username) {
+
+                    console.error(
+                        "Logged-in user has no username."
+                    );
+
+
+                    profileCard.style.display =
+                        "none";
+
+                    postsSection.style.display =
+                        "none";
+
+                    loginMessage.style.display =
+                        "block";
+
+                    return false;
+
+                }
 
 
                 // ======================================
@@ -964,8 +1074,203 @@
 
 
                 return false;
+
             }
+
         }
+
+
+
+        // ==========================================
+        // RENDER POSTS
+        // ==========================================
+
+        function renderPosts(posts) {
+
+            if (!posts || posts.length === 0) {
+
+                postsFeed.innerHTML = `
+                    <div class="empty-posts">
+                        No posts yet. Your first post can start here.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            postsFeed.innerHTML =
+                posts
+                    .map(
+                        (post) => {
+
+                            const authorName =
+                                post.authorName ||
+                                post.username ||
+                                "User";
+
+
+                            const username =
+                                post.username ||
+                                "";
+
+
+                            const date =
+                                formatPostDate(
+                                    post.createdAt
+                                );
+
+
+                            return `
+                                <article class="post-card">
+
+                                    <div class="post-header">
+
+                                        <div class="post-author">
+                                            ${escapeHTML(authorName)}
+                                            ${
+                                                username
+                                                    ? ` · @${escapeHTML(username)}`
+                                                    : ""
+                                            }
+                                        </div>
+
+                                        <div class="post-date">
+                                            ${escapeHTML(date)}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="post-content">
+                                        ${escapeHTML(post.content)}
+                                    </div>
+
+
+                                    <div class="post-meta">
+
+                                        <span>
+                                            ${Number(post.likes || 0)} likes
+                                        </span>
+
+                                        <span>
+                                            ${Number(post.comments || 0)} comments
+                                        </span>
+
+                                    </div>
+
+                                </article>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+
+        // ==========================================
+        // LOAD USER POSTS
+        // ==========================================
+
+        async function loadUserPosts() {
+
+            if (!currentUser) {
+
+                return;
+
+            }
+
+
+            const username =
+                String(
+                    currentUser.username || ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!username) {
+
+                postsFeed.innerHTML = `
+                    <div class="posts-error">
+                        Username is missing from your profile.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            postsFeed.innerHTML = `
+                <div class="empty-posts">
+                    Loading posts...
+                </div>
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/posts/user/${encodeURIComponent(username)}`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.error ||
+                        "Could not load posts."
+                    );
+
+                }
+
+
+                if (
+                    !result.success ||
+                    !Array.isArray(
+                        result.posts
+                    )
+                ) {
+
+                    throw new Error(
+                        "Invalid posts response."
+                    );
+
+                }
+
+
+                renderPosts(
+                    result.posts
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Load User Posts Error:",
+                    error
+                );
+
+
+                postsFeed.innerHTML = `
+                    <div class="posts-error">
+                        Unable to load your posts right now.
+                    </div>
+                `;
+
+            }
+
+        }
+
 
 
         // ==========================================
@@ -991,6 +1296,7 @@
         }
 
 
+
         // ==========================================
         // CREATE POST
         // ==========================================
@@ -1008,6 +1314,7 @@
                         );
 
                         return;
+
                     }
 
 
@@ -1022,6 +1329,7 @@
                         );
 
                         return;
+
                     }
 
 
@@ -1032,25 +1340,142 @@
                         );
 
                         return;
+
                     }
 
 
-                    /*
-                     * Backend route will be connected
-                     * in the next step.
-                     *
-                     * We intentionally do not fake a
-                     * successful post here.
-                     */
+                    const username =
+                        String(
+                            currentUser.username || ""
+                        )
+                            .trim()
+                            .toLowerCase();
 
-                    alert(
-                        "Post system UI is ready. Backend connection will be added next."
-                    );
+
+                    if (!username) {
+
+                        alert(
+                            "Your username is missing. Please login again."
+                        );
+
+                        return;
+
+                    }
+
+
+                    // ======================================
+                    // DISABLE BUTTON
+                    // ======================================
+
+                    createPostBtn.disabled =
+                        true;
+
+
+                    createPostBtn.textContent =
+                        "Publishing...";
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `${API_BASE}/posts`,
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            {
+                                                username,
+                                                content
+                                            }
+                                        )
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                result.error ||
+                                "Could not publish post."
+                            );
+
+                        }
+
+
+                        if (!result.success) {
+
+                            throw new Error(
+                                result.error ||
+                                "Could not publish post."
+                            );
+
+                        }
+
+
+                        // ======================================
+                        // CLEAR FORM
+                        // ======================================
+
+                        postContent.value =
+                            "";
+
+
+                        postCharacterCount.textContent =
+                            "0 / 2000";
+
+
+                        alert(
+                            "Post published successfully!"
+                        );
+
+
+                        // ======================================
+                        // REFRESH POSTS
+                        // ======================================
+
+                        await loadUserPosts();
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Create Post Error:",
+                            error
+                        );
+
+
+                        alert(
+                            error.message ||
+                            "Unable to publish post right now."
+                        );
+
+                    } finally {
+
+                        createPostBtn.disabled =
+                            false;
+
+
+                        createPostBtn.textContent =
+                            "Publish Post";
+
+                    }
 
                 }
             );
 
         }
+
 
 
         // ==========================================
@@ -1077,11 +1502,20 @@
         }
 
 
+
         // ==========================================
         // INITIALIZE
         // ==========================================
 
-        loadProfile();
+        const profileLoaded =
+            loadProfile();
+
+
+        if (profileLoaded) {
+
+            loadUserPosts();
+
+        }
 
     </script>
 
