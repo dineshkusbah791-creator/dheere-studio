@@ -183,6 +183,375 @@
 
 
         /* ==========================================
+           DHEERE AI
+           ========================================== */
+
+        .dheere-ai-section {
+            margin-top: 40px;
+        }
+
+
+        .dheere-ai-section-header {
+            margin-bottom: 20px;
+        }
+
+
+        .dheere-ai-section-header h2 {
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 28px;
+            font-weight: 500;
+        }
+
+
+        .dheere-ai-section-header p {
+            margin: 0;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        .dheere-ai-card {
+            background: #151515;
+
+            border: 1px solid #2b2b2b;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+        }
+
+
+        .dheere-ai-topbar {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 18px 20px;
+
+            border-bottom: 1px solid #292929;
+        }
+
+
+        .dheere-ai-brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .dheere-ai-symbol {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #252525;
+
+            border: 1px solid #3a3a3a;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+
+        .dheere-ai-brand-text {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 1px;
+        }
+
+
+        .dheere-ai-brand-text strong {
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+
+        .dheere-ai-brand-text span {
+            color: #777;
+
+            font-size: 12px;
+        }
+
+
+        .dheere-ai-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+
+        .dheere-ai-status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #555;
+        }
+
+
+        .dheere-ai-status.online .dheere-ai-status-dot {
+            background: #7dd3a8;
+        }
+
+
+        /* ==========================================
+           AI MESSAGES
+           ========================================== */
+
+        .dheere-ai-messages {
+            height: 390px;
+
+            overflow-y: auto;
+
+            padding: 22px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 13px;
+
+            background: #101010;
+        }
+
+
+        .dheere-ai-welcome {
+            max-width: 80%;
+
+            padding: 14px 16px;
+
+            background: #191919;
+
+            border: 1px solid #292929;
+
+            border-radius: 12px;
+
+            color: #c7c7c7;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+        }
+
+
+        .dheere-ai-message {
+            max-width: 82%;
+
+            padding: 12px 15px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+        }
+
+
+        .dheere-ai-message.ai {
+            align-self: flex-start;
+
+            background: #191919;
+
+            border: 1px solid #292929;
+
+            color: #d2d2d2;
+        }
+
+
+        .dheere-ai-message.user {
+            align-self: flex-end;
+
+            background: #f5f5f5;
+
+            color: #111111;
+
+            border: 1px solid #f5f5f5;
+        }
+
+
+        .dheere-ai-message.error {
+            align-self: flex-start;
+
+            background: #211616;
+
+            border: 1px solid #4a2525;
+
+            color: #d6aaaa;
+        }
+
+
+        .dheere-ai-typing {
+            align-self: flex-start;
+
+            display: none;
+
+            padding: 11px 14px;
+
+            background: #191919;
+
+            border: 1px solid #292929;
+
+            border-radius: 12px;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+
+        .dheere-ai-typing.visible {
+            display: block;
+        }
+
+
+        /* ==========================================
+           AI INPUT
+           ========================================== */
+
+        .dheere-ai-input-area {
+            padding: 14px;
+
+            background: #151515;
+
+            border-top: 1px solid #292929;
+        }
+
+
+        .dheere-ai-form {
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 9px;
+        }
+
+
+        #dheereAiInput {
+            flex: 1;
+
+            min-width: 0;
+
+            min-height: 44px;
+            max-height: 130px;
+
+            resize: none;
+
+            padding: 12px 14px;
+
+            background: #101010;
+
+            border: 1px solid #292929;
+
+            border-radius: 9px;
+
+            color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            line-height: 1.45;
+
+            outline: none;
+        }
+
+
+        #dheereAiInput::placeholder {
+            color: #666;
+        }
+
+
+        #dheereAiInput:focus {
+            border-color: #4a4a4a;
+        }
+
+
+        #dheereAiSend {
+            width: 44px;
+            height: 44px;
+
+            flex: 0 0 44px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+
+            border: 1px solid #f5f5f5;
+
+            border-radius: 9px;
+
+            background: #f5f5f5;
+
+            color: #111111;
+
+            cursor: pointer;
+
+            font-size: 17px;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        #dheereAiSend:hover:not(:disabled) {
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+
+        #dheereAiSend:disabled {
+            opacity: 0.45;
+
+            cursor: not-allowed;
+        }
+
+
+        .dheere-ai-hint {
+            margin-top: 8px;
+
+            color: #555;
+
+            font-size: 11px;
+        }
+
+
+        /* ==========================================
            POSTS SECTION
            ========================================== */
 
@@ -351,6 +720,7 @@
 
             background: #101010;
             border: 1px solid #292929;
+
             border-radius: 12px;
 
             color: #777;
@@ -363,7 +733,9 @@
             padding: 30px;
 
             background: #101010;
+
             border: 1px solid #4a2525;
+
             border-radius: 12px;
 
             color: #c9a0a0;
@@ -382,7 +754,9 @@
             padding: 30px;
 
             background: #101010;
+
             border: 1px solid #292929;
+
             border-radius: 12px;
 
             color: #9299a8;
@@ -397,6 +771,7 @@
             margin-bottom: 8px;
 
             color: #ffffff;
+
             font-size: 20px;
         }
 
@@ -409,6 +784,7 @@
             padding: 12px 20px;
 
             background: #f5f5f5;
+
             color: #111111;
 
             border-radius: 8px;
@@ -450,9 +826,29 @@
             }
 
 
+            .dheere-ai-section-header h2 {
+                font-size: 25px;
+            }
+
+
+            .dheere-ai-messages {
+                height: 340px;
+
+                padding: 16px;
+            }
+
+
+            .dheere-ai-message,
+            .dheere-ai-welcome {
+                max-width: 90%;
+            }
+
+
             .post-bottom {
                 flex-direction: column;
+
                 align-items: stretch;
+
                 gap: 12px;
             }
 
@@ -562,7 +958,6 @@
             class="profile-card"
         >
 
-
             <!-- AVATAR -->
 
             <div
@@ -658,6 +1053,154 @@
                 >
                     Logout
                 </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ======================================
+             DHEERE AI
+             ====================================== -->
+
+        <section
+            id="dheereAiSection"
+            class="dheere-ai-section"
+        >
+
+
+            <div class="dheere-ai-section-header">
+
+                <h2>
+                    Dheere AI
+                </h2>
+
+                <p>
+                    Ask questions in Hindi or English. Dheere AI will respond directly.
+                </p>
+
+            </div>
+
+
+
+            <div class="dheere-ai-card">
+
+
+                <!-- AI TOP BAR -->
+
+                <div class="dheere-ai-topbar">
+
+                    <div class="dheere-ai-brand">
+
+                        <div class="dheere-ai-symbol">
+                            ✦
+                        </div>
+
+
+                        <div class="dheere-ai-brand-text">
+
+                            <strong>
+                                Dheere AI
+                            </strong>
+
+                            <span>
+                                Studio assistant
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="dheereAiStatus"
+                        class="dheere-ai-status"
+                    >
+
+                        <span
+                            class="dheere-ai-status-dot"
+                        ></span>
+
+                        <span id="dheereAiStatusText">
+                            Ready
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AI MESSAGES -->
+
+                <div
+                    id="dheereAiMessages"
+                    class="dheere-ai-messages"
+                >
+
+                    <div class="dheere-ai-welcome">
+
+                        <strong>
+                            Hello.
+                        </strong>
+
+                        <br>
+
+                        I'm Dheere AI. You can ask me something in
+                        <strong>Hindi</strong> or
+                        <strong>English</strong>.
+
+                    </div>
+
+
+                    <div
+                        id="dheereAiTyping"
+                        class="dheere-ai-typing"
+                    >
+                        Dheere AI is thinking...
+                    </div>
+
+                </div>
+
+
+
+                <!-- AI INPUT -->
+
+                <div class="dheere-ai-input-area">
+
+                    <form
+                        id="dheereAiForm"
+                        class="dheere-ai-form"
+                    >
+
+                        <textarea
+                            id="dheereAiInput"
+                            rows="1"
+                            maxlength="4000"
+                            placeholder="Ask Dheere AI..."
+                            autocomplete="off"
+                        ></textarea>
+
+
+                        <button
+                            id="dheereAiSend"
+                            type="submit"
+                            aria-label="Send message"
+                        >
+                            ↑
+                        </button>
+
+                    </form>
+
+
+                    <div class="dheere-ai-hint">
+                        Enter to send · Shift + Enter for a new line
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -864,10 +1407,60 @@
 
 
         // ==========================================
+        // AI ELEMENTS
+        // ==========================================
+
+        const dheereAiForm =
+            document.getElementById(
+                "dheereAiForm"
+            );
+
+
+        const dheereAiInput =
+            document.getElementById(
+                "dheereAiInput"
+            );
+
+
+        const dheereAiSend =
+            document.getElementById(
+                "dheereAiSend"
+            );
+
+
+        const dheereAiMessages =
+            document.getElementById(
+                "dheereAiMessages"
+            );
+
+
+        const dheereAiTyping =
+            document.getElementById(
+                "dheereAiTyping"
+            );
+
+
+        const dheereAiStatus =
+            document.getElementById(
+                "dheereAiStatus"
+            );
+
+
+        const dheereAiStatusText =
+            document.getElementById(
+                "dheereAiStatusText"
+            );
+
+
+
+        // ==========================================
         // CURRENT USER
         // ==========================================
 
         let currentUser = null;
+
+
+        let aiBusy = false;
 
 
 
@@ -910,9 +1503,11 @@
                 new Date(dateValue);
 
 
-            if (Number.isNaN(
-                date.getTime()
-            )) {
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
 
                 return "";
 
@@ -924,6 +1519,334 @@
                 {
                     dateStyle: "medium",
                     timeStyle: "short"
+                }
+            );
+
+        }
+
+
+
+        // ==========================================
+        // ADD AI MESSAGE
+        // ==========================================
+
+        function addAiMessage(
+            text,
+            type = "ai"
+        ) {
+
+            const message =
+                document.createElement(
+                    "div"
+                );
+
+
+            message.className =
+                `dheere-ai-message ${type}`;
+
+
+            message.textContent =
+                String(text ?? "");
+
+
+            dheereAiMessages.insertBefore(
+                message,
+                dheereAiTyping
+            );
+
+
+            dheereAiMessages.scrollTop =
+                dheereAiMessages.scrollHeight;
+
+
+            return message;
+
+        }
+
+
+
+        // ==========================================
+        // AI STATUS
+        // ==========================================
+
+        function setAiStatus(
+            text,
+            online = false
+        ) {
+
+            dheereAiStatusText.textContent =
+                text;
+
+
+            dheereAiStatus.classList.toggle(
+                "online",
+                online
+            );
+
+        }
+
+
+
+        // ==========================================
+        // AI REQUEST
+        // ==========================================
+
+        async function sendAiMessage() {
+
+            if (aiBusy) {
+
+                return;
+
+            }
+
+
+            const message =
+                dheereAiInput.value.trim();
+
+
+            if (!message) {
+
+                return;
+
+            }
+
+
+            // ======================================
+            // SHOW USER MESSAGE
+            // ======================================
+
+            addAiMessage(
+                message,
+                "user"
+            );
+
+
+            dheereAiInput.value =
+                "";
+
+
+            dheereAiInput.style.height =
+                "auto";
+
+
+            // ======================================
+            // LOADING
+            // ======================================
+
+            aiBusy =
+                true;
+
+
+            dheereAiSend.disabled =
+                true;
+
+
+            dheereAiTyping.classList.add(
+                "visible"
+            );
+
+
+            setAiStatus(
+                "Thinking..."
+            );
+
+
+            dheereAiMessages.scrollTop =
+                dheereAiMessages.scrollHeight;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/ai-chat`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    message
+                                })
+                        }
+                    );
+
+
+                let result = null;
+
+
+                try {
+
+                    result =
+                        await response.json();
+
+                } catch {
+
+                    result = null;
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.error ||
+                        `AI request failed (${response.status}).`
+                    );
+
+                }
+
+
+                if (
+                    !result ||
+                    result.success !== true
+                ) {
+
+                    throw new Error(
+                        result?.error ||
+                        "Dheere AI did not return a valid response."
+                    );
+
+                }
+
+
+                const reply =
+                    result.reply ||
+                    result.response ||
+                    result.message;
+
+
+                if (!reply) {
+
+                    throw new Error(
+                        "Dheere AI returned an empty response."
+                    );
+
+                }
+
+
+                addAiMessage(
+                    reply,
+                    "ai"
+                );
+
+
+                setAiStatus(
+                    "Ready",
+                    true
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Dheere AI Error:",
+                    error
+                );
+
+
+                addAiMessage(
+                    error.message ||
+                    "Unable to connect to Dheere AI right now.",
+                    "error"
+                );
+
+
+                setAiStatus(
+                    "Unavailable"
+                );
+
+            } finally {
+
+                aiBusy =
+                    false;
+
+
+                dheereAiSend.disabled =
+                    false;
+
+
+                dheereAiTyping.classList.remove(
+                    "visible"
+                );
+
+
+                dheereAiInput.focus();
+
+
+                dheereAiMessages.scrollTop =
+                    dheereAiMessages.scrollHeight;
+
+            }
+
+        }
+
+
+
+        // ==========================================
+        // AI FORM
+        // ==========================================
+
+        if (dheereAiForm) {
+
+            dheereAiForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+                    sendAiMessage();
+
+                }
+            );
+
+        }
+
+
+
+        // ==========================================
+        // AI KEYBOARD
+        // ==========================================
+
+        if (dheereAiInput) {
+
+            dheereAiInput.addEventListener(
+                "keydown",
+                (event) => {
+
+                    if (
+                        event.key === "Enter" &&
+                        !event.shiftKey
+                    ) {
+
+                        event.preventDefault();
+
+                        sendAiMessage();
+
+                    }
+
+                }
+            );
+
+
+            dheereAiInput.addEventListener(
+                "input",
+                () => {
+
+                    dheereAiInput.style.height =
+                        "auto";
+
+
+                    dheereAiInput.style.height =
+                        Math.min(
+                            dheereAiInput.scrollHeight,
+                            130
+                        ) + "px";
+
                 }
             );
 
@@ -949,6 +1872,13 @@
                     "none";
 
                 postsSection.style.display =
+                    "none";
+
+                document
+                    .getElementById(
+                        "dheereAiSection"
+                    )
+                    .style.display =
                     "none";
 
                 loginMessage.style.display =
@@ -999,6 +1929,13 @@
                     postsSection.style.display =
                         "none";
 
+                    document
+                        .getElementById(
+                            "dheereAiSection"
+                        )
+                        .style.display =
+                        "none";
+
                     loginMessage.style.display =
                         "block";
 
@@ -1041,6 +1978,14 @@
                     "block";
 
 
+                document
+                    .getElementById(
+                        "dheereAiSection"
+                    )
+                    .style.display =
+                    "block";
+
+
                 loginMessage.style.display =
                     "none";
 
@@ -1069,6 +2014,14 @@
                     "none";
 
 
+                document
+                    .getElementById(
+                        "dheereAiSection"
+                    )
+                    .style.display =
+                    "none";
+
+
                 loginMessage.style.display =
                     "block";
 
@@ -1087,7 +2040,10 @@
 
         function renderPosts(posts) {
 
-            if (!posts || posts.length === 0) {
+            if (
+                !posts ||
+                posts.length === 0
+            ) {
 
                 postsFeed.innerHTML = `
                     <div class="empty-posts">
@@ -1333,7 +2289,9 @@
                     }
 
 
-                    if (content.length > 2000) {
+                    if (
+                        content.length > 2000
+                    ) {
 
                         alert(
                             "Post cannot exceed 2000 characters."
@@ -1389,12 +2347,10 @@
                                     },
 
                                     body:
-                                        JSON.stringify(
-                                            {
-                                                username,
-                                                content
-                                            }
-                                        )
+                                        JSON.stringify({
+                                            username,
+                                            content
+                                        })
                                 }
                             );
 
