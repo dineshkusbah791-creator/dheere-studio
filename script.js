@@ -83,6 +83,17 @@ function getUserName(user) {
 }
 
 
+function getUserUsername(user) {
+
+    return (
+        user?.username ||
+        user?.user?.username ||
+        ''
+    );
+
+}
+
+
 function getUserEmail(user) {
 
     return (
@@ -117,7 +128,10 @@ function updateNavbar() {
                 class="button"
                 href="profile.html"
             >
-                ${escapeHTML(getUserName(currentUser))}
+                ${escapeHTML(
+                    getUserUsername(currentUser) ||
+                    getUserName(currentUser)
+                )}
             </a>
         `;
 
@@ -419,6 +433,217 @@ if (feedbackForm) {
 
 
 // ======================================================
+// USERNAME AVAILABILITY
+// ======================================================
+
+const usernameInput =
+    document.getElementById(
+        'registerUsername'
+    );
+
+const usernameStatus =
+    document.getElementById(
+        'usernameStatus'
+    );
+
+let usernameCheckTimer = null;
+let usernameAvailable = false;
+
+
+// ==========================================
+// CHECK USERNAME
+// ==========================================
+
+async function checkUsernameAvailability() {
+
+    if (!usernameInput) {
+        return;
+    }
+
+
+    const username =
+        usernameInput.value
+            .trim()
+            .toLowerCase();
+
+
+    usernameAvailable = false;
+
+
+    // Empty username
+    if (!username) {
+
+        if (usernameStatus) {
+
+            usernameStatus.textContent =
+                '';
+
+            usernameStatus.className =
+                'username-status';
+
+        }
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // LOCAL FORMAT CHECK
+    // ==========================================
+
+    const usernameRegex =
+        /^[a-z0-9_]{3,20}$/;
+
+
+    if (!usernameRegex.test(username)) {
+
+        if (usernameStatus) {
+
+            usernameStatus.textContent =
+                'Username must be 3-20 characters. Use only letters, numbers, and _.';
+
+            usernameStatus.className =
+                'username-status unavailable';
+
+        }
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // CHECKING
+    // ==========================================
+
+    if (usernameStatus) {
+
+        usernameStatus.textContent =
+            'Checking...';
+
+        usernameStatus.className =
+            'username-status checking';
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `https://dheere-studio.onrender.com/check-username/${encodeURIComponent(username)}`
+            );
+
+
+        const result =
+            await response.json();
+
+
+        // ==========================================
+        // AVAILABLE
+        // ==========================================
+
+        if (
+            result.success &&
+            result.available
+        ) {
+
+            usernameAvailable = true;
+
+
+            if (usernameStatus) {
+
+                usernameStatus.textContent =
+                    '✓ Username available';
+
+                usernameStatus.className =
+                    'username-status available';
+
+            }
+
+        }
+
+
+        // ==========================================
+        // TAKEN / INVALID
+        // ==========================================
+
+        else {
+
+            usernameAvailable = false;
+
+
+            if (usernameStatus) {
+
+                usernameStatus.textContent =
+                    result.message ||
+                    'Username is already taken.';
+
+                usernameStatus.className =
+                    'username-status unavailable';
+
+            }
+
+        }
+
+    } catch (error) {
+
+        usernameAvailable = false;
+
+
+        console.error(
+            'Username Check Error:',
+            error
+        );
+
+
+        if (usernameStatus) {
+
+            usernameStatus.textContent =
+                'Unable to check username right now.';
+
+            usernameStatus.className =
+                'username-status unavailable';
+
+        }
+
+    }
+
+}
+
+
+// ==========================================
+// USERNAME INPUT LISTENER
+// ==========================================
+
+if (usernameInput) {
+
+    usernameInput.addEventListener(
+        'input',
+        () => {
+
+            usernameAvailable = false;
+
+
+            clearTimeout(
+                usernameCheckTimer
+            );
+
+
+            usernameCheckTimer =
+                setTimeout(
+                    checkUsernameAvailability,
+                    400
+                );
+
+        }
+    );
+
+}
+
+
+// ======================================================
 // REGISTER
 // ======================================================
 
@@ -431,7 +656,11 @@ if (registerForm) {
             e.preventDefault();
 
 
-            const usernameInput =
+            // ==========================================
+            // INPUTS
+            // ==========================================
+
+            const nameInput =
                 document.getElementById(
                     'registerName'
                 );
@@ -456,8 +685,14 @@ if (registerForm) {
 
 
             const name =
+                nameInput
+                    ? nameInput.value.trim()
+                    : '';
+
+
+            const username =
                 usernameInput
-                    ? usernameInput.value.trim()
+                    ? usernameInput.value.trim().toLowerCase()
                     : '';
 
 
@@ -479,8 +714,17 @@ if (registerForm) {
                     : '';
 
 
-            // Required fields
-            if (!name || !email || !password) {
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
+
+            if (
+                !name ||
+                !username ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
 
                 alert(
                     'Please fill in all required fields.'
@@ -491,7 +735,56 @@ if (registerForm) {
             }
 
 
-            // Password confirmation
+            // ==========================================
+            // USERNAME FORMAT
+            // ==========================================
+
+            const usernameRegex =
+                /^[a-z0-9_]{3,20}$/;
+
+
+            if (
+                !usernameRegex.test(
+                    username
+                )
+            ) {
+
+                alert(
+                    'Username must be 3-20 characters and contain only letters, numbers, and underscores.'
+                );
+
+                return;
+
+            }
+
+
+            // ==========================================
+            // USERNAME AVAILABILITY
+            // ==========================================
+
+            if (!usernameAvailable) {
+
+                // Do a final server check before registration
+                await checkUsernameAvailability();
+
+
+                if (!usernameAvailable) {
+
+                    alert(
+                        'Please choose an available username.'
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            // ==========================================
+            // PASSWORD CONFIRMATION
+            // ==========================================
+
             if (
                 password !==
                 confirmPassword
@@ -506,9 +799,14 @@ if (registerForm) {
             }
 
 
+            // ==========================================
+            // USER DATA
+            // ==========================================
+
             const userData = {
 
                 name,
+                username,
                 email,
                 password
 
@@ -540,6 +838,10 @@ if (registerForm) {
                     await response.json();
 
 
+                // ==========================================
+                // REGISTRATION SUCCESS
+                // ==========================================
+
                 if (result.success) {
 
                     alert(
@@ -548,6 +850,21 @@ if (registerForm) {
 
 
                     registerForm.reset();
+
+
+                    usernameAvailable =
+                        false;
+
+
+                    if (usernameStatus) {
+
+                        usernameStatus.textContent =
+                            '';
+
+                        usernameStatus.className =
+                            'username-status';
+
+                    }
 
 
                     // Switch to Login tab
