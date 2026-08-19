@@ -1,36 +1,59 @@
 // ======================================================
+// CONFIG
+// ======================================================
+
+const API_BASE_URL =
+    'https://dheere-studio.onrender.com';
+
+
+// ======================================================
 // PAGES
 // ======================================================
 
-const homePage = document.getElementById('homepage');
-const loginPage = document.getElementById('loginPage');
+const homePage =
+    document.getElementById('homepage');
+
+const loginPage =
+    document.getElementById('loginPage');
 
 
 // ======================================================
 // NAVIGATION BUTTONS
 // ======================================================
 
-const goToLoginBtn = document.getElementById('goToLoginBtn');
-const backToHomeBtn = document.getElementById('backToHomeBtn');
+const goToLoginBtn =
+    document.getElementById('goToLoginBtn');
+
+const backToHomeBtn =
+    document.getElementById('backToHomeBtn');
 
 
 // ======================================================
 // AUTH FORMS
 // ======================================================
 
-const loginTabBtn = document.getElementById('loginTabBtn');
-const registerTabBtn = document.getElementById('registerTabBtn');
+const loginTabBtn =
+    document.getElementById('loginTabBtn');
 
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
+const registerTabBtn =
+    document.getElementById('registerTabBtn');
+
+const loginForm =
+    document.getElementById('loginForm');
+
+const registerForm =
+    document.getElementById('registerForm');
 
 
 // ======================================================
 // PROFILE NAVIGATION
 // ======================================================
 
-const profileBtn = document.getElementById('profileBtn');
-const navUsername = document.getElementById('navUsername');
+let profileBtn =
+    document.getElementById('profileBtn');
+
+let navUsername =
+    document.getElementById('navUsername');
 
 
 // ======================================================
@@ -44,11 +67,14 @@ let currentUser = null;
 try {
 
     const savedUser =
-        localStorage.getItem('dheereStudioUser');
+        localStorage.getItem(
+            'dheereStudioUser'
+        );
 
     if (savedUser) {
 
-        currentUser = JSON.parse(savedUser);
+        currentUser =
+            JSON.parse(savedUser);
 
     }
 
@@ -69,6 +95,19 @@ try {
 // ======================================================
 // USER HELPERS
 // ======================================================
+
+function getUserId(user) {
+
+    return (
+        user?.id ||
+        user?._id ||
+        user?.user?.id ||
+        user?.user?._id ||
+        ''
+    );
+
+}
+
 
 function getUserName(user) {
 
@@ -101,68 +140,6 @@ function getUserEmail(user) {
         user?.user?.email ||
         'Not available'
     );
-
-}
-
-
-// ======================================================
-// UPDATE NAVBAR
-// ======================================================
-
-function updateNavbar() {
-
-    const navLogin =
-        document.querySelector('.nav-login');
-
-    if (!navLogin) {
-        return;
-    }
-
-
-    if (currentUser) {
-
-        // Logged in
-        navLogin.innerHTML = `
-            <a
-                id="profileBtn"
-                class="button"
-                href="profile.html"
-            >
-                ${escapeHTML(
-                    getUserUsername(currentUser) ||
-                    getUserName(currentUser)
-                )}
-            </a>
-        `;
-
-    } else {
-
-        // Logged out
-        navLogin.innerHTML = `
-            <button
-                id="goToLoginBtn"
-                class="button"
-                type="button"
-            >
-                Login
-            </button>
-        `;
-
-
-        const newLoginBtn =
-            document.getElementById('goToLoginBtn');
-
-
-        if (newLoginBtn) {
-
-            newLoginBtn.addEventListener(
-                'click',
-                openLoginPage
-            );
-
-        }
-
-    }
 
 }
 
@@ -202,7 +179,10 @@ function openLoginPage() {
         'hidden-page'
     );
 
-    window.scrollTo(0, 0);
+    window.scrollTo(
+        0,
+        0
+    );
 
 }
 
@@ -225,7 +205,103 @@ function backToHome() {
         'hidden-page'
     );
 
-    window.scrollTo(0, 0);
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+// ======================================================
+// UPDATE NAVBAR
+// ======================================================
+
+function updateNavbar() {
+
+    const navLogin =
+        document.querySelector(
+            '.nav-login'
+        );
+
+    if (!navLogin) {
+        return;
+    }
+
+
+    if (currentUser) {
+
+        const username =
+            getUserUsername(
+                currentUser
+            );
+
+
+        const name =
+            getUserName(
+                currentUser
+            );
+
+
+        navLogin.innerHTML = `
+
+            <a
+                id="profileBtn"
+                class="button"
+                href="profile.html"
+            >
+                ${escapeHTML(
+                    username ||
+                    name
+                )}
+            </a>
+
+        `;
+
+
+        profileBtn =
+            document.getElementById(
+                'profileBtn'
+            );
+
+
+        navUsername =
+            document.getElementById(
+                'navUsername'
+            );
+
+
+    } else {
+
+        navLogin.innerHTML = `
+
+            <button
+                id="goToLoginBtn"
+                class="button"
+                type="button"
+            >
+                Login
+            </button>
+
+        `;
+
+
+        const newLoginBtn =
+            document.getElementById(
+                'goToLoginBtn'
+            );
+
+
+        if (newLoginBtn) {
+
+            newLoginBtn.addEventListener(
+                'click',
+                openLoginPage
+            );
+
+        }
+
+    }
 
 }
 
@@ -356,17 +432,20 @@ if (feedbackForm) {
 
             const formData = {
 
-                name: nameInput
-                    ? nameInput.value.trim()
-                    : '',
+                name:
+                    nameInput
+                        ? nameInput.value.trim()
+                        : '',
 
-                email: emailInput
-                    ? emailInput.value.trim()
-                    : '',
+                email:
+                    emailInput
+                        ? emailInput.value.trim()
+                        : '',
 
-                message: messageInput
-                    ? messageInput.value.trim()
-                    : ''
+                message:
+                    messageInput
+                        ? messageInput.value.trim()
+                        : ''
 
             };
 
@@ -375,9 +454,10 @@ if (feedbackForm) {
 
                 const response =
                     await fetch(
-                        'https://dheere-studio.onrender.com/feedback',
+                        `${API_BASE_URL}/feedback`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -402,7 +482,9 @@ if (feedbackForm) {
                         'Thank you! Your feedback has been received.'
                     );
 
+
                     feedbackForm.reset();
+
 
                 } else {
 
@@ -413,12 +495,14 @@ if (feedbackForm) {
 
                 }
 
+
             } catch (error) {
 
                 console.error(
                     'Backend Connection Error:',
                     error
                 );
+
 
                 alert(
                     'Backend server se connect nahi ho paya.'
@@ -441,18 +525,24 @@ const usernameInput =
         'registerUsername'
     );
 
+
 const usernameStatus =
     document.getElementById(
         'usernameStatus'
     );
 
-let usernameCheckTimer = null;
-let usernameAvailable = false;
+
+let usernameCheckTimer =
+    null;
 
 
-// ==========================================
+let usernameAvailable =
+    false;
+
+
+// ======================================================
 // CHECK USERNAME
-// ==========================================
+// ======================================================
 
 async function checkUsernameAvailability() {
 
@@ -467,10 +557,10 @@ async function checkUsernameAvailability() {
             .toLowerCase();
 
 
-    usernameAvailable = false;
+    usernameAvailable =
+        false;
 
 
-    // Empty username
     if (!username) {
 
         if (usernameStatus) {
@@ -487,10 +577,6 @@ async function checkUsernameAvailability() {
 
     }
 
-
-    // ==========================================
-    // LOCAL FORMAT CHECK
-    // ==========================================
 
     const usernameRegex =
         /^[a-z0-9_]{3,20}$/;
@@ -513,10 +599,6 @@ async function checkUsernameAvailability() {
     }
 
 
-    // ==========================================
-    // CHECKING
-    // ==========================================
-
     if (usernameStatus) {
 
         usernameStatus.textContent =
@@ -532,7 +614,7 @@ async function checkUsernameAvailability() {
 
         const response =
             await fetch(
-                `https://dheere-studio.onrender.com/check-username/${encodeURIComponent(username)}`
+                `${API_BASE_URL}/check-username/${encodeURIComponent(username)}`
             );
 
 
@@ -540,16 +622,13 @@ async function checkUsernameAvailability() {
             await response.json();
 
 
-        // ==========================================
-        // AVAILABLE
-        // ==========================================
-
         if (
             result.success &&
             result.available
         ) {
 
-            usernameAvailable = true;
+            usernameAvailable =
+                true;
 
 
             if (usernameStatus) {
@@ -562,16 +641,10 @@ async function checkUsernameAvailability() {
 
             }
 
-        }
+        } else {
 
-
-        // ==========================================
-        // TAKEN / INVALID
-        // ==========================================
-
-        else {
-
-            usernameAvailable = false;
+            usernameAvailable =
+                false;
 
 
             if (usernameStatus) {
@@ -587,9 +660,11 @@ async function checkUsernameAvailability() {
 
         }
 
+
     } catch (error) {
 
-        usernameAvailable = false;
+        usernameAvailable =
+            false;
 
 
         console.error(
@@ -613,9 +688,9 @@ async function checkUsernameAvailability() {
 }
 
 
-// ==========================================
+// ======================================================
 // USERNAME INPUT LISTENER
-// ==========================================
+// ======================================================
 
 if (usernameInput) {
 
@@ -623,7 +698,8 @@ if (usernameInput) {
         'input',
         () => {
 
-            usernameAvailable = false;
+            usernameAvailable =
+                false;
 
 
             clearTimeout(
@@ -655,10 +731,6 @@ if (registerForm) {
 
             e.preventDefault();
 
-
-            // ==========================================
-            // INPUTS
-            // ==========================================
 
             const nameInput =
                 document.getElementById(
@@ -692,7 +764,9 @@ if (registerForm) {
 
             const username =
                 usernameInput
-                    ? usernameInput.value.trim().toLowerCase()
+                    ? usernameInput.value
+                        .trim()
+                        .toLowerCase()
                     : '';
 
 
@@ -714,10 +788,6 @@ if (registerForm) {
                     : '';
 
 
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
-
             if (
                 !name ||
                 !username ||
@@ -734,10 +804,6 @@ if (registerForm) {
 
             }
 
-
-            // ==========================================
-            // USERNAME FORMAT
-            // ==========================================
 
             const usernameRegex =
                 /^[a-z0-9_]{3,20}$/;
@@ -758,13 +824,8 @@ if (registerForm) {
             }
 
 
-            // ==========================================
-            // USERNAME AVAILABILITY
-            // ==========================================
-
             if (!usernameAvailable) {
 
-                // Do a final server check before registration
                 await checkUsernameAvailability();
 
 
@@ -781,10 +842,6 @@ if (registerForm) {
             }
 
 
-            // ==========================================
-            // PASSWORD CONFIRMATION
-            // ==========================================
-
             if (
                 password !==
                 confirmPassword
@@ -798,10 +855,6 @@ if (registerForm) {
 
             }
 
-
-            // ==========================================
-            // USER DATA
-            // ==========================================
 
             const userData = {
 
@@ -817,9 +870,10 @@ if (registerForm) {
 
                 const response =
                     await fetch(
-                        'https://dheere-studio.onrender.com/register',
+                        `${API_BASE_URL}/register`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -837,10 +891,6 @@ if (registerForm) {
                 const result =
                     await response.json();
 
-
-                // ==========================================
-                // REGISTRATION SUCCESS
-                // ==========================================
 
                 if (result.success) {
 
@@ -867,8 +917,6 @@ if (registerForm) {
                     }
 
 
-                    // Switch to Login tab
-
                     registerTabBtn.classList.remove(
                         'active'
                     );
@@ -887,9 +935,6 @@ if (registerForm) {
                     );
 
 
-                    // Put registered email
-                    // into login field
-
                     const loginEmail =
                         document.getElementById(
                             'loginEmail'
@@ -903,6 +948,7 @@ if (registerForm) {
 
                     }
 
+
                 } else {
 
                     alert(
@@ -912,12 +958,14 @@ if (registerForm) {
 
                 }
 
+
             } catch (error) {
 
                 console.error(
                     'Registration Error:',
                     error
                 );
+
 
                 alert(
                     'Backend server se connect nahi ho paya.'
@@ -991,9 +1039,10 @@ if (loginForm) {
 
                 const response =
                     await fetch(
-                        'https://dheere-studio.onrender.com/login',
+                        `${API_BASE_URL}/login`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -1012,17 +1061,11 @@ if (loginForm) {
                     await response.json();
 
 
-                // ==========================================
-                // LOGIN SUCCESS
-                // ==========================================
-
                 if (result.success) {
 
                     currentUser =
                         result.user;
 
-
-                    // Save login state
 
                     localStorage.setItem(
                         'dheereStudioUser',
@@ -1040,8 +1083,6 @@ if (loginForm) {
                     );
 
 
-                    // Return to homepage
-
                     loginPage.classList.add(
                         'hidden-page'
                     );
@@ -1050,8 +1091,6 @@ if (loginForm) {
                         'hidden-page'
                     );
 
-
-                    // Change Login → Username
 
                     updateNavbar();
 
@@ -1064,10 +1103,6 @@ if (loginForm) {
 
                 } else {
 
-                    // ==========================================
-                    // LOGIN FAILED
-                    // ==========================================
-
                     alert(
                         result.error ||
                         'Login failed. Please try again.'
@@ -1075,12 +1110,14 @@ if (loginForm) {
 
                 }
 
+
             } catch (error) {
 
                 console.error(
                     'Login Error:',
                     error
                 );
+
 
                 alert(
                     'Backend server se connect nahi ho paya. Please try again.'
@@ -1170,7 +1207,720 @@ passwordToggleButtons.forEach(
 
 
 // ======================================================
+// PROFILE PAGE
+// ======================================================
+
+const profileCard =
+    document.getElementById(
+        'profileCard'
+    );
+
+
+const postsSection =
+    document.getElementById(
+        'postsSection'
+    );
+
+
+const loginMessage =
+    document.getElementById(
+        'loginMessage'
+    );
+
+
+const profileName =
+    document.getElementById(
+        'profileName'
+    );
+
+
+const profileUsername =
+    document.getElementById(
+        'profileUsername'
+    );
+
+
+const profileEmail =
+    document.getElementById(
+        'profileEmail'
+    );
+
+
+const profileAvatar =
+    document.getElementById(
+        'profileAvatar'
+    );
+
+
+const logoutBtn =
+    document.getElementById(
+        'logoutBtn'
+    );
+
+
+const postContent =
+    document.getElementById(
+        'postContent'
+    );
+
+
+const postCharacterCount =
+    document.getElementById(
+        'postCharacterCount'
+    );
+
+
+const createPostBtn =
+    document.getElementById(
+        'createPostBtn'
+    );
+
+
+const postsFeed =
+    document.getElementById(
+        'postsFeed'
+    );
+
+
+// ======================================================
+// LOAD PROFILE
+// ======================================================
+
+function loadProfilePage() {
+
+    if (!profileCard) {
+        return;
+    }
+
+
+    if (!currentUser) {
+
+        profileCard.style.display =
+            'none';
+
+
+        if (postsSection) {
+
+            postsSection.style.display =
+                'none';
+
+        }
+
+
+        if (loginMessage) {
+
+            loginMessage.style.display =
+                'block';
+
+        }
+
+
+        return;
+
+    }
+
+
+    const name =
+        getUserName(
+            currentUser
+        );
+
+
+    const username =
+        getUserUsername(
+            currentUser
+        );
+
+
+    const email =
+        getUserEmail(
+            currentUser
+        );
+
+
+    if (profileName) {
+
+        profileName.textContent =
+            name;
+
+    }
+
+
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            '@' + username;
+
+    }
+
+
+    if (profileEmail) {
+
+        profileEmail.textContent =
+            email;
+
+    }
+
+
+    if (profileAvatar) {
+
+        profileAvatar.textContent =
+            name
+                .charAt(0)
+                .toUpperCase();
+
+    }
+
+
+    profileCard.style.display =
+        'block';
+
+
+    if (postsSection) {
+
+        postsSection.style.display =
+            'block';
+
+    }
+
+
+    if (loginMessage) {
+
+        loginMessage.style.display =
+            'none';
+
+    }
+
+
+    loadUserPosts();
+
+}
+
+
+// ======================================================
+// FORMAT DATE
+// ======================================================
+
+function formatPostDate(dateValue) {
+
+    if (!dateValue) {
+
+        return '';
+
+    }
+
+
+    const date =
+        new Date(
+            dateValue
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return '';
+
+    }
+
+
+    return date.toLocaleString(
+        'en-IN',
+        {
+            day:
+                'numeric',
+
+            month:
+                'short',
+
+            year:
+                'numeric',
+
+            hour:
+                'numeric',
+
+            minute:
+                '2-digit'
+        }
+    );
+
+}
+
+
+// ======================================================
+// RENDER POSTS
+// ======================================================
+
+function renderPosts(posts) {
+
+    if (!postsFeed) {
+        return;
+    }
+
+
+    if (
+        !Array.isArray(posts) ||
+        posts.length === 0
+    ) {
+
+        postsFeed.innerHTML = `
+
+            <div class="empty-posts">
+
+                No posts yet.
+                Your first post can start here.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    postsFeed.innerHTML =
+        posts.map(
+            (post) => {
+
+                const username =
+                    post.username ||
+                    'user';
+
+
+                const content =
+                    post.content ||
+                    '';
+
+
+                const date =
+                    formatPostDate(
+                        post.createdAt
+                    );
+
+
+                const likes =
+                    Number(
+                        post.likes || 0
+                    );
+
+
+                return `
+
+                    <article class="post-card">
+
+                        <div class="post-header">
+
+                            <span class="post-author">
+
+                                @${escapeHTML(
+                                    username
+                                )}
+
+                            </span>
+
+
+                            <span class="post-date">
+
+                                ${escapeHTML(
+                                    date
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="post-content">
+
+                            ${escapeHTML(
+                                content
+                            )}
+
+                        </div>
+
+
+                        <div class="post-meta">
+
+                            <span>
+                                ♥ ${likes} likes
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }
+        )
+        .join('');
+
+}
+
+
+// ======================================================
+// LOAD USER POSTS
+// ======================================================
+
+async function loadUserPosts() {
+
+    if (
+        !postsFeed ||
+        !currentUser
+    ) {
+
+        return;
+
+    }
+
+
+    const username =
+        getUserUsername(
+            currentUser
+        );
+
+
+    if (!username) {
+
+        postsFeed.innerHTML = `
+
+            <div class="empty-posts">
+
+                Username information is missing.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    postsFeed.innerHTML = `
+
+        <div class="empty-posts">
+
+            Loading your posts...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/posts/user/${encodeURIComponent(username)}`
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok || !result.success) {
+
+            throw new Error(
+                result.error ||
+                'Could not load posts'
+            );
+
+        }
+
+
+        renderPosts(
+            result.posts
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            'Load posts error:',
+            error
+        );
+
+
+        postsFeed.innerHTML = `
+
+            <div class="empty-posts">
+
+                Unable to load posts right now.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ======================================================
+// POST CHARACTER COUNT
+// ======================================================
+
+if (postContent) {
+
+    postContent.addEventListener(
+        'input',
+        () => {
+
+            const length =
+                postContent.value.length;
+
+
+            if (postCharacterCount) {
+
+                postCharacterCount.textContent =
+                    `${length} / 2000`;
+
+            }
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// CREATE POST
+// ======================================================
+
+if (createPostBtn) {
+
+    createPostBtn.addEventListener(
+        'click',
+        async () => {
+
+            if (!currentUser) {
+
+                alert(
+                    'Please login first.'
+                );
+
+                return;
+
+            }
+
+
+            const authorId =
+                getUserId(
+                    currentUser
+                );
+
+
+            const username =
+                getUserUsername(
+                    currentUser
+                );
+
+
+            const content =
+                postContent
+                    ? postContent.value.trim()
+                    : '';
+
+
+            if (!authorId) {
+
+                alert(
+                    'Your login session is missing the user ID. Please logout and login again.'
+                );
+
+                return;
+
+            }
+
+
+            if (!username) {
+
+                alert(
+                    'Your username is missing. Please logout and login again.'
+                );
+
+                return;
+
+            }
+
+
+            if (!content) {
+
+                alert(
+                    'Write something before publishing.'
+                );
+
+                return;
+
+            }
+
+
+            if (
+                content.length >
+                2000
+            ) {
+
+                alert(
+                    'Post cannot exceed 2000 characters.'
+                );
+
+                return;
+
+            }
+
+
+            createPostBtn.disabled =
+                true;
+
+
+            createPostBtn.textContent =
+                'Publishing...';
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/posts`,
+                        {
+                            method:
+                                'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    authorId,
+
+                                    username,
+
+                                    content
+
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok || !result.success) {
+
+                    alert(
+                        result.error ||
+                        'Could not publish post.'
+                    );
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // CLEAR FORM
+                // ==========================================
+
+                if (postContent) {
+
+                    postContent.value =
+                        '';
+
+                }
+
+
+                if (postCharacterCount) {
+
+                    postCharacterCount.textContent =
+                        '0 / 2000';
+
+                }
+
+
+                // ==========================================
+                // LOAD UPDATED POSTS
+                // ==========================================
+
+                await loadUserPosts();
+
+
+            } catch (error) {
+
+                console.error(
+                    'Create post error:',
+                    error
+                );
+
+
+                alert(
+                    'Backend server se connect nahi ho paya.'
+                );
+
+
+            } finally {
+
+                createPostBtn.disabled =
+                    false;
+
+
+                createPostBtn.textContent =
+                    'Publish Post';
+
+            }
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// LOGOUT
+// ======================================================
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener(
+        'click',
+        () => {
+
+            localStorage.removeItem(
+                'dheereStudioUser'
+            );
+
+
+            currentUser =
+                null;
+
+
+            window.location.href =
+                'index.html';
+
+        }
+    );
+
+}
+
+
+// ======================================================
 // INITIALIZE AUTH UI
 // ======================================================
 
 updateNavbar();
+
+
+// ======================================================
+// INITIALIZE PROFILE PAGE
+// ======================================================
+
+loadProfilePage();

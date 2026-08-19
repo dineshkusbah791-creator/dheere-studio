@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -22,6 +23,7 @@
     >
 
     <style>
+
         /* ==========================================
            PROFILE PAGE
            ========================================== */
@@ -33,20 +35,24 @@
             padding: 80px 30px;
         }
 
+
         .profile-header {
             margin-bottom: 40px;
         }
+
 
         .profile-header h1 {
             margin: 0 0 10px;
             font-size: 42px;
         }
 
+
         .profile-header p {
             margin: 0;
             color: #9299a8;
             font-size: 16px;
         }
+
 
         /* ==========================================
            PROFILE CARD
@@ -58,6 +64,7 @@
             border-radius: 16px;
             padding: 40px;
         }
+
 
         /* ==========================================
            AVATAR
@@ -82,6 +89,7 @@
             margin-bottom: 30px;
         }
 
+
         /* ==========================================
            PROFILE INFORMATION
            ========================================== */
@@ -91,12 +99,14 @@
             gap: 18px;
         }
 
+
         .profile-field {
             background: #101010;
             border: 1px solid #292929;
             border-radius: 10px;
             padding: 18px 20px;
         }
+
 
         .profile-label {
             display: block;
@@ -105,6 +115,7 @@
             font-size: 13px;
             color: #777;
         }
+
 
         .profile-value {
             display: block;
@@ -115,6 +126,7 @@
             word-break: break-word;
         }
 
+
         /* ==========================================
            ACTION BUTTONS
            ========================================== */
@@ -124,6 +136,7 @@
             gap: 14px;
             margin-top: 35px;
         }
+
 
         .profile-button {
             display: inline-flex;
@@ -146,10 +159,12 @@
                 transform 0.2s ease;
         }
 
+
         .profile-button:hover {
             opacity: 0.85;
             transform: translateY(-1px);
         }
+
 
         .back-button {
             background: #f5f5f5;
@@ -158,12 +173,187 @@
             border: 1px solid #f5f5f5;
         }
 
+
         .logout-button {
             background: #252525;
             color: #ffffff;
 
             border: 1px solid #3a3a3a;
         }
+
+
+        /* ==========================================
+           CREATE POST
+           ========================================== */
+
+        .posts-section {
+            margin-top: 40px;
+        }
+
+
+        .posts-section h2 {
+            margin: 0 0 20px;
+            font-size: 28px;
+        }
+
+
+        .create-post-card {
+            background: #151515;
+            border: 1px solid #2b2b2b;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+
+        .post-textarea {
+            width: 100%;
+            min-height: 120px;
+
+            box-sizing: border-box;
+
+            resize: vertical;
+
+            padding: 16px;
+
+            background: #101010;
+            color: #ffffff;
+
+            border: 1px solid #292929;
+            border-radius: 10px;
+
+            font-family: inherit;
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        .post-textarea:focus {
+            border-color: #555555;
+        }
+
+
+        .post-bottom {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 15px;
+        }
+
+
+        .post-character-count {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        .post-button {
+            border: none;
+            background: #f5f5f5;
+            color: #111111;
+
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+
+        .post-button:hover {
+            opacity: 0.85;
+        }
+
+
+        .post-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        /* ==========================================
+           POSTS FEED
+           ========================================== */
+
+        .posts-feed {
+            display: grid;
+            gap: 18px;
+
+            margin-top: 25px;
+        }
+
+
+        .post-card {
+            background: #151515;
+            border: 1px solid #2b2b2b;
+            border-radius: 14px;
+
+            padding: 22px;
+        }
+
+
+        .post-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+
+        .post-author {
+            font-size: 15px;
+            font-weight: 600;
+
+            color: #ffffff;
+        }
+
+
+        .post-date {
+            color: #777;
+            font-size: 12px;
+        }
+
+
+        .post-content {
+            color: #d5d5d5;
+
+            font-size: 15px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+
+        .post-meta {
+            display: flex;
+            gap: 18px;
+
+            margin-top: 18px;
+
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        .empty-posts {
+            padding: 30px;
+
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: 12px;
+
+            color: #777;
+
+            text-align: center;
+        }
+
 
         /* ==========================================
            NOT LOGGED IN
@@ -183,6 +373,7 @@
             line-height: 1.6;
         }
 
+
         .login-message strong {
             display: block;
 
@@ -191,6 +382,7 @@
             color: #ffffff;
             font-size: 20px;
         }
+
 
         .login-message a {
             display: inline-block;
@@ -207,6 +399,7 @@
             text-decoration: none;
         }
 
+
         /* ==========================================
            MOBILE
            ========================================== */
@@ -217,28 +410,49 @@
                 padding: 50px 20px;
             }
 
+
             .profile-header h1 {
                 font-size: 32px;
             }
 
-            .profile-card {
+
+            .profile-card,
+            .create-post-card {
                 padding: 25px;
             }
+
 
             .profile-actions {
                 flex-direction: column;
             }
 
+
             .profile-button {
                 width: 100%;
                 box-sizing: border-box;
             }
+
+
+            .post-bottom {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+
+            .post-button {
+                width: 100%;
+            }
+
         }
+
     </style>
+
 </head>
 
 
 <body>
+
 
     <!-- ==========================================
          HEADER
@@ -249,10 +463,13 @@
         <nav class="navbar">
 
             <div class="nav-logo">
+
                 <a href="index.html">
                     Dheere Studio
                 </a>
+
             </div>
+
 
             <div class="nav-links">
 
@@ -303,6 +520,7 @@
 
     <main class="profile-page">
 
+
         <div class="profile-header">
 
             <h1>
@@ -310,7 +528,7 @@
             </h1>
 
             <p>
-                Manage your Dheere Studio account.
+                Your identity and activity on Dheere Studio.
             </p>
 
         </div>
@@ -325,6 +543,7 @@
             class="profile-card"
         >
 
+
             <!-- AVATAR -->
 
             <div
@@ -338,6 +557,25 @@
             <!-- PROFILE INFORMATION -->
 
             <div class="profile-info">
+
+
+                <!-- NAME -->
+
+                <div class="profile-field">
+
+                    <span class="profile-label">
+                        Name
+                    </span>
+
+                    <span
+                        id="profileName"
+                        class="profile-value"
+                    >
+                        Loading...
+                    </span>
+
+                </div>
+
 
                 <!-- USERNAME -->
 
@@ -374,6 +612,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -399,6 +638,74 @@
 
             </div>
 
+
+        </section>
+
+
+        <!-- ======================================
+             POSTS
+             ====================================== -->
+
+        <section
+            id="postsSection"
+            class="posts-section"
+        >
+
+
+            <h2>
+                Your Posts
+            </h2>
+
+
+            <!-- CREATE POST -->
+
+            <div class="create-post-card">
+
+                <textarea
+                    id="postContent"
+                    class="post-textarea"
+                    maxlength="2000"
+                    placeholder="Share something with the Dheere Studio community..."
+                ></textarea>
+
+
+                <div class="post-bottom">
+
+                    <span
+                        id="postCharacterCount"
+                        class="post-character-count"
+                    >
+                        0 / 2000
+                    </span>
+
+
+                    <button
+                        id="createPostBtn"
+                        class="post-button"
+                        type="button"
+                    >
+                        Publish Post
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- POSTS -->
+
+            <div
+                id="postsFeed"
+                class="posts-feed"
+            >
+
+                <div class="empty-posts">
+                    No posts yet. Your first post can start here.
+                </div>
+
+            </div>
+
+
         </section>
 
 
@@ -415,15 +722,19 @@
                 You're not logged in
             </strong>
 
+
             Please log in to view your Dheere Studio profile.
 
+
             <br>
+
 
             <a href="index.html">
                 Go to Login
             </a>
 
         </section>
+
 
     </main>
 
@@ -434,31 +745,106 @@
 
     <script>
 
-        const STORAGE_KEY = "dheereStudioUser";
+        const STORAGE_KEY =
+            "dheereStudioUser";
 
 
         const profileCard =
-            document.getElementById("profileCard");
+            document.getElementById(
+                "profileCard"
+            );
+
+
+        const postsSection =
+            document.getElementById(
+                "postsSection"
+            );
 
 
         const loginMessage =
-            document.getElementById("loginMessage");
+            document.getElementById(
+                "loginMessage"
+            );
+
+
+        const nameElement =
+            document.getElementById(
+                "profileName"
+            );
 
 
         const usernameElement =
-            document.getElementById("profileUsername");
+            document.getElementById(
+                "profileUsername"
+            );
 
 
         const emailElement =
-            document.getElementById("profileEmail");
+            document.getElementById(
+                "profileEmail"
+            );
 
 
         const avatarElement =
-            document.getElementById("profileAvatar");
+            document.getElementById(
+                "profileAvatar"
+            );
 
 
         const logoutBtn =
-            document.getElementById("logoutBtn");
+            document.getElementById(
+                "logoutBtn"
+            );
+
+
+        const postContent =
+            document.getElementById(
+                "postContent"
+            );
+
+
+        const postCharacterCount =
+            document.getElementById(
+                "postCharacterCount"
+            );
+
+
+        const createPostBtn =
+            document.getElementById(
+                "createPostBtn"
+            );
+
+
+        const postsFeed =
+            document.getElementById(
+                "postsFeed"
+            );
+
+
+        // ==========================================
+        // CURRENT USER
+        // ==========================================
+
+        let currentUser = null;
+
+
+        // ==========================================
+        // ESCAPE HTML
+        // ==========================================
+
+        function escapeHTML(value) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent =
+                String(value ?? "");
+
+
+            return div.innerHTML;
+        }
 
 
         // ==========================================
@@ -468,79 +854,88 @@
         function loadProfile() {
 
             const savedUser =
-                localStorage.getItem(STORAGE_KEY);
+                localStorage.getItem(
+                    STORAGE_KEY
+                );
 
-
-            /*
-             * IMPORTANT:
-             *
-             * We do NOT redirect to index.html here.
-             *
-             * This makes profile.html safe to open directly
-             * and clearly tells the user when they are not
-             * logged in.
-             */
 
             if (!savedUser) {
 
-                profileCard.style.display = "none";
+                profileCard.style.display =
+                    "none";
 
-                loginMessage.style.display = "block";
+                postsSection.style.display =
+                    "none";
 
-                return;
+                loginMessage.style.display =
+                    "block";
+
+                return false;
             }
 
 
             try {
 
-                const user =
-                    JSON.parse(savedUser);
+                currentUser =
+                    JSON.parse(
+                        savedUser
+                    );
 
 
-                const username =
-                    user.name ||
-                    user.username ||
+                const name =
+                    currentUser.name ||
                     "User";
 
 
+                const username =
+                    currentUser.username ||
+                    "username";
+
+
                 const email =
-                    user.email ||
+                    currentUser.email ||
                     "Not available";
 
 
                 // ======================================
-                // SHOW USERNAME
+                // PROFILE DATA
                 // ======================================
+
+                nameElement.textContent =
+                    name;
+
 
                 usernameElement.textContent =
-                    username;
+                    "@" + username;
 
-
-                // ======================================
-                // SHOW EMAIL
-                // ======================================
 
                 emailElement.textContent =
                     email;
 
 
                 // ======================================
-                // SHOW AVATAR INITIAL
+                // AVATAR
                 // ======================================
 
                 avatarElement.textContent =
-                    username
+                    name
                         .charAt(0)
                         .toUpperCase();
 
 
-                // ======================================
-                // SHOW PROFILE
-                // ======================================
+                profileCard.style.display =
+                    "block";
 
-                profileCard.style.display = "block";
 
-                loginMessage.style.display = "none";
+                postsSection.style.display =
+                    "block";
+
+
+                loginMessage.style.display =
+                    "none";
+
+
+                return true;
 
 
             } catch (error) {
@@ -551,20 +946,110 @@
                 );
 
 
-                /*
-                 * Corrupt localStorage data.
-                 * Clear only the broken login data.
-                 */
-
                 localStorage.removeItem(
                     STORAGE_KEY
                 );
 
 
-                profileCard.style.display = "none";
+                profileCard.style.display =
+                    "none";
 
-                loginMessage.style.display = "block";
+
+                postsSection.style.display =
+                    "none";
+
+
+                loginMessage.style.display =
+                    "block";
+
+
+                return false;
             }
+        }
+
+
+        // ==========================================
+        // CHARACTER COUNT
+        // ==========================================
+
+        if (postContent) {
+
+            postContent.addEventListener(
+                "input",
+                () => {
+
+                    const length =
+                        postContent.value.length;
+
+
+                    postCharacterCount.textContent =
+                        `${length} / 2000`;
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // CREATE POST
+        // ==========================================
+
+        if (createPostBtn) {
+
+            createPostBtn.addEventListener(
+                "click",
+                async () => {
+
+                    if (!currentUser) {
+
+                        alert(
+                            "Please login first."
+                        );
+
+                        return;
+                    }
+
+
+                    const content =
+                        postContent.value.trim();
+
+
+                    if (!content) {
+
+                        alert(
+                            "Write something before publishing."
+                        );
+
+                        return;
+                    }
+
+
+                    if (content.length > 2000) {
+
+                        alert(
+                            "Post cannot exceed 2000 characters."
+                        );
+
+                        return;
+                    }
+
+
+                    /*
+                     * Backend route will be connected
+                     * in the next step.
+                     *
+                     * We intentionally do not fake a
+                     * successful post here.
+                     */
+
+                    alert(
+                        "Post system UI is ready. Backend connection will be added next."
+                    );
+
+                }
+            );
+
         }
 
 
@@ -585,18 +1070,21 @@
 
                     window.location.href =
                         "index.html";
+
                 }
             );
+
         }
 
 
         // ==========================================
-        // START
+        // INITIALIZE
         // ==========================================
 
         loadProfile();
 
     </script>
+
 
 </body>
 

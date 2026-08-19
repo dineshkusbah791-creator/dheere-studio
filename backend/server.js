@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 
@@ -13,6 +13,7 @@ const client = new MongoClient(process.env.MONGODB_URI);
 
 let feedbackCollection;
 let usersCollection;
+let postsCollection;
 
 
 // ==========================================
@@ -23,21 +24,36 @@ const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
 
 
 // ==========================================
+// POST RULES
+// ==========================================
+
+const MAX_POST_LENGTH = 2000;
+
+
+// ==========================================
 // CONNECT TO MONGODB
 // ==========================================
 
 async function connectDatabase() {
+
     try {
 
         await client.connect();
 
-        const database = client.db("dheereStudio");
+        const database =
+            client.db("dheereStudio");
+
 
         feedbackCollection =
             database.collection("feedback");
 
+
         usersCollection =
             database.collection("users");
+
+
+        postsCollection =
+            database.collection("posts");
 
 
         // ==========================================
@@ -50,13 +66,38 @@ async function connectDatabase() {
         );
 
 
+        // ==========================================
+        // POSTS INDEX
+        // ==========================================
+
+        await postsCollection.createIndex(
+            { createdAt: -1 }
+        );
+
+
+        // ==========================================
+        // POSTS USER INDEX
+        // ==========================================
+
+        await postsCollection.createIndex(
+            { authorId: 1, createdAt: -1 }
+        );
+
+
         console.log(
             "MongoDB connected successfully"
         );
 
+
         console.log(
             "Username system initialized"
         );
+
+
+        console.log(
+            "Posts system initialized"
+        );
+
 
     } catch (error) {
 
@@ -66,7 +107,9 @@ async function connectDatabase() {
         );
 
         process.exit(1);
+
     }
+
 }
 
 
@@ -103,7 +146,9 @@ app.get(
             // VALIDATE USERNAME FORMAT
             // ==========================================
 
-            if (!USERNAME_REGEX.test(username)) {
+            if (
+                !USERNAME_REGEX.test(username)
+            ) {
 
                 return res.json({
 
@@ -127,7 +172,10 @@ app.get(
 
             const existingUser =
                 await usersCollection.findOne(
-                    { username: username },
+                    {
+                        username:
+                            username
+                    },
                     {
                         projection: {
                             _id: 1
@@ -171,6 +219,7 @@ app.get(
 
             });
 
+
         } catch (error) {
 
             console.error(
@@ -198,543 +247,989 @@ app.get(
 // FEEDBACK ROUTE
 // ==========================================
 
-app.post("/feedback", async (req, res) => {
+app.post(
+    "/feedback",
+    async (req, res) => {
 
-    const {
-        name,
-        email,
-        message
-    } = req.body;
+        const {
+            name,
+            email,
+            message
+        } = req.body;
 
 
-    try {
+        try {
 
-        // ==========================================
-        // REQUIRED FIELDS
-        // ==========================================
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
 
-        if (
-            !name ||
-            !email ||
-            !message
-        ) {
+            if (
+                !name ||
+                !email ||
+                !message
+            ) {
 
-            return res.status(400).json({
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "All fields are required"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CREATE FEEDBACK
+            // ==========================================
+
+            const feedback = {
+
+                name:
+                    name.trim(),
+
+                email:
+                    email.trim().toLowerCase(),
+
+                message:
+                    message.trim(),
+
+                createdAt:
+                    new Date()
+
+            };
+
+
+            await feedbackCollection.insertOne(
+                feedback
+            );
+
+
+            console.log(
+                "New feedback saved:"
+            );
+
+
+            console.log(
+                "Name:",
+                feedback.name
+            );
+
+
+            console.log(
+                "Email:",
+                feedback.email
+            );
+
+
+            console.log(
+                "Message:",
+                feedback.message
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Feedback received successfully"
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Error saving feedback:",
+                error
+            );
+
+
+            res.status(500).json({
 
                 success: false,
 
                 error:
-                    "All fields are required"
+                    "Could not save feedback"
 
             });
 
         }
 
-
-        // ==========================================
-        // CREATE FEEDBACK
-        // ==========================================
-
-        const feedback = {
-
-            name:
-                name.trim(),
-
-            email:
-                email.trim().toLowerCase(),
-
-            message:
-                message.trim(),
-
-            createdAt:
-                new Date()
-
-        };
-
-
-        await feedbackCollection.insertOne(
-            feedback
-        );
-
-
-        console.log(
-            "New feedback saved:"
-        );
-
-        console.log(
-            "Name:",
-            feedback.name
-        );
-
-        console.log(
-            "Email:",
-            feedback.email
-        );
-
-        console.log(
-            "Message:",
-            feedback.message
-        );
-
-
-        res.json({
-
-            success: true,
-
-            message:
-                "Feedback received successfully"
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Error saving feedback:",
-            error
-        );
-
-
-        res.status(500).json({
-
-            success: false,
-
-            error:
-                "Could not save feedback"
-
-        });
-
     }
-
-});
+);
 
 
 // ==========================================
 // REGISTER ROUTE
 // ==========================================
 
-app.post("/register", async (req, res) => {
+app.post(
+    "/register",
+    async (req, res) => {
 
-    const {
-        name,
-        username,
-        email,
-        password
-    } = req.body;
+        const {
+            name,
+            username,
+            email,
+            password
+        } = req.body;
 
 
-    try {
+        try {
 
-        // ==========================================
-        // REQUIRED FIELDS
-        // ==========================================
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
 
-        if (
-            !name ||
-            !username ||
-            !email ||
-            !password
-        ) {
+            if (
+                !name ||
+                !username ||
+                !email ||
+                !password
+            ) {
 
-            return res.status(400).json({
+                return res.status(400).json({
 
-                success: false,
+                    success: false,
 
-                error:
-                    "All fields are required"
+                    error:
+                        "All fields are required"
 
-            });
-
-        }
-
-
-        // ==========================================
-        // CLEAN VALUES
-        // ==========================================
-
-        const cleanName =
-            name.trim();
-
-        const cleanUsername =
-            username.trim().toLowerCase();
-
-        const cleanEmail =
-            email.trim().toLowerCase();
-
-
-        // ==========================================
-        // VALIDATE USERNAME
-        // ==========================================
-
-        if (
-            !USERNAME_REGEX.test(
-                cleanUsername
-            )
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                error:
-                    "Username must be 3-20 characters and contain only letters, numbers, and underscores."
-
-            });
-
-        }
-
-
-        // ==========================================
-        // CHECK EMAIL
-        // ==========================================
-
-        const existingEmail =
-            await usersCollection.findOne({
-
-                email:
-                    cleanEmail
-
-            });
-
-
-        if (existingEmail) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                error:
-                    "Email already registered"
-
-            });
-
-        }
-
-
-        // ==========================================
-        // CHECK USERNAME
-        // ==========================================
-
-        const existingUsername =
-            await usersCollection.findOne({
-
-                username:
-                    cleanUsername
-
-            });
-
-
-        if (existingUsername) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                error:
-                    "Username already taken"
-
-            });
-
-        }
-
-
-        // ==========================================
-        // HASH PASSWORD
-        // ==========================================
-
-        const hashedPassword =
-            await bcrypt.hash(
-                password,
-                10
-            );
-
-
-        // ==========================================
-        // CREATE USER
-        // ==========================================
-
-        const user = {
-
-            name:
-                cleanName,
-
-            username:
-                cleanUsername,
-
-            email:
-                cleanEmail,
-
-            password:
-                hashedPassword,
-
-            createdAt:
-                new Date()
-
-        };
-
-
-        await usersCollection.insertOne(
-            user
-        );
-
-
-        console.log(
-            "New user registered:"
-        );
-
-        console.log(
-            "Name:",
-            user.name
-        );
-
-        console.log(
-            "Username:",
-            user.username
-        );
-
-        console.log(
-            "Email:",
-            user.email
-        );
-
-
-        res.status(201).json({
-
-            success: true,
-
-            message:
-                "Registration successful",
-
-            user: {
-
-                name:
-                    user.name,
-
-                username:
-                    user.username,
-
-                email:
-                    user.email
+                });
 
             }
 
-        });
 
-    } catch (error) {
+            // ==========================================
+            // CLEAN VALUES
+            // ==========================================
 
-        // ==========================================
-        // DUPLICATE USERNAME SAFETY
-        // ==========================================
+            const cleanName =
+                name.trim();
 
-        if (
-            error &&
-            error.code === 11000
-        ) {
 
-            return res.status(409).json({
+            const cleanUsername =
+                username
+                    .trim()
+                    .toLowerCase();
+
+
+            const cleanEmail =
+                email
+                    .trim()
+                    .toLowerCase();
+
+
+            // ==========================================
+            // VALIDATE USERNAME
+            // ==========================================
+
+            if (
+                !USERNAME_REGEX.test(
+                    cleanUsername
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CHECK EMAIL
+            // ==========================================
+
+            const existingEmail =
+                await usersCollection.findOne({
+
+                    email:
+                        cleanEmail
+
+                });
+
+
+            if (existingEmail) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Email already registered"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CHECK USERNAME
+            // ==========================================
+
+            const existingUsername =
+                await usersCollection.findOne({
+
+                    username:
+                        cleanUsername
+
+                });
+
+
+            if (existingUsername) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Username already taken"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // HASH PASSWORD
+            // ==========================================
+
+            const hashedPassword =
+                await bcrypt.hash(
+                    password,
+                    10
+                );
+
+
+            // ==========================================
+            // CREATE USER
+            // ==========================================
+
+            const user = {
+
+                name:
+                    cleanName,
+
+                username:
+                    cleanUsername,
+
+                email:
+                    cleanEmail,
+
+                password:
+                    hashedPassword,
+
+                createdAt:
+                    new Date()
+
+            };
+
+
+            await usersCollection.insertOne(
+                user
+            );
+
+
+            console.log(
+                "New user registered:"
+            );
+
+
+            console.log(
+                "Name:",
+                user.name
+            );
+
+
+            console.log(
+                "Username:",
+                user.username
+            );
+
+
+            console.log(
+                "Email:",
+                user.email
+            );
+
+
+            res.status(201).json({
+
+                success: true,
+
+                message:
+                    "Registration successful",
+
+                user: {
+
+                    name:
+                        user.name,
+
+                    username:
+                        user.username,
+
+                    email:
+                        user.email
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            // ==========================================
+            // DUPLICATE USERNAME SAFETY
+            // ==========================================
+
+            if (
+                error &&
+                error.code === 11000
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    error:
+                        "Username already taken"
+
+                });
+
+            }
+
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+
+            res.status(500).json({
 
                 success: false,
 
                 error:
-                    "Username already taken"
+                    "Could not register user"
 
             });
 
         }
 
-
-        console.error(
-            "Registration error:",
-            error
-        );
-
-
-        res.status(500).json({
-
-            success: false,
-
-            error:
-                "Could not register user"
-
-        });
-
     }
-
-});
+);
 
 
 // ==========================================
 // LOGIN ROUTE
 // ==========================================
 
-app.post("/login", async (req, res) => {
+app.post(
+    "/login",
+    async (req, res) => {
 
-    const {
-        email,
-        password
-    } = req.body;
-
-
-    try {
-
-        // ==========================================
-        // REQUIRED FIELDS
-        // ==========================================
-
-        if (
-            !email ||
-            !password
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                error:
-                    "Email and password are required"
-
-            });
-
-        }
+        const {
+            email,
+            password
+        } = req.body;
 
 
-        // ==========================================
-        // CLEAN EMAIL
-        // ==========================================
+        try {
 
-        const cleanEmail =
-            email.trim().toLowerCase();
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
 
+            if (
+                !email ||
+                !password
+            ) {
 
-        // ==========================================
-        // FIND USER
-        // ==========================================
+                return res.status(400).json({
 
-        const user =
-            await usersCollection.findOne({
+                    success: false,
 
-                email:
-                    cleanEmail
+                    error:
+                        "Email and password are required"
 
-            });
+                });
 
-
-        // ==========================================
-        // ACCOUNT DOES NOT EXIST
-        // ==========================================
-
-        if (!user) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                error:
-                    "Account not found. Please register first."
-
-            });
-
-        }
+            }
 
 
-        // ==========================================
-        // CHECK PASSWORD
-        // ==========================================
+            // ==========================================
+            // CLEAN EMAIL
+            // ==========================================
 
-        const passwordMatch =
-            await bcrypt.compare(
-                password,
-                user.password
+            const cleanEmail =
+                email
+                    .trim()
+                    .toLowerCase();
+
+
+            // ==========================================
+            // FIND USER
+            // ==========================================
+
+            const user =
+                await usersCollection.findOne({
+
+                    email:
+                        cleanEmail
+
+                });
+
+
+            // ==========================================
+            // ACCOUNT DOES NOT EXIST
+            // ==========================================
+
+            if (!user) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "Account not found. Please register first."
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CHECK PASSWORD
+            // ==========================================
+
+            const passwordMatch =
+                await bcrypt.compare(
+                    password,
+                    user.password
+                );
+
+
+            // ==========================================
+            // WRONG PASSWORD
+            // ==========================================
+
+            if (!passwordMatch) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "Incorrect password."
+
+                });
+
+            }
+
+
+            // ==========================================
+            // LOGIN SUCCESS
+            // ==========================================
+
+            console.log(
+                "User logged in:"
             );
 
 
-        // ==========================================
-        // WRONG PASSWORD
-        // ==========================================
+            console.log(
+                "Name:",
+                user.name
+            );
 
-        if (!passwordMatch) {
 
-            return res.status(401).json({
+            console.log(
+                "Username:",
+                user.username
+            );
+
+
+            console.log(
+                "Email:",
+                user.email
+            );
+
+
+            // ==========================================
+            // NEVER SEND PASSWORD/HASH
+            // ==========================================
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Login successful",
+
+                user: {
+
+                    id:
+                        user._id.toString(),
+
+                    name:
+                        user.name,
+
+                    username:
+                        user.username,
+
+                    email:
+                        user.email
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            res.status(500).json({
 
                 success: false,
 
                 error:
-                    "Incorrect password."
+                    "Could not login"
 
             });
 
         }
 
-
-        // ==========================================
-        // LOGIN SUCCESS
-        // ==========================================
-
-        console.log(
-            "User logged in:"
-        );
-
-        console.log(
-            "Name:",
-            user.name
-        );
-
-        console.log(
-            "Username:",
-            user.username
-        );
-
-        console.log(
-            "Email:",
-            user.email
-        );
+    }
+);
 
 
-        // ==========================================
-        // NEVER SEND PASSWORD/HASH
-        // ==========================================
+// ==========================================
+// CREATE POST
+// ==========================================
 
-        res.json({
+app.post(
+    "/posts",
+    async (req, res) => {
 
-            success: true,
+        const {
+            authorId,
+            username,
+            content
+        } = req.body;
 
-            message:
-                "Login successful",
 
-            user: {
+        try {
 
-                name:
-                    user.name,
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
+
+            if (
+                !authorId ||
+                !username ||
+                !content
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Author, username and content are required"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // VALIDATE AUTHOR ID
+            // ==========================================
+
+            if (
+                !ObjectId.isValid(authorId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid author ID"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CLEAN CONTENT
+            // ==========================================
+
+            const cleanContent =
+                content.trim();
+
+
+            const cleanUsername =
+                username
+                    .trim()
+                    .toLowerCase();
+
+
+            // ==========================================
+            // VALIDATE CONTENT
+            // ==========================================
+
+            if (!cleanContent) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Post cannot be empty"
+
+                });
+
+            }
+
+
+            if (
+                cleanContent.length >
+                MAX_POST_LENGTH
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Post cannot exceed 2000 characters"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // VERIFY USER
+            // ==========================================
+
+            const user =
+                await usersCollection.findOne({
+
+                    _id:
+                        new ObjectId(authorId),
+
+                    username:
+                        cleanUsername
+
+                });
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid user"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // CREATE POST
+            // ==========================================
+
+            const post = {
+
+                authorId:
+                    user._id,
 
                 username:
                     user.username,
 
-                email:
-                    user.email
+                content:
+                    cleanContent,
 
-            }
+                createdAt:
+                    new Date(),
 
-        });
+                likes:
+                    0
 
-    } catch (error) {
-
-        console.error(
-            "Login error:",
-            error
-        );
+            };
 
 
-        res.status(500).json({
+            const result =
+                await postsCollection.insertOne(
+                    post
+                );
 
-            success: false,
 
-            error:
-                "Could not login"
+            console.log(
+                "New post created:"
+            );
 
-        });
+
+            console.log(
+                "Post ID:",
+                result.insertedId.toString()
+            );
+
+
+            console.log(
+                "Username:",
+                post.username
+            );
+
+
+            // ==========================================
+            // RESPONSE
+            // ==========================================
+
+            res.status(201).json({
+
+                success: true,
+
+                message:
+                    "Post published successfully",
+
+                post: {
+
+                    id:
+                        result.insertedId.toString(),
+
+                    authorId:
+                        user._id.toString(),
+
+                    username:
+                        user.username,
+
+                    content:
+                        post.content,
+
+                    createdAt:
+                        post.createdAt,
+
+                    likes:
+                        post.likes
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Create post error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not create post"
+
+            });
+
+        }
 
     }
+);
 
-});
+
+// ==========================================
+// GET ALL POSTS
+// ==========================================
+
+app.get(
+    "/posts",
+    async (req, res) => {
+
+        try {
+
+            const posts =
+                await postsCollection
+                    .find({})
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(100)
+                    .toArray();
+
+
+            const formattedPosts =
+                posts.map(
+                    (post) => ({
+
+                        id:
+                            post._id.toString(),
+
+                        authorId:
+                            post.authorId.toString(),
+
+                        username:
+                            post.username,
+
+                        content:
+                            post.content,
+
+                        createdAt:
+                            post.createdAt,
+
+                        likes:
+                            post.likes || 0
+
+                    })
+                );
+
+
+            res.json({
+
+                success: true,
+
+                posts:
+                    formattedPosts
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Get posts error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not load posts"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// GET POSTS BY USERNAME
+// ==========================================
+
+app.get(
+    "/posts/user/:username",
+    async (req, res) => {
+
+        try {
+
+            const username =
+                req.params.username
+                    .trim()
+                    .toLowerCase();
+
+
+            const posts =
+                await postsCollection
+                    .find({
+                        username:
+                            username
+                    })
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(100)
+                    .toArray();
+
+
+            const formattedPosts =
+                posts.map(
+                    (post) => ({
+
+                        id:
+                            post._id.toString(),
+
+                        authorId:
+                            post.authorId.toString(),
+
+                        username:
+                            post.username,
+
+                        content:
+                            post.content,
+
+                        createdAt:
+                            post.createdAt,
+
+                        likes:
+                            post.likes || 0
+
+                    })
+                );
+
+
+            res.json({
+
+                success: true,
+
+                username:
+                    username,
+
+                posts:
+                    formattedPosts
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Get user posts error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not load user posts"
+
+            });
+
+        }
+
+    }
+);
 
 
 // ==========================================

@@ -1,253 +1,2407 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Community — Dheere Studio</title>
-    <link rel="stylesheet" href="homepage.css">
-    <meta name="description" content="A space for people interested in stories, worldbuilding, art, animation, and creative projects at Dheere Studio.">
+
+    <meta
+        name="description"
+        content="Dheere Studio Community — discover creators, share ideas, and build together."
+    >
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+
     <style>
-        /* Language Toggle Switch Style */
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            width: fit-content;
+
+        /* ==========================================
+           COMMUNITY
+           ========================================== */
+
+        .community-container {
+
+            max-width: 900px;
+
+            margin: 0 auto;
+
+            padding:
+                70px 25px
+                100px;
+
         }
+
+
+        /* ==========================================
+           COMMUNITY HERO
+           ========================================== */
+
+        .community-hero {
+
+            text-align: center;
+
+            padding:
+                50px 20px
+                60px;
+
+        }
+
+
+        .community-hero h1 {
+
+            margin: 0 0 15px;
+
+            font-size:
+                clamp(
+                    42px,
+                    8vw,
+                    72px
+                );
+
+            letter-spacing:
+                -2px;
+
+        }
+
+
+        .community-hero p {
+
+            max-width: 650px;
+
+            margin:
+                0 auto 25px;
+
+            color:
+                #9299a8;
+
+            font-size:
+                17px;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .community-actions {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        .community-action {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                13px 22px;
+
+            border-radius:
+                8px;
+
+            text-decoration:
+                none;
+
+            cursor:
+                pointer;
+
+            font-size:
+                14px;
+
+            border:
+                1px solid
+                #343434;
+
+            transition:
+                all .2s ease;
+
+        }
+
+
+        .community-action:hover {
+
+            transform:
+                translateY(-1px);
+
+            opacity:
+                .88;
+
+        }
+
+
+        .primary-action {
+
+            background:
+                #f5f5f5;
+
+            color:
+                #111;
+
+            border-color:
+                #f5f5f5;
+
+        }
+
+
+        .secondary-action {
+
+            background:
+                #171717;
+
+            color:
+                #fff;
+
+        }
+
+
+        /* ==========================================
+           FEED
+           ========================================== */
+
+        .community-feed-section {
+
+            margin-top:
+                20px;
+
+        }
+
+
+        .section-heading {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .section-heading h2 {
+
+            margin:
+                0;
+
+            font-size:
+                28px;
+
+        }
+
+
+        .refresh-button {
+
+            background:
+                transparent;
+
+            color:
+                #9299a8;
+
+            border:
+                1px solid
+                #303030;
+
+            padding:
+                9px 14px;
+
+            border-radius:
+                7px;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .refresh-button:hover {
+
+            color:
+                #fff;
+
+            border-color:
+                #555;
+
+        }
+
+
+        /* ==========================================
+           CREATE POST
+           ========================================== */
+
+        .create-post-card {
+
+            background:
+                #151515;
+
+            border:
+                1px solid
+                #292929;
+
+            border-radius:
+                15px;
+
+            padding:
+                22px;
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .create-post-card textarea {
+
+            width:
+                100%;
+
+            min-height:
+                105px;
+
+            box-sizing:
+                border-box;
+
+            resize:
+                vertical;
+
+            background:
+                #101010;
+
+            color:
+                #fff;
+
+            border:
+                1px solid
+                #292929;
+
+            border-radius:
+                10px;
+
+            padding:
+                15px;
+
+            font-family:
+                inherit;
+
+            font-size:
+                15px;
+
+            line-height:
+                1.6;
+
+            outline:
+                none;
+
+        }
+
+
+        .create-post-card textarea:focus {
+
+            border-color:
+                #555;
+
+        }
+
+
+        .post-composer-bottom {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-top:
+                12px;
+
+        }
+
+
+        .character-count {
+
+            color:
+                #6f6f6f;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .publish-button {
+
+            background:
+                #f5f5f5;
+
+            color:
+                #111;
+
+            border:
+                none;
+
+            border-radius:
+                8px;
+
+            padding:
+                11px 18px;
+
+            cursor:
+                pointer;
+
+            font-size:
+                14px;
+
+        }
+
+
+        .publish-button:disabled {
+
+            opacity:
+                .5;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* ==========================================
+           LOGIN NOTICE
+           ========================================== */
+
+        .login-notice {
+
+            display:
+                none;
+
+            background:
+                #121212;
+
+            border:
+                1px solid
+                #292929;
+
+            border-radius:
+                12px;
+
+            padding:
+                20px;
+
+            margin-bottom:
+                25px;
+
+            color:
+                #9299a8;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        .login-notice strong {
+
+            color:
+                #fff;
+
+        }
+
+
+        .login-notice a {
+
+            color:
+                #fff;
+
+            text-decoration:
+                underline;
+
+        }
+
+
+        /* ==========================================
+           POSTS
+           ========================================== */
+
+        .posts-feed {
+
+            display:
+                grid;
+
+            gap:
+                16px;
+
+        }
+
+
+        .post-card {
+
+            background:
+                #151515;
+
+            border:
+                1px solid
+                #292929;
+
+            border-radius:
+                14px;
+
+            padding:
+                22px;
+
+        }
+
+
+        .post-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            margin-bottom:
+                15px;
+
+        }
+
+
+        .post-author {
+
+            color:
+                #fff;
+
+            font-weight:
+                600;
+
+            text-decoration:
+                none;
+
+        }
+
+
+        .post-author:hover {
+
+            text-decoration:
+                underline;
+
+        }
+
+
+        .post-date {
+
+            color:
+                #6f6f6f;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .post-content {
+
+            color:
+                #d4d4d4;
+
+            line-height:
+                1.7;
+
+            font-size:
+                15px;
+
+            white-space:
+                pre-wrap;
+
+            overflow-wrap:
+                anywhere;
+
+        }
+
+
+        .post-footer {
+
+            display:
+                flex;
+
+            gap:
+                18px;
+
+            margin-top:
+                18px;
+
+            color:
+                #777;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .empty-feed {
+
+            padding:
+                45px 25px;
+
+            text-align:
+                center;
+
+            background:
+                #111;
+
+            border:
+                1px solid
+                #292929;
+
+            border-radius:
+                12px;
+
+            color:
+                #777;
+
+        }
+
+
+        /* ==========================================
+           VISION
+           ========================================== */
+
+        #visionSection {
+
+            display:
+                none;
+
+            margin-top:
+                70px;
+
+        }
+
+
+        .vision-header {
+
+            margin-bottom:
+                45px;
+
+        }
+
+
+        .vision-header h2 {
+
+            margin:
+                0 0 12px;
+
+            font-size:
+                36px;
+
+        }
+
+
+        .vision-header p {
+
+            color:
+                #9299a8;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .vision-section {
+
+            padding:
+                35px 0;
+
+            border-bottom:
+                1px solid
+                #292929;
+
+        }
+
+
+        .vision-section:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .vision-section h3 {
+
+            margin:
+                0 0 15px;
+
+            font-size:
+                25px;
+
+        }
+
+
+        .vision-section p {
+
+            color:
+                #a0a0a0;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        .roadmap-list {
+
+            padding-left:
+                22px;
+
+            color:
+                #a0a0a0;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        .roadmap-list li {
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        /* ==========================================
+           LANGUAGE SWITCH
+           ========================================== */
+
+        .lang-switch {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+            margin-top:
+                25px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .03
+                );
+
+            padding:
+                4px;
+
+            border-radius:
+                8px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            width:
+                fit-content;
+
+        }
+
 
         .lang-btn {
-            background: none;
-            border: none;
-            color: #64748b;
-            padding: 6px 14px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+
+            background:
+                none;
+
+            border:
+                none;
+
+            color:
+                #64748b;
+
+            padding:
+                6px 14px;
+
+            font-size:
+                .82rem;
+
+            border-radius:
+                6px;
+
+            cursor:
+                pointer;
+
         }
+
 
         .lang-btn.active {
-            background: #f8fafc;
-            color: #0b0c0e;
+
+            background:
+                #f8fafc;
+
+            color:
+                #0b0c0e;
+
         }
 
-        .hidden-community {
-            display: none !important;
+
+        .hidden-vision {
+
+            display:
+                none !important;
+
         }
+
+
+        /* ==========================================
+           MOBILE
+           ========================================== */
+
+        @media (
+            max-width: 600px
+        ) {
+
+            .community-container {
+
+                padding:
+                    40px 18px
+                    70px;
+
+            }
+
+
+            .community-hero {
+
+                padding:
+                    35px 10px
+                    45px;
+
+            }
+
+
+            .community-hero h1 {
+
+                font-size:
+                    44px;
+
+            }
+
+
+            .section-heading {
+
+                align-items:
+                    flex-start;
+
+            }
+
+
+            .post-composer-bottom {
+
+                align-items:
+                    stretch;
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .publish-button {
+
+                width:
+                    100%;
+
+            }
+
+
+            .post-header {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 <body>
 
-    <div id="communityPage" class="page-view">
-        
-        <!-- HEADER / NAVIGATION BACK -->
-        <header>
-            <nav class="navbar">
-                <div class="nav-logo">
-                    <a href="index.html">Dheere Studio</a>
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="nav-logo">
+
+                <a href="index.html">
+                    Dheere Studio
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <a
+                    href="index.html"
+                    class="back-home-link static-link"
+                >
+                    &larr; Back to Dheere Studio
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==========================================
+         COMMUNITY
+         ========================================== -->
+
+    <main class="community-container">
+
+
+        <!-- ======================================
+             HERO
+             ====================================== -->
+
+        <section class="community-hero">
+
+            <h1>
+                COMMUNITY
+            </h1>
+
+
+            <p>
+                A space for people who want to create,
+                share, learn, and build together.
+            </p>
+
+
+            <div class="community-actions">
+
+                <button
+                    id="exploreVisionBtn"
+                    class="community-action secondary-action"
+                    type="button"
+                >
+                    Explore Vision
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             LOGIN NOTICE
+             ====================================== -->
+
+        <div
+            id="loginNotice"
+            class="login-notice"
+        >
+
+            <strong>
+                Want to share something?
+            </strong>
+
+            &nbsp;
+
+            Log in to create your own posts.
+
+            <a href="index.html">
+                Login
+            </a>
+
+        </div>
+
+
+        <!-- ======================================
+             COMMUNITY FEED
+             ====================================== -->
+
+        <section
+            id="communityFeedSection"
+            class="community-feed-section"
+        >
+
+
+            <div class="section-heading">
+
+                <h2>
+                    Latest Posts
+                </h2>
+
+
+                <button
+                    id="refreshPostsBtn"
+                    class="refresh-button"
+                    type="button"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+
+            <!-- CREATE POST -->
+
+            <div
+                id="createPostCard"
+                class="create-post-card"
+            >
+
+                <textarea
+                    id="communityPostContent"
+                    maxlength="2000"
+                    placeholder="Share something with the community..."
+                ></textarea>
+
+
+                <div class="post-composer-bottom">
+
+                    <span
+                        id="communityCharacterCount"
+                        class="character-count"
+                    >
+                        0 / 2000
+                    </span>
+
+
+                    <button
+                        id="communityPublishBtn"
+                        class="publish-button"
+                        type="button"
+                    >
+                        Publish Post
+                    </button>
+
                 </div>
-                
-                <div>
-                    <a href="index.html" class="back-home-link static-link">&larr; Back to Dheere Studio</a>
+
+            </div>
+
+
+            <!-- POSTS -->
+
+            <div
+                id="postsFeed"
+                class="posts-feed"
+            >
+
+                <div class="empty-feed">
+
+                    Loading community...
+
                 </div>
-            </nav>
-        </header>
 
-        <!-- MAIN COMMUNITY CONTENT -->
-        <main>
-            
-            <!-- HERO SECTION & LANGUAGE TOGGLE -->
-            <section class="hero-section" style="padding-bottom: 30px; border-bottom: none;">
-                <div class="hero-content">
-                    <h1>COMMUNITY</h1>
-                    <p>A space for people who want to create, share, learn, and build together.</p>
-                    
-                    <div class="status-badge" style="margin-bottom: 16px;">
-                        <strong>Status:</strong> In Development
-                    </div>
+            </div>
 
-                    <!-- LANGUAGE TOGGLE BUTTONS -->
-                    <div class="lang-switch">
-                        <button id="btnEnglish" class="lang-btn active">English</button>
-                        <button id="btnHinglish" class="lang-btn">In Hinglish</button>
-                    </div>
+
+        </section>
+
+
+        <!-- ======================================
+             VISION
+             ====================================== -->
+
+        <section
+            id="visionSection"
+        >
+
+
+            <div class="vision-header">
+
+                <h2>
+                    The Vision Behind Dheere Studio Community
+                </h2>
+
+
+                <p>
+                    This is what we're trying to build
+                    and why the community exists.
+                </p>
+
+
+                <div class="lang-switch">
+
+                    <button
+                        id="btnEnglish"
+                        class="lang-btn active"
+                        type="button"
+                    >
+                        English
+                    </button>
+
+
+                    <button
+                        id="btnHinglish"
+                        class="lang-btn"
+                        type="button"
+                    >
+                        In Hinglish
+                    </button>
+
                 </div>
-            </section>
+
+            </div>
 
 
-            <!-- ====================================================
-                 1. ENGLISH VERSION
-                 ==================================================== -->
+            <!-- ==================================
+                 ENGLISH VISION
+                 ================================== -->
+
             <div id="englishCommunity">
-                
-                <!-- THE PURPOSE -->
-                <section id="community-purpose">
-                    <h2>The Purpose</h2>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        The Purpose
+                    </h3>
+
+
                     <p>
-                        Dheere Studio Community is being built as a place for people interested in stories, worldbuilding, art, animation, games, and other forms of creative work.
+                        Dheere Studio Community is being
+                        built as a place for people
+                        interested in stories, worldbuilding,
+                        art, animation, games, and other
+                        forms of creative work.
                     </p>
-                    <br>
+
+
                     <p>
-                        The idea is simple: create a space where people can share what they are making, discuss ideas, ask for feedback, and find others who are interested in building something of their own.
+                        The idea is simple: create a space
+                        where people can share what they are
+                        making, discuss ideas, ask for
+                        feedback, and find others who are
+                        interested in building something of
+                        their own.
                     </p>
+
                 </section>
 
-                <!-- WHO IT'S FOR -->
-                <section id="community-for">
-                    <h2>Who It's For</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        Who It's For
+                    </h3>
+
+
                     <p>
-                        The community is for anyone interested in creating and exploring ideas across different forms of media.
+                        The community is for anyone
+                        interested in creating and exploring
+                        ideas across different forms of media.
                     </p>
-                    <br>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Writers</strong> — Stories, novels, characters and narrative ideas.</li>
-                        <li><strong>Artists</strong> — Illustration, concept art and visual development.</li>
-                        <li><strong>Worldbuilders</strong> — Worlds, cultures, mythology and lore.</li>
-                        <li><strong>Animators</strong> — Animation, motion and visual storytelling.</li>
-                        <li><strong>Game Creators</strong> — Game ideas, systems and interactive experiences.</li>
-                        <li><strong>Developers</strong> — Tools, websites and technology for creative projects.</li>
+
+                        <li>
+                            <strong>Writers</strong>
+                            — Stories, novels, characters
+                            and narrative ideas.
+                        </li>
+
+                        <li>
+                            <strong>Artists</strong>
+                            — Illustration, concept art
+                            and visual development.
+                        </li>
+
+                        <li>
+                            <strong>Worldbuilders</strong>
+                            — Worlds, cultures, mythology
+                            and lore.
+                        </li>
+
+                        <li>
+                            <strong>Animators</strong>
+                            — Animation, motion and visual
+                            storytelling.
+                        </li>
+
+                        <li>
+                            <strong>Game Creators</strong>
+                            — Game ideas, systems and
+                            interactive experiences.
+                        </li>
+
+                        <li>
+                            <strong>Developers</strong>
+                            — Tools, websites and technology
+                            for creative projects.
+                        </li>
+
                     </ul>
+
                 </section>
 
-                <!-- WHAT WE'RE BUILDING -->
-                <section id="community-building">
-                    <h2>What We're Building</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        What We're Building
+                    </h3>
+
+
                     <p>
-                        We don't want the community to become just another place where people scroll through endless posts. We want to build a place where people can actually work on their ideas.
+                        We don't want the community to become
+                        just another place where people scroll
+                        through endless posts. We want to build
+                        a place where people can actually work
+                        on their ideas.
                     </p>
-                    <br>
-                    <p>Initially, the community will focus on:</p>
-                    <br>
+
+
+                    <p>
+                        Initially, the community will focus on:
+                    </p>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Discussions</strong> — Talk about stories, art, games, worldbuilding and creative processes.</li>
-                        <li><strong>Project Sharing</strong> — Share projects, concepts and work in progress.</li>
-                        <li><strong>Feedback</strong> — Get useful and honest feedback from other creators.</li>
-                        <li><strong>Collaboration</strong> — Find people who can help turn an idea into a project.</li>
-                        <li><strong>Discovering Creators</strong> — Find interesting people and projects from the community.</li>
+
+                        <li>
+                            <strong>Discussions</strong>
+                            — Talk about stories, art, games,
+                            worldbuilding and creative processes.
+                        </li>
+
+                        <li>
+                            <strong>Project Sharing</strong>
+                            — Share projects, concepts and
+                            work in progress.
+                        </li>
+
+                        <li>
+                            <strong>Feedback</strong>
+                            — Get useful and honest feedback
+                            from other creators.
+                        </li>
+
+                        <li>
+                            <strong>Collaboration</strong>
+                            — Find people who can help turn
+                            an idea into a project.
+                        </li>
+
+                        <li>
+                            <strong>Discovering Creators</strong>
+                            — Find interesting people and
+                            projects from the community.
+                        </li>
+
                     </ul>
+
                 </section>
 
-                <!-- GET INVOLVED EARLY -->
-                <section id="community-involved" style="border-bottom: none;">
-                    <h2>Get Involved Early</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        Get Involved Early
+                    </h3>
+
+
                     <p>
-                        The community is still being built. We're starting small and figuring out what actually makes a creative community useful before adding more features.
+                        The community is still being built.
+                        We're starting small and figuring out
+                        what actually makes a creative community
+                        useful before adding more features.
                     </p>
-                    <br>
+
+
                     <p>
-                        If you'd like to be part of the early community or have an idea for what it should become, we'd like to hear from you.
+                        If you'd like to be part of the early
+                        community or have an idea for what it
+                        should become, we'd like to hear from you.
                     </p>
+
+
                     <br>
-                    <a href="index.html#feedback" class="button">Express Interest & Feedback &rarr;</a>
+
+
+                    <a
+                        href="index.html#feedback"
+                        class="community-action primary-action"
+                    >
+                        Express Interest & Feedback &rarr;
+                    </a>
+
                 </section>
 
             </div>
 
 
-            <!-- ====================================================
-                 2. HINGLISH VERSION (Hidden by default)
-                 ==================================================== -->
-            <div id="hinglishCommunity" class="hidden-community">
-                
-                <!-- THE PURPOSE -->
-                <section id="community-purpose-hi">
-                    <h2> Hamara Goal</h2>
+            <!-- ==================================
+                 HINGLISH VISION
+                 ================================== -->
+
+            <div
+                id="hinglishCommunity"
+                class="hidden-vision"
+            >
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Hamara Goal
+                    </h3>
+
+
                     <p>
-                        Dheere Studio Community ko un logo ke liye ek jagah ke roop mein build kiya ja raha hai jo stories, worldbuilding, art, animation, games aur creative work mein interest rakhte hain.
+                        Dheere Studio Community ko un logo
+                        ke liye ek jagah ke roop mein build
+                        kiya ja raha hai jo stories,
+                        worldbuilding, art, animation, games
+                        aur creative work mein interest rakhte hain.
                     </p>
-                    <br>
+
+
                     <p>
-                        Idea ekdum simple hai: ek aisi space banana jahan log apna kaam share kar sakein, ideas discuss kar sakein, feedback maang sakein, aur un logo ko dhoondh sakein jo khud ka kuch banana chahte hain.
+                        Idea ekdum simple hai: ek aisi space
+                        banana jahan log apna kaam share kar
+                        sakein, ideas discuss kar sakein,
+                        feedback maang sakein, aur un logo
+                        ko dhoondh sakein jo khud ka kuch
+                        banana chahte hain.
                     </p>
+
                 </section>
 
-                <!-- WHO IT'S FOR -->
-                <section id="community-for-hi">
-                    <h2>Yeh Kiske Liye Hai (Who It's For)</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        Yeh Kiske Liye Hai
+                    </h3>
+
+
                     <p>
-                        Yeh community un sabhi logo ke liye hai jo alag-alag media formats ke zariye ideas create aur explore karna chahte hain.
+                        Yeh community un sabhi logo ke liye hai
+                        jo alag-alag media formats ke zariye
+                        ideas create aur explore karna chahte hain.
                     </p>
-                    <br>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Writers</strong> — Stories, novels, characters aur narrative ideas.</li>
-                        <li><strong>Artists</strong> — Illustration, concept art aur visual development.</li>
-                        <li><strong>Worldbuilders</strong> — Worlds, cultures, mythology aur lore.</li>
-                        <li><strong>Animators</strong> — Animation, motion aur visual storytelling.</li>
-                        <li><strong>Game Creators</strong> — Game ideas, systems aur interactive experiences.</li>
-                        <li><strong>Developers</strong> — Creative projects ke liye tools, websites aur technology.</li>
+
+                        <li>
+                            <strong>Writers</strong>
+                            — Stories, novels, characters
+                            aur narrative ideas.
+                        </li>
+
+                        <li>
+                            <strong>Artists</strong>
+                            — Illustration, concept art
+                            aur visual development.
+                        </li>
+
+                        <li>
+                            <strong>Worldbuilders</strong>
+                            — Worlds, cultures, mythology
+                            aur lore.
+                        </li>
+
+                        <li>
+                            <strong>Animators</strong>
+                            — Animation, motion aur visual
+                            storytelling.
+                        </li>
+
+                        <li>
+                            <strong>Game Creators</strong>
+                            — Game ideas, systems aur
+                            interactive experiences.
+                        </li>
+
+                        <li>
+                            <strong>Developers</strong>
+                            — Creative projects ke liye
+                            tools, websites aur technology.
+                        </li>
+
                     </ul>
+
                 </section>
 
-                <!-- WHAT WE'RE BUILDING -->
-                <section id="community-building-hi">
-                    <h2>Hum Kya Bana Rahe Hain (What We're Building)</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        Hum Kya Bana Rahe Hain
+                    </h3>
+
+
                     <p>
-                        Hum is community ko bas ek aur aisi jagah nahi banana chahte jahan log bas endless posts scroll karte rahein. Hum ek aisi jagah banana chahte hain jahan log sach mein apne ideas par kaam kar sakein.
+                        Hum is community ko bas ek aur aisi
+                        jagah nahi banana chahte jahan log
+                        bas endless posts scroll karte rahein.
+                        Hum ek aisi jagah banana chahte hain
+                        jahan log sach mein apne ideas par
+                        kaam kar sakein.
                     </p>
-                    <br>
-                    <p>Shuruwaat mein, community in baaton par focus karegi:</p>
-                    <br>
+
+
+                    <p>
+                        Shuruwaat mein, community in baaton
+                        par focus karegi:
+                    </p>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Discussions</strong> — Stories, art, games, worldbuilding aur creative processes ke baare mein baat karna.</li>
-                        <li><strong>Project Sharing</strong> — Apne projects, concepts aur ongoing work-in-progress share karna.</li>
-                        <li><strong>Feedback</strong> — Dusre creators se useful aur honest feedback lena.</li>
-                        <li><strong>Collaboration</strong> — Aise logo ko dhoondhna jo ek idea ko project mein badalne mein madad kar sakein.</li>
-                        <li><strong>Discovering Creators</strong> — Community se naye aur interesting creators aur unke projects ko discover karna.</li>
+
+                        <li>
+                            <strong>Discussions</strong>
+                            — Stories, art, games,
+                            worldbuilding aur creative
+                            processes ke baare mein baat karna.
+                        </li>
+
+                        <li>
+                            <strong>Project Sharing</strong>
+                            — Apne projects, concepts aur
+                            ongoing work-in-progress share karna.
+                        </li>
+
+                        <li>
+                            <strong>Feedback</strong>
+                            — Dusre creators se useful aur
+                            honest feedback lena.
+                        </li>
+
+                        <li>
+                            <strong>Collaboration</strong>
+                            — Aise logo ko dhoondhna jo ek
+                            idea ko project mein badalne mein
+                            madad kar sakein.
+                        </li>
+
+                        <li>
+                            <strong>Discovering Creators</strong>
+                            — Community se naye aur interesting
+                            creators aur unke projects ko discover karna.
+                        </li>
+
                     </ul>
+
                 </section>
 
-                <!-- GET INVOLVED EARLY -->
-                <section id="community-involved-hi" style="border-bottom: none;">
-                    <h2>Shuruwaat Mein Saath Judein (Get Involved Early)</h2>
+
+                <section class="vision-section">
+
+                    <h3>
+                        Shuruwaat Mein Saath Judein
+                    </h3>
+
+
                     <p>
-                        Community abhi bhi build ho rahi hai. Hum chote level se shuru kar rahe hain aur yeh samajh rahe hain ki zyada features add karne se pehle ek creative community sach mein useful kaise banti hai.
+                        Community abhi bhi build ho rahi hai.
+                        Hum chote level se shuru kar rahe hain
+                        aur yeh samajh rahe hain ki zyada
+                        features add karne se pehle ek creative
+                        community sach mein useful kaise banti hai.
                     </p>
-                    <br>
+
+
                     <p>
-                        Agar aap early community ka hissa banna chahte hain ya aapke paas koi idea hai ki is community ko kaisa hona chahiye, toh hum aapse sunna chahenge.
+                        Agar aap early community ka hissa
+                        banna chahte hain ya aapke paas koi
+                        idea hai ki is community ko kaisa hona
+                        chahiye, toh hum aapse sunna chahenge.
                     </p>
+
+
                     <br>
-                    <a href="index.html#feedback" class="button">Express Interest & Feedback &rarr;</a>
+
+
+                    <a
+                        href="index.html#feedback"
+                        class="community-action primary-action"
+                    >
+                        Express Interest & Feedback &rarr;
+                    </a>
+
                 </section>
 
             </div>
 
-        </main>
 
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2026 Dheere Studio. All rights reserved.</p>
-            </div>
-        </footer>
+        </section>
 
-    </div>
 
-    <!-- SCRIPT FOR LANGUAGE TOGGLE -->
+    </main>
+
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <p>
+                &copy; 2026 Dheere Studio.
+                All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ==========================================
+         COMMUNITY JAVASCRIPT
+         ========================================== -->
+
     <script>
-        const btnEnglish = document.getElementById('btnEnglish');
-        const btnHinglish = document.getElementById('btnHinglish');
-        const englishCommunity = document.getElementById('englishCommunity');
-        const hinglishCommunity = document.getElementById('hinglishCommunity');
 
-        btnEnglish.addEventListener('click', () => {
-            btnEnglish.classList.add('active');
-            btnHinglish.classList.remove('active');
-            englishCommunity.classList.remove('hidden-community');
-            hinglishCommunity.classList.add('hidden-community');
-        });
+        // ==========================================
+        // CONFIG
+        // ==========================================
 
-        btnHinglish.addEventListener('click', () => {
-            btnHinglish.classList.add('active');
-            btnEnglish.classList.remove('active');
-            hinglishCommunity.classList.remove('hidden-community');
-            englishCommunity.classList.add('hidden-community');
-        });
+        const API_BASE_URL =
+            'https://dheere-studio.onrender.com';
+
+
+        const USER_STORAGE_KEY =
+            'dheereStudioUser';
+
+
+        // ==========================================
+        // ELEMENTS
+        // ==========================================
+
+        const postsFeed =
+            document.getElementById(
+                'postsFeed'
+            );
+
+
+        const refreshPostsBtn =
+            document.getElementById(
+                'refreshPostsBtn'
+            );
+
+
+        const createPostCard =
+            document.getElementById(
+                'createPostCard'
+            );
+
+
+        const loginNotice =
+            document.getElementById(
+                'loginNotice'
+            );
+
+
+        const communityPostContent =
+            document.getElementById(
+                'communityPostContent'
+            );
+
+
+        const communityCharacterCount =
+            document.getElementById(
+                'communityCharacterCount'
+            );
+
+
+        const communityPublishBtn =
+            document.getElementById(
+                'communityPublishBtn'
+            );
+
+
+        const exploreVisionBtn =
+            document.getElementById(
+                'exploreVisionBtn'
+            );
+
+
+        const visionSection =
+            document.getElementById(
+                'visionSection'
+            );
+
+
+        const btnEnglish =
+            document.getElementById(
+                'btnEnglish'
+            );
+
+
+        const btnHinglish =
+            document.getElementById(
+                'btnHinglish'
+            );
+
+
+        const englishCommunity =
+            document.getElementById(
+                'englishCommunity'
+            );
+
+
+        const hinglishCommunity =
+            document.getElementById(
+                'hinglishCommunity'
+            );
+
+
+        // ==========================================
+        // ESCAPE HTML
+        // ==========================================
+
+        function escapeHTML(value) {
+
+            const div =
+                document.createElement(
+                    'div'
+                );
+
+
+            div.textContent =
+                String(value ?? '');
+
+
+            return div.innerHTML;
+
+        }
+
+
+        // ==========================================
+        // GET CURRENT USER
+        // ==========================================
+
+        function getCurrentUser() {
+
+            try {
+
+                const savedUser =
+                    localStorage.getItem(
+                        USER_STORAGE_KEY
+                    );
+
+
+                if (!savedUser) {
+
+                    return null;
+
+                }
+
+
+                return JSON.parse(
+                    savedUser
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    'User data error:',
+                    error
+                );
+
+
+                localStorage.removeItem(
+                    USER_STORAGE_KEY
+                );
+
+
+                return null;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // USER DATA HELPERS
+        // ==========================================
+
+        function getUsername(user) {
+
+            return (
+                user?.username ||
+                user?.user?.username ||
+                ''
+            );
+
+        }
+
+
+        function getUserId(user) {
+
+            return (
+                user?.id ||
+                user?._id ||
+                user?.user?.id ||
+                user?.user?._id ||
+                ''
+            );
+
+        }
+
+
+        // ==========================================
+        // FORMAT DATE
+        // ==========================================
+
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+
+                return '';
+
+            }
+
+
+            const date =
+                new Date(
+                    dateValue
+                );
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return '';
+
+            }
+
+
+            return date.toLocaleString(
+                'en-IN',
+                {
+                    day:
+                        'numeric',
+
+                    month:
+                        'short',
+
+                    year:
+                        'numeric',
+
+                    hour:
+                        'numeric',
+
+                    minute:
+                        '2-digit'
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // RENDER POSTS
+        // ==========================================
+
+        function renderPosts(posts) {
+
+            if (!postsFeed) {
+
+                return;
+
+            }
+
+
+            if (
+                !Array.isArray(posts) ||
+                posts.length === 0
+            ) {
+
+                postsFeed.innerHTML = `
+
+                    <div class="empty-feed">
+
+                        No posts yet.
+
+                        <br>
+
+                        Be the first person
+                        to share something.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            postsFeed.innerHTML =
+                posts.map(
+                    (post) => {
+
+                        const username =
+                            post.username ||
+                            'user';
+
+
+                        const content =
+                            post.content ||
+                            '';
+
+
+                        const date =
+                            formatDate(
+                                post.createdAt
+                            );
+
+
+                        const likes =
+                            Number(
+                                post.likes || 0
+                            );
+
+
+                        return `
+
+                            <article
+                                class="post-card"
+                            >
+
+                                <div
+                                    class="post-header"
+                                >
+
+                                    <a
+                                        class="post-author"
+                                        href="profile.html"
+                                    >
+                                        @${escapeHTML(
+                                            username
+                                        )}
+                                    </a>
+
+
+                                    <span
+                                        class="post-date"
+                                    >
+                                        ${escapeHTML(
+                                            date
+                                        )}
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="post-content"
+                                >
+                                    ${escapeHTML(
+                                        content
+                                    )}
+                                </div>
+
+
+                                <div
+                                    class="post-footer"
+                                >
+
+                                    <span>
+                                        ♥ ${likes}
+                                    </span>
+
+                                </div>
+
+                            </article>
+
+                        `;
+
+                    }
+                )
+                .join('');
+
+        }
+
+
+        // ==========================================
+        // LOAD POSTS
+        // ==========================================
+
+        async function loadPosts() {
+
+            if (!postsFeed) {
+
+                return;
+
+            }
+
+
+            postsFeed.innerHTML = `
+
+                <div class="empty-feed">
+
+                    Loading community...
+
+                </div>
+
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/posts`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.error ||
+                        'Could not load posts'
+                    );
+
+                }
+
+
+                renderPosts(
+                    result.posts
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    'Community feed error:',
+                    error
+                );
+
+
+                postsFeed.innerHTML = `
+
+                    <div class="empty-feed">
+
+                        Unable to load community
+                        right now.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // AUTH UI
+        // ==========================================
+
+        function setupAuthUI() {
+
+            const user =
+                getCurrentUser();
+
+
+            if (user) {
+
+                if (createPostCard) {
+
+                    createPostCard.style.display =
+                        'block';
+
+                }
+
+
+                if (loginNotice) {
+
+                    loginNotice.style.display =
+                        'none';
+
+                }
+
+            } else {
+
+                if (createPostCard) {
+
+                    createPostCard.style.display =
+                        'none';
+
+                }
+
+
+                if (loginNotice) {
+
+                    loginNotice.style.display =
+                        'block';
+
+                }
+
+            }
+
+        }
+
+
+        // ==========================================
+        // CHARACTER COUNT
+        // ==========================================
+
+        if (communityPostContent) {
+
+            communityPostContent.addEventListener(
+                'input',
+                () => {
+
+                    if (
+                        communityCharacterCount
+                    ) {
+
+                        communityCharacterCount.textContent =
+                            `${communityPostContent.value.length} / 2000`;
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // PUBLISH POST
+        // ==========================================
+
+        if (communityPublishBtn) {
+
+            communityPublishBtn.addEventListener(
+                'click',
+                async () => {
+
+                    const user =
+                        getCurrentUser();
+
+
+                    if (!user) {
+
+                        alert(
+                            'Please login first.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    const authorId =
+                        getUserId(
+                            user
+                        );
+
+
+                    const username =
+                        getUsername(
+                            user
+                        );
+
+
+                    const content =
+                        communityPostContent
+                            ? communityPostContent
+                                .value
+                                .trim()
+                            : '';
+
+
+                    if (!authorId) {
+
+                        alert(
+                            'Your login session is missing the user ID. Please logout and login again.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!username) {
+
+                        alert(
+                            'Your username is missing. Please logout and login again.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!content) {
+
+                        alert(
+                            'Write something before publishing.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        content.length >
+                        2000
+                    ) {
+
+                        alert(
+                            'Post cannot exceed 2000 characters.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    communityPublishBtn.disabled =
+                        true;
+
+
+                    communityPublishBtn.textContent =
+                        'Publishing...';
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                `${API_BASE_URL}/posts`,
+                                {
+                                    method:
+                                        'POST',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json'
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            authorId,
+
+                                            username,
+
+                                            content
+
+                                        })
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+                        if (
+                            !response.ok ||
+                            !result.success
+                        ) {
+
+                            alert(
+                                result.error ||
+                                'Could not publish post.'
+                            );
+
+                            return;
+
+                        }
+
+
+                        if (
+                            communityPostContent
+                        ) {
+
+                            communityPostContent.value =
+                                '';
+
+                        }
+
+
+                        if (
+                            communityCharacterCount
+                        ) {
+
+                            communityCharacterCount.textContent =
+                                '0 / 2000';
+
+                        }
+
+
+                        await loadPosts();
+
+
+                    } catch (error) {
+
+                        console.error(
+                            'Publish post error:',
+                            error
+                        );
+
+
+                        alert(
+                            'Backend server se connect nahi ho paya.'
+                        );
+
+
+                    } finally {
+
+                        communityPublishBtn.disabled =
+                            false;
+
+
+                        communityPublishBtn.textContent =
+                            'Publish Post';
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // REFRESH
+        // ==========================================
+
+        if (refreshPostsBtn) {
+
+            refreshPostsBtn.addEventListener(
+                'click',
+                loadPosts
+            );
+
+        }
+
+
+        // ==========================================
+        // EXPLORE VISION
+        // ==========================================
+
+        if (exploreVisionBtn) {
+
+            exploreVisionBtn.addEventListener(
+                'click',
+                () => {
+
+                    if (!visionSection) {
+
+                        return;
+
+                    }
+
+
+                    const isVisible =
+                        visionSection.style.display ===
+                        'block';
+
+
+                    if (isVisible) {
+
+                        visionSection.style.display =
+                            'none';
+
+
+                        exploreVisionBtn.textContent =
+                            'Explore Vision';
+
+
+                        return;
+
+                    }
+
+
+                    visionSection.style.display =
+                        'block';
+
+
+                    exploreVisionBtn.textContent =
+                        'Hide Vision';
+
+
+                    visionSection.scrollIntoView({
+
+                        behavior:
+                            'smooth',
+
+                        block:
+                            'start'
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // ENGLISH
+        // ==========================================
+
+        if (
+            btnEnglish &&
+            btnHinglish &&
+            englishCommunity &&
+            hinglishCommunity
+        ) {
+
+            btnEnglish.addEventListener(
+                'click',
+                () => {
+
+                    btnEnglish.classList.add(
+                        'active'
+                    );
+
+
+                    btnHinglish.classList.remove(
+                        'active'
+                    );
+
+
+                    englishCommunity.classList.remove(
+                        'hidden-vision'
+                    );
+
+
+                    hinglishCommunity.classList.add(
+                        'hidden-vision'
+                    );
+
+                }
+            );
+
+
+            btnHinglish.addEventListener(
+                'click',
+                () => {
+
+                    btnHinglish.classList.add(
+                        'active'
+                    );
+
+
+                    btnEnglish.classList.remove(
+                        'active'
+                    );
+
+
+                    hinglishCommunity.classList.remove(
+                        'hidden-vision'
+                    );
+
+
+                    englishCommunity.classList.add(
+                        'hidden-vision'
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // INITIALIZE
+        // ==========================================
+
+        setupAuthUI();
+
+        loadPosts();
+
     </script>
+
+
 </body>
+
 </html>
