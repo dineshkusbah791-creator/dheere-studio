@@ -178,19 +178,16 @@
             transition:
                 transform 0.3s ease,
                 border-color 0.3s ease,
-                background 0.3s ease;
+                background 0.5s ease,
+                box-shadow 0.5s ease;
 
         }
 
 
         .mood-card:hover {
 
-            transform: translateY(-4px);
-
-            border-color:
-                rgba(255,255,255,0.2);
-
-            background: #191b1e;
+            transform:
+                translateY(-4px);
 
         }
 
@@ -201,7 +198,8 @@
                 var(--mood-accent);
 
             box-shadow:
-                inset 0 0 0 1px var(--mood-accent);
+                inset 0 0 0 1px var(--mood-accent),
+                0 12px 40px var(--mood-shadow);
 
         }
 
@@ -218,6 +216,8 @@
            ===================================================== */
 
         .mood-preview {
+
+            position: relative;
 
             width: 100%;
 
@@ -242,7 +242,11 @@
 
             border-radius: 3px;
 
-            background: var(--mood-accent);
+            background:
+                var(--mood-accent);
+
+            box-shadow:
+                0 0 14px var(--mood-glow);
 
         }
 
@@ -251,7 +255,10 @@
 
             width: 20px;
 
-            background: var(--mood-secondary);
+            background:
+                var(--mood-secondary);
+
+            box-shadow: none;
 
         }
 
@@ -266,7 +273,11 @@
 
             border-radius: 50%;
 
-            background: var(--mood-accent);
+            background:
+                var(--mood-accent);
+
+            box-shadow:
+                0 0 14px var(--mood-glow);
 
         }
 
@@ -281,7 +292,7 @@
 
             margin-bottom: 8px;
 
-            color: #64748b;
+            color: var(--mood-muted);
 
             font-size: 0.68rem;
 
@@ -296,7 +307,7 @@
 
             margin-bottom: 7px;
 
-            color: #ffffff;
+            color: var(--mood-title);
 
             font-size: 1.4rem;
 
@@ -309,7 +320,7 @@
 
         .mood-description {
 
-            color: #7f8794;
+            color: var(--mood-text);
 
             font-size: 0.82rem;
 
@@ -340,7 +351,8 @@
 
             opacity: 0;
 
-            transform: translateY(-4px);
+            transform:
+                translateY(-4px);
 
             transition:
                 opacity 0.25s ease,
@@ -353,13 +365,15 @@
 
             opacity: 1;
 
-            transform: translateY(0);
+            transform:
+                translateY(0);
 
         }
 
 
         /* =====================================================
-           MOOD COLORS
+           01 — ORIGINAL
+           Clean studio / soft graphite atmosphere
            ===================================================== */
 
         .mood-original {
@@ -368,8 +382,81 @@
 
             --mood-secondary: #64748b;
 
+            --mood-title: #f8fafc;
+
+            --mood-text: #a4acb8;
+
+            --mood-muted: #697384;
+
+            --mood-glow:
+                rgba(255,255,255,0.22);
+
+            --mood-shadow:
+                rgba(255,255,255,0.04);
+
+            background:
+
+                radial-gradient(
+                    circle at 78% 20%,
+                    rgba(255,255,255,0.07),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(255,255,255,0.025),
+                    transparent 35%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #151719 0%,
+                    #101214 100%
+                );
+
         }
 
+
+        .mood-original:hover {
+
+            border-color:
+                rgba(255,255,255,0.18);
+
+            box-shadow:
+                0 14px 40px rgba(0,0,0,0.20);
+
+        }
+
+
+        .mood-original .mood-preview::before {
+
+            content: "";
+
+            position: absolute;
+
+            right: 34px;
+
+            top: 50%;
+
+            width: 58px;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.22),
+                    transparent
+                );
+
+        }
+
+
+        /* =====================================================
+           02 — FOREST
+           Deep forest / foliage / ambient green
+           ===================================================== */
 
         .mood-forest {
 
@@ -377,8 +464,117 @@
 
             --mood-secondary: #2f8a51;
 
+            --mood-title: #effaf2;
+
+            --mood-text: #91a99a;
+
+            --mood-muted: #5f7967;
+
+            --mood-glow:
+                rgba(85,200,120,0.38);
+
+            --mood-shadow:
+                rgba(0,60,20,0.20);
+
+            background:
+
+                radial-gradient(
+                    ellipse 150px 100px at 4% 15%,
+                    rgba(43,118,66,0.42),
+                    transparent 72%
+                ),
+
+                radial-gradient(
+                    ellipse 170px 100px at 96% 80%,
+                    rgba(29,91,49,0.38),
+                    transparent 72%
+                ),
+
+                radial-gradient(
+                    circle at 65% 30%,
+                    rgba(73,159,91,0.10),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #0c1a11 0%,
+                    #09140d 100%
+                );
+
+            border-color:
+                rgba(85,200,120,0.13);
+
         }
 
+
+        .mood-forest:hover {
+
+            border-color:
+                rgba(85,200,120,0.35);
+
+            box-shadow:
+                0 16px 45px rgba(0,45,15,0.24);
+
+        }
+
+
+        .mood-forest .mood-preview::before,
+        .mood-forest .mood-preview::after {
+
+            content: "";
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            filter: blur(1px);
+
+        }
+
+
+        .mood-forest .mood-preview::before {
+
+            width: 42px;
+
+            height: 22px;
+
+            left: 48px;
+
+            top: 16px;
+
+            background:
+                rgba(74,164,91,0.34);
+
+            transform:
+                rotate(-18deg);
+
+        }
+
+
+        .mood-forest .mood-preview::after {
+
+            width: 34px;
+
+            height: 18px;
+
+            left: 74px;
+
+            top: 36px;
+
+            background:
+                rgba(43,119,65,0.40);
+
+            transform:
+                rotate(22deg);
+
+        }
+
+
+        /* =====================================================
+           03 — OCEAN
+           Deep water / blue light / moving surface
+           ===================================================== */
 
         .mood-ocean {
 
@@ -386,8 +582,93 @@
 
             --mood-secondary: #4169a8;
 
+            --mood-title: #edf5ff;
+
+            --mood-text: #8ea2b9;
+
+            --mood-muted: #617892;
+
+            --mood-glow:
+                rgba(94,155,234,0.40);
+
+            --mood-shadow:
+                rgba(0,40,90,0.24);
+
+            background:
+
+                radial-gradient(
+                    ellipse at 18% 15%,
+                    rgba(45,104,174,0.38),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    ellipse at 84% 85%,
+                    rgba(32,82,151,0.34),
+                    transparent 38%
+                ),
+
+                repeating-linear-gradient(
+                    165deg,
+                    transparent 0,
+                    transparent 42px,
+                    rgba(90,160,225,0.055) 44px,
+                    transparent 47px
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #0a1827 0%,
+                    #07111d 100%
+                );
+
+            border-color:
+                rgba(94,155,234,0.14);
+
         }
 
+
+        .mood-ocean:hover {
+
+            border-color:
+                rgba(94,155,234,0.36);
+
+            box-shadow:
+                0 16px 48px rgba(0,35,80,0.28);
+
+        }
+
+
+        .mood-ocean .mood-preview::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 10px;
+
+            height: 20px;
+
+            background:
+                repeating-linear-gradient(
+                    175deg,
+                    transparent 0,
+                    transparent 8px,
+                    rgba(94,155,234,0.14) 9px,
+                    transparent 11px
+                );
+
+        }
+
+
+        /* =====================================================
+           04 — EMBER
+           Fire / heat / glowing embers
+           ===================================================== */
 
         .mood-ember {
 
@@ -395,14 +676,399 @@
 
             --mood-secondary: #a83d3d;
 
+            --mood-title: #fff1ee;
+
+            --mood-text: #b09a95;
+
+            --mood-muted: #7d5d59;
+
+            --mood-glow:
+                rgba(228,107,97,0.44);
+
+            --mood-shadow:
+                rgba(80,10,5,0.25);
+
+            background:
+
+                radial-gradient(
+                    circle at 15% 92%,
+                    rgba(220,74,48,0.38),
+                    transparent 24%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(236,89,45,0.34),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 85% 88%,
+                    rgba(188,48,39,0.30),
+                    transparent 24%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #1a0e0d 0%,
+                    #100908 100%
+                );
+
+            border-color:
+                rgba(228,107,97,0.14);
+
         }
 
+
+        .mood-ember:hover {
+
+            border-color:
+                rgba(228,107,97,0.38);
+
+            box-shadow:
+                0 16px 48px rgba(70,10,5,0.28);
+
+        }
+
+
+        .mood-ember .mood-preview::before {
+
+            content: "";
+
+            position: absolute;
+
+            right: 55px;
+
+            top: 15px;
+
+            width: 5px;
+
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: #ef7657;
+
+            box-shadow:
+                0 0 9px #ef7657;
+
+        }
+
+
+        .mood-ember .mood-preview::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: 82px;
+
+            top: 34px;
+
+            width: 3px;
+
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: #f08058;
+
+            box-shadow:
+                0 0 8px #f08058;
+
+        }
+
+
+        /* =====================================================
+           05 — MIDNIGHT
+           Stars / violet night / atmospheric sky
+           ===================================================== */
 
         .mood-midnight {
 
             --mood-accent: #9b8cf2;
 
             --mood-secondary: #6254ad;
+
+            --mood-title: #f2efff;
+
+            --mood-text: #a19caf;
+
+            --mood-muted: #716c83;
+
+            --mood-glow:
+                rgba(155,140,242,0.42);
+
+            --mood-shadow:
+                rgba(25,10,70,0.28);
+
+            background:
+
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(88,72,164,0.34),
+                    transparent 42%
+                ),
+
+                radial-gradient(
+                    circle at 85% 78%,
+                    rgba(74,58,145,0.24),
+                    transparent 38%
+                ),
+
+                radial-gradient(
+                    circle at 12% 20%,
+                    rgba(255,255,255,0.12) 0 1px,
+                    transparent 2px
+                ),
+
+                radial-gradient(
+                    circle at 35% 30%,
+                    rgba(255,255,255,0.16) 0 1px,
+                    transparent 2px
+                ),
+
+                radial-gradient(
+                    circle at 68% 18%,
+                    rgba(255,255,255,0.13) 0 1px,
+                    transparent 2px
+                ),
+
+                radial-gradient(
+                    circle at 88% 42%,
+                    rgba(255,255,255,0.12) 0 1px,
+                    transparent 2px
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #100d1b 0%,
+                    #090711 100%
+                );
+
+            border-color:
+                rgba(155,140,242,0.15);
+
+        }
+
+
+        .mood-midnight:hover {
+
+            border-color:
+                rgba(155,140,242,0.40);
+
+            box-shadow:
+                0 16px 50px rgba(25,10,70,0.30);
+
+        }
+
+
+        .mood-midnight .mood-preview::before {
+
+            content: "";
+
+            position: absolute;
+
+            right: 48px;
+
+            top: 50%;
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 35%,
+                    #f3efff,
+                    #b9aef5 58%,
+                    #7565bd 100%
+                );
+
+            box-shadow:
+                0 0 25px rgba(155,140,242,0.25);
+
+            transform:
+                translateY(-50%);
+
+        }
+
+
+        /* =====================================================
+           06 — DAWN
+           Milky morning / warm sun / soft daylight
+           ===================================================== */
+
+        .mood-dawn {
+
+            --mood-accent: #d9a441;
+
+            --mood-secondary: #e9c878;
+
+            --mood-title: #302c25;
+
+            --mood-text: #756b5b;
+
+            --mood-muted: #92784a;
+
+            --mood-glow:
+                rgba(226,177,73,0.46);
+
+            --mood-shadow:
+                rgba(125,92,35,0.12);
+
+            background:
+
+                radial-gradient(
+                    circle at 78% 16%,
+                    rgba(255,218,125,0.72),
+                    rgba(244,190,91,0.22) 18%,
+                    transparent 34%
+                ),
+
+                radial-gradient(
+                    ellipse at 12% 82%,
+                    rgba(255,238,205,0.58),
+                    transparent 38%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #faf6eb 0%,
+                    #eee4d1 100%
+                );
+
+            color: #302c25;
+
+            border-color:
+                rgba(133,105,57,0.16);
+
+        }
+
+
+        .mood-dawn:hover {
+
+            background:
+
+                radial-gradient(
+                    circle at 78% 16%,
+                    rgba(255,221,132,0.82),
+                    rgba(244,190,91,0.25) 18%,
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    ellipse at 12% 82%,
+                    rgba(255,238,205,0.65),
+                    transparent 40%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    #fffaf0 0%,
+                    #f1e7d5 100%
+                );
+
+            border-color:
+                rgba(181,139,52,0.38);
+
+            box-shadow:
+                0 16px 45px rgba(125,92,35,0.12);
+
+        }
+
+
+        .mood-dawn .mood-preview {
+
+            position: relative;
+
+        }
+
+
+        .mood-dawn .mood-preview::before {
+
+            content: "";
+
+            position: absolute;
+
+            right: 42px;
+
+            top: 50%;
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    #fff8d9 0%,
+                    #f5cf76 42%,
+                    #d9a441 100%
+                );
+
+            box-shadow:
+                0 0 30px rgba(226,177,73,0.46);
+
+            transform:
+                translateY(-50%);
+
+        }
+
+
+        .mood-dawn .mood-number {
+
+            color: #92784a;
+
+        }
+
+
+        .mood-dawn .mood-name {
+
+            color: #302c25;
+
+        }
+
+
+        .mood-dawn .mood-description {
+
+            color: #756b5b;
+
+        }
+
+
+        .mood-dawn .mood-selected {
+
+            color: #a87524;
+
+        }
+
+
+        .mood-dawn .preview-line {
+
+            background:
+                #c99432;
+
+        }
+
+
+        .mood-dawn .preview-line.small {
+
+            background:
+                #e2bf6b;
+
+        }
+
+
+        .mood-dawn .preview-dot {
+
+            background:
+                #e1b354;
 
         }
 
@@ -465,6 +1131,14 @@
             .mood-card {
 
                 min-height: 220px;
+
+            }
+
+
+            .mood-dawn .mood-preview::before,
+            .mood-midnight .mood-preview::before {
+
+                right: 28px;
 
             }
 

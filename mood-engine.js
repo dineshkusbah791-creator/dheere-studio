@@ -213,17 +213,24 @@
 
 
                 if (branch.left) {
+
                     element.style.left =
                         branch.left;
+
                 }
 
+
                 if (branch.right) {
+
                     element.style.right =
                         branch.right;
+
                 }
+
 
                 element.style.top =
                     branch.top;
+
 
                 element.style.transform =
                     `rotate(${branch.rotate})`;
@@ -288,21 +295,30 @@
             setStyle(
                 leaf,
                 "--leaf-x",
-                random(-18, 22) + "px"
+                random(
+                    -18,
+                    22
+                ) + "px"
             );
 
 
             setStyle(
                 leaf,
                 "--leaf-y",
-                random(5, 20) + "px"
+                random(
+                    5,
+                    20
+                ) + "px"
             );
 
 
             setStyle(
                 leaf,
                 "--leaf-speed",
-                random(7, 13) + "s"
+                random(
+                    7,
+                    13
+                ) + "s"
             );
 
 
@@ -377,7 +393,10 @@
             setStyle(
                 wave,
                 "--wave-speed",
-                random(7, 13) + "s"
+                random(
+                    7,
+                    13
+                ) + "s"
             );
 
 
@@ -456,14 +475,20 @@
             setStyle(
                 particle,
                 "--particle-speed",
-                random(6, 13) + "s"
+                random(
+                    6,
+                    13
+                ) + "s"
             );
 
 
             setStyle(
                 particle,
                 "--particle-x",
-                random(-30, 30) + "px"
+                random(
+                    -30,
+                    30
+                ) + "px"
             );
 
         }
@@ -536,21 +561,30 @@
             setStyle(
                 spark,
                 "--spark-size",
-                random(1.5, 4) + "px"
+                random(
+                    1.5,
+                    4
+                ) + "px"
             );
 
 
             setStyle(
                 spark,
                 "--spark-speed",
-                random(4, 9) + "s"
+                random(
+                    4,
+                    9
+                ) + "s"
             );
 
 
             setStyle(
                 spark,
                 "--spark-x",
-                random(-45, 45) + "px"
+                random(
+                    -45,
+                    45
+                ) + "px"
             );
 
 
@@ -824,12 +858,9 @@
         );
 
 
-        /*
-         * Environment is rebuilt after
-         * the visual mood changes.
-         */
-
-        buildEnvironment(mood);
+        buildEnvironment(
+            mood
+        );
 
     }
 
