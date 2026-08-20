@@ -1,253 +1,1751 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why Dheere Studio Exists — Dheere Studio</title>
-    <link rel="stylesheet" href="homepage.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Why Dheere Studio Exists — Dheere Studio
+    </title>
+
+    <meta
+        name="description"
+        content="Why Dheere Studio exists, how it creates, and where its worlds are heading."
+    >
+
+    <!-- ========================================================
+         BASE STYLES
+         ======================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <!-- ========================================================
+         DHEERE MOOD ENGINE
+         ======================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+
+    <!-- ========================================================
+         PAGE-SPECIFIC STYLE
+         ======================================================== -->
+
     <style>
-        /* Language Toggle Switch Style */
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            width: fit-content;
+
+        /* =====================================================
+           ARTICLE PAGE
+           ===================================================== */
+
+        #articlePage {
+
+            min-height: 100vh;
+
+            position: relative;
+
         }
+
+
+        /* =====================================================
+           ARTICLE HERO
+           ===================================================== */
+
+        .article-hero {
+
+            position: relative;
+
+            padding:
+                120px 0
+                70px;
+
+            overflow: hidden;
+
+        }
+
+
+        .article-hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 720px;
+
+        }
+
+
+        .article-eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 18px;
+
+            color: #64748b;
+
+            font-size: 0.76rem;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.10em;
+
+        }
+
+
+        .article-eyebrow::before {
+
+            content: "";
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+            opacity: 0.75;
+
+        }
+
+
+        .article-hero h1 {
+
+            font-size: clamp(
+                2.5rem,
+                6vw,
+                4.5rem
+            );
+
+            line-height: 1.05;
+
+            letter-spacing: -0.045em;
+
+            font-weight: 500;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .article-meta {
+
+            color: #64748b;
+
+            font-size: 0.88rem;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .article-intro {
+
+            max-width: 620px;
+
+            font-size: 1.08rem;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* =====================================================
+           HERO ORBIT / AMBIENT ELEMENT
+           ===================================================== */
+
+        .article-ambient {
+
+            position: absolute;
+
+            width: 420px;
+
+            height: 420px;
+
+            right: -150px;
+
+            top: 20px;
+
+            border-radius: 50%;
+
+            border: 1px solid
+                rgba(255,255,255,0.05);
+
+            opacity: 0.7;
+
+            pointer-events: none;
+
+            animation:
+                articleOrbit 18s
+                ease-in-out
+                infinite alternate;
+
+        }
+
+
+        .article-ambient::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 160px;
+
+            height: 160px;
+
+            top: 90px;
+
+            left: 70px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.07),
+                    transparent 70%
+                );
+
+            filter: blur(10px);
+
+        }
+
+
+        @keyframes articleOrbit {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0)
+                    rotate(0deg)
+                    scale(1);
+
+            }
+
+            100% {
+
+                transform:
+                    translate3d(-35px,25px,0)
+                    rotate(12deg)
+                    scale(1.06);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LANGUAGE SWITCH
+           ===================================================== */
+
+        .lang-switch {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 3px;
+
+            margin-top: 4px;
+
+            padding: 4px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            backdrop-filter: blur(12px);
+
+        }
+
 
         .lang-btn {
-            background: none;
+
+            appearance: none;
+
             border: none;
+
+            background: transparent;
+
             color: #64748b;
-            padding: 6px 14px;
-            font-size: 0.82rem;
+
+            padding:
+                8px 14px;
+
+            border-radius: 7px;
+
+            font-family: inherit;
+
+            font-size: 0.80rem;
+
             font-weight: 500;
-            border-radius: 6px;
+
             cursor: pointer;
-            transition: all 0.2s ease;
+
+            transition:
+                color 0.3s ease,
+                background 0.3s ease,
+                transform 0.2s ease;
+
         }
+
+
+        .lang-btn:hover {
+
+            color: #e2e8f0;
+
+        }
+
+
+        .lang-btn:active {
+
+            transform:
+                scale(0.97);
+
+        }
+
 
         .lang-btn.active {
-            background: #f8fafc;
-            color: #0b0c0e;
+
+            background:
+                rgba(255,255,255,0.10);
+
+            color: #ffffff;
+
+            box-shadow:
+                0 2px 12px
+                rgba(0,0,0,0.16);
+
         }
+
+
+        /* =====================================================
+           ARTICLE BODY
+           ===================================================== */
+
+        .full-article {
+
+            position: relative;
+
+        }
+
+
+        .article-section {
+
+            position: relative;
+
+            max-width: 720px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+        }
+
+
+        .article-section h2 {
+
+            font-size: 1.55rem;
+
+            font-weight: 500;
+
+            letter-spacing: -0.025em;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .article-section p {
+
+            font-size: 1rem;
+
+            line-height: 1.85;
+
+        }
+
+
+        .article-section strong {
+
+            color: #e2e8f0;
+
+            font-weight: 500;
+
+        }
+
+
+        .article-section em {
+
+            color: #cbd5e1;
+
+        }
+
+
+        /* =====================================================
+           ROADMAP
+           ===================================================== */
+
+        .roadmap-list {
+
+            list-style: none;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin: 24px 0;
+
+        }
+
+
+        .roadmap-list li {
+
+            padding:
+                14px 16px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,255,255,0.018);
+
+            color: #94a3b8;
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background-color 0.3s ease;
+
+        }
+
+
+        .roadmap-list li:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(255,255,255,0.14);
+
+            background:
+                rgba(255,255,255,0.035);
+
+        }
+
+
+        .roadmap-list strong {
+
+            margin-left: 4px;
+
+        }
+
+
+        /* =====================================================
+           QUOTE
+           ===================================================== */
+
+        .studio-quote {
+
+            position: relative;
+
+            margin:
+                34px 0;
+
+            padding:
+                24px 26px;
+
+            border-left:
+                2px solid
+                rgba(255,255,255,0.30);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.035),
+                    transparent
+                );
+
+            color: #cbd5e1;
+
+            font-size: 1.02rem;
+
+            line-height: 1.8;
+
+            font-style: italic;
+
+        }
+
+
+        /* =====================================================
+           FINAL STATEMENT
+           ===================================================== */
+
+        .article-ending {
+
+            position: relative;
+
+            margin-top: 32px;
+
+            padding-top: 28px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .article-ending p:last-child {
+
+            color: #f8fafc;
+
+            font-weight: 500;
+
+            font-size: 1.05rem;
+
+        }
+
+
+        /* =====================================================
+           HIDDEN ARTICLE
+           ===================================================== */
 
         .hidden-article {
+
             display: none !important;
+
         }
+
+
+        /* =====================================================
+           PAGE-SPECIFIC MOOD ENHANCEMENTS
+           ===================================================== */
+
+        /*
+         * These don't replace mood.css.
+         * They make the journal page react more strongly
+         * to the selected environment.
+         */
+
+
+        /* ---------------- FOREST ---------------- */
+
+        html[data-dheere-mood="forest"]
+        .article-hero {
+
+            background:
+                radial-gradient(
+                    ellipse at 75% 20%,
+                    rgba(70,160,88,0.10),
+                    transparent 35%
+                );
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        .article-ambient {
+
+            border-color:
+                rgba(85,200,120,0.16);
+
+            box-shadow:
+                0 0 80px
+                rgba(35,130,65,0.10);
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        .article-eyebrow {
+
+            color: #70c987;
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        .roadmap-list li:hover {
+
+            border-color:
+                rgba(85,200,120,0.32);
+
+            background:
+                rgba(40,110,60,0.08);
+
+        }
+
+
+        /* ---------------- OCEAN ---------------- */
+
+        html[data-dheere-mood="ocean"]
+        .article-hero {
+
+            background:
+                radial-gradient(
+                    ellipse at 75% 20%,
+                    rgba(70,140,220,0.11),
+                    transparent 35%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .article-ambient {
+
+            border-color:
+                rgba(94,155,234,0.18);
+
+            box-shadow:
+                0 0 90px
+                rgba(35,100,180,0.12);
+
+            animation:
+                oceanArticleFloat
+                12s
+                ease-in-out
+                infinite alternate;
+
+        }
+
+
+        @keyframes oceanArticleFloat {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0)
+                    rotate(0deg);
+
+            }
+
+            100% {
+
+                transform:
+                    translate3d(-25px,35px,0)
+                    rotate(-8deg);
+
+            }
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .article-eyebrow {
+
+            color: #70a9e8;
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .roadmap-list li:hover {
+
+            border-color:
+                rgba(94,155,234,0.32);
+
+            background:
+                rgba(40,100,170,0.08);
+
+        }
+
+
+        /* ---------------- EMBER ---------------- */
+
+        html[data-dheere-mood="ember"]
+        .article-hero {
+
+            background:
+                radial-gradient(
+                    ellipse at 70% 90%,
+                    rgba(220,75,50,0.12),
+                    transparent 35%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .article-ambient {
+
+            border-color:
+                rgba(228,107,97,0.18);
+
+            box-shadow:
+                0 0 100px
+                rgba(180,50,35,0.12);
+
+            animation:
+                emberArticleFloat
+                7s
+                ease-in-out
+                infinite alternate;
+
+        }
+
+
+        @keyframes emberArticleFloat {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0)
+                    scale(1);
+
+            }
+
+            100% {
+
+                transform:
+                    translate3d(-18px,-25px,0)
+                    scale(1.05);
+
+            }
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .article-eyebrow {
+
+            color: #e4786d;
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .roadmap-list li:hover {
+
+            border-color:
+                rgba(228,107,97,0.34);
+
+            background:
+                rgba(150,50,35,0.08);
+
+        }
+
+
+        /* ---------------- MIDNIGHT ---------------- */
+
+        html[data-dheere-mood="midnight"]
+        .article-hero {
+
+            background:
+                radial-gradient(
+                    ellipse at 65% 10%,
+                    rgba(130,110,220,0.12),
+                    transparent 38%
+                );
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .article-ambient {
+
+            border-color:
+                rgba(155,140,242,0.18);
+
+            box-shadow:
+                0 0 100px
+                rgba(100,80,190,0.14);
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .article-eyebrow {
+
+            color: #aa9df5;
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .roadmap-list li:hover {
+
+            border-color:
+                rgba(155,140,242,0.34);
+
+            background:
+                rgba(100,80,170,0.08);
+
+        }
+
+
+        /* =====================================================
+           ACCESSIBILITY
+           ===================================================== */
+
+        .lang-btn:focus-visible {
+
+            outline:
+                2px solid
+                rgba(255,255,255,0.35);
+
+            outline-offset: 2px;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 640px) {
+
+            .article-hero {
+
+                padding:
+                    90px 0
+                    55px;
+
+            }
+
+
+            .article-hero h1 {
+
+                font-size:
+                    2.35rem;
+
+            }
+
+
+            .article-intro {
+
+                font-size:
+                    1rem;
+
+            }
+
+
+            .article-ambient {
+
+                width: 260px;
+
+                height: 260px;
+
+                right: -130px;
+
+                top: 20px;
+
+                opacity: 0.45;
+
+            }
+
+
+            .roadmap-list {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .studio-quote {
+
+                padding:
+                    18px 18px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+           ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .article-ambient {
+
+                animation: none !important;
+
+            }
+
+
+            .roadmap-list li,
+            .lang-btn {
+
+                transition: none !important;
+
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 <body>
 
-    <div id="articlePage" class="page-view">
-        
-        <!-- HEADER / NAVIGATION BACK -->
+
+    <div
+        id="articlePage"
+        class="page-view"
+    >
+
+
+        <!-- ==================================================
+             HEADER
+             ================================================== -->
+
         <header>
+
             <nav class="navbar">
+
+
                 <div class="nav-logo">
-                    <a href="index.html">Dheere Studio</a>
+
+                    <a href="index.html">
+                        Dheere Studio
+                    </a>
+
                 </div>
-                
+
+
                 <div>
-                    <a href="index.html" class="back-home-link static-link">&larr; Back to Dheere Studio</a>
+
+                    <a
+                        href="index.html"
+                        class="back-home-link static-link"
+                    >
+
+                        &larr; Back to Dheere Studio
+
+                    </a>
+
                 </div>
+
+
             </nav>
+
         </header>
 
-        <!-- MAIN ARTICLE CONTENT -->
+
+
+        <!-- ==================================================
+             MAIN
+             ================================================== -->
+
         <main>
-            
-            <!-- HEADER / META & LANGUAGE TOGGLE -->
-            <section class="hero-section" style="padding-bottom: 30px; border-bottom: none;">
-                <div class="hero-content">
-                    <span class="category" style="font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-bottom: 12px;">Studio Journal</span>
-                    <h1>Why Dheere Studio Exists</h1>
-                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 12px;">Published · September 2026</p>
-                    
-                    <!-- LANGUAGE TOGGLE BUTTONS -->
-                    <div class="lang-switch">
-                        <button id="btnEnglish" class="lang-btn active">English</button>
-                        <button id="btnHinglish" class="lang-btn">In Hinglish</button>
+
+
+            <!-- =================================================
+                 ARTICLE HERO
+                 ================================================= -->
+
+            <section
+                class="article-hero"
+                style="border-bottom: none;"
+            >
+
+
+                <div class="article-ambient"></div>
+
+
+                <div
+                    class="article-hero-content"
+                >
+
+
+                    <span
+                        class="article-eyebrow"
+                    >
+
+                        Studio Journal
+
+                    </span>
+
+
+                    <h1>
+                        Why Dheere Studio Exists
+                    </h1>
+
+
+                    <p class="article-meta">
+
+                        Published · September 2026
+
+                    </p>
+
+
+                    <p class="article-intro">
+
+                        A look at why Dheere Studio was created,
+                        how we approach ideas, and why some things
+                        are better built slowly.
+
+                    </p>
+
+
+                    <!-- LANGUAGE TOGGLE -->
+
+                    <div
+                        class="lang-switch"
+                        role="group"
+                        aria-label="Article language"
+                    >
+
+                        <button
+                            id="btnEnglish"
+                            class="lang-btn active"
+                            type="button"
+                            aria-pressed="true"
+                        >
+
+                            English
+
+                        </button>
+
+
+                        <button
+                            id="btnHinglish"
+                            class="lang-btn"
+                            type="button"
+                            aria-pressed="false"
+                        >
+
+                            In Hinglish
+
+                        </button>
+
                     </div>
+
+
                 </div>
+
+
             </section>
 
 
-            <!-- ====================================================
-                 1. ENGLISH ARTICLE VERSION
-                 ==================================================== -->
-            <article id="englishArticle" class="full-article">
-                
-                <!-- SECTION 1: THE BEGINNING -->
-                <section>
-                    <h2>The Beginning</h2>
-                    <p>Dheere Studio began with a simple idea: create things that are meant to grow beyond a single medium.</p>
+
+            <!-- =================================================
+                 ENGLISH ARTICLE
+                 ================================================= -->
+
+            <article
+                id="englishArticle"
+                class="full-article"
+            >
+
+
+                <!-- SECTION 1 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        The Beginning
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio began with a simple idea:
+                        create things that are meant to grow
+                        beyond a single medium.
+                    </p>
+
+
                     <br>
-                    <p>Stories can become worlds. Worlds can become experiences. And a single idea can eventually take many different forms.</p>
+
+
+                    <p>
+                        Stories can become worlds. Worlds can
+                        become experiences. And a single idea
+                        can eventually take many different forms.
+                    </p>
+
+
                     <br>
-                    <p>The goal of Dheere Studio is to build those ideas patiently, giving them enough time to develop before deciding what they should become.</p>
+
+
+                    <p>
+                        The goal of Dheere Studio is to build
+                        those ideas patiently, giving them enough
+                        time to develop before deciding what they
+                        should become.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 2: WHERE WE BEGIN -->
-                <section>
-                    <h2>Where We Begin</h2>
-                    <p>Our first major project is <strong>Shunyavas</strong>—an original fantasy universe currently in development.</p>
+
+
+                <!-- SECTION 2 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Where We Begin
+                    </h2>
+
+
+                    <p>
+                        Our first major project is
+                        <strong>Shunyavas</strong>—an original
+                        fantasy universe currently in development.
+                    </p>
+
+
                     <br>
-                    <p>It is beginning as a novel because a story needs a foundation before it can become anything else. The characters, conflicts, world, mythology and larger narrative need to exist first.</p>
+
+
+                    <p>
+                        It is beginning as a novel because a story
+                        needs a foundation before it can become
+                        anything else. The characters, conflicts,
+                        world, mythology and larger narrative need
+                        to exist first.
+                    </p>
+
+
                     <br>
-                    <p>The novel is only the beginning of that process.</p>
+
+
+                    <p>
+                        The novel is only the beginning of that
+                        process.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 3: MORE THAN A STORY -->
-                <section>
-                    <h2>More Than a Story</h2>
-                    <p>Shunyavas is being developed with a larger vision in mind.</p>
+
+
+                <!-- SECTION 3 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        More Than a Story
+                    </h2>
+
+
+                    <p>
+                        Shunyavas is being developed with a larger
+                        vision in mind.
+                    </p>
+
+
                     <br>
-                    <p>Over time, its world may expand into different forms:</p>
+
+
+                    <p>
+                        Over time, its world may expand into
+                        different forms:
+                    </p>
+
+
                     <br>
+
+
                     <ul class="roadmap-list">
-                        <li>📖 <strong>Novel</strong></li>
-                        <li>🎨 <strong>Comics and illustrated stories</strong></li>
-                        <li>✨ <strong>Animation</strong></li>
-                        <li>🎮 <strong>Games and interactive experiences</strong></li>
-                        <li>📜 <strong>Character and world archives</strong></li>
-                        <li>💡 <strong>Other creative projects</strong></li>
+
+                        <li>
+                            📖
+                            <strong>Novel</strong>
+                        </li>
+
+                        <li>
+                            🎨
+                            <strong>
+                                Comics and illustrated stories
+                            </strong>
+                        </li>
+
+                        <li>
+                            ✨
+                            <strong>
+                                Animation
+                            </strong>
+                        </li>
+
+                        <li>
+                            🎮
+                            <strong>
+                                Games and interactive experiences
+                            </strong>
+                        </li>
+
+                        <li>
+                            📜
+                            <strong>
+                                Character and world archives
+                            </strong>
+                        </li>
+
+                        <li>
+                            💡
+                            <strong>
+                                Other creative projects
+                            </strong>
+                        </li>
+
                     </ul>
+
+
                     <br>
-                    <p>None of these need to happen at once. The important thing is to build the foundation properly first.</p>
+
+
+                    <p>
+                        None of these need to happen at once.
+                        The important thing is to build the
+                        foundation properly first.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 4: WHY DHEERE? -->
-                <section>
-                    <h2>Why Dheere?</h2>
-                    <p>The name <em>Dheere</em> reflects the way we want to create.</p>
+
+
+                <!-- SECTION 4 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Why Dheere?
+                    </h2>
+
+
+                    <p>
+                        The name <em>Dheere</em> reflects the
+                        way we want to create.
+                    </p>
+
+
                     <br>
-                    <p>Not everything needs to be made quickly.</p>
-                    <br>
-                    <blockquote style="border-left: 2px solid #f8fafc; padding-left: 16px; margin: 16px 0; color: #e2e8f0; font-style: italic;">
-                        "There is value in spending time with an idea, questioning it, rebuilding it, and allowing it to become something stronger."
+
+
+                    <p>
+                        Not everything needs to be made quickly.
+                    </p>
+
+
+                    <blockquote
+                        class="studio-quote"
+                    >
+
+                        "There is value in spending time with
+                        an idea, questioning it, rebuilding it,
+                        and allowing it to become something
+                        stronger."
+
                     </blockquote>
-                    <br>
-                    <p>The objective isn't simply to produce more. It is to create things worth continuing.</p>
+
+
+                    <p>
+                        The objective isn't simply to produce more.
+                        It is to create things worth continuing.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 5: WHAT COMES NEXT -->
-                <section style="border-bottom: none;">
-                    <h2>What Comes Next</h2>
-                    <p>Right now, the focus is simple.</p>
+
+
+                <!-- SECTION 5 -->
+
+                <section
+                    class="article-section article-ending"
+                >
+
+                    <h2>
+                        What Comes Next
+                    </h2>
+
+
+                    <p>
+                        Right now, the focus is simple.
+                    </p>
+
+
                     <br>
-                    <p>Shunyavas is being written. Dheere Studio is being built. The foundation for a future community is taking shape. And the larger possibilities will come later.</p>
+
+
+                    <p>
+                        Shunyavas is being written. Dheere Studio
+                        is being built. The foundation for a future
+                        community is taking shape. And the larger
+                        possibilities will come later.
+                    </p>
+
+
                     <br>
-                    <p style="color: #f8fafc; font-weight: 500;">This is not the finished studio. It is the beginning of one.</p>
+
+
+                    <p>
+                        This is not the finished studio.
+                        It is the beginning of one.
+                    </p>
+
                 </section>
+
 
             </article>
 
 
-            <!-- ====================================================
-                 2. HINGLISH ARTICLE VERSION (Hidden by default)
-                 ==================================================== -->
-            <article id="hinglishArticle" class="full-article hidden-article">
-                
-                <!-- SECTION 1: THE BEGINNING -->
-                <section>
-                    <h2>Shuruwaat</h2>
-                    <p>Dheere Studio ki shuruwaat ek simple idea se hui: aisi cheezein banana jo sirf ek medium tak simit na rahein, balki aage badhti rahein.</p>
+
+            <!-- =================================================
+                 HINGLISH ARTICLE
+                 ================================================= -->
+
+            <article
+                id="hinglishArticle"
+                class="full-article hidden-article"
+            >
+
+
+                <!-- SECTION 1 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Shuruwaat
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio ki shuruwaat ek simple
+                        idea se hui: aisi cheezein banana jo sirf
+                        ek medium tak simit na rahein, balki
+                        aage badhti rahein.
+                    </p>
+
+
                     <br>
-                    <p>Kahaniyan worlds ban sakti hain. Worlds experiences ban sakte hain. Aur ek akela idea waqt ke sath kai alag-alag roop le sakta hai.</p>
+
+
+                    <p>
+                        Kahaniyan worlds ban sakti hain. Worlds
+                        experiences ban sakte hain. Aur ek akela
+                        idea waqt ke sath kai alag-alag roop
+                        le sakta hai.
+                    </p>
+
+
                     <br>
-                    <p>Dheere Studio ka goal un ideas ko sabr (patience) ke sath build karna hai, unhe poora waqt dena taaki yeh tay ho sake ki unhe aage kya banna chahiye.</p>
+
+
+                    <p>
+                        Dheere Studio ka goal un ideas ko sabr
+                        (patience) ke sath build karna hai, unhe
+                        poora waqt dena taaki yeh tay ho sake ki
+                        unhe aage kya banna chahiye.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 2: WHERE WE BEGIN -->
-                <section>
-                    <h2>Hum Kahan Se Shuru Kar Rahe Hain</h2>
-                    <p>Hamara pehla major project hai <strong>Shunyavas</strong>—ek original fantasy universe jo abhi development mein hai.</p>
+
+
+                <!-- SECTION 2 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Hum Kahan Se Shuru Kar Rahe Hain
+                    </h2>
+
+
+                    <p>
+                        Hamara pehla major project hai
+                        <strong>Shunyavas</strong>—ek original
+                        fantasy universe jo abhi development
+                        mein hai.
+                    </p>
+
+
                     <br>
-                    <p>Yeh ek novel ke roop mein shuru ho raha hai kyunki kisi bhi cheez se pehle kahani ko ek strong foundation ki zaroorat hoti hai. Characters, conflicts, world, mythology aur bada narrative pehle exist karna zaroori hai.</p>
+
+
+                    <p>
+                        Yeh ek novel ke roop mein shuru ho raha
+                        hai kyunki kisi bhi cheez se pehle kahani
+                        ko ek strong foundation ki zaroorat hoti
+                        hai. Characters, conflicts, world,
+                        mythology aur bada narrative pehle exist
+                        karna zaroori hai.
+                    </p>
+
+
                     <br>
-                    <p>Novel toh bas is process ki shuruwaat hai.</p>
+
+
+                    <p>
+                        Novel toh bas is process ki shuruwaat hai.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 3: MORE THAN A STORY -->
-                <section>
-                    <h2>Sirf Ek Kahani Se Zyada</h2>
-                    <p>Shunyavas ko ek bade vision ke sath develop kiya ja raha hai.</p>
+
+
+                <!-- SECTION 3 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Sirf Ek Kahani Se Zyada
+                    </h2>
+
+
+                    <p>
+                        Shunyavas ko ek bade vision ke sath
+                        develop kiya ja raha hai.
+                    </p>
+
+
                     <br>
-                    <p>Waqt ke sath, iski duniya alag-alag mediums mein expand ho sakti hai:</p>
+
+
+                    <p>
+                        Waqt ke sath, iski duniya alag-alag
+                        mediums mein expand ho sakti hai:
+                    </p>
+
+
                     <br>
+
+
                     <ul class="roadmap-list">
-                        <li>📖 <strong>Novel</strong></li>
-                        <li>🎨 <strong>Comics aur illustrated stories</strong></li>
-                        <li>✨ <strong>Animation</strong></li>
-                        <li>🎮 <strong>Games aur interactive experiences</strong></li>
-                        <li>📜 <strong>Character aur world archives</strong></li>
-                        <li>💡 <strong>Dusre creative projects</strong></li>
+
+                        <li>
+                            📖
+                            <strong>
+                                Novel
+                            </strong>
+                        </li>
+
+                        <li>
+                            🎨
+                            <strong>
+                                Comics aur illustrated stories
+                            </strong>
+                        </li>
+
+                        <li>
+                            ✨
+                            <strong>
+                                Animation
+                            </strong>
+                        </li>
+
+                        <li>
+                            🎮
+                            <strong>
+                                Games aur interactive experiences
+                            </strong>
+                        </li>
+
+                        <li>
+                            📜
+                            <strong>
+                                Character aur world archives
+                            </strong>
+                        </li>
+
+                        <li>
+                            💡
+                            <strong>
+                                Dusre creative projects
+                            </strong>
+                        </li>
+
                     </ul>
+
+
                     <br>
-                    <p>Yeh sab ek sath hona zaroori nahi hai. Sabse important baat yeh hai ki pehle foundation sahi se bane.</p>
+
+
+                    <p>
+                        Yeh sab ek sath hona zaroori nahi hai.
+                        Sabse important baat yeh hai ki pehle
+                        foundation sahi se bane.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 4: WHY DHEERE? -->
-                <section>
-                    <h2>Dheere Hi Kyun?</h2>
-                    <p><em>Dheere</em> naam humare banane ke tareeqe (creative process) ko show karta hai.</p>
+
+
+                <!-- SECTION 4 -->
+
+                <section
+                    class="article-section"
+                >
+
+                    <h2>
+                        Dheere Hi Kyun?
+                    </h2>
+
+
+                    <p>
+                        <em>Dheere</em> naam humare banane ke
+                        tareeqe (creative process) ko show karta hai.
+                    </p>
+
+
                     <br>
-                    <p>Har cheez ko jaldi me banana zaroori nahi hota.</p>
-                    <br>
-                    <blockquote style="border-left: 2px solid #f8fafc; padding-left: 16px; margin: 16px 0; color: #e2e8f0; font-style: italic;">
-                        "Ek idea ke sath waqt bitane me, use question karne me, use dobara rebuild karne me aur use kuch behtar banne dene me asli value hai."
+
+
+                    <p>
+                        Har cheez ko jaldi me banana zaroori
+                        nahi hota.
+                    </p>
+
+
+                    <blockquote
+                        class="studio-quote"
+                    >
+
+                        "Ek idea ke sath waqt bitane me,
+                        use question karne me, use dobara
+                        rebuild karne me aur use kuch behtar
+                        banne dene me asli value hai."
+
                     </blockquote>
-                    <br>
-                    <p>Maskaad sirf zyada quantity produce karna nahi hai. Maqsad aisi cheezein banana hai jinhe aage continue rakhne ka dil kare.</p>
+
+
+                    <p>
+                        Maskaad sirf zyada quantity produce karna
+                        nahi hai. Maqsad aisi cheezein banana hai
+                        jinhe aage continue rakhne ka dil kare.
+                    </p>
+
                 </section>
 
-                <!-- SECTION 5: WHAT COMES NEXT -->
-                <section style="border-bottom: none;">
-                    <h2>Aage Kya Aane Wala Hai</h2>
-                    <p>Abhi ke liye, humara focus ekdum simple hai.</p>
+
+
+                <!-- SECTION 5 -->
+
+                <section
+                    class="article-section article-ending"
+                >
+
+                    <h2>
+                        Aage Kya Aane Wala Hai
+                    </h2>
+
+
+                    <p>
+                        Abhi ke liye, humara focus ekdum simple hai.
+                    </p>
+
+
                     <br>
-                    <p>Shunyavas likha ja raha hai. Dheere Studio build ho raha hai. Ek future community ki foundation taiyar ho rahi hai. Aur aage ki badi possibilities baad me aayengi.</p>
+
+
+                    <p>
+                        Shunyavas likha ja raha hai. Dheere Studio
+                        build ho raha hai. Ek future community ki
+                        foundation taiyar ho rahi hai. Aur aage ki
+                        badi possibilities baad me aayengi.
+                    </p>
+
+
                     <br>
-                    <p style="color: #f8fafc; font-weight: 500;">Yeh koi finished studio nahi hai. Yeh bas ek shuruwaat hai.</p>
+
+
+                    <p>
+                        Yeh koi finished studio nahi hai.
+                        Yeh bas ek shuruwaat hai.
+                    </p>
+
                 </section>
+
 
             </article>
+
 
         </main>
 
-        <!-- FOOTER -->
+
+
+        <!-- ==================================================
+             FOOTER
+             ================================================== -->
+
         <footer>
+
             <div class="footer-content">
-                <p>&copy; 2026 Dheere Studio. All rights reserved.</p>
+
+                <p>
+                    &copy; 2026 Dheere Studio.
+                    All rights reserved.
+                </p>
+
             </div>
+
         </footer>
+
 
     </div>
 
-    <!-- SIMPLE SCRIPT FOR TOGGLE -->
+
+
+    <!-- ======================================================
+         DHEERE MOOD ENGINE
+         ====================================================== -->
+
+    <script src="mood-engine.js"></script>
+
+
+
+    <!-- ======================================================
+         LANGUAGE TOGGLE
+         ====================================================== -->
+
     <script>
-        const btnEnglish = document.getElementById('btnEnglish');
-        const btnHinglish = document.getElementById('btnHinglish');
-        const englishArticle = document.getElementById('englishArticle');
-        const hinglishArticle = document.getElementById('hinglishArticle');
 
-        btnEnglish.addEventListener('click', () => {
-            btnEnglish.classList.add('active');
-            btnHinglish.classList.remove('active');
-            englishArticle.classList.remove('hidden-article');
-            hinglishArticle.classList.add('hidden-article');
-        });
+        (function () {
 
-        btnHinglish.addEventListener('click', () => {
-            btnHinglish.classList.add('active');
-            btnEnglish.classList.remove('active');
-            hinglishArticle.classList.remove('hidden-article');
-            englishArticle.classList.add('hidden-article');
-        });
+            "use strict";
+
+
+            const btnEnglish =
+                document.getElementById(
+                    "btnEnglish"
+                );
+
+
+            const btnHinglish =
+                document.getElementById(
+                    "btnHinglish"
+                );
+
+
+            const englishArticle =
+                document.getElementById(
+                    "englishArticle"
+                );
+
+
+            const hinglishArticle =
+                document.getElementById(
+                    "hinglishArticle"
+                );
+
+
+            function showEnglish() {
+
+                btnEnglish.classList.add(
+                    "active"
+                );
+
+                btnHinglish.classList.remove(
+                    "active"
+                );
+
+
+                btnEnglish.setAttribute(
+                    "aria-pressed",
+                    "true"
+                );
+
+                btnHinglish.setAttribute(
+                    "aria-pressed",
+                    "false"
+                );
+
+
+                englishArticle.classList.remove(
+                    "hidden-article"
+                );
+
+                hinglishArticle.classList.add(
+                    "hidden-article"
+                );
+
+            }
+
+
+            function showHinglish() {
+
+                btnHinglish.classList.add(
+                    "active"
+                );
+
+                btnEnglish.classList.remove(
+                    "active"
+                );
+
+
+                btnHinglish.setAttribute(
+                    "aria-pressed",
+                    "true"
+                );
+
+                btnEnglish.setAttribute(
+                    "aria-pressed",
+                    "false"
+                );
+
+
+                hinglishArticle.classList.remove(
+                    "hidden-article"
+                );
+
+                englishArticle.classList.add(
+                    "hidden-article"
+                );
+
+            }
+
+
+            btnEnglish.addEventListener(
+                "click",
+                showEnglish
+            );
+
+
+            btnHinglish.addEventListener(
+                "click",
+                showHinglish
+            );
+
+
+        })();
+
     </script>
+
+
 </body>
+
 </html>
