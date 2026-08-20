@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
@@ -10,11 +12,52 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const client = new MongoClient(process.env.MONGODB_URI);
+
+// ==========================================
+// ENVIRONMENT
+// ==========================================
+
+const client = new MongoClient(
+    process.env.MONGODB_URI
+);
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
+
+
+// ==========================================
+// EMAIL TRANSPORTER
+// ==========================================
+
+const mailTransporter =
+    nodemailer.createTransport({
+
+        host:
+            process.env.SMTP_HOST,
+
+        port:
+            Number(process.env.SMTP_PORT) || 587,
+
+        secure:
+            Number(process.env.SMTP_PORT) === 465,
+
+        auth: {
+
+            user:
+                process.env.SMTP_USER,
+
+            pass:
+                process.env.SMTP_PASS
+
+        }
+
+    });
+
+
+// ==========================================
+// COLLECTIONS
+// ==========================================
 
 let feedbackCollection;
 let usersCollection;
@@ -25,7 +68,8 @@ let postsCollection;
 // USERNAME RULES
 // ==========================================
 
-const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
+const USERNAME_REGEX =
+    /^[a-z0-9_]{3,20}$/;
 
 
 // ==========================================
@@ -40,6 +84,13 @@ const MAX_POST_LENGTH = 2000;
 // ==========================================
 
 const MAX_AI_MESSAGE_LENGTH = 500;
+
+
+// ==========================================
+// PASSWORD RESET RULES
+// ==========================================
+
+const RESET_TOKEN_EXPIRY_MINUTES = 15;
 
 
 // ==========================================
@@ -154,6 +205,18 @@ async function connectDatabase() {
         );
 
 
+        // ==========================================
+        // RESET TOKEN INDEX
+        // ==========================================
+
+        await usersCollection.createIndex(
+            { resetTokenHash: 1 },
+            {
+                sparse: true
+            }
+        );
+
+
         console.log(
             "MongoDB connected successfully"
         );
@@ -166,6 +229,11 @@ async function connectDatabase() {
 
         console.log(
             "Posts system initialized"
+        );
+
+
+        console.log(
+            "Password reset system initialized"
         );
 
 
@@ -211,10 +279,6 @@ app.post(
             } = req.body;
 
 
-            // ==========================================
-            // REQUIRED MESSAGE
-            // ==========================================
-
             if (
                 typeof message !== "string"
             ) {
@@ -231,17 +295,9 @@ app.post(
             }
 
 
-            // ==========================================
-            // CLEAN MESSAGE
-            // ==========================================
-
             const cleanMessage =
                 message.trim();
 
-
-            // ==========================================
-            // EMPTY MESSAGE
-            // ==========================================
 
             if (!cleanMessage) {
 
@@ -256,10 +312,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // MESSAGE LENGTH
-            // ==========================================
 
             if (
                 cleanMessage.length >
@@ -277,10 +329,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // CHECK API KEY
-            // ==========================================
 
             if (
                 !process.env.GEMINI_API_KEY
@@ -302,10 +350,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // ASK GEMINI
-            // ==========================================
 
             const response =
                 await ai.models.generateContent({
@@ -333,10 +377,6 @@ app.post(
                 response.text?.trim();
 
 
-            // ==========================================
-            // EMPTY AI RESPONSE
-            // ==========================================
-
             if (!answer) {
 
                 return res.status(502).json({
@@ -350,10 +390,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // RESPONSE
-            // ==========================================
 
             res.json({
 
@@ -404,10 +440,6 @@ app.get(
                     .toLowerCase();
 
 
-            // ==========================================
-            // VALIDATE USERNAME FORMAT
-            // ==========================================
-
             if (
                 !USERNAME_REGEX.test(username)
             ) {
@@ -427,10 +459,6 @@ app.get(
 
             }
 
-
-            // ==========================================
-            // CHECK DATABASE
-            // ==========================================
 
             const existingUser =
                 await usersCollection.findOne(
@@ -463,10 +491,6 @@ app.get(
 
             }
 
-
-            // ==========================================
-            // USERNAME AVAILABLE
-            // ==========================================
 
             return res.json({
 
@@ -522,10 +546,6 @@ app.post(
 
         try {
 
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
-
             if (
                 !name ||
                 !email ||
@@ -543,10 +563,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // CREATE FEEDBACK
-            // ==========================================
 
             const feedback = {
 
@@ -644,10 +660,6 @@ app.post(
 
         try {
 
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
-
             if (
                 !name ||
                 !username ||
@@ -667,10 +679,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // CLEAN VALUES
-            // ==========================================
-
             const cleanName =
                 name.trim();
 
@@ -686,10 +694,6 @@ app.post(
                     .trim()
                     .toLowerCase();
 
-
-            // ==========================================
-            // VALIDATE USERNAME
-            // ==========================================
 
             if (
                 !USERNAME_REGEX.test(
@@ -708,10 +712,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // CHECK EMAIL
-            // ==========================================
 
             const existingEmail =
                 await usersCollection.findOne({
@@ -736,10 +736,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // CHECK USERNAME
-            // ==========================================
-
             const existingUsername =
                 await usersCollection.findOne({
 
@@ -763,20 +759,12 @@ app.post(
             }
 
 
-            // ==========================================
-            // HASH PASSWORD
-            // ==========================================
-
             const hashedPassword =
                 await bcrypt.hash(
                     password,
                     10
                 );
 
-
-            // ==========================================
-            // CREATE USER
-            // ==========================================
 
             const user = {
 
@@ -851,10 +839,6 @@ app.post(
 
         } catch (error) {
 
-            // ==========================================
-            // DUPLICATE USERNAME SAFETY
-            // ==========================================
-
             if (
                 error &&
                 error.code === 11000
@@ -909,10 +893,6 @@ app.post(
 
         try {
 
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
-
             if (
                 !email ||
                 !password
@@ -930,19 +910,11 @@ app.post(
             }
 
 
-            // ==========================================
-            // CLEAN EMAIL
-            // ==========================================
-
             const cleanEmail =
                 email
                     .trim()
                     .toLowerCase();
 
-
-            // ==========================================
-            // FIND USER
-            // ==========================================
 
             const user =
                 await usersCollection.findOne({
@@ -952,10 +924,6 @@ app.post(
 
                 });
 
-
-            // ==========================================
-            // ACCOUNT DOES NOT EXIST
-            // ==========================================
 
             if (!user) {
 
@@ -971,20 +939,12 @@ app.post(
             }
 
 
-            // ==========================================
-            // CHECK PASSWORD
-            // ==========================================
-
             const passwordMatch =
                 await bcrypt.compare(
                     password,
                     user.password
                 );
 
-
-            // ==========================================
-            // WRONG PASSWORD
-            // ==========================================
 
             if (!passwordMatch) {
 
@@ -999,10 +959,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // LOGIN SUCCESS
-            // ==========================================
 
             console.log(
                 "User logged in:"
@@ -1026,10 +982,6 @@ app.post(
                 user.email
             );
 
-
-            // ==========================================
-            // NEVER SEND PASSWORD/HASH
-            // ==========================================
 
             res.json({
 
@@ -1081,6 +1033,552 @@ app.post(
 
 
 // ==========================================
+// FORGOT PASSWORD
+// ==========================================
+
+app.post(
+    "/forgot-password",
+    async (req, res) => {
+
+        try {
+
+            const {
+                email
+            } = req.body;
+
+
+            // ==========================================
+            // ALWAYS RETURN GENERIC MESSAGE
+            // ==========================================
+
+            const genericMessage =
+                "If an account exists for this email, a password reset link has been sent.";
+
+
+            if (
+                typeof email !== "string"
+            ) {
+
+                return res.json({
+
+                    success: true,
+
+                    message:
+                        genericMessage
+
+                });
+
+            }
+
+
+            const cleanEmail =
+                email
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!cleanEmail) {
+
+                return res.json({
+
+                    success: true,
+
+                    message:
+                        genericMessage
+
+                });
+
+            }
+
+
+            // ==========================================
+            // FIND USER
+            // ==========================================
+
+            const user =
+                await usersCollection.findOne({
+
+                    email:
+                        cleanEmail
+
+                });
+
+
+            // ==========================================
+            // DO NOT REVEAL WHETHER EMAIL EXISTS
+            // ==========================================
+
+            if (!user) {
+
+                return res.json({
+
+                    success: true,
+
+                    message:
+                        genericMessage
+
+                });
+
+            }
+
+
+            // ==========================================
+            // GENERATE SECURE TOKEN
+            // ==========================================
+
+            const rawToken =
+                crypto.randomBytes(32)
+                    .toString("hex");
+
+
+            // ==========================================
+            // STORE ONLY TOKEN HASH
+            // ==========================================
+
+            const tokenHash =
+                crypto
+                    .createHash("sha256")
+                    .update(rawToken)
+                    .digest("hex");
+
+
+            const tokenExpiresAt =
+                new Date(
+                    Date.now() +
+                    RESET_TOKEN_EXPIRY_MINUTES *
+                    60 *
+                    1000
+                );
+
+
+            // ==========================================
+            // SAVE TOKEN
+            // ==========================================
+
+            await usersCollection.updateOne(
+
+                {
+                    _id:
+                        user._id
+                },
+
+                {
+                    $set: {
+
+                        resetTokenHash:
+                            tokenHash,
+
+                        resetTokenExpiresAt:
+                            tokenExpiresAt
+
+                    }
+
+                }
+
+            );
+
+
+            // ==========================================
+            // CREATE RESET URL
+            // ==========================================
+
+            const baseUrl =
+                (
+                    process.env.APP_BASE_URL ||
+                    "http://localhost:3000"
+                )
+                    .replace(/\/+$/, "");
+
+
+            const resetUrl =
+                `${baseUrl}/reset-password.html?token=${encodeURIComponent(rawToken)}`;
+
+
+            // ==========================================
+            // EMAIL
+            // ==========================================
+
+            await mailTransporter.sendMail({
+
+                from:
+                    `"Dheere Studio" <${process.env.SMTP_USER}>`,
+
+                to:
+                    cleanEmail,
+
+                subject:
+                    "Reset your Dheere Studio password",
+
+                text:
+`You requested a password reset for your Dheere Studio account.
+
+Use the link below to create a new password:
+
+${resetUrl}
+
+This link expires in ${RESET_TOKEN_EXPIRY_MINUTES} minutes and can only be used once.
+
+If you did not request this, you can safely ignore this email.`,
+
+                html:
+`
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Reset your Dheere Studio password
+    </title>
+
+</head>
+
+<body
+    style="
+        margin:0;
+        padding:40px 20px;
+        background:#f5f5f5;
+        font-family:Arial,sans-serif;
+    "
+>
+
+    <div
+        style="
+            max-width:520px;
+            margin:auto;
+            background:white;
+            padding:35px;
+            border-radius:12px;
+        "
+    >
+
+        <h2>
+            Reset your password
+        </h2>
+
+        <p>
+            We received a request to reset your
+            Dheere Studio password.
+        </p>
+
+        <p>
+            Click the button below to create a
+            new password.
+        </p>
+
+        <p style="margin:30px 0;">
+
+            <a
+                href="${resetUrl}"
+                style="
+                    display:inline-block;
+                    padding:12px 22px;
+                    background:#111;
+                    color:#fff;
+                    text-decoration:none;
+                    border-radius:8px;
+                "
+            >
+                Create New Password
+            </a>
+
+        </p>
+
+        <p>
+            This link expires in
+            ${RESET_TOKEN_EXPIRY_MINUTES}
+            minutes and can only be used once.
+        </p>
+
+        <p>
+            If you did not request this,
+            you can safely ignore this email.
+        </p>
+
+        <hr>
+
+        <p
+            style="
+                font-size:12px;
+                color:#777;
+            "
+        >
+            Dheere Studio
+        </p>
+
+    </div>
+
+</body>
+
+</html>
+`
+
+            });
+
+
+            console.log(
+                "Password reset email sent to:",
+                cleanEmail
+            );
+
+
+            // ==========================================
+            // RESPONSE
+            // ==========================================
+
+            return res.json({
+
+                success: true,
+
+                message:
+                    genericMessage
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Forgot password error:",
+                error
+            );
+
+
+            // ==========================================
+            // DON'T LEAK INTERNAL ERROR
+            // ==========================================
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not process password reset request"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// RESET PASSWORD
+// ==========================================
+
+app.post(
+    "/reset-password",
+    async (req, res) => {
+
+        try {
+
+            const {
+                token,
+                password
+            } = req.body;
+
+
+            // ==========================================
+            // REQUIRED FIELDS
+            // ==========================================
+
+            if (
+                typeof token !== "string" ||
+                typeof password !== "string"
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Reset token and new password are required"
+
+                });
+
+            }
+
+
+            const cleanToken =
+                token.trim();
+
+
+            if (!cleanToken) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid reset token"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // PASSWORD RULE
+            // ==========================================
+
+            if (
+                password.length < 8
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Password must be at least 8 characters long"
+
+                });
+
+            }
+
+
+            // ==========================================
+            // HASH TOKEN
+            // ==========================================
+
+            const tokenHash =
+                crypto
+                    .createHash("sha256")
+                    .update(cleanToken)
+                    .digest("hex");
+
+
+            // ==========================================
+            // FIND VALID TOKEN
+            // ==========================================
+
+            const user =
+                await usersCollection.findOne({
+
+                    resetTokenHash:
+                        tokenHash,
+
+                    resetTokenExpiresAt: {
+                        $gt:
+                            new Date()
+                    }
+
+                });
+
+
+            // ==========================================
+            // INVALID / EXPIRED TOKEN
+            // ==========================================
+
+            if (!user) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "This password reset link is invalid or has expired."
+
+                });
+
+            }
+
+
+            // ==========================================
+            // HASH NEW PASSWORD
+            // ==========================================
+
+            const hashedPassword =
+                await bcrypt.hash(
+                    password,
+                    10
+                );
+
+
+            // ==========================================
+            // UPDATE PASSWORD
+            // ==========================================
+
+            await usersCollection.updateOne(
+
+                {
+                    _id:
+                        user._id,
+
+                    resetTokenHash:
+                        tokenHash
+
+                },
+
+                {
+                    $set: {
+
+                        password:
+                            hashedPassword
+
+                    },
+
+                    $unset: {
+
+                        resetTokenHash: "",
+
+                        resetTokenExpiresAt: ""
+
+                    }
+
+                }
+
+            );
+
+
+            console.log(
+                "Password reset successfully for:",
+                user.email
+            );
+
+
+            // ==========================================
+            // RESPONSE
+            // ==========================================
+
+            return res.json({
+
+                success: true,
+
+                message:
+                    "Password updated successfully"
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Reset password error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not reset password"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ==========================================
 // CREATE POST
 // ==========================================
 
@@ -1096,10 +1594,6 @@ app.post(
 
 
         try {
-
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
 
             if (
                 !authorId ||
@@ -1119,10 +1613,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // VALIDATE AUTHOR ID
-            // ==========================================
-
             if (
                 !ObjectId.isValid(authorId)
             ) {
@@ -1139,10 +1629,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // CLEAN CONTENT
-            // ==========================================
-
             const cleanContent =
                 content.trim();
 
@@ -1152,10 +1638,6 @@ app.post(
                     .trim()
                     .toLowerCase();
 
-
-            // ==========================================
-            // VALIDATE CONTENT
-            // ==========================================
 
             if (!cleanContent) {
 
@@ -1188,10 +1670,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // VERIFY USER
-            // ==========================================
-
             const user =
                 await usersCollection.findOne({
 
@@ -1217,10 +1695,6 @@ app.post(
 
             }
 
-
-            // ==========================================
-            // CREATE POST
-            // ==========================================
 
             const post = {
 
@@ -1264,10 +1738,6 @@ app.post(
                 post.username
             );
 
-
-            // ==========================================
-            // RESPONSE
-            // ==========================================
 
             res.status(201).json({
 
@@ -1501,6 +1971,42 @@ app.get(
 async function startServer() {
 
     await connectDatabase();
+
+
+    // ==========================================
+    // CHECK EMAIL CONFIGURATION
+    // ==========================================
+
+    if (
+        process.env.SMTP_HOST &&
+        process.env.SMTP_USER &&
+        process.env.SMTP_PASS
+    ) {
+
+        try {
+
+            await mailTransporter.verify();
+
+            console.log(
+                "SMTP email system connected successfully"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "SMTP connection failed:",
+                error.message
+            );
+
+        }
+
+    } else {
+
+        console.warn(
+            "SMTP environment variables are missing"
+        );
+
+    }
 
 
     const PORT =

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Forgot Password — Dheere Studio
+    </title>
+
+    <meta
+        name="description"
+        content="Reset your Dheere Studio account password."
+    >
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         FORGOT PASSWORD PAGE
+         ========================================== -->
+
+
+    <div id="loginPage">
+
+
+        <!-- Back Button -->
+
+        <button
+            class="back-home-link"
+            onclick="window.location.href='index.html'"
+            type="button"
+        >
+
+            ← Back to Dheere Studio
+
+        </button>
+
+
+
+        <div class="auth-page-container">
+
+
+            <div class="auth-card">
+
+
+                <form
+                    class="auth-form"
+                    id="forgotPasswordForm"
+                >
+
+
+                    <h2>
+                        Forgot Password
+                    </h2>
+
+
+                    <p class="auth-subtext">
+
+                        Enter your email address and we'll
+                        send you a secure password reset link.
+
+                    </p>
+
+
+
+                    <!-- EMAIL -->
+
+
+                    <div class="input-group">
+
+
+                        <label for="forgotEmail">
+
+                            Email Address
+
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="forgotEmail"
+                            placeholder="name@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
+
+
+                    <button
+                        type="submit"
+                        class="button full-width"
+                        id="forgotSubmitButton"
+                    >
+
+                        Continue
+
+                    </button>
+
+
+
+                    <!-- MESSAGE -->
+
+
+                    <p
+                        id="forgotMessage"
+                        class="feedback-success"
+                        style="display:none;"
+                    ></p>
+
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==========================================
+         FORGOT PASSWORD SCRIPT
+         ========================================== -->
+
+
+    <script>
+
+
+        // ==========================================
+        // CONFIG
+        // ==========================================
+
+        const API_BASE =
+            "https://dheere-studio.onrender.com";
+
+
+        // ==========================================
+        // ELEMENTS
+        // ==========================================
+
+        const forgotPasswordForm =
+            document.getElementById(
+                "forgotPasswordForm"
+            );
+
+
+        const forgotEmail =
+            document.getElementById(
+                "forgotEmail"
+            );
+
+
+        const forgotSubmitButton =
+            document.getElementById(
+                "forgotSubmitButton"
+            );
+
+
+        const forgotMessage =
+            document.getElementById(
+                "forgotMessage"
+            );
+
+
+
+        // ==========================================
+        // SHOW MESSAGE
+        // ==========================================
+
+        function showMessage(
+            message,
+            type = "success"
+        ) {
+
+            forgotMessage.textContent =
+                message;
+
+
+            forgotMessage.style.display =
+                "block";
+
+
+            forgotMessage.className =
+                type === "error"
+                    ? "feedback-error"
+                    : "feedback-success";
+
+        }
+
+
+
+        // ==========================================
+        // FORGOT PASSWORD
+        // ==========================================
+
+        forgotPasswordForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const email =
+                    forgotEmail.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (!email) {
+
+                    showMessage(
+                        "Please enter your email address.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                // ======================================
+                // DISABLE BUTTON
+                // ======================================
+
+                forgotSubmitButton.disabled =
+                    true;
+
+
+                forgotSubmitButton.textContent =
+                    "Sending...";
+
+
+                forgotMessage.style.display =
+                    "none";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_BASE}/forgot-password`,
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        email:
+                                            email
+
+                                    })
+
+                            }
+                        );
+
+
+                    let result = null;
+
+
+                    try {
+
+                        result =
+                            await response.json();
+
+                    } catch {
+
+                        result = null;
+
+                    }
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+
+                            result?.error ||
+                            "Unable to process your request."
+
+                        );
+
+                    }
+
+
+                    // ======================================
+                    // GENERIC RESPONSE
+                    // ======================================
+
+                    showMessage(
+
+                        result?.message ||
+
+                        "If an account exists for this email, a password reset link has been sent.",
+
+                        "success"
+
+                    );
+
+
+                    forgotEmail.value =
+                        "";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Forgot Password Error:",
+                        error
+                    );
+
+
+                    showMessage(
+
+                        error.message ||
+
+                        "Unable to process your request right now.",
+
+                        "error"
+
+                    );
+
+                } finally {
+
+                    forgotSubmitButton.disabled =
+                        false;
+
+
+                    forgotSubmitButton.textContent =
+                        "Continue";
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
