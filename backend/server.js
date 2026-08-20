@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
 const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const { GoogleGenAI } = require("@google/genai");
+const { Resend } = require("resend");
 
 const app = express();
 
@@ -27,32 +27,13 @@ const ai = new GoogleGenAI({
 
 
 // ==========================================
-// EMAIL TRANSPORTER
+// RESEND EMAIL
 // ==========================================
 
-const mailTransporter =
-    nodemailer.createTransport({
-
-        host:
-            process.env.SMTP_HOST,
-
-        port:
-            Number(process.env.SMTP_PORT) || 587,
-
-        secure:
-            Number(process.env.SMTP_PORT) === 465,
-
-        auth: {
-
-            user:
-                process.env.SMTP_USER,
-
-            pass:
-                process.env.SMTP_PASS
-
-        }
-
-    });
+const resend =
+    new Resend(
+        process.env.RESEND_API_KEY
+    );
 
 
 // ==========================================
@@ -1198,13 +1179,17 @@ app.post(
             // EMAIL
             // ==========================================
 
-            await mailTransporter.sendMail({
+            const {
+                data: emailData,
+                error: emailError
+            } = await resend.emails.send({
 
                 from:
-                    `"Dheere Studio" <${process.env.SMTP_USER}>`,
+                    process.env.RESEND_FROM_EMAIL ||
+                    "Dheere Studio <onboarding@resend.dev>",
 
                 to:
-                    cleanEmail,
+                    [cleanEmail],
 
                 subject:
                     "Reset your Dheere Studio password",
@@ -1319,9 +1304,29 @@ If you did not request this, you can safely ignore this email.`,
             });
 
 
+            if (emailError) {
+
+                console.error(
+                    "Resend email error:",
+                    emailError
+                );
+
+                throw new Error(
+                    "Could not send password reset email"
+                );
+
+            }
+
+
             console.log(
                 "Password reset email sent to:",
                 cleanEmail
+            );
+
+
+            console.log(
+                "Resend email ID:",
+                emailData?.id
             );
 
 
@@ -1974,36 +1979,19 @@ async function startServer() {
 
 
     // ==========================================
-    // CHECK EMAIL CONFIGURATION
+    // CHECK RESEND CONFIGURATION
     // ==========================================
 
-    if (
-        process.env.SMTP_HOST &&
-        process.env.SMTP_USER &&
-        process.env.SMTP_PASS
-    ) {
+    if (!process.env.RESEND_API_KEY) {
 
-        try {
-
-            await mailTransporter.verify();
-
-            console.log(
-                "SMTP email system connected successfully"
-            );
-
-        } catch (error) {
-
-            console.error(
-                "SMTP connection failed:",
-                error.message
-            );
-
-        }
+        console.warn(
+            "RESEND_API_KEY is missing"
+        );
 
     } else {
 
-        console.warn(
-            "SMTP environment variables are missing"
+        console.log(
+            "Resend email system initialized"
         );
 
     }
