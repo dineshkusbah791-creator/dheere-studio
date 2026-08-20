@@ -396,7 +396,7 @@
 
 
                 <!-- ====================================================
-                     AUTH NAVIGATION
+                     AUTH / PROFILE NAVIGATION
                      ==================================================== -->
 
                 <div class="nav-login">
@@ -411,14 +411,36 @@
                     </button>
 
 
+                    <!--
+                        This is intentionally kept as a link to
+                        profile.html.
+
+                        script.js will populate:
+                        - profile photo
+                        - initials fallback
+                        - username
+                    -->
+
                     <a
                         id="profileBtn"
-                        class="button hidden-profile"
+                        class="nav-profile-link hidden-profile"
                         href="profile.html"
                         aria-label="Open profile"
                     >
 
-                        <span id="navUsername">
+                        <span
+                            id="navProfileAvatar"
+                            class="nav-profile-avatar"
+                            aria-hidden="true"
+                        >
+                            U
+                        </span>
+
+
+                        <span
+                            id="navUsername"
+                            class="nav-profile-name"
+                        >
                             Profile
                         </span>
 

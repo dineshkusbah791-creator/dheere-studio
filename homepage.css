@@ -2,7 +2,11 @@
    DHEERE STUDIO - MINIMALIST STUDIO ENGINE
    ==================================================== */
 
-/* 1. FONTS & RESET */
+
+/* ====================================================
+   1. FONTS & RESET
+   ==================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
@@ -24,7 +28,11 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* 2. LAYOUT & TYPOGRAPHY CONTAINER */
+
+/* ====================================================
+   2. LAYOUT & TYPOGRAPHY
+   ==================================================== */
+
 main {
     max-width: 900px;
     margin: 0 auto;
@@ -50,64 +58,132 @@ p {
     font-weight: 300;
 }
 
-/* 3. MINIMAL NAVBAR */
+
+/* ====================================================
+   3. NAVBAR
+   ==================================================== */
+
 header {
     position: sticky;
     top: 0;
     z-index: 100;
+
     background: rgba(11, 12, 14, 0.85);
+
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .navbar {
     max-width: 900px;
     margin: 0 auto;
+
     padding: 20px 24px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    gap: 20px;
+}
+
+.nav-logo {
+    flex-shrink: 0;
 }
 
 .nav-logo a {
     color: #ffffff;
     text-decoration: none;
+
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.01em;
 }
 
+
+/* ====================================================
+   MAIN NAVIGATION
+   ==================================================== */
+
+.nav-links {
+    flex: 1;
+}
+
 .nav-links ul {
     display: flex;
+
+    align-items: center;
+
     list-style: none;
+
     gap: 32px;
 }
 
 .nav-links a {
     color: #64748b;
+
     text-decoration: none;
+
     font-size: 0.88rem;
     font-weight: 400;
-    transition: color 0.2s ease;
+
+    transition:
+        color 0.2s ease;
 }
 
 .nav-links a:hover {
     color: #f8fafc;
 }
 
-/* Studio Button Style */
+
+/* ====================================================
+   AUTH / PROFILE AREA
+   ==================================================== */
+
+.nav-login {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* ====================================================
+   LOGIN BUTTON
+   ==================================================== */
+
 .button {
     color: #0b0c0e;
+
     background-color: #f8fafc;
+
     border: 1px solid #f8fafc;
+
     padding: 8px 18px;
+
     border-radius: 6px;
+
     font-size: 0.85rem;
     font-weight: 500;
+
     text-decoration: none;
+
     cursor: pointer;
+
     display: inline-block;
-    transition: all 0.2s ease;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .button:hover {
@@ -115,50 +191,223 @@ header {
     border-color: #e2e8f0;
 }
 
+.button:active {
+    transform: translateY(1px);
+}
+
+
+/* ====================================================
+   PROFILE AVATAR
+   ==================================================== */
+
+.nav-profile-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    min-height: 42px;
+
+    padding: 4px 12px 4px 5px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    color: #e2e8f0;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.nav-profile-link:hover {
+    background: rgba(255, 255, 255, 0.075);
+
+    border-color: rgba(255, 255, 255, 0.18);
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.nav-profile-link:active {
+    transform: translateY(0);
+}
+
+
+/* ====================================================
+   PROFILE PHOTO CIRCLE
+   ==================================================== */
+
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.14),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    color: #f8fafc;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    user-select: none;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.nav-profile-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+/* ====================================================
+   PROFILE USERNAME
+   ==================================================== */
+
+.nav-profile-name {
+    max-width: 120px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #dbe3ee;
+
+    font-size: 0.78rem;
+
+    font-weight: 500;
+
+    letter-spacing: -0.01em;
+}
+
+
+/* ====================================================
+   HIDDEN PROFILE
+   ==================================================== */
+
+.hidden-profile {
+    display: none !important;
+}
+
+
+/* ====================================================
+   MOBILE MENU
+   ==================================================== */
+
 .humbarger {
     display: none;
 }
 
-/* 4. HERO SECTION */
+
+/* ====================================================
+   4. HERO SECTION
+   ==================================================== */
+
 .hero-section {
     padding: 140px 0 100px 0;
 }
 
 .hero-content h1 {
     font-size: 2.75rem;
+
     font-weight: 500;
+
     color: #ffffff;
+
     letter-spacing: -0.03em;
+
     line-height: 1.2;
+
     margin-bottom: 16px;
 }
 
 .hero-content p {
     font-size: 1.15rem;
+
     max-width: 540px;
+
     margin-bottom: 32px;
 }
 
-/* 5. FEATURED PROJECT & CARDS */
+
+/* ====================================================
+   5. FEATURED PROJECT & CARDS
+   ==================================================== */
+
 .project-card,
 .article-card {
     background: rgba(255, 255, 255, 0.02);
+
     border: 1px solid rgba(255, 255, 255, 0.06);
+
     padding: 32px;
+
     border-radius: 12px;
-    transition: border-color 0.3s ease;
+
+    transition:
+        border-color 0.3s ease,
+        background-color 0.3s ease;
 }
 
 .project-card:hover,
 .article-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
+
+    background: rgba(255, 255, 255, 0.028);
 }
 
 .project-card h3,
 .article-card h3 {
     font-size: 1.25rem;
+
     font-weight: 500;
+
     color: #ffffff;
+
     margin-bottom: 8px;
 }
 
@@ -170,12 +419,19 @@ header {
 .project-card a,
 .article-card a {
     color: #f8fafc;
+
     text-decoration: none;
+
     font-size: 0.9rem;
+
     font-weight: 500;
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 6px;
+
     transition: opacity 0.2s ease;
 }
 
@@ -186,55 +442,92 @@ header {
 
 .article-card .category {
     font-size: 0.75rem;
+
     color: #64748b;
+
     text-transform: uppercase;
+
     letter-spacing: 0.05em;
+
     font-weight: 600;
+
     display: block;
+
     margin-bottom: 12px;
 }
 
-/* 6. COMMUNITY PROJECT */
+
+/* ====================================================
+   6. COMMUNITY PROJECT
+   ==================================================== */
+
 .status-badge {
     display: inline-block;
+
     margin-top: 20px;
+
     padding: 6px 12px;
+
     background: rgba(255, 255, 255, 0.03);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
+
     border-radius: 6px;
+
     font-size: 0.85rem;
+
     color: #64748b;
 }
 
 .status-badge strong {
     color: #f8fafc;
+
     font-weight: 500;
 }
 
-/* 7. FEEDBACK FORM */
+
+/* ====================================================
+   7. FEEDBACK FORM
+   ==================================================== */
+
 .feedback-form {
     display: flex;
+
     flex-direction: column;
+
     gap: 16px;
+
     max-width: 500px;
 }
 
 .feedback-form input,
 .feedback-form textarea {
     width: 100%;
+
     padding: 12px 16px;
+
     background: rgba(255, 255, 255, 0.03);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
+
     border-radius: 8px;
+
     color: #ffffff;
+
     font-size: 0.9rem;
+
     outline: none;
-    transition: border-color 0.2s ease;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .feedback-form input:focus,
 .feedback-form textarea:focus {
     border-color: rgba(255, 255, 255, 0.3);
+
+    background: rgba(255, 255, 255, 0.045);
 }
 
 .feedback-form button {
@@ -243,20 +536,34 @@ header {
 
 .feedback-success {
     color: #34d399;
+
     margin-top: 12px;
+
     font-size: 0.9rem;
+
     font-weight: 500;
 }
 
-/* 8. FOOTER */
+
+/* ====================================================
+   8. FOOTER
+   ==================================================== */
+
 footer {
     padding: 60px 0;
+
     text-align: center;
+
     color: #475569;
+
     font-size: 0.85rem;
 }
 
-/* 9. PAGE SWITCHER & AUTH */
+
+/* ====================================================
+   9. PAGE SWITCHER & AUTH
+   ==================================================== */
+
 .page-view {
     display: block;
 }
@@ -267,24 +574,38 @@ footer {
 
 #loginPage {
     min-height: 100vh;
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
+
     padding: 24px;
+
     position: relative;
 }
 
 .back-home-link {
     position: absolute;
+
     top: 32px;
     left: 32px;
+
     background: none;
+
     border: none;
+
     color: #64748b;
+
     font-size: 0.88rem;
+
     font-weight: 400;
+
     cursor: pointer;
+
     transition: color 0.2s ease;
 }
 
@@ -294,32 +615,48 @@ footer {
 
 .auth-page-container {
     width: 100%;
+
     max-width: 380px;
 }
 
 .auth-card {
     background: rgba(255, 255, 255, 0.02);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
+
     border-radius: 12px;
+
     padding: 32px;
 }
 
 .auth-tabs {
     display: flex;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
     margin-bottom: 24px;
 }
 
 .tab-btn {
     flex: 1;
+
     padding: 10px 0;
+
     border: none;
+
     background: none;
+
     color: #64748b;
+
     font-weight: 500;
+
     font-size: 0.88rem;
+
     cursor: pointer;
+
     position: relative;
+
     transition: color 0.2s ease;
 }
 
@@ -329,65 +666,99 @@ footer {
 
 .tab-btn.active::after {
     content: '';
+
     position: absolute;
+
     bottom: -1px;
+
     left: 0;
+
     width: 100%;
+
     height: 1px;
+
     background-color: #ffffff;
 }
 
 .auth-form h2 {
     font-size: 1.35rem;
+
     font-weight: 500;
+
     color: #ffffff;
+
     margin-bottom: 4px;
 }
 
 .auth-subtext {
     color: #64748b;
+
     font-size: 0.85rem;
+
     margin-bottom: 24px;
 }
 
 .input-group {
     margin-bottom: 16px;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 6px;
 }
 
 .input-group label {
     font-size: 0.8rem;
+
     color: #94a3b8;
 }
 
 .input-group input {
     width: 100%;
+
     padding: 10px 14px;
+
     background: rgba(255, 255, 255, 0.03);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
+
     border-radius: 6px;
+
     color: #ffffff;
+
     font-size: 0.9rem;
+
     outline: none;
-    transition: border-color 0.2s ease;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .input-group input:focus {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color:
+        rgba(255, 255, 255, 0.3);
+
+    background:
+        rgba(255, 255, 255, 0.045);
 }
 
 .form-options {
     display: flex;
+
     justify-content: flex-end;
+
     margin-bottom: 20px;
 }
 
 .forgot-pass {
     color: #64748b;
+
     font-size: 0.8rem;
+
     text-decoration: none;
+
     transition: color 0.2s ease;
 }
 
@@ -397,6 +768,7 @@ footer {
 
 .button.full-width {
     width: 100%;
+
     text-align: center;
 }
 
@@ -404,87 +776,79 @@ footer {
     display: none;
 }
 
-/* 10. PASSWORD FIELD */
+
+/* ====================================================
+   10. PASSWORD FIELD
+   ==================================================== */
+
 .password-wrapper {
     position: relative;
+
     width: 100%;
 }
 
 .password-wrapper input {
     width: 100%;
+
     padding-right: 48px;
 }
 
 .password-toggle {
     position: absolute;
+
     right: 10px;
+
     top: 50%;
+
     transform: translateY(-50%);
 
     width: 32px;
     height: 32px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     padding: 0;
+
     border: none;
+
     background: transparent;
 
     color: #64748b;
+
     font-size: 16px;
 
     cursor: pointer;
 
     border-radius: 4px;
-    transition: color 0.2s ease, background-color 0.2s ease;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .password-toggle:hover {
     color: #f8fafc;
-    background-color: rgba(255, 255, 255, 0.05);
+
+    background-color:
+        rgba(255, 255, 255, 0.05);
 }
 
 .password-toggle:focus-visible {
-    outline: 1px solid rgba(255, 255, 255, 0.3);
+    outline:
+        1px solid rgba(255, 255, 255, 0.3);
+
     outline-offset: 2px;
 }
 
-/* 11. RESPONSIVE */
-@media (max-width: 640px) {
 
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    
-    .nav-links {
-        display: none;
-    }
-
-    section {
-        padding: 60px 0;
-    }
-
-    #loginPage {
-        padding: 20px;
-    }
-
-    .auth-card {
-        padding: 24px;
-    }
-
-    .back-home-link {
-        top: 20px;
-        left: 20px;
-    }
-}
-/* ============================================================
-   DHEERE MOOD — ENVIRONMENT LAYER
-   ============================================================ */
+/* ====================================================
+   11. DHEERE MOOD — ENVIRONMENT LAYER
+   ==================================================== */
 
 #dheereEnvironment {
-
     position: fixed;
 
     inset: 0;
@@ -496,43 +860,21 @@ footer {
     overflow: hidden;
 
     isolation: isolate;
-
 }
-
-
-/*
-   Existing website content must stay above
-   the environment.
-*/
 
 header,
 main,
 footer {
-
     position: relative;
 
     z-index: 2;
-
 }
-
-
-/*
-   Environment itself is behind content.
-*/
 
 #dheereEnvironment * {
-
     pointer-events: none;
-
 }
 
-
-/* ------------------------------------------------------------
-   ENVIRONMENT FADE
-   ------------------------------------------------------------ */
-
 .mood-environment-layer {
-
     position: absolute;
 
     inset: 0;
@@ -541,38 +883,27 @@ footer {
 
     transition:
         opacity 0.9s ease;
-
 }
-
 
 .mood-environment-layer.active {
-
     opacity: 1;
-
 }
 
 
-/* ------------------------------------------------------------
+/* ====================================================
    FOREST
-   ------------------------------------------------------------ */
+   ==================================================== */
 
 .forest-environment {
-
     position: absolute;
 
     inset: 0;
-
 }
 
-
-/* Deep canopy */
-
 .forest-canopy {
-
     position: absolute;
 
     width: 340px;
-
     height: 210px;
 
     border-radius: 50%;
@@ -580,14 +911,10 @@ footer {
     filter: blur(0.4px);
 
     opacity: 0.8;
-
 }
 
-
 .forest-canopy.left {
-
     top: -70px;
-
     left: -100px;
 
     background:
@@ -607,16 +934,11 @@ footer {
             transparent 31%
         );
 
-    transform:
-        rotate(-12deg);
-
+    transform: rotate(-12deg);
 }
 
-
 .forest-canopy.right {
-
     top: -80px;
-
     right: -110px;
 
     background:
@@ -636,20 +958,13 @@ footer {
             transparent 26%
         );
 
-    transform:
-        rotate(15deg);
-
+    transform: rotate(15deg);
 }
 
-
-/* Branches */
-
 .forest-branch {
-
     position: absolute;
 
     width: 230px;
-
     height: 9px;
 
     border-radius: 999px;
@@ -666,18 +981,12 @@ footer {
     opacity: 0.65;
 
     transform-origin: left center;
-
 }
 
-
-/* Leaves */
-
 .forest-leaf {
-
     position: absolute;
 
     width: 17px;
-
     height: 9px;
 
     border-radius:
@@ -692,29 +1001,25 @@ footer {
 
     opacity: 0.75;
 
-    transform:
-        rotate(35deg);
+    transform: rotate(35deg);
 
     animation:
-        leafFloat var(--leaf-speed, 9s)
-        ease-in-out infinite
+        leafFloat
+        var(--leaf-speed, 9s)
+        ease-in-out
+        infinite
         alternate;
-
 }
-
 
 @keyframes leafFloat {
 
     0% {
-
         transform:
-            translate3d(0,0,0)
+            translate3d(0, 0, 0)
             rotate(25deg);
-
     }
 
     50% {
-
         transform:
             translate3d(
                 var(--leaf-x, 12px),
@@ -722,11 +1027,9 @@ footer {
                 0
             )
             rotate(55deg);
-
     }
 
     100% {
-
         transform:
             translate3d(
                 calc(var(--leaf-x, 12px) * -0.5),
@@ -734,20 +1037,13 @@ footer {
                 0
             )
             rotate(20deg);
-
     }
-
 }
 
-
-/* Forest mist */
-
 .forest-mist {
-
     position: absolute;
 
     left: -10%;
-
     right: -10%;
 
     bottom: 4%;
@@ -757,56 +1053,46 @@ footer {
     background:
         radial-gradient(
             ellipse at center,
-            rgba(130,175,139,0.10),
+            rgba(130, 175, 139, 0.10),
             transparent 68%
         );
 
     filter: blur(18px);
 
     animation:
-        forestMist 16s ease-in-out infinite alternate;
-
+        forestMist
+        16s ease-in-out
+        infinite
+        alternate;
 }
-
 
 @keyframes forestMist {
 
     from {
-
-        transform:
-            translateX(-4%);
+        transform: translateX(-4%);
 
         opacity: 0.45;
-
     }
 
     to {
-
-        transform:
-            translateX(4%);
+        transform: translateX(4%);
 
         opacity: 0.75;
-
     }
-
 }
 
 
-/* ------------------------------------------------------------
+/* ====================================================
    OCEAN
-   ------------------------------------------------------------ */
+   ==================================================== */
 
 .ocean-environment {
-
     position: absolute;
 
     inset: 0;
-
 }
 
-
 .ocean-wave {
-
     position: absolute;
 
     left: -10%;
@@ -816,7 +1102,7 @@ footer {
     height: 90px;
 
     border-top:
-        1px solid rgba(112,180,239,0.18);
+        1px solid rgba(112, 180, 239, 0.18);
 
     border-radius: 50%;
 
@@ -828,33 +1114,24 @@ footer {
         ease-in-out
         infinite
         alternate;
-
 }
-
 
 @keyframes oceanWaveMove {
 
     from {
-
         transform:
             translateX(-4%)
             scaleY(0.8);
-
     }
 
     to {
-
         transform:
             translateX(4%)
             scaleY(1.2);
-
     }
-
 }
 
-
 .ocean-ray {
-
     position: absolute;
 
     top: -15%;
@@ -866,92 +1143,77 @@ footer {
     background:
         linear-gradient(
             180deg,
-            rgba(110,184,244,0.12),
+            rgba(110, 184, 244, 0.12),
             transparent 80%
         );
 
     filter: blur(14px);
 
-    transform:
-        rotate(18deg);
+    transform: rotate(18deg);
 
     animation:
-        oceanRay 13s ease-in-out infinite
+        oceanRay
+        13s
+        ease-in-out
+        infinite
         alternate;
-
 }
-
 
 @keyframes oceanRay {
 
     from {
-
         opacity: 0.25;
 
         transform:
             rotate(18deg)
             translateX(-25px);
-
     }
 
     to {
-
         opacity: 0.65;
 
         transform:
             rotate(23deg)
             translateX(35px);
-
     }
-
 }
 
-
 .ocean-particle {
-
     position: absolute;
 
     width: 4px;
-
     height: 4px;
 
     border-radius: 50%;
 
-    background: rgba(150,215,255,0.55);
+    background:
+        rgba(150, 215, 255, 0.55);
 
     animation:
         oceanParticle
         var(--particle-speed, 8s)
-        linear infinite;
-
+        linear
+        infinite;
 }
-
 
 @keyframes oceanParticle {
 
     from {
-
         transform:
-            translate3d(0,30px,0);
+            translate3d(0, 30px, 0);
 
         opacity: 0;
-
     }
 
     20% {
-
         opacity: 0.65;
-
     }
 
     80% {
-
         opacity: 0.35;
-
     }
 
     to {
-
         transform:
             translate3d(
                 var(--particle-x, 15px),
@@ -960,27 +1222,21 @@ footer {
             );
 
         opacity: 0;
-
     }
-
 }
 
 
-/* ------------------------------------------------------------
+/* ====================================================
    EMBER
-   ------------------------------------------------------------ */
+   ==================================================== */
 
 .ember-environment {
-
     position: absolute;
 
     inset: 0;
-
 }
 
-
 .ember-glow {
-
     position: absolute;
 
     left: 50%;
@@ -997,47 +1253,41 @@ footer {
     background:
         radial-gradient(
             ellipse,
-            rgba(238,80,47,0.25),
-            rgba(142,31,22,0.08) 45%,
+            rgba(238, 80, 47, 0.25),
+            rgba(142, 31, 22, 0.08) 45%,
             transparent 70%
         );
 
     filter: blur(16px);
 
     animation:
-        emberPulse 4s ease-in-out infinite
+        emberPulse
+        4s
+        ease-in-out
+        infinite
         alternate;
-
 }
-
 
 @keyframes emberPulse {
 
     from {
-
         transform:
             translateX(-50%)
             scale(0.95);
 
         opacity: 0.55;
-
     }
 
     to {
-
         transform:
             translateX(-50%)
             scale(1.08);
 
         opacity: 1;
-
     }
-
 }
 
-
 .ember-spark {
-
     position: absolute;
 
     width: var(--spark-size, 3px);
@@ -1050,42 +1300,34 @@ footer {
         #f47b56;
 
     box-shadow:
-        0 0 8px rgba(244,95,60,0.7);
+        0 0 8px rgba(244, 95, 60, 0.7);
 
     animation:
         emberRise
         var(--spark-speed, 5s)
-        linear infinite;
-
+        linear
+        infinite;
 }
-
 
 @keyframes emberRise {
 
     0% {
-
         transform:
-            translate3d(0,40px,0)
+            translate3d(0, 40px, 0)
             scale(0.6);
 
         opacity: 0;
-
     }
 
     15% {
-
         opacity: 1;
-
     }
 
     70% {
-
         opacity: 0.7;
-
     }
 
     100% {
-
         transform:
             translate3d(
                 var(--spark-x, 30px),
@@ -1095,37 +1337,27 @@ footer {
             scale(0.2);
 
         opacity: 0;
-
     }
-
 }
 
 
-/* ------------------------------------------------------------
+/* ====================================================
    MIDNIGHT
-   ------------------------------------------------------------ */
+   ==================================================== */
 
 .midnight-environment {
-
     position: absolute;
 
     inset: 0;
-
 }
 
-
-/* Moon */
-
 .midnight-moon {
-
     position: absolute;
 
     top: 12%;
-
     right: 12%;
 
     width: 95px;
-
     height: 95px;
 
     border-radius: 50%;
@@ -1139,18 +1371,14 @@ footer {
         );
 
     box-shadow:
-        0 0 45px rgba(170,160,245,0.20),
-        0 0 100px rgba(130,115,220,0.10);
-
+        0 0 45px rgba(170, 160, 245, 0.20),
+        0 0 100px rgba(130, 115, 220, 0.10);
 }
 
-
 .midnight-star {
-
     position: absolute;
 
     width: var(--star-size, 2px);
-
     height: var(--star-size, 2px);
 
     border-radius: 50%;
@@ -1165,47 +1393,37 @@ footer {
         ease-in-out
         infinite
         alternate;
-
 }
-
 
 @keyframes starTwinkle {
 
     from {
-
         opacity:
             var(--star-min, 0.25);
 
         transform:
             scale(0.8);
-
     }
 
     to {
-
         opacity:
             var(--star-opacity, 0.8);
 
         transform:
             scale(1.35);
-
     }
-
 }
 
-
 .midnight-particle {
-
     position: absolute;
 
     width: 3px;
-
     height: 3px;
 
     border-radius: 50%;
 
     background:
-        rgba(170,157,245,0.55);
+        rgba(170, 157, 245, 0.55);
 
     filter:
         blur(0.5px);
@@ -1216,90 +1434,152 @@ footer {
         ease-in-out
         infinite
         alternate;
-
 }
-
 
 @keyframes midnightFloat {
 
     from {
-
         transform:
-            translate3d(0,0,0);
-
+            translate3d(0, 0, 0);
     }
 
     to {
-
         transform:
             translate3d(
                 var(--float-x, 20px),
                 var(--float-y, -25px),
                 0
             );
+    }
+}
 
+
+/* ====================================================
+   ENVIRONMENT SAFETY
+   ==================================================== */
+
+#dheereEnvironment {
+    user-select: none;
+}
+
+
+/* ====================================================
+   12. RESPONSIVE
+   ==================================================== */
+
+@media (max-width: 760px) {
+
+    .navbar {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .nav-links ul {
+        gap: 18px;
+    }
+
+    .nav-profile-name {
+        max-width: 90px;
     }
 
 }
 
-
-/* ------------------------------------------------------------
-   ENVIRONMENT SHOULD NEVER BLOCK UI
-   ------------------------------------------------------------ */
-
-#dheereEnvironment {
-
-    user-select: none;
-
-}
-
-
-/* ------------------------------------------------------------
-   MOBILE
-   ------------------------------------------------------------ */
 
 @media (max-width: 640px) {
 
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-logo {
+        flex: 1;
+    }
+
+    .nav-login {
+        margin-left: auto;
+    }
+
+    .nav-profile-link {
+        min-height: 40px;
+
+        padding:
+            3px 7px 3px 3px;
+    }
+
+    .nav-profile-avatar {
+        width: 32px;
+        height: 32px;
+
+        flex-basis: 32px;
+    }
+
+    .nav-profile-name {
+        display: none;
+    }
+
+    section {
+        padding: 60px 0;
+    }
+
+    #loginPage {
+        padding: 20px;
+    }
+
+    .auth-card {
+        padding: 24px;
+    }
+
+    .back-home-link {
+        top: 20px;
+        left: 20px;
+    }
+
     .forest-canopy {
-
-        transform:
-            scale(0.72);
-
+        transform: scale(0.72);
     }
 
     .forest-leaf {
-
         transform:
             scale(0.8)
             rotate(35deg);
-
     }
 
     .midnight-moon {
-
         width: 70px;
-
         height: 70px;
-
         right: 8%;
-
     }
 
 }
 
 
-/* ------------------------------------------------------------
-   REDUCED MOTION
-   ------------------------------------------------------------ */
+/* ====================================================
+   13. REDUCED MOTION
+   ==================================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
-    #dheereEnvironment * {
+    html {
+        scroll-behavior: auto;
+    }
 
+    #dheereEnvironment * {
         animation: none !important;
 
         transition: none !important;
+    }
 
+    .nav-profile-link,
+    .button,
+    .project-card,
+    .article-card,
+    .feedback-form input,
+    .feedback-form textarea {
+        transition: none !important;
     }
 
 }

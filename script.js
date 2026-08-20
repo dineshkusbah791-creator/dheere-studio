@@ -2,27 +2,30 @@
 // CONFIG
 // ======================================================
 
-const API_BASE_URL =
-    'https://dheere-studio.onrender.com';
+const API_BASE_URL = 'https://dheere-studio.onrender.com';
+
+
+// ======================================================
+// STORAGE KEYS
+// ======================================================
+
+const USER_STORAGE_KEY = 'dheereStudioUser';
+const PROFILE_AVATAR_STORAGE_KEY = 'dheereStudioProfileAvatar';
 
 
 // ======================================================
 // PAGES
 // ======================================================
 
-const homePage =
-    document.getElementById('homepage');
-
-const loginPage =
-    document.getElementById('loginPage');
+const homePage = document.getElementById('homepage');
+const loginPage = document.getElementById('loginPage');
 
 
 // ======================================================
-// NAVIGATION BUTTONS
+// NAVIGATION
 // ======================================================
 
-const goToLoginBtn =
-    document.getElementById('goToLoginBtn');
+let goToLoginBtn = document.getElementById('goToLoginBtn');
 
 const backToHomeBtn =
     document.getElementById('backToHomeBtn');
@@ -55,6 +58,9 @@ let profileBtn =
 let navUsername =
     document.getElementById('navUsername');
 
+let navProfileAvatar =
+    document.getElementById('navProfileAvatar');
+
 
 // ======================================================
 // LOGIN STATE
@@ -63,33 +69,40 @@ let navUsername =
 let currentUser = null;
 
 
-// Restore saved login
-try {
+// ======================================================
+// RESTORE LOGIN STATE
+// ======================================================
 
-    const savedUser =
-        localStorage.getItem(
-            'dheereStudioUser'
-        );
+function restoreUserFromStorage() {
 
-    if (savedUser) {
+    try {
+
+        const savedUser =
+            localStorage.getItem(USER_STORAGE_KEY);
 
         currentUser =
-            JSON.parse(savedUser);
+            savedUser
+                ? JSON.parse(savedUser)
+                : null;
+
+    } catch (error) {
+
+        console.error(
+            'Saved user data error:',
+            error
+        );
+
+        currentUser = null;
+
+        localStorage.removeItem(
+            USER_STORAGE_KEY
+        );
 
     }
 
-} catch (error) {
-
-    console.error(
-        'Saved user data error:',
-        error
-    );
-
-    localStorage.removeItem(
-        'dheereStudioUser'
-    );
-
 }
+
+restoreUserFromStorage();
 
 
 // ======================================================
@@ -113,8 +126,8 @@ function getUserName(user) {
 
     return (
         user?.name ||
-        user?.username ||
         user?.user?.name ||
+        user?.username ||
         user?.user?.username ||
         'User'
     );
@@ -145,6 +158,125 @@ function getUserEmail(user) {
 
 
 // ======================================================
+// PROFILE AVATAR STORAGE
+// ======================================================
+
+function getProfileAvatar() {
+
+    try {
+
+        return localStorage.getItem(
+            PROFILE_AVATAR_STORAGE_KEY
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Profile avatar read error:',
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+// ======================================================
+// USER INITIALS
+// ======================================================
+
+function getUserInitials(user) {
+
+    const name =
+        String(
+            getUserName(user) || 'User'
+        ).trim();
+
+    if (!name) {
+        return 'U';
+    }
+
+    const parts =
+        name.split(/\s+/);
+
+    if (parts.length === 1) {
+
+        return parts[0]
+            .charAt(0)
+            .toUpperCase();
+
+    }
+
+    return (
+        parts[0].charAt(0) +
+        parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
+
+}
+
+
+// ======================================================
+// RENDER NAVBAR AVATAR
+// ======================================================
+
+function renderHomepageAvatar() {
+
+    if (!navProfileAvatar) {
+        return;
+    }
+
+    const avatar =
+        getProfileAvatar();
+
+    const initials =
+        getUserInitials(currentUser);
+
+    navProfileAvatar.replaceChildren();
+
+    if (!avatar) {
+
+        navProfileAvatar.textContent =
+            initials;
+
+        return;
+
+    }
+
+    const img =
+        document.createElement('img');
+
+    img.src = avatar;
+
+    img.alt =
+        `${getUserName(currentUser)} profile photo`;
+
+    img.loading = 'eager';
+
+    img.decoding = 'async';
+
+    img.addEventListener(
+        'error',
+        () => {
+
+            navProfileAvatar.replaceChildren();
+
+            navProfileAvatar.textContent =
+                initials;
+
+        },
+        {
+            once: true
+        }
+    );
+
+    navProfileAvatar.appendChild(img);
+
+}
+
+
+// ======================================================
 // HTML ESCAPE
 // ======================================================
 
@@ -162,7 +294,7 @@ function escapeHTML(value) {
 
 
 // ======================================================
-// OPEN LOGIN PAGE
+// OPEN LOGIN
 // ======================================================
 
 function openLoginPage() {
@@ -171,18 +303,11 @@ function openLoginPage() {
         return;
     }
 
-    homePage.classList.add(
-        'hidden-page'
-    );
+    homePage.classList.add('hidden-page');
 
-    loginPage.classList.remove(
-        'hidden-page'
-    );
+    loginPage.classList.remove('hidden-page');
 
-    window.scrollTo(
-        0,
-        0
-    );
+    window.scrollTo(0, 0);
 
 }
 
@@ -197,18 +322,11 @@ function backToHome() {
         return;
     }
 
-    loginPage.classList.add(
-        'hidden-page'
-    );
+    loginPage.classList.add('hidden-page');
 
-    homePage.classList.remove(
-        'hidden-page'
-    );
+    homePage.classList.remove('hidden-page');
 
-    window.scrollTo(
-        0,
-        0
-    );
+    window.scrollTo(0, 0);
 
 }
 
@@ -216,98 +334,125 @@ function backToHome() {
 // ======================================================
 // UPDATE NAVBAR
 // ======================================================
+//
+// IMPORTANT:
+//
+// We DO NOT replace .nav-login.innerHTML here.
+//
+// index.html already contains:
+//   - Login button
+//   - Profile link
+//
+// We simply show/hide the correct one.
+//
+// LOGGED OUT:
+//   Login = visible
+//   Profile = hidden
+//
+// LOGGED IN:
+//   Login = hidden
+//   Profile = visible
+//
+// This prevents:
+// - duplicate login buttons
+// - broken event listeners
+// - broken CSS
+// - profile DOM being destroyed
+// ======================================================
 
 function updateNavbar() {
 
-    const navLogin =
-        document.querySelector(
-            '.nav-login'
-        );
+    goToLoginBtn =
+        document.getElementById('goToLoginBtn');
 
-    if (!navLogin) {
+    profileBtn =
+        document.getElementById('profileBtn');
+
+    navUsername =
+        document.getElementById('navUsername');
+
+    navProfileAvatar =
+        document.getElementById('navProfileAvatar');
+
+
+    if (!goToLoginBtn || !profileBtn) {
         return;
     }
 
 
-    if (currentUser) {
+    // --------------------------------------------------
+    // LOGGED OUT
+    // --------------------------------------------------
 
-        const username =
-            getUserUsername(
-                currentUser
-            );
+    if (!currentUser) {
 
+        goToLoginBtn.style.display = '';
 
-        const name =
-            getUserName(
-                currentUser
-            );
+        profileBtn.style.display = 'none';
 
+        profileBtn.classList.add(
+            'hidden-profile'
+        );
 
-        navLogin.innerHTML = `
-
-            <a
-                id="profileBtn"
-                class="button"
-                href="profile.html"
-            >
-                ${escapeHTML(
-                    username ||
-                    name
-                )}
-            </a>
-
-        `;
-
-
-        profileBtn =
-            document.getElementById(
-                'profileBtn'
-            );
-
-
-        navUsername =
-            document.getElementById(
-                'navUsername'
-            );
-
-
-    } else {
-
-        navLogin.innerHTML = `
-
-            <button
-                id="goToLoginBtn"
-                class="button"
-                type="button"
-            >
-                Login
-            </button>
-
-        `;
-
-
-        const newLoginBtn =
-            document.getElementById(
-                'goToLoginBtn'
-            );
-
-
-        if (newLoginBtn) {
-
-            newLoginBtn.addEventListener(
-                'click',
-                openLoginPage
-            );
-
-        }
+        return;
 
     }
+
+
+    // --------------------------------------------------
+    // LOGGED IN
+    // --------------------------------------------------
+
+    goToLoginBtn.style.display = 'none';
+
+    profileBtn.style.display = 'flex';
+
+    profileBtn.classList.remove(
+        'hidden-profile'
+    );
+
+
+    // Make absolutely sure the profile link
+    // is not styled as a normal button.
+
+    profileBtn.classList.remove('button');
+
+    profileBtn.classList.add(
+        'nav-profile-link'
+    );
+
+
+    // --------------------------------------------------
+    // USERNAME
+    // --------------------------------------------------
+
+    const username =
+        getUserUsername(currentUser);
+
+    const name =
+        getUserName(currentUser);
+
+    if (navUsername) {
+
+        navUsername.textContent =
+            username
+                ? `@${username}`
+                : name;
+
+    }
+
+
+    // --------------------------------------------------
+    // PROFILE PHOTO
+    // --------------------------------------------------
+
+    renderHomepageAvatar();
 
 }
 
 
 // ======================================================
-// INITIAL NAVIGATION
+// LOGIN BUTTON
 // ======================================================
 
 if (goToLoginBtn) {
@@ -319,6 +464,10 @@ if (goToLoginBtn) {
 
 }
 
+
+// ======================================================
+// BACK HOME BUTTON
+// ======================================================
 
 if (backToHomeBtn) {
 
@@ -345,22 +494,13 @@ if (
         'click',
         () => {
 
-            loginTabBtn.classList.add(
-                'active'
-            );
+            loginTabBtn.classList.add('active');
 
-            registerTabBtn.classList.remove(
-                'active'
-            );
+            registerTabBtn.classList.remove('active');
 
+            loginForm.classList.remove('hidden-form');
 
-            loginForm.classList.remove(
-                'hidden-form'
-            );
-
-            registerForm.classList.add(
-                'hidden-form'
-            );
+            registerForm.classList.add('hidden-form');
 
         }
     );
@@ -370,22 +510,13 @@ if (
         'click',
         () => {
 
-            registerTabBtn.classList.add(
-                'active'
-            );
+            registerTabBtn.classList.add('active');
 
-            loginTabBtn.classList.remove(
-                'active'
-            );
+            loginTabBtn.classList.remove('active');
 
+            registerForm.classList.remove('hidden-form');
 
-            registerForm.classList.remove(
-                'hidden-form'
-            );
-
-            loginForm.classList.add(
-                'hidden-form'
-            );
+            loginForm.classList.add('hidden-form');
 
         }
     );
@@ -398,10 +529,7 @@ if (
 // ======================================================
 
 const feedbackForm =
-    document.querySelector(
-        '.feedback-form'
-    );
-
+    document.querySelector('.feedback-form');
 
 if (feedbackForm) {
 
@@ -411,24 +539,20 @@ if (feedbackForm) {
 
             e.preventDefault();
 
-
             const nameInput =
                 feedbackForm.querySelector(
                     'input[type="text"]'
                 );
-
 
             const emailInput =
                 feedbackForm.querySelector(
                     'input[type="email"]'
                 );
 
-
             const messageInput =
                 feedbackForm.querySelector(
                     'textarea'
                 );
-
 
             const formData = {
 
@@ -456,8 +580,7 @@ if (feedbackForm) {
                     await fetch(
                         `${API_BASE_URL}/feedback`,
                         {
-                            method:
-                                'POST',
+                            method: 'POST',
 
                             headers: {
                                 'Content-Type':
@@ -465,9 +588,7 @@ if (feedbackForm) {
                             },
 
                             body:
-                                JSON.stringify(
-                                    formData
-                                )
+                                JSON.stringify(formData)
                         }
                     );
 
@@ -482,9 +603,7 @@ if (feedbackForm) {
                         'Thank you! Your feedback has been received.'
                     );
 
-
                     feedbackForm.reset();
-
 
                 } else {
 
@@ -495,14 +614,12 @@ if (feedbackForm) {
 
                 }
 
-
             } catch (error) {
 
                 console.error(
                     'Backend Connection Error:',
                     error
                 );
-
 
                 alert(
                     'Backend server se connect nahi ho paya.'
@@ -521,27 +638,18 @@ if (feedbackForm) {
 // ======================================================
 
 const usernameInput =
-    document.getElementById(
-        'registerUsername'
-    );
-
+    document.getElementById('registerUsername');
 
 const usernameStatus =
-    document.getElementById(
-        'usernameStatus'
-    );
+    document.getElementById('usernameStatus');
 
+let usernameCheckTimer = null;
 
-let usernameCheckTimer =
-    null;
-
-
-let usernameAvailable =
-    false;
+let usernameAvailable = false;
 
 
 // ======================================================
-// CHECK USERNAME
+// CHECK USERNAME AVAILABILITY
 // ======================================================
 
 async function checkUsernameAvailability() {
@@ -557,16 +665,14 @@ async function checkUsernameAvailability() {
             .toLowerCase();
 
 
-    usernameAvailable =
-        false;
+    usernameAvailable = false;
 
 
     if (!username) {
 
         if (usernameStatus) {
 
-            usernameStatus.textContent =
-                '';
+            usernameStatus.textContent = '';
 
             usernameStatus.className =
                 'username-status';
@@ -627,8 +733,7 @@ async function checkUsernameAvailability() {
             result.available
         ) {
 
-            usernameAvailable =
-                true;
+            usernameAvailable = true;
 
 
             if (usernameStatus) {
@@ -643,8 +748,7 @@ async function checkUsernameAvailability() {
 
         } else {
 
-            usernameAvailable =
-                false;
+            usernameAvailable = false;
 
 
             if (usernameStatus) {
@@ -660,12 +764,9 @@ async function checkUsernameAvailability() {
 
         }
 
-
     } catch (error) {
 
-        usernameAvailable =
-            false;
-
+        usernameAvailable = false;
 
         console.error(
             'Username Check Error:',
@@ -689,7 +790,7 @@ async function checkUsernameAvailability() {
 
 
 // ======================================================
-// USERNAME INPUT LISTENER
+// USERNAME INPUT
 // ======================================================
 
 if (usernameInput) {
@@ -698,9 +799,7 @@ if (usernameInput) {
         'input',
         () => {
 
-            usernameAvailable =
-                false;
-
+            usernameAvailable = false;
 
             clearTimeout(
                 usernameCheckTimer
@@ -737,18 +836,15 @@ if (registerForm) {
                     'registerName'
                 );
 
-
             const emailInput =
                 document.getElementById(
                     'registerEmail'
                 );
 
-
             const passwordInput =
                 document.getElementById(
                     'registerPassword'
                 );
-
 
             const confirmPasswordInput =
                 document.getElementById(
@@ -761,7 +857,6 @@ if (registerForm) {
                     ? nameInput.value.trim()
                     : '';
 
-
             const username =
                 usernameInput
                     ? usernameInput.value
@@ -769,18 +864,15 @@ if (registerForm) {
                         .toLowerCase()
                     : '';
 
-
             const email =
                 emailInput
                     ? emailInput.value.trim()
                     : '';
 
-
             const password =
                 passwordInput
                     ? passwordInput.value
                     : '';
-
 
             const confirmPassword =
                 confirmPasswordInput
@@ -810,9 +902,7 @@ if (registerForm) {
 
 
             if (
-                !usernameRegex.test(
-                    username
-                )
+                !usernameRegex.test(username)
             ) {
 
                 alert(
@@ -872,8 +962,7 @@ if (registerForm) {
                     await fetch(
                         `${API_BASE_URL}/register`,
                         {
-                            method:
-                                'POST',
+                            method: 'POST',
 
                             headers: {
                                 'Content-Type':
@@ -881,9 +970,7 @@ if (registerForm) {
                             },
 
                             body:
-                                JSON.stringify(
-                                    userData
-                                )
+                                JSON.stringify(userData)
                         }
                     );
 
@@ -901,15 +988,12 @@ if (registerForm) {
 
                     registerForm.reset();
 
-
-                    usernameAvailable =
-                        false;
+                    usernameAvailable = false;
 
 
                     if (usernameStatus) {
 
-                        usernameStatus.textContent =
-                            '';
+                        usernameStatus.textContent = '';
 
                         usernameStatus.className =
                             'username-status';
@@ -924,7 +1008,6 @@ if (registerForm) {
                     loginTabBtn.classList.add(
                         'active'
                     );
-
 
                     registerForm.classList.add(
                         'hidden-form'
@@ -948,7 +1031,6 @@ if (registerForm) {
 
                     }
 
-
                 } else {
 
                     alert(
@@ -958,14 +1040,12 @@ if (registerForm) {
 
                 }
 
-
             } catch (error) {
 
                 console.error(
                     'Registration Error:',
                     error
                 );
-
 
                 alert(
                     'Backend server se connect nahi ho paya.'
@@ -997,7 +1077,6 @@ if (loginForm) {
                     'loginEmail'
                 );
 
-
             const passwordInput =
                 document.getElementById(
                     'loginPassword'
@@ -1008,7 +1087,6 @@ if (loginForm) {
                 emailInput
                     ? emailInput.value.trim()
                     : '';
-
 
             const password =
                 passwordInput
@@ -1027,22 +1105,13 @@ if (loginForm) {
             }
 
 
-            const loginData = {
-
-                email,
-                password
-
-            };
-
-
             try {
 
                 const response =
                     await fetch(
                         `${API_BASE_URL}/login`,
                         {
-                            method:
-                                'POST',
+                            method: 'POST',
 
                             headers: {
                                 'Content-Type':
@@ -1050,9 +1119,10 @@ if (loginForm) {
                             },
 
                             body:
-                                JSON.stringify(
-                                    loginData
-                                )
+                                JSON.stringify({
+                                    email,
+                                    password
+                                })
                         }
                     );
 
@@ -1068,7 +1138,7 @@ if (loginForm) {
 
 
                     localStorage.setItem(
-                        'dheereStudioUser',
+                        USER_STORAGE_KEY,
                         JSON.stringify(
                             currentUser
                         )
@@ -1092,6 +1162,10 @@ if (loginForm) {
                     );
 
 
+                    // IMPORTANT:
+                    // Update navbar AFTER currentUser
+                    // has been saved.
+
                     updateNavbar();
 
 
@@ -1099,7 +1173,6 @@ if (loginForm) {
                         0,
                         0
                     );
-
 
                 } else {
 
@@ -1110,14 +1183,12 @@ if (loginForm) {
 
                 }
 
-
             } catch (error) {
 
                 console.error(
                     'Login Error:',
                     error
                 );
-
 
                 alert(
                     'Backend server se connect nahi ho paya. Please try again.'
@@ -1207,79 +1278,44 @@ passwordToggleButtons.forEach(
 
 
 // ======================================================
-// PROFILE PAGE
+// PROFILE PAGE ELEMENTS
 // ======================================================
 
 const profileCard =
-    document.getElementById(
-        'profileCard'
-    );
-
+    document.getElementById('profileCard');
 
 const postsSection =
-    document.getElementById(
-        'postsSection'
-    );
-
+    document.getElementById('postsSection');
 
 const loginMessage =
-    document.getElementById(
-        'loginMessage'
-    );
-
+    document.getElementById('loginMessage');
 
 const profileName =
-    document.getElementById(
-        'profileName'
-    );
-
+    document.getElementById('profileName');
 
 const profileUsername =
-    document.getElementById(
-        'profileUsername'
-    );
-
+    document.getElementById('profileUsername');
 
 const profileEmail =
-    document.getElementById(
-        'profileEmail'
-    );
-
+    document.getElementById('profileEmail');
 
 const profileAvatar =
-    document.getElementById(
-        'profileAvatar'
-    );
-
+    document.getElementById('profileAvatar');
 
 const logoutBtn =
-    document.getElementById(
-        'logoutBtn'
-    );
-
+    document.getElementById('logoutBtn');
 
 const postContent =
-    document.getElementById(
-        'postContent'
-    );
-
+    document.getElementById('postContent');
 
 const postCharacterCount =
-    document.getElementById(
-        'postCharacterCount'
-    );
-
+    document.getElementById('postCharacterCount');
 
 const createPostBtn =
-    document.getElementById(
-        'createPostBtn'
-    );
-
+    document.getElementById('createPostBtn');
 
 const postsFeed =
-    document.getElementById(
-        'postsFeed'
-    );
+    document.getElementById('postsFeed');
 
 
 // ======================================================
@@ -1321,21 +1357,13 @@ function loadProfilePage() {
 
 
     const name =
-        getUserName(
-            currentUser
-        );
-
+        getUserName(currentUser);
 
     const username =
-        getUserUsername(
-            currentUser
-        );
-
+        getUserUsername(currentUser);
 
     const email =
-        getUserEmail(
-            currentUser
-        );
+        getUserEmail(currentUser);
 
 
     if (profileName) {
@@ -1349,7 +1377,9 @@ function loadProfilePage() {
     if (profileUsername) {
 
         profileUsername.textContent =
-            '@' + username;
+            username
+                ? `@${username}`
+                : '';
 
     }
 
@@ -1364,10 +1394,64 @@ function loadProfilePage() {
 
     if (profileAvatar) {
 
-        profileAvatar.textContent =
-            name
-                .charAt(0)
-                .toUpperCase();
+        const savedAvatar =
+            getProfileAvatar();
+
+
+        profileAvatar.replaceChildren();
+
+
+        if (savedAvatar) {
+
+            const img =
+                document.createElement('img');
+
+
+            img.src =
+                savedAvatar;
+
+
+            img.alt =
+                `${name} profile photo`;
+
+
+            img.loading =
+                'eager';
+
+
+            img.decoding =
+                'async';
+
+
+            img.addEventListener(
+                'error',
+                () => {
+
+                    profileAvatar.replaceChildren();
+
+                    profileAvatar.textContent =
+                        getUserInitials(
+                            currentUser
+                        );
+
+                },
+                {
+                    once: true
+                }
+            );
+
+
+            profileAvatar.appendChild(img);
+
+
+        } else {
+
+            profileAvatar.textContent =
+                getUserInitials(
+                    currentUser
+                );
+
+        }
 
     }
 
@@ -1398,22 +1482,18 @@ function loadProfilePage() {
 
 
 // ======================================================
-// FORMAT DATE
+// FORMAT POST DATE
 // ======================================================
 
 function formatPostDate(dateValue) {
 
     if (!dateValue) {
-
         return '';
-
     }
 
 
     const date =
-        new Date(
-            dateValue
-        );
+        new Date(dateValue);
 
 
     if (
@@ -1430,20 +1510,11 @@ function formatPostDate(dateValue) {
     return date.toLocaleString(
         'en-IN',
         {
-            day:
-                'numeric',
-
-            month:
-                'short',
-
-            year:
-                'numeric',
-
-            hour:
-                'numeric',
-
-            minute:
-                '2-digit'
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
         }
     );
 
@@ -1483,81 +1554,79 @@ function renderPosts(posts) {
 
 
     postsFeed.innerHTML =
-        posts.map(
-            (post) => {
+        posts
+            .map(
+                (post) => {
 
-                const username =
-                    post.username ||
-                    'user';
+                    const username =
+                        post.username ||
+                        'user';
 
+                    const content =
+                        post.content ||
+                        '';
 
-                const content =
-                    post.content ||
-                    '';
+                    const date =
+                        formatPostDate(
+                            post.createdAt
+                        );
 
-
-                const date =
-                    formatPostDate(
-                        post.createdAt
-                    );
-
-
-                const likes =
-                    Number(
-                        post.likes || 0
-                    );
+                    const likes =
+                        Number(
+                            post.likes || 0
+                        );
 
 
-                return `
+                    return `
 
-                    <article class="post-card">
+                        <article class="post-card">
 
-                        <div class="post-header">
+                            <div class="post-header">
 
-                            <span class="post-author">
+                                <span class="post-author">
 
-                                @${escapeHTML(
-                                    username
-                                )}
+                                    @${escapeHTML(
+                                        username
+                                    )}
 
-                            </span>
+                                </span>
 
 
-                            <span class="post-date">
+                                <span class="post-date">
+
+                                    ${escapeHTML(
+                                        date
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="post-content">
 
                                 ${escapeHTML(
-                                    date
+                                    content
                                 )}
 
-                            </span>
-
-                        </div>
+                            </div>
 
 
-                        <div class="post-content">
+                            <div class="post-meta">
 
-                            ${escapeHTML(
-                                content
-                            )}
+                                <span>
+                                    ♥ ${likes} likes
+                                </span>
 
-                        </div>
+                            </div>
 
+                        </article>
 
-                        <div class="post-meta">
+                    `;
 
-                            <span>
-                                ♥ ${likes} likes
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                `;
-
-            }
-        )
-        .join('');
+                }
+            )
+            .join('');
 
 }
 
@@ -1572,16 +1641,12 @@ async function loadUserPosts() {
         !postsFeed ||
         !currentUser
     ) {
-
         return;
-
     }
 
 
     const username =
-        getUserUsername(
-            currentUser
-        );
+        getUserUsername(currentUser);
 
 
     if (!username) {
@@ -1624,7 +1689,10 @@ async function loadUserPosts() {
             await response.json();
 
 
-        if (!response.ok || !result.success) {
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             throw new Error(
                 result.error ||
@@ -1711,16 +1779,10 @@ if (createPostBtn) {
 
 
             const authorId =
-                getUserId(
-                    currentUser
-                );
-
+                getUserId(currentUser);
 
             const username =
-                getUserUsername(
-                    currentUser
-                );
-
+                getUserUsername(currentUser);
 
             const content =
                 postContent
@@ -1761,10 +1823,7 @@ if (createPostBtn) {
             }
 
 
-            if (
-                content.length >
-                2000
-            ) {
+            if (content.length > 2000) {
 
                 alert(
                     'Post cannot exceed 2000 characters.'
@@ -1778,7 +1837,6 @@ if (createPostBtn) {
             createPostBtn.disabled =
                 true;
 
-
             createPostBtn.textContent =
                 'Publishing...';
 
@@ -1789,8 +1847,7 @@ if (createPostBtn) {
                     await fetch(
                         `${API_BASE_URL}/posts`,
                         {
-                            method:
-                                'POST',
+                            method: 'POST',
 
                             headers: {
                                 'Content-Type':
@@ -1801,9 +1858,7 @@ if (createPostBtn) {
                                 JSON.stringify({
 
                                     authorId,
-
                                     username,
-
                                     content
 
                                 })
@@ -1815,7 +1870,10 @@ if (createPostBtn) {
                     await response.json();
 
 
-                if (!response.ok || !result.success) {
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
 
                     alert(
                         result.error ||
@@ -1826,10 +1884,6 @@ if (createPostBtn) {
 
                 }
 
-
-                // ==========================================
-                // CLEAR FORM
-                // ==========================================
 
                 if (postContent) {
 
@@ -1846,10 +1900,6 @@ if (createPostBtn) {
 
                 }
 
-
-                // ==========================================
-                // LOAD UPDATED POSTS
-                // ==========================================
 
                 await loadUserPosts();
 
@@ -1871,7 +1921,6 @@ if (createPostBtn) {
 
                 createPostBtn.disabled =
                     false;
-
 
                 createPostBtn.textContent =
                     'Publish Post';
@@ -1895,12 +1944,16 @@ if (logoutBtn) {
         () => {
 
             localStorage.removeItem(
-                'dheereStudioUser'
+                USER_STORAGE_KEY
             );
 
 
-            currentUser =
-                null;
+            localStorage.removeItem(
+                PROFILE_AVATAR_STORAGE_KEY
+            );
+
+
+            currentUser = null;
 
 
             window.location.href =
@@ -1913,14 +1966,80 @@ if (logoutBtn) {
 
 
 // ======================================================
-// INITIALIZE AUTH UI
+// CROSS-TAB USER SYNC
+// ======================================================
+
+window.addEventListener(
+    'storage',
+    (event) => {
+
+        if (
+            event.key ===
+            USER_STORAGE_KEY
+        ) {
+
+            try {
+
+                currentUser =
+                    event.newValue
+                        ? JSON.parse(
+                            event.newValue
+                        )
+                        : null;
+
+            } catch {
+
+                currentUser = null;
+
+            }
+
+
+            updateNavbar();
+
+            loadProfilePage();
+
+        }
+
+
+        if (
+            event.key ===
+            PROFILE_AVATAR_STORAGE_KEY
+        ) {
+
+            if (currentUser) {
+
+                renderHomepageAvatar();
+
+            }
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// PAGE SHOW SYNC
+// ======================================================
+
+window.addEventListener(
+    'pageshow',
+    () => {
+
+        restoreUserFromStorage();
+
+        updateNavbar();
+
+        loadProfilePage();
+
+    }
+);
+
+
+// ======================================================
+// INITIALIZE
 // ======================================================
 
 updateNavbar();
-
-
-// ======================================================
-// INITIALIZE PROFILE PAGE
-// ======================================================
 
 loadProfilePage();
