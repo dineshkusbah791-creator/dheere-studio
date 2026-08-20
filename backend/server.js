@@ -46,11 +46,20 @@ let postsCollection;
 const USERNAME_REGEX =
     /^[a-z0-9_]{3,20}$/;
 
-const MAX_POST_LENGTH = 2000;
+const MAX_POST_LENGTH =
+    2000;
 
-const MAX_AI_MESSAGE_LENGTH = 500;
+const MAX_BIO_LENGTH =
+    150;
 
-const RESET_TOKEN_EXPIRY_MINUTES = 15;
+const MAX_NAME_LENGTH =
+    80;
+
+const MAX_AI_MESSAGE_LENGTH =
+    500;
+
+const RESET_TOKEN_EXPIRY_MINUTES =
+    15;
 
 
 // ============================================================
@@ -146,6 +155,31 @@ function cleanName(value) {
     }
 
     return value.trim();
+}
+
+
+/*
+ * Backward-compatible helper.
+ *
+ * Some existing routes use cleanNameValue().
+ * Keep it available so those routes do not break.
+ */
+
+function cleanNameValue(value) {
+
+    return cleanName(value);
+}
+
+
+function cleanBio(value) {
+
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value
+        .trim()
+        .slice(0, MAX_BIO_LENGTH);
 }
 
 
@@ -472,10 +506,6 @@ app.get(
                     : "";
 
 
-            // --------------------------------------------------
-            // FORMAT
-            // --------------------------------------------------
-
             if (
                 !USERNAME_REGEX.test(username)
             ) {
@@ -497,10 +527,6 @@ app.get(
 
             }
 
-
-            // --------------------------------------------------
-            // CURRENT USER
-            // --------------------------------------------------
 
             if (
                 currentUserId &&
@@ -542,10 +568,6 @@ app.get(
 
             }
 
-
-            // --------------------------------------------------
-            // EXISTING USER
-            // --------------------------------------------------
 
             const existingUser =
                 await usersCollection.findOne(
@@ -712,6 +734,9 @@ app.get(
                     email:
                         user.email,
 
+                    bio:
+                        user.bio || "",
+
                     createdAt:
                         user.createdAt,
 
@@ -765,7 +790,8 @@ app.put(
             const {
                 currentUsername,
                 name,
-                username
+                username,
+                bio
             } = req.body;
 
 
@@ -827,6 +853,36 @@ app.put(
                 );
 
 
+            /*
+             * Bio is optional.
+             *
+             * Empty bio is allowed.
+             */
+
+            if (
+                bio !== undefined &&
+                bio !== null &&
+                typeof bio !== "string"
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Bio must be text"
+
+                });
+
+            }
+
+
+            const cleanBioValue =
+                cleanBio(
+                    bio
+                );
+
+
             // --------------------------------------------------
             // NAME
             // --------------------------------------------------
@@ -846,7 +902,8 @@ app.put(
 
 
             if (
-                cleanName.length > 80
+                cleanName.length >
+                MAX_NAME_LENGTH
             ) {
 
                 return res.status(400).json({
@@ -877,6 +934,28 @@ app.put(
 
                     error:
                         "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // BIO
+            // --------------------------------------------------
+
+            if (
+                typeof bio === "string" &&
+                bio.trim().length >
+                MAX_BIO_LENGTH
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Bio cannot exceed 150 characters"
 
                 });
 
@@ -989,7 +1068,10 @@ app.put(
                                 cleanName,
 
                             username:
-                                cleanUsername
+                                cleanUsername,
+
+                            bio:
+                                cleanBioValue
 
                         }
 
@@ -1064,6 +1146,14 @@ app.put(
             );
 
 
+            console.log(
+                "Bio updated:",
+                cleanBioValue
+                    ? "yes"
+                    : "empty"
+            );
+
+
             return res.json({
 
                 success: true,
@@ -1084,6 +1174,9 @@ app.put(
 
                     email:
                         user.email,
+
+                    bio:
+                        cleanBioValue,
 
                     createdAt:
                         user.createdAt
@@ -1175,7 +1268,7 @@ app.post(
             const feedback = {
 
                 name:
-                    cleanNameValue(name),
+                    cleanName(name),
 
                 email:
                     normalizeEmail(email),
@@ -1316,6 +1409,23 @@ app.post(
 
 
             if (
+                cleanName.length >
+                MAX_NAME_LENGTH
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Name cannot exceed 80 characters"
+
+                });
+
+            }
+
+
+            if (
                 !USERNAME_REGEX.test(
                     cleanUsername
                 )
@@ -1413,6 +1523,9 @@ app.post(
                 email:
                     cleanEmail,
 
+                bio:
+                    "",
+
                 password:
                     hashedPassword,
 
@@ -1453,7 +1566,10 @@ app.post(
                         user.username,
 
                     email:
-                        user.email
+                        user.email,
+
+                    bio:
+                        user.bio
 
                 }
 
@@ -1606,7 +1722,10 @@ app.post(
                         user.username,
 
                     email:
-                        user.email
+                        user.email,
+
+                    bio:
+                        user.bio || ""
 
                 }
 
