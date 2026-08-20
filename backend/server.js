@@ -13,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 
-// ==========================================
+// ============================================================
 // ENVIRONMENT
-// ==========================================
+// ============================================================
 
 const client = new MongoClient(
     process.env.MONGODB_URI
@@ -25,58 +25,37 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-
-// ==========================================
-// RESEND EMAIL
-// ==========================================
-
-const resend =
-    new Resend(
-        process.env.RESEND_API_KEY
-    );
+const resend = new Resend(
+    process.env.RESEND_API_KEY
+);
 
 
-// ==========================================
+// ============================================================
 // COLLECTIONS
-// ==========================================
+// ============================================================
 
 let feedbackCollection;
 let usersCollection;
 let postsCollection;
 
 
-// ==========================================
-// USERNAME RULES
-// ==========================================
+// ============================================================
+// RULES
+// ============================================================
 
 const USERNAME_REGEX =
     /^[a-z0-9_]{3,20}$/;
 
-
-// ==========================================
-// POST RULES
-// ==========================================
-
 const MAX_POST_LENGTH = 2000;
 
-
-// ==========================================
-// AI RULES
-// ==========================================
-
 const MAX_AI_MESSAGE_LENGTH = 500;
-
-
-// ==========================================
-// PASSWORD RESET RULES
-// ==========================================
 
 const RESET_TOKEN_EXPIRY_MINUTES = 15;
 
 
-// ==========================================
-// DHEERE AI KNOWLEDGE
-// ==========================================
+// ============================================================
+// DHEERE AI
+// ============================================================
 
 const DHEERE_AI_SYSTEM_INSTRUCTION = `
 You are Dheere AI, the small AI assistant for Dheere Studio.
@@ -132,9 +111,57 @@ IMPORTANT BEHAVIOR:
 `;
 
 
-// ==========================================
-// CONNECT TO MONGODB
-// ==========================================
+// ============================================================
+// HELPERS
+// ============================================================
+
+function normalizeUsername(value) {
+
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value
+        .trim()
+        .toLowerCase();
+}
+
+
+function normalizeEmail(value) {
+
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value
+        .trim()
+        .toLowerCase();
+}
+
+
+function cleanName(value) {
+
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value.trim();
+}
+
+
+function isValidObjectId(value) {
+
+    return (
+        typeof value === "string" &&
+        ObjectId.isValid(value)
+    );
+
+}
+
+
+// ============================================================
+// DATABASE
+// ============================================================
 
 async function connectDatabase() {
 
@@ -149,49 +176,68 @@ async function connectDatabase() {
         feedbackCollection =
             database.collection("feedback");
 
-
         usersCollection =
             database.collection("users");
-
 
         postsCollection =
             database.collection("posts");
 
 
-        // ==========================================
-        // UNIQUE USERNAME INDEX
-        // ==========================================
+        // ------------------------------------------------------
+        // UNIQUE USERNAME
+        // ------------------------------------------------------
 
         await usersCollection.createIndex(
-            { username: 1 },
-            { unique: true }
+            {
+                username: 1
+            },
+            {
+                unique: true
+            }
         );
 
 
-        // ==========================================
-        // POSTS INDEX
-        // ==========================================
-
-        await postsCollection.createIndex(
-            { createdAt: -1 }
-        );
-
-
-        // ==========================================
-        // POSTS USER INDEX
-        // ==========================================
-
-        await postsCollection.createIndex(
-            { authorId: 1, createdAt: -1 }
-        );
-
-
-        // ==========================================
-        // RESET TOKEN INDEX
-        // ==========================================
+        // ------------------------------------------------------
+        // EMAIL INDEX
+        // ------------------------------------------------------
 
         await usersCollection.createIndex(
-            { resetTokenHash: 1 },
+            {
+                email: 1
+            },
+            {
+                unique: true
+            }
+        );
+
+
+        // ------------------------------------------------------
+        // POSTS
+        // ------------------------------------------------------
+
+        await postsCollection.createIndex(
+            {
+                createdAt: -1
+            }
+        );
+
+
+        await postsCollection.createIndex(
+            {
+                authorId: 1,
+                createdAt: -1
+            }
+        );
+
+
+        // ------------------------------------------------------
+        // PASSWORD RESET
+        // ------------------------------------------------------
+
+        await usersCollection.createIndex(
+            {
+                resetTokenHash: 1
+            },
             {
                 sparse: true
             }
@@ -202,16 +248,13 @@ async function connectDatabase() {
             "MongoDB connected successfully"
         );
 
-
         console.log(
             "Username system initialized"
         );
 
-
         console.log(
             "Posts system initialized"
         );
-
 
         console.log(
             "Password reset system initialized"
@@ -232,22 +275,25 @@ async function connectDatabase() {
 }
 
 
-// ==========================================
-// HOME ROUTE
-// ==========================================
+// ============================================================
+// HOME
+// ============================================================
 
-app.get("/", (req, res) => {
+app.get(
+    "/",
+    (req, res) => {
 
-    res.send(
-        "Dheere Studio backend is running"
-    );
+        res.send(
+            "Dheere Studio backend is running"
+        );
 
-});
+    }
+);
 
 
-// ==========================================
-// DHEERE AI ROUTE
-// ==========================================
+// ============================================================
+// AI CHAT
+// ============================================================
 
 app.post(
     "/ai-chat",
@@ -319,7 +365,6 @@ app.post(
                     "GEMINI_API_KEY is missing"
                 );
 
-
                 return res.status(500).json({
 
                     success: false,
@@ -372,7 +417,7 @@ app.post(
             }
 
 
-            res.json({
+            return res.json({
 
                 success: true,
 
@@ -390,7 +435,7 @@ app.post(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -405,9 +450,9 @@ app.post(
 );
 
 
-// ==========================================
-// USERNAME AVAILABILITY ROUTE
-// ==========================================
+// ============================================================
+// USERNAME AVAILABILITY
+// ============================================================
 
 app.get(
     "/check-username/:username",
@@ -416,10 +461,20 @@ app.get(
         try {
 
             const username =
-                req.params.username
-                    .trim()
-                    .toLowerCase();
+                normalizeUsername(
+                    req.params.username
+                );
 
+
+            const currentUserId =
+                typeof req.query.userId === "string"
+                    ? req.query.userId.trim()
+                    : "";
+
+
+            // --------------------------------------------------
+            // FORMAT
+            // --------------------------------------------------
 
             if (
                 !USERNAME_REGEX.test(username)
@@ -433,6 +488,8 @@ app.get(
 
                     valid: false,
 
+                    current: false,
+
                     message:
                         "Username must be 3-20 characters and contain only letters, numbers, and underscores."
 
@@ -440,6 +497,55 @@ app.get(
 
             }
 
+
+            // --------------------------------------------------
+            // CURRENT USER
+            // --------------------------------------------------
+
+            if (
+                currentUserId &&
+                isValidObjectId(currentUserId)
+            ) {
+
+                const currentUser =
+                    await usersCollection.findOne({
+
+                        _id:
+                            new ObjectId(
+                                currentUserId
+                            )
+
+                    });
+
+
+                if (
+                    currentUser &&
+                    currentUser.username === username
+                ) {
+
+                    return res.json({
+
+                        success: true,
+
+                        available: true,
+
+                        valid: true,
+
+                        current: true,
+
+                        message:
+                            "This is your current username."
+
+                    });
+
+                }
+
+            }
+
+
+            // --------------------------------------------------
+            // EXISTING USER
+            // --------------------------------------------------
 
             const existingUser =
                 await usersCollection.findOne(
@@ -465,6 +571,8 @@ app.get(
 
                     valid: true,
 
+                    current: false,
+
                     message:
                         "Username is already taken."
 
@@ -481,6 +589,8 @@ app.get(
 
                 valid: true,
 
+                current: false,
+
                 message:
                     "Username is available."
 
@@ -495,7 +605,7 @@ app.get(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -510,9 +620,526 @@ app.get(
 );
 
 
-// ==========================================
-// FEEDBACK ROUTE
-// ==========================================
+// ============================================================
+// GET PROFILE
+// ============================================================
+
+app.get(
+    "/profile/:userId",
+    async (req, res) => {
+
+        try {
+
+            const userId =
+                typeof req.params.userId === "string"
+                    ? req.params.userId.trim()
+                    : "";
+
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid user ID"
+
+                });
+
+            }
+
+
+            const user =
+                await usersCollection.findOne(
+
+                    {
+                        _id:
+                            new ObjectId(userId)
+                    },
+
+                    {
+                        projection: {
+                            password: 0,
+                            resetTokenHash: 0,
+                            resetTokenExpiresAt: 0
+                        }
+                    }
+
+                );
+
+
+            if (!user) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "User not found"
+
+                });
+
+            }
+
+
+            const postCount =
+                await postsCollection.countDocuments({
+
+                    authorId:
+                        user._id
+
+                });
+
+
+            return res.json({
+
+                success: true,
+
+                user: {
+
+                    id:
+                        user._id.toString(),
+
+                    name:
+                        user.name,
+
+                    username:
+                        user.username,
+
+                    email:
+                        user.email,
+
+                    createdAt:
+                        user.createdAt,
+
+                    postCount:
+                        postCount
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Get profile error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not load profile"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// UPDATE PROFILE
+// ============================================================
+
+app.put(
+    "/profile/:userId",
+    async (req, res) => {
+
+        try {
+
+            const userId =
+                typeof req.params.userId === "string"
+                    ? req.params.userId.trim()
+                    : "";
+
+
+            const {
+                currentUsername,
+                name,
+                username
+            } = req.body;
+
+
+            // --------------------------------------------------
+            // USER ID
+            // --------------------------------------------------
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid user ID"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // REQUIRED DATA
+            // --------------------------------------------------
+
+            if (
+                typeof currentUsername !== "string" ||
+                typeof name !== "string" ||
+                typeof username !== "string"
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Name, username and current username are required"
+
+                });
+
+            }
+
+
+            const cleanCurrentUsername =
+                normalizeUsername(
+                    currentUsername
+                );
+
+
+            const cleanName =
+                cleanNameValue(name);
+
+
+            const cleanUsername =
+                normalizeUsername(
+                    username
+                );
+
+
+            // --------------------------------------------------
+            // NAME
+            // --------------------------------------------------
+
+            if (!cleanName) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Name cannot be empty"
+
+                });
+
+            }
+
+
+            if (
+                cleanName.length > 80
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Name cannot exceed 80 characters"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // USERNAME
+            // --------------------------------------------------
+
+            if (
+                !USERNAME_REGEX.test(
+                    cleanUsername
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // FIND CURRENT USER
+            // --------------------------------------------------
+
+            const user =
+                await usersCollection.findOne({
+
+                    _id:
+                        new ObjectId(userId),
+
+                    username:
+                        cleanCurrentUsername
+
+                });
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "User verification failed"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // CHECK USERNAME CHANGE
+            // --------------------------------------------------
+
+            const usernameChanged =
+                user.username !==
+                cleanUsername;
+
+
+            // --------------------------------------------------
+            // DUPLICATE USERNAME
+            // --------------------------------------------------
+
+            if (usernameChanged) {
+
+                const usernameOwner =
+                    await usersCollection.findOne(
+
+                        {
+                            username:
+                                cleanUsername,
+
+                            _id: {
+                                $ne:
+                                    user._id
+                            }
+                        },
+
+                        {
+                            projection: {
+                                _id: 1
+                            }
+                        }
+
+                    );
+
+
+                if (usernameOwner) {
+
+                    return res.status(409).json({
+
+                        success: false,
+
+                        error:
+                            "Username already taken"
+
+                    });
+
+                }
+
+            }
+
+
+            // --------------------------------------------------
+            // UPDATE
+            // --------------------------------------------------
+
+            const updateResult =
+                await usersCollection.updateOne(
+
+                    {
+                        _id:
+                            user._id,
+
+                        username:
+                            cleanCurrentUsername
+
+                    },
+
+                    {
+                        $set: {
+
+                            name:
+                                cleanName,
+
+                            username:
+                                cleanUsername
+
+                        }
+
+                    }
+
+                );
+
+
+            if (
+                updateResult.matchedCount !== 1
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    error:
+                        "Profile could not be updated"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // SYNC POSTS
+            // --------------------------------------------------
+
+            if (usernameChanged) {
+
+                await postsCollection.updateMany(
+
+                    {
+                        authorId:
+                            user._id,
+
+                        username:
+                            cleanCurrentUsername
+
+                    },
+
+                    {
+                        $set: {
+
+                            username:
+                                cleanUsername
+
+                        }
+
+                    }
+
+                );
+
+            }
+
+
+            console.log(
+                "Profile updated:",
+                user._id.toString()
+            );
+
+
+            console.log(
+                "Old username:",
+                cleanCurrentUsername
+            );
+
+
+            console.log(
+                "New username:",
+                cleanUsername
+            );
+
+
+            return res.json({
+
+                success: true,
+
+                message:
+                    "Profile updated successfully",
+
+                user: {
+
+                    id:
+                        user._id.toString(),
+
+                    name:
+                        cleanName,
+
+                    username:
+                        cleanUsername,
+
+                    email:
+                        user.email,
+
+                    createdAt:
+                        user.createdAt
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            // --------------------------------------------------
+            // UNIQUE INDEX RACE CONDITION
+            // --------------------------------------------------
+
+            if (
+                error &&
+                error.code === 11000
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    error:
+                        "Username already taken"
+
+                });
+
+            }
+
+
+            console.error(
+                "Profile update error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not update profile"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// FEEDBACK
+// ============================================================
 
 app.post(
     "/feedback",
@@ -548,18 +1175,38 @@ app.post(
             const feedback = {
 
                 name:
-                    name.trim(),
+                    cleanNameValue(name),
 
                 email:
-                    email.trim().toLowerCase(),
+                    normalizeEmail(email),
 
                 message:
-                    message.trim(),
+                    typeof message === "string"
+                        ? message.trim()
+                        : "",
 
                 createdAt:
                     new Date()
 
             };
+
+
+            if (
+                !feedback.name ||
+                !feedback.email ||
+                !feedback.message
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "All fields are required"
+
+                });
+
+            }
 
 
             await feedbackCollection.insertOne(
@@ -568,25 +1215,7 @@ app.post(
 
 
             console.log(
-                "New feedback saved:"
-            );
-
-
-            console.log(
-                "Name:",
-                feedback.name
-            );
-
-
-            console.log(
-                "Email:",
-                feedback.email
-            );
-
-
-            console.log(
-                "Message:",
-                feedback.message
+                "New feedback saved"
             );
 
 
@@ -608,7 +1237,7 @@ app.post(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -623,9 +1252,9 @@ app.post(
 );
 
 
-// ==========================================
-// REGISTER ROUTE
-// ==========================================
+// ============================================================
+// REGISTER
+// ============================================================
 
 app.post(
     "/register",
@@ -661,19 +1290,29 @@ app.post(
 
 
             const cleanName =
-                name.trim();
+                cleanNameValue(name);
 
 
             const cleanUsername =
-                username
-                    .trim()
-                    .toLowerCase();
+                normalizeUsername(username);
 
 
             const cleanEmail =
-                email
-                    .trim()
-                    .toLowerCase();
+                normalizeEmail(email);
+
+
+            if (!cleanName) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Name is required"
+
+                });
+
+            }
 
 
             if (
@@ -688,6 +1327,22 @@ app.post(
 
                     error:
                         "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+
+                });
+
+            }
+
+
+            if (
+                password.length < 8
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Password must be at least 8 characters long"
 
                 });
 
@@ -728,7 +1383,7 @@ app.post(
 
             if (existingUsername) {
 
-                return res.status(400).json({
+                return res.status(409).json({
 
                     success: false,
 
@@ -767,35 +1422,19 @@ app.post(
             };
 
 
-            await usersCollection.insertOne(
-                user
-            );
+            const result =
+                await usersCollection.insertOne(
+                    user
+                );
 
 
             console.log(
-                "New user registered:"
+                "New user registered:",
+                cleanUsername
             );
 
 
-            console.log(
-                "Name:",
-                user.name
-            );
-
-
-            console.log(
-                "Username:",
-                user.username
-            );
-
-
-            console.log(
-                "Email:",
-                user.email
-            );
-
-
-            res.status(201).json({
+            return res.status(201).json({
 
                 success: true,
 
@@ -803,6 +1442,9 @@ app.post(
                     "Registration successful",
 
                 user: {
+
+                    id:
+                        result.insertedId.toString(),
 
                     name:
                         user.name,
@@ -830,7 +1472,7 @@ app.post(
                     success: false,
 
                     error:
-                        "Username already taken"
+                        "Username or email already exists"
 
                 });
 
@@ -843,7 +1485,7 @@ app.post(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -858,9 +1500,9 @@ app.post(
 );
 
 
-// ==========================================
-// LOGIN ROUTE
-// ==========================================
+// ============================================================
+// LOGIN
+// ============================================================
 
 app.post(
     "/login",
@@ -892,9 +1534,7 @@ app.post(
 
 
             const cleanEmail =
-                email
-                    .trim()
-                    .toLowerCase();
+                normalizeEmail(email);
 
 
             const user =
@@ -942,29 +1582,12 @@ app.post(
 
 
             console.log(
-                "User logged in:"
-            );
-
-
-            console.log(
-                "Name:",
-                user.name
-            );
-
-
-            console.log(
-                "Username:",
+                "User logged in:",
                 user.username
             );
 
 
-            console.log(
-                "Email:",
-                user.email
-            );
-
-
-            res.json({
+            return res.json({
 
                 success: true,
 
@@ -998,7 +1621,7 @@ app.post(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -1013,9 +1636,9 @@ app.post(
 );
 
 
-// ==========================================
+// ============================================================
 // FORGOT PASSWORD
-// ==========================================
+// ============================================================
 
 app.post(
     "/forgot-password",
@@ -1027,10 +1650,6 @@ app.post(
                 email
             } = req.body;
 
-
-            // ==========================================
-            // ALWAYS RETURN GENERIC MESSAGE
-            // ==========================================
 
             const genericMessage =
                 "If an account exists for this email, a password reset link has been sent.";
@@ -1053,9 +1672,7 @@ app.post(
 
 
             const cleanEmail =
-                email
-                    .trim()
-                    .toLowerCase();
+                normalizeEmail(email);
 
 
             if (!cleanEmail) {
@@ -1072,10 +1689,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // FIND USER
-            // ==========================================
-
             const user =
                 await usersCollection.findOne({
 
@@ -1084,10 +1697,6 @@ app.post(
 
                 });
 
-
-            // ==========================================
-            // DO NOT REVEAL WHETHER EMAIL EXISTS
-            // ==========================================
 
             if (!user) {
 
@@ -1103,18 +1712,11 @@ app.post(
             }
 
 
-            // ==========================================
-            // GENERATE SECURE TOKEN
-            // ==========================================
-
             const rawToken =
-                crypto.randomBytes(32)
+                crypto
+                    .randomBytes(32)
                     .toString("hex");
 
-
-            // ==========================================
-            // STORE ONLY TOKEN HASH
-            // ==========================================
 
             const tokenHash =
                 crypto
@@ -1131,10 +1733,6 @@ app.post(
                     1000
                 );
 
-
-            // ==========================================
-            // SAVE TOKEN
-            // ==========================================
 
             await usersCollection.updateOne(
 
@@ -1159,25 +1757,20 @@ app.post(
             );
 
 
-            // ==========================================
-            // CREATE RESET URL
-            // ==========================================
-
             const baseUrl =
                 (
                     process.env.APP_BASE_URL ||
                     "http://localhost:3000"
                 )
-                    .replace(/\/+$/, "");
+                    .replace(
+                        /\/+$/,
+                        ""
+                    );
 
 
             const resetUrl =
                 `${baseUrl}/reset-password.html?token=${encodeURIComponent(rawToken)}`;
 
-
-            // ==========================================
-            // EMAIL
-            // ==========================================
 
             const {
                 data: emailData,
@@ -1330,10 +1923,6 @@ If you did not request this, you can safely ignore this email.`,
             );
 
 
-            // ==========================================
-            // RESPONSE
-            // ==========================================
-
             return res.json({
 
                 success: true,
@@ -1352,10 +1941,6 @@ If you did not request this, you can safely ignore this email.`,
             );
 
 
-            // ==========================================
-            // DON'T LEAK INTERNAL ERROR
-            // ==========================================
-
             return res.status(500).json({
 
                 success: false,
@@ -1371,9 +1956,9 @@ If you did not request this, you can safely ignore this email.`,
 );
 
 
-// ==========================================
+// ============================================================
 // RESET PASSWORD
-// ==========================================
+// ============================================================
 
 app.post(
     "/reset-password",
@@ -1386,10 +1971,6 @@ app.post(
                 password
             } = req.body;
 
-
-            // ==========================================
-            // REQUIRED FIELDS
-            // ==========================================
 
             if (
                 typeof token !== "string" ||
@@ -1426,10 +2007,6 @@ app.post(
             }
 
 
-            // ==========================================
-            // PASSWORD RULE
-            // ==========================================
-
             if (
                 password.length < 8
             ) {
@@ -1446,20 +2023,12 @@ app.post(
             }
 
 
-            // ==========================================
-            // HASH TOKEN
-            // ==========================================
-
             const tokenHash =
                 crypto
                     .createHash("sha256")
                     .update(cleanToken)
                     .digest("hex");
 
-
-            // ==========================================
-            // FIND VALID TOKEN
-            // ==========================================
 
             const user =
                 await usersCollection.findOne({
@@ -1475,10 +2044,6 @@ app.post(
                 });
 
 
-            // ==========================================
-            // INVALID / EXPIRED TOKEN
-            // ==========================================
-
             if (!user) {
 
                 return res.status(400).json({
@@ -1493,20 +2058,12 @@ app.post(
             }
 
 
-            // ==========================================
-            // HASH NEW PASSWORD
-            // ==========================================
-
             const hashedPassword =
                 await bcrypt.hash(
                     password,
                     10
                 );
 
-
-            // ==========================================
-            // UPDATE PASSWORD
-            // ==========================================
 
             await usersCollection.updateOne(
 
@@ -1546,10 +2103,6 @@ app.post(
             );
 
 
-            // ==========================================
-            // RESPONSE
-            // ==========================================
-
             return res.json({
 
                 success: true,
@@ -1583,9 +2136,9 @@ app.post(
 );
 
 
-// ==========================================
+// ============================================================
 // CREATE POST
-// ==========================================
+// ============================================================
 
 app.post(
     "/posts",
@@ -1619,7 +2172,7 @@ app.post(
 
 
             if (
-                !ObjectId.isValid(authorId)
+                !isValidObjectId(authorId)
             ) {
 
                 return res.status(400).json({
@@ -1635,13 +2188,15 @@ app.post(
 
 
             const cleanContent =
-                content.trim();
+                typeof content === "string"
+                    ? content.trim()
+                    : "";
 
 
             const cleanUsername =
-                username
-                    .trim()
-                    .toLowerCase();
+                normalizeUsername(
+                    username
+                );
 
 
             if (!cleanContent) {
@@ -1728,23 +2283,12 @@ app.post(
 
 
             console.log(
-                "New post created:"
-            );
-
-
-            console.log(
-                "Post ID:",
+                "New post created:",
                 result.insertedId.toString()
             );
 
 
-            console.log(
-                "Username:",
-                post.username
-            );
-
-
-            res.status(201).json({
+            return res.status(201).json({
 
                 success: true,
 
@@ -1784,7 +2328,7 @@ app.post(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -1799,9 +2343,9 @@ app.post(
 );
 
 
-// ==========================================
+// ============================================================
 // GET ALL POSTS
-// ==========================================
+// ============================================================
 
 app.get(
     "/posts",
@@ -1845,7 +2389,7 @@ app.get(
                 );
 
 
-            res.json({
+            return res.json({
 
                 success: true,
 
@@ -1863,7 +2407,7 @@ app.get(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -1878,9 +2422,9 @@ app.get(
 );
 
 
-// ==========================================
+// ============================================================
 // GET POSTS BY USERNAME
-// ==========================================
+// ============================================================
 
 app.get(
     "/posts/user/:username",
@@ -1889,9 +2433,25 @@ app.get(
         try {
 
             const username =
-                req.params.username
-                    .trim()
-                    .toLowerCase();
+                normalizeUsername(
+                    req.params.username
+                );
+
+
+            if (
+                !USERNAME_REGEX.test(username)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid username"
+
+                });
+
+            }
 
 
             const posts =
@@ -1933,7 +2493,7 @@ app.get(
                 );
 
 
-            res.json({
+            return res.json({
 
                 success: true,
 
@@ -1954,7 +2514,7 @@ app.get(
             );
 
 
-            res.status(500).json({
+            return res.status(500).json({
 
                 success: false,
 
@@ -1969,20 +2529,18 @@ app.get(
 );
 
 
-// ==========================================
+// ============================================================
 // START SERVER
-// ==========================================
+// ============================================================
 
 async function startServer() {
 
     await connectDatabase();
 
 
-    // ==========================================
-    // CHECK RESEND CONFIGURATION
-    // ==========================================
-
-    if (!process.env.RESEND_API_KEY) {
+    if (
+        !process.env.RESEND_API_KEY
+    ) {
 
         console.warn(
             "RESEND_API_KEY is missing"
