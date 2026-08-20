@@ -22,6 +22,17 @@
         href="homepage.css"
     >
 
+    <!-- DHEERE MOOD ENGINE -->
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+    <script
+        src="mood-engine.js"
+        defer
+    ></script>
+
 
     <style>
 
@@ -883,12 +894,209 @@
 
         }
 
+    
+        /* ==========================================
+           DHEERE MOOD — COMMUNITY TEXT & UI LAYER
+           ========================================== */
+
+        .dheere-mood-page {
+            --community-heading: #f5f7fa;
+            --community-text: #aab2bf;
+            --community-muted: #707887;
+            --community-border: rgba(255,255,255,.09);
+            --community-surface: rgba(255,255,255,.035);
+            --community-surface-strong: rgba(255,255,255,.055);
+            --community-accent: #f5f7fa;
+            --community-accent-contrast: #0b0c0e;
+        }
+
+        .dheere-mood-page .community-hero h1,
+        .dheere-mood-page .section-heading h2,
+        .dheere-mood-page .vision-header h2,
+        .dheere-mood-page .vision-section h3,
+        .dheere-mood-page .post-author,
+        .dheere-mood-page .login-notice strong {
+            color: var(--community-heading);
+        }
+
+        .dheere-mood-page .community-hero p,
+        .dheere-mood-page .vision-header p,
+        .dheere-mood-page .vision-section p,
+        .dheere-mood-page .roadmap-list,
+        .dheere-mood-page .post-content {
+            color: var(--community-text);
+        }
+
+        .dheere-mood-page .post-date,
+        .dheere-mood-page .post-footer,
+        .dheere-mood-page .character-count,
+        .dheere-mood-page .empty-feed,
+        .dheere-mood-page .login-notice {
+            color: var(--community-muted);
+        }
+
+        .dheere-mood-page .create-post-card,
+        .dheere-mood-page .post-card,
+        .dheere-mood-page .empty-feed,
+        .dheere-mood-page .login-notice {
+            background: var(--community-surface);
+            border-color: var(--community-border);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .dheere-mood-page .create-post-card textarea {
+            background: rgba(0,0,0,.16);
+            color: var(--community-heading);
+            border-color: var(--community-border);
+        }
+
+        .dheere-mood-page .create-post-card textarea::placeholder {
+            color: var(--community-muted);
+        }
+
+        .dheere-mood-page .create-post-card textarea:focus {
+            border-color: var(--community-accent);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--community-accent) 10%, transparent);
+        }
+
+        .dheere-mood-page .community-action,
+        .dheere-mood-page .refresh-button {
+            border-color: var(--community-border);
+        }
+
+        .dheere-mood-page .secondary-action,
+        .dheere-mood-page .refresh-button {
+            background: var(--community-surface);
+            color: var(--community-heading);
+        }
+
+        .dheere-mood-page .primary-action,
+        .dheere-mood-page .publish-button {
+            background: var(--community-accent);
+            color: var(--community-accent-contrast);
+            border-color: var(--community-accent);
+        }
+
+        .dheere-mood-page .community-action:hover,
+        .dheere-mood-page .refresh-button:hover,
+        .dheere-mood-page .publish-button:hover {
+            border-color: var(--community-accent);
+        }
+
+        .dheere-mood-page .lang-switch {
+            background: var(--community-surface);
+            border-color: var(--community-border);
+        }
+
+        .dheere-mood-page .lang-btn {
+            color: var(--community-muted);
+        }
+
+        .dheere-mood-page .lang-btn.active {
+            background: var(--community-accent);
+            color: var(--community-accent-contrast);
+        }
+
+        .dheere-mood-page .vision-section {
+            border-bottom-color: var(--community-border);
+        }
+
+        .dheere-mood-page .login-notice a,
+        .dheere-mood-page .post-author {
+            color: var(--community-accent);
+        }
+
+        .dheere-mood-page .roadmap-list strong {
+            color: var(--community-heading);
+        }
+
+        /* Forest */
+        html[data-dheere-mood="forest"] .dheere-mood-page {
+            --community-heading: #e9f7ec;
+            --community-text: #a5bba9;
+            --community-muted: #718878;
+            --community-border: rgba(92,190,118,.18);
+            --community-surface: rgba(11,31,17,.62);
+            --community-surface-strong: rgba(16,42,23,.72);
+            --community-accent: #76d88e;
+            --community-accent-contrast: #061009;
+        }
+
+        html[data-dheere-mood="forest"] .dheere-mood-page .post-card:hover,
+        html[data-dheere-mood="forest"] .dheere-mood-page .create-post-card:hover {
+            border-color: rgba(118,216,142,.34);
+            box-shadow: 0 16px 45px rgba(0,25,8,.18);
+        }
+
+        /* Ocean */
+        html[data-dheere-mood="ocean"] .dheere-mood-page {
+            --community-heading: #eaf4ff;
+            --community-text: #a0b1c7;
+            --community-muted: #71869e;
+            --community-border: rgba(91,159,232,.18);
+            --community-surface: rgba(9,25,43,.64);
+            --community-surface-strong: rgba(12,34,58,.74);
+            --community-accent: #78b1f1;
+            --community-accent-contrast: #06101d;
+        }
+
+        html[data-dheere-mood="ocean"] .dheere-mood-page .post-card:hover,
+        html[data-dheere-mood="ocean"] .dheere-mood-page .create-post-card:hover {
+            border-color: rgba(120,177,241,.36);
+            box-shadow: 0 16px 45px rgba(0,25,60,.20);
+        }
+
+        /* Ember */
+        html[data-dheere-mood="ember"] .dheere-mood-page {
+            --community-heading: #fff0ec;
+            --community-text: #c1a49e;
+            --community-muted: #8f706b;
+            --community-border: rgba(228,107,97,.19);
+            --community-surface: rgba(37,15,13,.64);
+            --community-surface-strong: rgba(48,18,15,.74);
+            --community-accent: #ef8175;
+            --community-accent-contrast: #1b0806;
+        }
+
+        html[data-dheere-mood="ember"] .dheere-mood-page .post-card:hover,
+        html[data-dheere-mood="ember"] .dheere-mood-page .create-post-card:hover {
+            border-color: rgba(239,129,117,.38);
+            box-shadow: 0 16px 45px rgba(65,8,3,.22);
+        }
+
+        /* Midnight */
+        html[data-dheere-mood="midnight"] .dheere-mood-page {
+            --community-heading: #f3efff;
+            --community-text: #aaa4bc;
+            --community-muted: #7b748f;
+            --community-border: rgba(155,140,242,.19);
+            --community-surface: rgba(22,17,36,.66);
+            --community-surface-strong: rgba(30,23,49,.76);
+            --community-accent: #afa3f6;
+            --community-accent-contrast: #0d0918;
+        }
+
+        html[data-dheere-mood="midnight"] .dheere-mood-page .post-card:hover,
+        html[data-dheere-mood="midnight"] .dheere-mood-page .create-post-card:hover {
+            border-color: rgba(175,163,246,.38);
+            box-shadow: 0 16px 50px rgba(20,8,60,.24);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .dheere-mood-page .post-card,
+            .dheere-mood-page .create-post-card,
+            .dheere-mood-page .community-action {
+                transition: none !important;
+            }
+        }
+
     </style>
 
 </head>
 
 
-<body>
+<body class="dheere-mood-page">
 
 
     <!-- ==========================================
