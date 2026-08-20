@@ -1,0 +1,352 @@
+/* ============================================================
+   DHEERE STUDIO — MOOD VISUAL SYSTEM
+   ============================================================ */
+
+html,
+body {
+    transition:
+        background-color 0.8s ease,
+        color 0.8s ease;
+}
+
+
+/* ============================================================
+   ORIGINAL
+   ============================================================ */
+
+html[data-dheere-mood="original"] body {
+    background: #0b0c0e;
+    color: #e2e8f0;
+}
+
+html[data-dheere-mood="original"] header {
+    background: rgba(11,12,14,0.85);
+    border-bottom-color: rgba(255,255,255,0.05);
+}
+
+html[data-dheere-mood="original"] section {
+    border-bottom-color: rgba(255,255,255,0.06);
+}
+
+html[data-dheere-mood="original"] .project-card,
+html[data-dheere-mood="original"] .article-card,
+html[data-dheere-mood="original"] .auth-card {
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(255,255,255,0.06);
+}
+
+html[data-dheere-mood="original"] .button {
+    background: #f8fafc;
+    border-color: #f8fafc;
+    color: #0b0c0e;
+}
+
+
+/* ============================================================
+   FOREST
+   ============================================================ */
+
+html[data-dheere-mood="forest"] body {
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(48,120,67,0.20),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #071009,
+            #0b160e 55%,
+            #08110b
+        );
+
+    color: #e4eee7;
+}
+
+html[data-dheere-mood="forest"] header {
+    background: rgba(7,16,10,0.86);
+    border-bottom-color: rgba(85,200,120,0.14);
+}
+
+html[data-dheere-mood="forest"] section {
+    border-bottom-color: rgba(85,200,120,0.10);
+}
+
+html[data-dheere-mood="forest"] h1,
+html[data-dheere-mood="forest"] h2,
+html[data-dheere-mood="forest"] h3 {
+    color: #effaf2;
+}
+
+html[data-dheere-mood="forest"] p {
+    color: #8fa899;
+}
+
+html[data-dheere-mood="forest"] a {
+    color: #79d993;
+}
+
+html[data-dheere-mood="forest"] .project-card,
+html[data-dheere-mood="forest"] .article-card,
+html[data-dheere-mood="forest"] .auth-card {
+    background: rgba(13,29,18,0.72);
+    border-color: rgba(85,200,120,0.14);
+    backdrop-filter: blur(6px);
+}
+
+html[data-dheere-mood="forest"] .button {
+    background: #55c878;
+    border-color: #55c878;
+    color: #07100a;
+}
+
+html[data-dheere-mood="forest"] .button:hover {
+    background: #76da90;
+    border-color: #76da90;
+}
+
+html[data-dheere-mood="forest"] .input-group input {
+    background: rgba(0,0,0,0.22);
+}
+
+html[data-dheere-mood="forest"] .input-group input:focus {
+    border-color: #55c878;
+}
+
+
+/* ============================================================
+   OCEAN
+   ============================================================ */
+
+html[data-dheere-mood="ocean"] body {
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(54,120,194,0.20),
+            transparent 32%
+        ),
+        linear-gradient(
+            180deg,
+            #07101b,
+            #091827 55%,
+            #07111d
+        );
+
+    color: #e5edf7;
+}
+
+html[data-dheere-mood="ocean"] header {
+    background: rgba(7,16,27,0.88);
+    border-bottom-color: rgba(94,155,234,0.14);
+}
+
+html[data-dheere-mood="ocean"] section {
+    border-bottom-color: rgba(94,155,234,0.10);
+}
+
+html[data-dheere-mood="ocean"] h1,
+html[data-dheere-mood="ocean"] h2,
+html[data-dheere-mood="ocean"] h3 {
+    color: #edf5ff;
+}
+
+html[data-dheere-mood="ocean"] p {
+    color: #8d9fb5;
+}
+
+html[data-dheere-mood="ocean"] a {
+    color: #75a9ef;
+}
+
+html[data-dheere-mood="ocean"] .project-card,
+html[data-dheere-mood="ocean"] .article-card,
+html[data-dheere-mood="ocean"] .auth-card {
+    background: rgba(12,26,42,0.74);
+    border-color: rgba(94,155,234,0.14);
+    backdrop-filter: blur(6px);
+}
+
+html[data-dheere-mood="ocean"] .button {
+    background: #5e9bea;
+    border-color: #5e9bea;
+    color: #08111f;
+}
+
+html[data-dheere-mood="ocean"] .button:hover {
+    background: #78adf0;
+    border-color: #78adf0;
+}
+
+html[data-dheere-mood="ocean"] .input-group input {
+    background: rgba(0,0,0,0.22);
+}
+
+html[data-dheere-mood="ocean"] .input-group input:focus {
+    border-color: #5e9bea;
+}
+
+
+/* ============================================================
+   EMBER
+   ============================================================ */
+
+html[data-dheere-mood="ember"] body {
+    background:
+        radial-gradient(
+            ellipse at 50% 100%,
+            rgba(210,65,43,0.22),
+            transparent 36%
+        ),
+        linear-gradient(
+            180deg,
+            #100a0a,
+            #170d0c 55%,
+            #120908
+        );
+
+    color: #f1e8e6;
+}
+
+html[data-dheere-mood="ember"] header {
+    background: rgba(18,10,10,0.90);
+    border-bottom-color: rgba(228,107,97,0.15);
+}
+
+html[data-dheere-mood="ember"] section {
+    border-bottom-color: rgba(228,107,97,0.10);
+}
+
+html[data-dheere-mood="ember"] h1,
+html[data-dheere-mood="ember"] h2,
+html[data-dheere-mood="ember"] h3 {
+    color: #fff1ee;
+}
+
+html[data-dheere-mood="ember"] p {
+    color: #a9938e;
+}
+
+html[data-dheere-mood="ember"] a {
+    color: #e47a70;
+}
+
+html[data-dheere-mood="ember"] .project-card,
+html[data-dheere-mood="ember"] .article-card,
+html[data-dheere-mood="ember"] .auth-card {
+    background: rgba(28,14,13,0.78);
+    border-color: rgba(228,107,97,0.14);
+    backdrop-filter: blur(6px);
+}
+
+html[data-dheere-mood="ember"] .button {
+    background: #e46b61;
+    border-color: #e46b61;
+    color: #1a0808;
+}
+
+html[data-dheere-mood="ember"] .button:hover {
+    background: #ef8178;
+    border-color: #ef8178;
+}
+
+html[data-dheere-mood="ember"] .input-group input {
+    background: rgba(0,0,0,0.25);
+}
+
+html[data-dheere-mood="ember"] .input-group input:focus {
+    border-color: #e46b61;
+}
+
+
+/* ============================================================
+   MIDNIGHT
+   ============================================================ */
+
+html[data-dheere-mood="midnight"] body {
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(88,72,164,0.20),
+            transparent 40%
+        ),
+        linear-gradient(
+            180deg,
+            #090711,
+            #0d0b18 55%,
+            #090712
+        );
+
+    color: #ece9f7;
+}
+
+html[data-dheere-mood="midnight"] header {
+    background: rgba(10,8,18,0.90);
+    border-bottom-color: rgba(155,140,242,0.15);
+}
+
+html[data-dheere-mood="midnight"] section {
+    border-bottom-color: rgba(155,140,242,0.10);
+}
+
+html[data-dheere-mood="midnight"] h1,
+html[data-dheere-mood="midnight"] h2,
+html[data-dheere-mood="midnight"] h3 {
+    color: #f2efff;
+}
+
+html[data-dheere-mood="midnight"] p {
+    color: #9d98ae;
+}
+
+html[data-dheere-mood="midnight"] a {
+    color: #aa9df5;
+}
+
+html[data-dheere-mood="midnight"] .project-card,
+html[data-dheere-mood="midnight"] .article-card,
+html[data-dheere-mood="midnight"] .auth-card {
+    background: rgba(21,18,31,0.78);
+    border-color: rgba(155,140,242,0.15);
+    backdrop-filter: blur(6px);
+}
+
+html[data-dheere-mood="midnight"] .button {
+    background: #9b8cf2;
+    border-color: #9b8cf2;
+    color: #0e0a18;
+}
+
+html[data-dheere-mood="midnight"] .button:hover {
+    background: #afa3f6;
+    border-color: #afa3f6;
+}
+
+html[data-dheere-mood="midnight"] .input-group input {
+    background: rgba(0,0,0,0.25);
+}
+
+html[data-dheere-mood="midnight"] .input-group input:focus {
+    border-color: #9b8cf2;
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html,
+    body,
+    header,
+    section,
+    .project-card,
+    .article-card,
+    .button,
+    input,
+    textarea,
+    a {
+        transition: none !important;
+    }
+
+}

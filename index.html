@@ -28,12 +28,13 @@
         rel="stylesheet"
         href="homepage.css"
     >
-
+    <link rel="stylesheet" href="mood.css">
+    <script src="mood-engine.js" defer></script>
 
     <style>
 
         /* ==========================================
-           PASSWORD TOGGLE ICONS
+           PASSWORD TOGGLE
            ========================================== */
 
         .password-toggle {
@@ -45,7 +46,6 @@
             justify-content: center;
 
             width: 36px;
-
             height: 36px;
 
             padding: 0;
@@ -64,13 +64,9 @@
 
         }
 
-
         .password-toggle:hover {
-
             opacity: 1;
-
         }
-
 
         .password-toggle:focus-visible {
 
@@ -80,15 +76,22 @@
 
         }
 
-
         .password-toggle svg {
 
             width: 20px;
-
             height: 20px;
 
             pointer-events: none;
 
+        }
+
+
+        /* ==========================================
+           DHEERE MOOD
+           ========================================== */
+
+        .dheere-mood-link {
+            text-decoration: none;
         }
 
     </style>
@@ -97,6 +100,7 @@
 
 
 <body>
+    <div id="dheereEnvironment" aria-hidden="true"></div>
 
 
     <!-- ====================================================
@@ -109,12 +113,16 @@
     >
 
 
-        <!-- HEADER -->
+        <!-- ====================================================
+             HEADER
+             ==================================================== -->
 
         <header>
 
             <nav class="navbar">
 
+
+                <!-- LOGO -->
 
                 <div class="nav-logo">
 
@@ -124,6 +132,8 @@
 
                 </div>
 
+
+                <!-- MAIN NAVIGATION -->
 
                 <div class="nav-links">
 
@@ -135,11 +145,13 @@
                             </a>
                         </li>
 
+
                         <li>
                             <a href="#articles">
                                 Articles
                             </a>
                         </li>
+
 
                         <li>
                             <a href="community.html">
@@ -147,11 +159,13 @@
                             </a>
                         </li>
 
+
                         <li>
                             <a href="about.html">
                                 About
                             </a>
                         </li>
+
 
                         <li>
                             <a href="#feedback">
@@ -159,12 +173,28 @@
                             </a>
                         </li>
 
+
+                        <!-- DHEERE MOOD -->
+
+                        <li>
+
+                            <a
+                                href="mood.html"
+                                class="dheere-mood-link"
+                            >
+                                Dheere Mood
+                            </a>
+
+                        </li>
+
                     </ul>
 
                 </div>
 
 
-                <!-- AUTH NAVIGATION -->
+                <!-- ====================================================
+                     AUTH NAVIGATION
+                     ==================================================== -->
 
                 <div class="nav-login">
 
@@ -202,10 +232,10 @@
 
                 </div>
 
+
             </nav>
 
         </header>
-
 
 
         <!-- ====================================================
@@ -215,7 +245,9 @@
         <main>
 
 
-            <!-- HERO -->
+            <!-- ====================================================
+                 HERO
+                 ==================================================== -->
 
             <section
                 id="hero"
@@ -248,8 +280,9 @@
             </section>
 
 
-
-            <!-- FEATURED PROJECT -->
+            <!-- ====================================================
+                 FEATURED PROJECT
+                 ==================================================== -->
 
             <section
                 id="projects"
@@ -283,8 +316,9 @@
             </section>
 
 
-
-            <!-- LATEST ARTICLE -->
+            <!-- ====================================================
+                 LATEST ARTICLE
+                 ==================================================== -->
 
             <section
                 id="articles"
@@ -323,7 +357,6 @@
             </section>
 
 
-
             <!-- ====================================================
                  COMMUNITY
                  ==================================================== -->
@@ -355,8 +388,9 @@
             </section>
 
 
-
-            <!-- ABOUT -->
+            <!-- ====================================================
+                 ABOUT
+                 ==================================================== -->
 
             <section
                 id="about"
@@ -389,8 +423,9 @@
             </section>
 
 
-
-            <!-- FEEDBACK -->
+            <!-- ====================================================
+                 FEEDBACK
+                 ==================================================== -->
 
             <section
                 id="feedback"
@@ -440,8 +475,9 @@
         </main>
 
 
-
-        <!-- FOOTER -->
+        <!-- ====================================================
+             FOOTER
+             ==================================================== -->
 
         <footer>
 
@@ -458,7 +494,6 @@
 
 
     </div>
-
 
 
     <!-- ====================================================
@@ -480,16 +515,17 @@
         </button>
 
 
-
         <div class="auth-page-container">
+
 
             <div class="auth-card">
 
 
-                <!-- LOGIN / REGISTER TABS -->
+                <!-- ====================================================
+                     LOGIN / REGISTER TABS
+                     ==================================================== -->
 
                 <div class="auth-tabs">
-
 
                     <button
                         class="tab-btn active"
@@ -508,18 +544,17 @@
                         Register
                     </button>
 
-
                 </div>
 
 
-
-                <!-- LOGIN FORM -->
+                <!-- ====================================================
+                     LOGIN FORM
+                     ==================================================== -->
 
                 <form
                     class="auth-form"
                     id="loginForm"
                 >
-
 
                     <h2>
                         Welcome Back
@@ -550,12 +585,9 @@
                     </div>
 
 
-
                     <!-- PASSWORD -->
 
-                    <div
-                        class="input-group password-group"
-                    >
+                    <div class="input-group password-group">
 
                         <label for="loginPassword">
                             Password
@@ -563,7 +595,6 @@
 
 
                         <div class="password-wrapper">
-
 
                             <input
                                 type="password"
@@ -607,12 +638,12 @@
 
                             </button>
 
-
                         </div>
 
                     </div>
 
 
+                    <!-- FORGOT PASSWORD -->
 
                     <div class="form-options">
 
@@ -626,6 +657,7 @@
                     </div>
 
 
+                    <!-- LOGIN -->
 
                     <button
                         type="submit"
@@ -634,18 +666,17 @@
                         Sign In
                     </button>
 
-
                 </form>
 
 
-
-                <!-- REGISTER FORM -->
+                <!-- ====================================================
+                     REGISTER FORM
+                     ==================================================== -->
 
                 <form
                     class="auth-form hidden-form"
                     id="registerForm"
                 >
-
 
                     <h2>
                         Create Account
@@ -655,7 +686,6 @@
                     <p class="auth-subtext">
                         Join Dheere Studio community today.
                     </p>
-
 
 
                     <!-- NAME -->
@@ -676,7 +706,6 @@
                         >
 
                     </div>
-
 
 
                     <!-- USERNAME -->
@@ -706,9 +735,7 @@
                             aria-live="polite"
                         ></div>
 
-
                     </div>
-
 
 
                     <!-- EMAIL -->
@@ -731,12 +758,9 @@
                     </div>
 
 
-
                     <!-- PASSWORD -->
 
-                    <div
-                        class="input-group password-group"
-                    >
+                    <div class="input-group password-group">
 
                         <label for="registerPassword">
                             Password
@@ -744,7 +768,6 @@
 
 
                         <div class="password-wrapper">
-
 
                             <input
                                 type="password"
@@ -789,18 +812,14 @@
 
                             </button>
 
-
                         </div>
 
                     </div>
 
 
-
                     <!-- CONFIRM PASSWORD -->
 
-                    <div
-                        class="input-group password-group"
-                    >
+                    <div class="input-group password-group">
 
                         <label for="confirmPassword">
                             Confirm Password
@@ -808,7 +827,6 @@
 
 
                         <div class="password-wrapper">
-
 
                             <input
                                 type="password"
@@ -853,14 +871,12 @@
 
                             </button>
 
-
                         </div>
 
                     </div>
 
 
-
-                    <!-- REGISTER BUTTON -->
+                    <!-- REGISTER -->
 
                     <button
                         type="submit"
@@ -868,7 +884,6 @@
                     >
                         Create Account
                     </button>
-
 
                 </form>
 
@@ -881,8 +896,9 @@
     </div>
 
 
-
-    <!-- JAVASCRIPT -->
+    <!-- ====================================================
+         JAVASCRIPT
+         ==================================================== -->
 
     <script src="script.js"></script>
 

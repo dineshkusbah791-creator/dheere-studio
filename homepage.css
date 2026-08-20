@@ -479,3 +479,827 @@ footer {
         left: 20px;
     }
 }
+/* ============================================================
+   DHEERE MOOD — ENVIRONMENT LAYER
+   ============================================================ */
+
+#dheereEnvironment {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+}
+
+
+/*
+   Existing website content must stay above
+   the environment.
+*/
+
+header,
+main,
+footer {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+/*
+   Environment itself is behind content.
+*/
+
+#dheereEnvironment * {
+
+    pointer-events: none;
+
+}
+
+
+/* ------------------------------------------------------------
+   ENVIRONMENT FADE
+   ------------------------------------------------------------ */
+
+.mood-environment-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.9s ease;
+
+}
+
+
+.mood-environment-layer.active {
+
+    opacity: 1;
+
+}
+
+
+/* ------------------------------------------------------------
+   FOREST
+   ------------------------------------------------------------ */
+
+.forest-environment {
+
+    position: absolute;
+
+    inset: 0;
+
+}
+
+
+/* Deep canopy */
+
+.forest-canopy {
+
+    position: absolute;
+
+    width: 340px;
+
+    height: 210px;
+
+    border-radius: 50%;
+
+    filter: blur(0.4px);
+
+    opacity: 0.8;
+
+}
+
+
+.forest-canopy.left {
+
+    top: -70px;
+
+    left: -100px;
+
+    background:
+        radial-gradient(
+            ellipse at 30% 45%,
+            #234f2f 0 25%,
+            transparent 26%
+        ),
+        radial-gradient(
+            ellipse at 55% 35%,
+            #2f6d3e 0 27%,
+            transparent 28%
+        ),
+        radial-gradient(
+            ellipse at 75% 60%,
+            #1d4529 0 30%,
+            transparent 31%
+        );
+
+    transform:
+        rotate(-12deg);
+
+}
+
+
+.forest-canopy.right {
+
+    top: -80px;
+
+    right: -110px;
+
+    background:
+        radial-gradient(
+            ellipse at 25% 55%,
+            #2d6840 0 28%,
+            transparent 29%
+        ),
+        radial-gradient(
+            ellipse at 52% 35%,
+            #234f31 0 30%,
+            transparent 31%
+        ),
+        radial-gradient(
+            ellipse at 78% 60%,
+            #326f42 0 25%,
+            transparent 26%
+        );
+
+    transform:
+        rotate(15deg);
+
+}
+
+
+/* Branches */
+
+.forest-branch {
+
+    position: absolute;
+
+    width: 230px;
+
+    height: 9px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #342b1c 15%,
+            #493823 70%,
+            transparent
+        );
+
+    opacity: 0.65;
+
+    transform-origin: left center;
+
+}
+
+
+/* Leaves */
+
+.forest-leaf {
+
+    position: absolute;
+
+    width: 17px;
+
+    height: 9px;
+
+    border-radius:
+        100% 0 100% 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f9b5e,
+            #1d5b32
+        );
+
+    opacity: 0.75;
+
+    transform:
+        rotate(35deg);
+
+    animation:
+        leafFloat var(--leaf-speed, 9s)
+        ease-in-out infinite
+        alternate;
+
+}
+
+
+@keyframes leafFloat {
+
+    0% {
+
+        transform:
+            translate3d(0,0,0)
+            rotate(25deg);
+
+    }
+
+    50% {
+
+        transform:
+            translate3d(
+                var(--leaf-x, 12px),
+                var(--leaf-y, 8px),
+                0
+            )
+            rotate(55deg);
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                calc(var(--leaf-x, 12px) * -0.5),
+                var(--leaf-y, 15px),
+                0
+            )
+            rotate(20deg);
+
+    }
+
+}
+
+
+/* Forest mist */
+
+.forest-mist {
+
+    position: absolute;
+
+    left: -10%;
+
+    right: -10%;
+
+    bottom: 4%;
+
+    height: 190px;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(130,175,139,0.10),
+            transparent 68%
+        );
+
+    filter: blur(18px);
+
+    animation:
+        forestMist 16s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes forestMist {
+
+    from {
+
+        transform:
+            translateX(-4%);
+
+        opacity: 0.45;
+
+    }
+
+    to {
+
+        transform:
+            translateX(4%);
+
+        opacity: 0.75;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   OCEAN
+   ------------------------------------------------------------ */
+
+.ocean-environment {
+
+    position: absolute;
+
+    inset: 0;
+
+}
+
+
+.ocean-wave {
+
+    position: absolute;
+
+    left: -10%;
+
+    width: 120%;
+
+    height: 90px;
+
+    border-top:
+        1px solid rgba(112,180,239,0.18);
+
+    border-radius: 50%;
+
+    opacity: 0.45;
+
+    animation:
+        oceanWaveMove
+        var(--wave-speed, 8s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes oceanWaveMove {
+
+    from {
+
+        transform:
+            translateX(-4%)
+            scaleY(0.8);
+
+    }
+
+    to {
+
+        transform:
+            translateX(4%)
+            scaleY(1.2);
+
+    }
+
+}
+
+
+.ocean-ray {
+
+    position: absolute;
+
+    top: -15%;
+
+    width: 120px;
+
+    height: 80%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(110,184,244,0.12),
+            transparent 80%
+        );
+
+    filter: blur(14px);
+
+    transform:
+        rotate(18deg);
+
+    animation:
+        oceanRay 13s ease-in-out infinite
+        alternate;
+
+}
+
+
+@keyframes oceanRay {
+
+    from {
+
+        opacity: 0.25;
+
+        transform:
+            rotate(18deg)
+            translateX(-25px);
+
+    }
+
+    to {
+
+        opacity: 0.65;
+
+        transform:
+            rotate(23deg)
+            translateX(35px);
+
+    }
+
+}
+
+
+.ocean-particle {
+
+    position: absolute;
+
+    width: 4px;
+
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: rgba(150,215,255,0.55);
+
+    animation:
+        oceanParticle
+        var(--particle-speed, 8s)
+        linear infinite;
+
+}
+
+
+@keyframes oceanParticle {
+
+    from {
+
+        transform:
+            translate3d(0,30px,0);
+
+        opacity: 0;
+
+    }
+
+    20% {
+
+        opacity: 0.65;
+
+    }
+
+    80% {
+
+        opacity: 0.35;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(--particle-x, 15px),
+                -120px,
+                0
+            );
+
+        opacity: 0;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   EMBER
+   ------------------------------------------------------------ */
+
+.ember-environment {
+
+    position: absolute;
+
+    inset: 0;
+
+}
+
+
+.ember-glow {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -180px;
+
+    width: 700px;
+
+    height: 450px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(238,80,47,0.25),
+            rgba(142,31,22,0.08) 45%,
+            transparent 70%
+        );
+
+    filter: blur(16px);
+
+    animation:
+        emberPulse 4s ease-in-out infinite
+        alternate;
+
+}
+
+
+@keyframes emberPulse {
+
+    from {
+
+        transform:
+            translateX(-50%)
+            scale(0.95);
+
+        opacity: 0.55;
+
+    }
+
+    to {
+
+        transform:
+            translateX(-50%)
+            scale(1.08);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+.ember-spark {
+
+    position: absolute;
+
+    width: var(--spark-size, 3px);
+
+    height: var(--spark-size, 3px);
+
+    border-radius: 50%;
+
+    background:
+        #f47b56;
+
+    box-shadow:
+        0 0 8px rgba(244,95,60,0.7);
+
+    animation:
+        emberRise
+        var(--spark-speed, 5s)
+        linear infinite;
+
+}
+
+
+@keyframes emberRise {
+
+    0% {
+
+        transform:
+            translate3d(0,40px,0)
+            scale(0.6);
+
+        opacity: 0;
+
+    }
+
+    15% {
+
+        opacity: 1;
+
+    }
+
+    70% {
+
+        opacity: 0.7;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(--spark-x, 30px),
+                -320px,
+                0
+            )
+            scale(0.2);
+
+        opacity: 0;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   MIDNIGHT
+   ------------------------------------------------------------ */
+
+.midnight-environment {
+
+    position: absolute;
+
+    inset: 0;
+
+}
+
+
+/* Moon */
+
+.midnight-moon {
+
+    position: absolute;
+
+    top: 12%;
+
+    right: 12%;
+
+    width: 95px;
+
+    height: 95px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 35%,
+            #ffffff,
+            #d8d4f5 55%,
+            #9d96cf 100%
+        );
+
+    box-shadow:
+        0 0 45px rgba(170,160,245,0.20),
+        0 0 100px rgba(130,115,220,0.10);
+
+}
+
+
+.midnight-star {
+
+    position: absolute;
+
+    width: var(--star-size, 2px);
+
+    height: var(--star-size, 2px);
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    opacity: var(--star-opacity, 0.6);
+
+    animation:
+        starTwinkle
+        var(--star-speed, 3s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes starTwinkle {
+
+    from {
+
+        opacity:
+            var(--star-min, 0.25);
+
+        transform:
+            scale(0.8);
+
+    }
+
+    to {
+
+        opacity:
+            var(--star-opacity, 0.8);
+
+        transform:
+            scale(1.35);
+
+    }
+
+}
+
+
+.midnight-particle {
+
+    position: absolute;
+
+    width: 3px;
+
+    height: 3px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(170,157,245,0.55);
+
+    filter:
+        blur(0.5px);
+
+    animation:
+        midnightFloat
+        var(--particle-speed, 12s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes midnightFloat {
+
+    from {
+
+        transform:
+            translate3d(0,0,0);
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(--float-x, 20px),
+                var(--float-y, -25px),
+                0
+            );
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   ENVIRONMENT SHOULD NEVER BLOCK UI
+   ------------------------------------------------------------ */
+
+#dheereEnvironment {
+
+    user-select: none;
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+
+    .forest-canopy {
+
+        transform:
+            scale(0.72);
+
+    }
+
+    .forest-leaf {
+
+        transform:
+            scale(0.8)
+            rotate(35deg);
+
+    }
+
+    .midnight-moon {
+
+        width: 70px;
+
+        height: 70px;
+
+        right: 8%;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #dheereEnvironment * {
+
+        animation: none !important;
+
+        transition: none !important;
+
+    }
+
+}
