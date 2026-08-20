@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dheere Mood — Dheere Studio</title>
+
+    <meta
+        name="description"
+        content="Choose the mood of Dheere Studio."
+    >
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           DHEERE MOOD PAGE
+           ===================================================== */
+
+        .mood-page {
+
+            min-height: 100vh;
+
+            padding: 110px 24px 80px;
+
+            background: #0b0c0e;
+
+            color: #e2e8f0;
+
+        }
+
+
+        .mood-container {
+
+            width: 100%;
+
+            max-width: 980px;
+
+            margin: 0 auto;
+
+        }
+
+
+        .mood-back {
+
+            display: inline-block;
+
+            margin-bottom: 70px;
+
+            color: #64748b;
+
+            text-decoration: none;
+
+            font-size: 0.85rem;
+
+            transition:
+                color 0.25s ease;
+
+        }
+
+
+        .mood-back:hover {
+
+            color: #ffffff;
+
+        }
+
+
+        .mood-header {
+
+            margin-bottom: 55px;
+
+        }
+
+
+        .mood-eyebrow {
+
+            display: block;
+
+            margin-bottom: 18px;
+
+            color: #64748b;
+
+            font-size: 0.72rem;
+
+            font-weight: 600;
+
+            letter-spacing: 0.14em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .mood-header h1 {
+
+            margin-bottom: 16px;
+
+            color: #ffffff;
+
+            font-size: clamp(3rem, 7vw, 5.8rem);
+
+            font-weight: 500;
+
+            line-height: 0.95;
+
+            letter-spacing: -0.055em;
+
+        }
+
+
+        .mood-header p {
+
+            max-width: 560px;
+
+            color: #94a3b8;
+
+            font-size: 1rem;
+
+        }
+
+
+        /* =====================================================
+           MOOD GRID
+           ===================================================== */
+
+        .mood-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 14px;
+
+        }
+
+
+        .mood-card {
+
+            position: relative;
+
+            min-height: 245px;
+
+            padding: 28px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            overflow: hidden;
+
+            background: #151719;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+
+            color: #ffffff;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+
+        }
+
+
+        .mood-card:hover {
+
+            transform: translateY(-4px);
+
+            border-color:
+                rgba(255,255,255,0.2);
+
+            background: #191b1e;
+
+        }
+
+
+        .mood-card.active {
+
+            border-color:
+                var(--mood-accent);
+
+            box-shadow:
+                inset 0 0 0 1px var(--mood-accent);
+
+        }
+
+
+        .mood-card.wide {
+
+            grid-column: span 2;
+
+        }
+
+
+        /* =====================================================
+           PREVIEW
+           ===================================================== */
+
+        .mood-preview {
+
+            width: 100%;
+
+            height: 75px;
+
+            margin-bottom: 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+        }
+
+
+        .preview-line {
+
+            width: 42px;
+
+            height: 4px;
+
+            border-radius: 3px;
+
+            background: var(--mood-accent);
+
+        }
+
+
+        .preview-line.small {
+
+            width: 20px;
+
+            background: var(--mood-secondary);
+
+        }
+
+
+        .preview-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            margin-left: auto;
+
+            border-radius: 50%;
+
+            background: var(--mood-accent);
+
+        }
+
+
+        /* =====================================================
+           CARD TEXT
+           ===================================================== */
+
+        .mood-number {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #64748b;
+
+            font-size: 0.68rem;
+
+            font-weight: 600;
+
+            letter-spacing: 0.12em;
+
+        }
+
+
+        .mood-name {
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 1.4rem;
+
+            font-weight: 500;
+
+            letter-spacing: -0.025em;
+
+        }
+
+
+        .mood-description {
+
+            color: #7f8794;
+
+            font-size: 0.82rem;
+
+            line-height: 1.6;
+
+        }
+
+
+        .mood-selected {
+
+            position: absolute;
+
+            top: 24px;
+
+            right: 24px;
+
+            padding: 5px 9px;
+
+            border: 1px solid var(--mood-accent);
+
+            border-radius: 5px;
+
+            color: var(--mood-accent);
+
+            font-size: 0.68rem;
+
+            font-weight: 600;
+
+            opacity: 0;
+
+            transform: translateY(-4px);
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .mood-card.active .mood-selected {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+        }
+
+
+        /* =====================================================
+           MOOD COLORS
+           ===================================================== */
+
+        .mood-original {
+
+            --mood-accent: #f8fafc;
+
+            --mood-secondary: #64748b;
+
+        }
+
+
+        .mood-forest {
+
+            --mood-accent: #55c878;
+
+            --mood-secondary: #2f8a51;
+
+        }
+
+
+        .mood-ocean {
+
+            --mood-accent: #5e9bea;
+
+            --mood-secondary: #4169a8;
+
+        }
+
+
+        .mood-ember {
+
+            --mood-accent: #e46b61;
+
+            --mood-secondary: #a83d3d;
+
+        }
+
+
+        .mood-midnight {
+
+            --mood-accent: #9b8cf2;
+
+            --mood-secondary: #6254ad;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .mood-footer {
+
+            margin-top: 65px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.06);
+
+            color: #475569;
+
+            font-size: 0.75rem;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .mood-page {
+
+                padding:
+                    75px 18px 50px;
+
+            }
+
+
+            .mood-back {
+
+                margin-bottom: 50px;
+
+            }
+
+
+            .mood-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .mood-card.wide {
+
+                grid-column: span 1;
+
+            }
+
+
+            .mood-card {
+
+                min-height: 220px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="mood-page">
+
+        <div class="mood-container">
+
+
+            <a
+                href="index.html"
+                class="mood-back"
+            >
+                &larr; Back to Dheere Studio
+            </a>
+
+
+            <header class="mood-header">
+
+                <span class="mood-eyebrow">
+                    Dheere Studio
+                </span>
+
+
+                <h1>
+                    Dheere Mood
+                </h1>
+
+
+                <p>
+                    Choose the atmosphere of the studio.
+                    Your selection will stay with you across
+                    the website.
+                </p>
+
+            </header>
+
+
+            <section
+                class="mood-grid"
+                aria-label="Choose a mood"
+            >
+
+
+                <!-- ORIGINAL -->
+
+                <button
+                    class="mood-card mood-original"
+                    data-mood="original"
+                    type="button"
+                >
+
+                    <div>
+
+                        <div class="mood-preview">
+
+                            <span class="preview-line"></span>
+
+                            <span class="preview-line small"></span>
+
+                            <span class="preview-dot"></span>
+
+                        </div>
+
+
+                        <span class="mood-number">
+                            01 / DEFAULT
+                        </span>
+
+
+                        <h2 class="mood-name">
+                            Original
+                        </h2>
+
+
+                        <p class="mood-description">
+                            The classic Dheere Studio atmosphere.
+                            Minimal, neutral and focused.
+                        </p>
+
+                    </div>
+
+
+                    <span class="mood-selected">
+                        Selected
+                    </span>
+
+                </button>
+
+
+
+                <!-- FOREST -->
+
+                <button
+                    class="mood-card mood-forest"
+                    data-mood="forest"
+                    type="button"
+                >
+
+                    <div>
+
+                        <div class="mood-preview">
+
+                            <span class="preview-line"></span>
+
+                            <span class="preview-line small"></span>
+
+                            <span class="preview-dot"></span>
+
+                        </div>
+
+
+                        <span class="mood-number">
+                            02 / ORGANIC
+                        </span>
+
+
+                        <h2 class="mood-name">
+                            Forest
+                        </h2>
+
+
+                        <p class="mood-description">
+                            Deep greens and earthy tones.
+                            Calm, natural and creative.
+                        </p>
+
+                    </div>
+
+
+                    <span class="mood-selected">
+                        Selected
+                    </span>
+
+                </button>
+
+
+
+                <!-- OCEAN -->
+
+                <button
+                    class="mood-card mood-ocean"
+                    data-mood="ocean"
+                    type="button"
+                >
+
+                    <div>
+
+                        <div class="mood-preview">
+
+                            <span class="preview-line"></span>
+
+                            <span class="preview-line small"></span>
+
+                            <span class="preview-dot"></span>
+
+                        </div>
+
+
+                        <span class="mood-number">
+                            03 / DIGITAL
+                        </span>
+
+
+                        <h2 class="mood-name">
+                            Ocean
+                        </h2>
+
+
+                        <p class="mood-description">
+                            Cool blue accents with a precise,
+                            modern atmosphere.
+                        </p>
+
+                    </div>
+
+
+                    <span class="mood-selected">
+                        Selected
+                    </span>
+
+                </button>
+
+
+
+                <!-- EMBER -->
+
+                <button
+                    class="mood-card mood-ember"
+                    data-mood="ember"
+                    type="button"
+                >
+
+                    <div>
+
+                        <div class="mood-preview">
+
+                            <span class="preview-line"></span>
+
+                            <span class="preview-line small"></span>
+
+                            <span class="preview-dot"></span>
+
+                        </div>
+
+
+                        <span class="mood-number">
+                            04 / DRAMATIC
+                        </span>
+
+
+                        <h2 class="mood-name">
+                            Ember
+                        </h2>
+
+
+                        <p class="mood-description">
+                            Warm red accents with a sharper,
+                            more dramatic character.
+                        </p>
+
+                    </div>
+
+
+                    <span class="mood-selected">
+                        Selected
+                    </span>
+
+                </button>
+
+
+
+                <!-- MIDNIGHT -->
+
+                <button
+                    class="mood-card mood-midnight wide"
+                    data-mood="midnight"
+                    type="button"
+                >
+
+                    <div>
+
+                        <div class="mood-preview">
+
+                            <span class="preview-line"></span>
+
+                            <span class="preview-line small"></span>
+
+                            <span class="preview-dot"></span>
+
+                        </div>
+
+
+                        <span class="mood-number">
+                            05 / CINEMATIC
+                        </span>
+
+
+                        <h2 class="mood-name">
+                            Midnight
+                        </h2>
+
+
+                        <p class="mood-description">
+                            Deep indigo and violet accents.
+                            Dark, cinematic and atmospheric.
+                        </p>
+
+                    </div>
+
+
+                    <span class="mood-selected">
+                        Selected
+                    </span>
+
+                </button>
+
+
+            </section>
+
+
+            <footer class="mood-footer">
+
+                Dheere Mood changes the visual atmosphere
+                of Dheere Studio. You can change it anytime.
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+        /* =====================================================
+           DHEERE MOOD — SELECTION SYSTEM
+           ===================================================== */
+
+        const moodCards =
+            document.querySelectorAll(".mood-card");
+
+
+        const STORAGE_KEY =
+            "dheereMood";
+
+
+        function getSavedMood() {
+
+            return (
+                localStorage.getItem(STORAGE_KEY)
+                || "original"
+            );
+
+        }
+
+
+        function saveMood(mood) {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                mood
+            );
+
+        }
+
+
+        function updateSelectedState(mood) {
+
+            moodCards.forEach(card => {
+
+                const isActive =
+                    card.dataset.mood === mood;
+
+                card.classList.toggle(
+                    "active",
+                    isActive
+                );
+
+            });
+
+        }
+
+
+        const currentMood =
+            getSavedMood();
+
+
+        updateSelectedState(
+            currentMood
+        );
+
+
+        moodCards.forEach(card => {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    const mood =
+                        card.dataset.mood;
+
+
+                    saveMood(mood);
+
+
+                    updateSelectedState(
+                        mood
+                    );
+
+
+                    /*
+                     * Small delay so the user
+                     * can see the "Selected"
+                     * state before returning.
+                     */
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "index.html";
+
+                    }, 280);
+
+                }
+            );
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>
