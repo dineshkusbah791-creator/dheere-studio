@@ -10,13 +10,22 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <!-- ====================================================
+         PRIMARY SEO
+         ==================================================== -->
+
     <title>
-        Dheere Studio — Original Stories, Worlds & Experiences
+        Dheere Studio — Independent Creative Studio
     </title>
 
     <meta
         name="description"
-        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences."
+        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences across different forms of media."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
     >
 
     <link
@@ -24,12 +33,120 @@
         href="https://dheerestudio.com/"
     >
 
+    <meta
+        name="theme-color"
+        content="#0b0c0e"
+    >
+
+
+    <!-- ====================================================
+         OPEN GRAPH
+         ==================================================== -->
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:title"
+        content="Dheere Studio — Independent Creative Studio"
+    >
+
+    <meta
+        property="og:description"
+        content="Dheere Studio builds original stories, worlds, and experiences across different forms of media."
+    >
+
+    <meta
+        property="og:url"
+        content="https://dheerestudio.com/"
+    >
+
+    <meta
+        property="og:site_name"
+        content="Dheere Studio"
+    >
+
+
+    <!-- ====================================================
+         TWITTER / SOCIAL PREVIEW
+         ==================================================== -->
+
+    <meta
+        name="twitter:card"
+        content="summary"
+    >
+
+    <meta
+        name="twitter:title"
+        content="Dheere Studio — Independent Creative Studio"
+    >
+
+    <meta
+        name="twitter:description"
+        content="An independent creative studio building original stories, worlds, and experiences."
+    >
+
+
+    <!-- ====================================================
+         STRUCTURED DATA
+         ==================================================== -->
+
+    <script type="application/ld+json">
+
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+
+            {
+                "@type": "Organization",
+                "@id": "https://dheerestudio.com/#organization",
+                "name": "Dheere Studio",
+                "url": "https://dheerestudio.com/",
+                "description": "An independent creative studio building original stories, worlds, and experiences across different forms of media."
+            },
+
+            {
+                "@type": "WebSite",
+                "@id": "https://dheerestudio.com/#website",
+                "name": "Dheere Studio",
+                "url": "https://dheerestudio.com/",
+                "description": "Dheere Studio is an independent creative studio building original stories, worlds, and experiences.",
+                "publisher": {
+                    "@id": "https://dheerestudio.com/#organization"
+                }
+            }
+
+        ]
+    }
+
+    </script>
+
+
+    <!-- ====================================================
+         STYLES
+         ==================================================== -->
+
     <link
         rel="stylesheet"
         href="homepage.css"
     >
-    <link rel="stylesheet" href="mood.css">
-    <script src="mood-engine.js" defer></script>
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+    <script
+        src="mood-engine.js"
+        defer
+    ></script>
+
+
+    <!-- ====================================================
+         PAGE-SPECIFIC STYLES
+         ==================================================== -->
 
     <style>
 
@@ -64,9 +181,13 @@
 
         }
 
+
         .password-toggle:hover {
+
             opacity: 1;
+
         }
+
 
         .password-toggle:focus-visible {
 
@@ -75,6 +196,7 @@
             outline-offset: 2px;
 
         }
+
 
         .password-toggle svg {
 
@@ -91,7 +213,62 @@
            ========================================== */
 
         .dheere-mood-link {
+
             text-decoration: none;
+
+        }
+
+
+        /* ==========================================
+           SEO / ACCESSIBLE SITE NAVIGATION
+           ========================================== */
+
+        .footer-nav {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 18px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .footer-nav a {
+
+            color: inherit;
+
+            text-decoration: none;
+
+            font-size: 0.82rem;
+
+            opacity: 0.7;
+
+            transition: opacity 0.2s ease;
+
+        }
+
+
+        .footer-nav a:hover {
+
+            opacity: 1;
+
+        }
+
+
+        /* ==========================================
+           PROJECT DESCRIPTION
+           ========================================== */
+
+        .project-card a,
+        .article-card a {
+
+            position: relative;
+
         }
 
     </style>
@@ -100,7 +277,15 @@
 
 
 <body>
-    <div id="dheereEnvironment" aria-hidden="true"></div>
+
+    <!-- ====================================================
+         ENVIRONMENT
+         ==================================================== -->
+
+    <div
+        id="dheereEnvironment"
+        aria-hidden="true"
+    ></div>
 
 
     <!-- ====================================================
@@ -119,62 +304,80 @@
 
         <header>
 
-            <nav class="navbar">
+            <nav
+                class="navbar"
+                aria-label="Main navigation"
+            >
 
 
-                <!-- LOGO -->
+                <!-- ====================================================
+                     LOGO
+                     ==================================================== -->
 
                 <div class="nav-logo">
 
-                    <a href="index.html">
+                    <a
+                        href="index.html"
+                        aria-label="Dheere Studio homepage"
+                    >
                         Dheere Studio
                     </a>
 
                 </div>
 
 
-                <!-- MAIN NAVIGATION -->
+                <!-- ====================================================
+                     MAIN NAVIGATION
+                     ==================================================== -->
 
                 <div class="nav-links">
 
                     <ul>
 
                         <li>
+
                             <a href="#projects">
                                 Projects
                             </a>
+
                         </li>
 
 
                         <li>
+
                             <a href="#articles">
                                 Articles
                             </a>
+
                         </li>
 
 
                         <li>
+
                             <a href="community.html">
                                 Community
                             </a>
+
                         </li>
 
 
                         <li>
+
                             <a href="about.html">
                                 About
                             </a>
+
                         </li>
 
 
                         <li>
+
                             <a href="#feedback">
                                 Feedback
                             </a>
+
                         </li>
 
-
-                        <!-- DHEERE MOOD -->
 
                         <li>
 
@@ -202,6 +405,7 @@
                         id="goToLoginBtn"
                         class="button"
                         type="button"
+                        aria-label="Open login and registration"
                     >
                         Login
                     </button>
@@ -211,6 +415,7 @@
                         id="profileBtn"
                         class="button hidden-profile"
                         href="profile.html"
+                        aria-label="Open profile"
                     >
 
                         <span id="navUsername">
@@ -222,9 +427,14 @@
                 </div>
 
 
-                <!-- MOBILE MENU -->
+                <!-- ====================================================
+                     MOBILE MENU
+                     ==================================================== -->
 
-                <div class="humbarger">
+                <div
+                    class="humbarger"
+                    aria-hidden="true"
+                >
 
                     <span></span>
                     <span></span>
@@ -252,11 +462,12 @@
             <section
                 id="hero"
                 class="hero-section"
+                aria-labelledby="hero-title"
             >
 
                 <div class="hero-content">
 
-                    <h1>
+                    <h1 id="hero-title">
                         Welcome to Dheere Studio
                     </h1>
 
@@ -264,7 +475,8 @@
                     <p>
                         Dheere Studio is an independent creative
                         studio building original stories, worlds,
-                        and experiences.
+                        and experiences across different forms
+                        of media.
                     </p>
 
 
@@ -287,9 +499,10 @@
             <section
                 id="projects"
                 class="projects-section"
+                aria-labelledby="projects-title"
             >
 
-                <h2>
+                <h2 id="projects-title">
                     Featured Project
                 </h2>
 
@@ -307,7 +520,10 @@
                     </p>
 
 
-                    <a href="shunyavas.html">
+                    <a
+                        href="shunyavas.html"
+                        aria-label="View details about Shunyavas"
+                    >
                         View Details &rarr;
                     </a>
 
@@ -323,9 +539,10 @@
             <section
                 id="articles"
                 class="articles-section"
+                aria-labelledby="articles-title"
             >
 
-                <h2>
+                <h2 id="articles-title">
                     Latest Article
                 </h2>
 
@@ -348,7 +565,10 @@
                     </p>
 
 
-                    <a href="article.html">
+                    <a
+                        href="article.html"
+                        aria-label="Read Why Dheere Studio Exists"
+                    >
                         Read Article &rarr;
                     </a>
 
@@ -364,9 +584,10 @@
             <section
                 id="community"
                 class="community-section"
+                aria-labelledby="community-title"
             >
 
-                <h2>
+                <h2 id="community-title">
                     Community
                 </h2>
 
@@ -395,9 +616,10 @@
             <section
                 id="about"
                 class="about-section"
+                aria-labelledby="about-title"
             >
 
-                <h2>
+                <h2 id="about-title">
                     About Dheere Studio
                 </h2>
 
@@ -430,32 +652,44 @@
             <section
                 id="feedback"
                 class="feedback-section"
+                aria-labelledby="feedback-title"
             >
 
-                <h2>
+                <h2 id="feedback-title">
                     Give Us Feedback
                 </h2>
 
 
-                <form class="feedback-form">
+                <form
+                    class="feedback-form"
+                    aria-label="Dheere Studio feedback form"
+                >
 
                     <input
                         type="text"
+                        name="name"
                         placeholder="Your Name"
+                        autocomplete="name"
+                        aria-label="Your Name"
                         required
                     >
 
 
                     <input
                         type="email"
+                        name="email"
                         placeholder="Your Email"
+                        autocomplete="email"
+                        aria-label="Your Email"
                         required
                     >
 
 
                     <textarea
+                        name="feedback"
                         rows="4"
                         placeholder="Your thoughts or suggestions..."
+                        aria-label="Your thoughts or suggestions"
                         required
                     ></textarea>
 
@@ -483,10 +717,58 @@
 
             <div class="footer-content">
 
+
+                <!-- ====================================================
+                     IMPORTANT SITE LINKS
+                     ==================================================== -->
+
+                <nav
+                    class="footer-nav"
+                    aria-label="Studio pages"
+                >
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+
+                    <a href="shunyavas.html">
+                        Shunyavas
+                    </a>
+
+
+                    <a href="article.html">
+                        Articles
+                    </a>
+
+
+                    <a href="community.html">
+                        Community
+                    </a>
+
+
+                    <a href="about.html">
+                        About
+                    </a>
+
+
+                    <a href="mood.html">
+                        Dheere Mood
+                    </a>
+
+
+                    <a href="profile.html">
+                        Profile
+                    </a>
+
+                </nav>
+
+
                 <p>
                     &copy; 2026 Dheere Studio.
                     All rights reserved.
                 </p>
+
 
             </div>
 
@@ -511,7 +793,9 @@
             class="back-home-link"
             type="button"
         >
+
             &larr; Back to Dheere Studio
+
         </button>
 
 
@@ -579,6 +863,7 @@
                             type="email"
                             id="loginEmail"
                             placeholder="name@example.com"
+                            autocomplete="email"
                             required
                         >
 
@@ -600,6 +885,7 @@
                                 type="password"
                                 id="loginPassword"
                                 placeholder="••••••••"
+                                autocomplete="current-password"
                                 required
                             >
 
