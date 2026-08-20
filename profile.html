@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Profile — Dheere Studio</title>
 
@@ -17,22 +11,21 @@
         content="Your Dheere Studio profile."
     >
 
-    <link
-        rel="stylesheet"
-        href="homepage.css"
-    >
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="mood.css">
 
     <style>
-
-        /* ==========================================
-           PROFILE PAGE
-           ========================================== */
+        /* =========================================================
+           DHEERE STUDIO — PROFILE
+           Mood-aware profile environment
+           ========================================================= */
 
         .profile-page {
             min-height: calc(100vh - 80px);
             max-width: 900px;
             margin: 0 auto;
             padding: 80px 30px;
+            position: relative;
         }
 
         .profile-header {
@@ -42,51 +35,177 @@
         .profile-header h1 {
             margin: 0 0 10px;
             font-size: 42px;
+            color: var(--profile-heading);
         }
 
         .profile-header p {
             margin: 0;
-            color: #9299a8;
+            color: var(--profile-muted);
             font-size: 16px;
         }
 
-        /* ==========================================
-           PROFILE CARD
-           ========================================== */
+        /* =========================================================
+           PROFILE VARIABLES
+           ========================================================= */
+
+        :root {
+            --profile-surface: rgba(255,255,255,.025);
+            --profile-surface-2: rgba(255,255,255,.018);
+            --profile-input: rgba(0,0,0,.18);
+            --profile-border: rgba(255,255,255,.08);
+            --profile-border-soft: rgba(255,255,255,.055);
+            --profile-heading: #f8fafc;
+            --profile-text: #e2e8f0;
+            --profile-muted: #94a3b8;
+            --profile-label: #64748b;
+            --profile-accent: #f8fafc;
+            --profile-accent-text: #0b0c0e;
+            --profile-shadow: rgba(0,0,0,.18);
+            --profile-error-bg: rgba(120,30,30,.16);
+            --profile-error-border: rgba(220,90,90,.25);
+            --profile-error-text: #d9a4a4;
+        }
+
+        /* =========================================================
+           ORIGINAL
+           ========================================================= */
+
+        html[data-dheere-mood="original"] {
+            --profile-surface: rgba(255,255,255,.025);
+            --profile-surface-2: rgba(255,255,255,.018);
+            --profile-input: rgba(0,0,0,.18);
+            --profile-border: rgba(255,255,255,.08);
+            --profile-border-soft: rgba(255,255,255,.055);
+            --profile-heading: #f8fafc;
+            --profile-text: #e2e8f0;
+            --profile-muted: #94a3b8;
+            --profile-label: #64748b;
+            --profile-accent: #f8fafc;
+            --profile-accent-text: #0b0c0e;
+        }
+
+        /* =========================================================
+           FOREST
+           ========================================================= */
+
+        html[data-dheere-mood="forest"] {
+            --profile-surface: rgba(13,29,18,.72);
+            --profile-surface-2: rgba(9,23,14,.68);
+            --profile-input: rgba(0,18,8,.30);
+            --profile-border: rgba(85,200,120,.16);
+            --profile-border-soft: rgba(85,200,120,.10);
+            --profile-heading: #effaf2;
+            --profile-text: #dcefe1;
+            --profile-muted: #8fa899;
+            --profile-label: #6e8d78;
+            --profile-accent: #55c878;
+            --profile-accent-text: #07100a;
+            --profile-shadow: rgba(0,45,15,.28);
+        }
+
+        /* =========================================================
+           OCEAN
+           ========================================================= */
+
+        html[data-dheere-mood="ocean"] {
+            --profile-surface: rgba(12,26,42,.74);
+            --profile-surface-2: rgba(8,21,35,.70);
+            --profile-input: rgba(0,12,25,.30);
+            --profile-border: rgba(94,155,234,.17);
+            --profile-border-soft: rgba(94,155,234,.10);
+            --profile-heading: #edf5ff;
+            --profile-text: #dce9f7;
+            --profile-muted: #8d9fb5;
+            --profile-label: #7088a3;
+            --profile-accent: #5e9bea;
+            --profile-accent-text: #08111f;
+            --profile-shadow: rgba(0,35,75,.28);
+        }
+
+        /* =========================================================
+           EMBER
+           ========================================================= */
+
+        html[data-dheere-mood="ember"] {
+            --profile-surface: rgba(28,14,13,.76);
+            --profile-surface-2: rgba(20,10,9,.72);
+            --profile-input: rgba(25,0,0,.28);
+            --profile-border: rgba(228,107,97,.17);
+            --profile-border-soft: rgba(228,107,97,.10);
+            --profile-heading: #fff1ee;
+            --profile-text: #f0dfdc;
+            --profile-muted: #a9938e;
+            --profile-label: #8d706b;
+            --profile-accent: #e46b61;
+            --profile-accent-text: #1a0808;
+            --profile-shadow: rgba(70,10,5,.28);
+        }
+
+        /* =========================================================
+           MIDNIGHT
+           ========================================================= */
+
+        html[data-dheere-mood="midnight"] {
+            --profile-surface: rgba(21,18,31,.78);
+            --profile-surface-2: rgba(15,12,25,.74);
+            --profile-input: rgba(8,4,20,.30);
+            --profile-border: rgba(155,140,242,.18);
+            --profile-border-soft: rgba(155,140,242,.10);
+            --profile-heading: #f2efff;
+            --profile-text: #e6e1f5;
+            --profile-muted: #9d98ae;
+            --profile-label: #7f7894;
+            --profile-accent: #9b8cf2;
+            --profile-accent-text: #0e0a18;
+            --profile-shadow: rgba(20,10,60,.30);
+        }
+
+        /* =========================================================
+           COMMON PROFILE SURFACES
+           ========================================================= */
+
+        .profile-card,
+        .dheere-ai-card,
+        .create-post-card,
+        .post-card,
+        .login-message {
+            background: var(--profile-surface);
+            border: 1px solid var(--profile-border);
+            box-shadow: 0 18px 55px var(--profile-shadow);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            transition:
+                background .7s ease,
+                border-color .7s ease,
+                box-shadow .7s ease,
+                color .7s ease;
+        }
 
         .profile-card {
-            background: #151515;
-            border: 1px solid #2b2b2b;
             border-radius: 16px;
             padding: 40px;
         }
 
-        /* ==========================================
-           AVATAR
-           ========================================== */
-
         .profile-avatar {
             width: 80px;
             height: 80px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 50%;
-
-            background: #252525;
-            border: 1px solid #3a3a3a;
-
+            background: var(--profile-surface-2);
+            border: 1px solid var(--profile-border);
+            color: var(--profile-accent);
             font-size: 30px;
             font-weight: 600;
-
             margin-bottom: 30px;
+            box-shadow:
+                0 0 0 6px color-mix(
+                    in srgb,
+                    var(--profile-accent) 5%,
+                    transparent
+                );
         }
-
-        /* ==========================================
-           PROFILE INFORMATION
-           ========================================== */
 
         .profile-info {
             display: grid;
@@ -94,32 +213,38 @@
         }
 
         .profile-field {
-            background: #101010;
-            border: 1px solid #292929;
+            background: var(--profile-input);
+            border: 1px solid var(--profile-border-soft);
             border-radius: 10px;
             padding: 18px 20px;
+            transition:
+                background .7s ease,
+                border-color .7s ease,
+                transform .25s ease;
+        }
+
+        .profile-field:hover {
+            border-color: var(--profile-border);
+            transform: translateY(-1px);
         }
 
         .profile-label {
             display: block;
             margin-bottom: 7px;
-
             font-size: 13px;
-            color: #777;
+            color: var(--profile-label);
         }
 
         .profile-value {
             display: block;
-
             font-size: 17px;
-            color: #ffffff;
-
+            color: var(--profile-text);
             word-break: break-word;
         }
 
-        /* ==========================================
-           ACTION BUTTONS
-           ========================================== */
+        /* =========================================================
+           ACTIONS
+           ========================================================= */
 
         .profile-actions {
             display: flex;
@@ -129,47 +254,49 @@
 
         .profile-button {
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
-
             padding: 13px 22px;
-
             border-radius: 8px;
-
             font-size: 15px;
-
             cursor: pointer;
-
             text-decoration: none;
-
             transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
+                background .5s ease,
+                color .5s ease,
+                border-color .5s ease,
+                transform .2s ease,
+                box-shadow .5s ease;
         }
 
         .profile-button:hover {
-            opacity: 0.85;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .back-button {
-            background: #f5f5f5;
-            color: #111111;
+            background: var(--profile-accent);
+            color: var(--profile-accent-text);
+            border: 1px solid var(--profile-accent);
+        }
 
-            border: 1px solid #f5f5f5;
+        .back-button:hover {
+            box-shadow: 0 10px 30px var(--profile-shadow);
         }
 
         .logout-button {
-            background: #252525;
-            color: #ffffff;
-
-            border: 1px solid #3a3a3a;
+            background: var(--profile-surface-2);
+            color: var(--profile-text);
+            border: 1px solid var(--profile-border);
         }
 
-        /* ==========================================
+        .logout-button:hover {
+            border-color: var(--profile-accent);
+            color: var(--profile-accent);
+        }
+
+        /* =========================================================
            DHEERE AI
-           ========================================== */
+           ========================================================= */
 
         .dheere-ai-section {
             margin-top: 40px;
@@ -181,216 +308,160 @@
 
         .dheere-ai-section-header h2 {
             margin: 0 0 7px;
-
-            color: #ffffff;
-
+            color: var(--profile-heading);
             font-size: 28px;
             font-weight: 500;
         }
 
         .dheere-ai-section-header p {
             margin: 0;
-
-            color: #777;
-
+            color: var(--profile-muted);
             font-size: 14px;
         }
 
         .dheere-ai-card {
-            background: #151515;
-
-            border: 1px solid #2b2b2b;
-
             border-radius: 16px;
-
             overflow: hidden;
         }
 
         .dheere-ai-topbar {
             display: flex;
-
             align-items: center;
             justify-content: space-between;
-
             padding: 18px 20px;
-
-            border-bottom: 1px solid #292929;
+            background: var(--profile-surface);
+            border-bottom: 1px solid var(--profile-border-soft);
         }
 
         .dheere-ai-brand {
             display: flex;
-
             align-items: center;
-
             gap: 11px;
         }
 
         .dheere-ai-symbol {
             width: 34px;
             height: 34px;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             border-radius: 9px;
-
-            background: #252525;
-
-            border: 1px solid #3a3a3a;
-
-            color: #ffffff;
-
+            background: color-mix(
+                in srgb,
+                var(--profile-accent) 12%,
+                transparent
+            );
+            border: 1px solid var(--profile-border);
+            color: var(--profile-accent);
             font-size: 17px;
         }
 
         .dheere-ai-brand-text {
             display: flex;
-
             flex-direction: column;
-
             gap: 1px;
         }
 
         .dheere-ai-brand-text strong {
-            color: #ffffff;
-
+            color: var(--profile-heading);
             font-size: 15px;
-
             font-weight: 600;
         }
 
         .dheere-ai-brand-text span {
-            color: #777;
-
+            color: var(--profile-muted);
             font-size: 12px;
         }
 
         .dheere-ai-status {
             display: inline-flex;
-
             align-items: center;
-
             gap: 6px;
-
-            color: #777;
-
+            color: var(--profile-muted);
             font-size: 12px;
         }
 
         .dheere-ai-status-dot {
             width: 7px;
             height: 7px;
-
             border-radius: 50%;
-
-            background: #555;
+            background: var(--profile-label);
+            transition: background .5s ease, box-shadow .5s ease;
         }
 
         .dheere-ai-status.online .dheere-ai-status-dot {
-            background: #7dd3a8;
+            background: var(--profile-accent);
+            box-shadow: 0 0 12px var(--profile-accent);
         }
 
-        /* ==========================================
+        /* =========================================================
            AI MESSAGES
-           ========================================== */
+           ========================================================= */
 
         .dheere-ai-messages {
             height: 390px;
-
             overflow-y: auto;
-
             padding: 22px;
-
             display: flex;
-
             flex-direction: column;
-
             gap: 13px;
+            background: var(--profile-surface-2);
+        }
 
-            background: #101010;
+        .dheere-ai-welcome,
+        .dheere-ai-message.ai,
+        .dheere-ai-typing {
+            max-width: 80%;
+            background: color-mix(
+                in srgb,
+                var(--profile-accent) 5%,
+                var(--profile-surface)
+            );
+            border: 1px solid var(--profile-border-soft);
+            border-radius: 12px;
+            color: var(--profile-text);
         }
 
         .dheere-ai-welcome {
-            max-width: 80%;
-
             padding: 14px 16px;
-
-            background: #191919;
-
-            border: 1px solid #292929;
-
-            border-radius: 12px;
-
-            color: #c7c7c7;
-
             font-size: 14px;
-
             line-height: 1.65;
         }
 
         .dheere-ai-message {
             max-width: 82%;
-
             padding: 12px 15px;
-
             border-radius: 12px;
-
             font-size: 14px;
-
             line-height: 1.65;
-
             white-space: pre-wrap;
-
             overflow-wrap: anywhere;
         }
 
         .dheere-ai-message.ai {
             align-self: flex-start;
-
-            background: #191919;
-
-            border: 1px solid #292929;
-
-            color: #d2d2d2;
+            padding: 12px 15px;
         }
 
         .dheere-ai-message.user {
             align-self: flex-end;
-
-            background: #f5f5f5;
-
-            color: #111111;
-
-            border: 1px solid #f5f5f5;
+            background: var(--profile-accent);
+            color: var(--profile-accent-text);
+            border: 1px solid var(--profile-accent);
         }
 
         .dheere-ai-message.error {
             align-self: flex-start;
-
-            background: #211616;
-
-            border: 1px solid #4a2525;
-
-            color: #d6aaaa;
+            background: var(--profile-error-bg);
+            border: 1px solid var(--profile-error-border);
+            color: var(--profile-error-text);
         }
 
         .dheere-ai-typing {
-            align-self: flex-start;
-
             display: none;
-
+            align-self: flex-start;
             padding: 11px 14px;
-
-            background: #191919;
-
-            border: 1px solid #292929;
-
-            border-radius: 12px;
-
-            color: #777;
-
+            color: var(--profile-muted);
             font-size: 13px;
         }
 
@@ -398,116 +469,95 @@
             display: block;
         }
 
-        /* ==========================================
+        /* =========================================================
            AI INPUT
-           ========================================== */
+           ========================================================= */
 
         .dheere-ai-input-area {
             padding: 14px;
-
-            background: #151515;
-
-            border-top: 1px solid #292929;
+            background: var(--profile-surface);
+            border-top: 1px solid var(--profile-border-soft);
         }
 
         .dheere-ai-form {
             display: flex;
-
             align-items: flex-end;
-
             gap: 9px;
         }
 
         #dheereAiInput {
             flex: 1;
-
             min-width: 0;
-
             min-height: 44px;
             max-height: 130px;
-
             resize: none;
-
             padding: 12px 14px;
-
-            background: #101010;
-
-            border: 1px solid #292929;
-
+            background: var(--profile-input);
+            border: 1px solid var(--profile-border-soft);
             border-radius: 9px;
-
-            color: #ffffff;
-
+            color: var(--profile-text);
             font-family: inherit;
-
             font-size: 14px;
-
             line-height: 1.45;
-
             outline: none;
+            transition:
+                background .5s ease,
+                border-color .5s ease,
+                box-shadow .5s ease;
         }
 
         #dheereAiInput::placeholder {
-            color: #666;
+            color: var(--profile-label);
         }
 
         #dheereAiInput:focus {
-            border-color: #4a4a4a;
+            border-color: var(--profile-accent);
+            box-shadow: 0 0 0 3px color-mix(
+                in srgb,
+                var(--profile-accent) 10%,
+                transparent
+            );
         }
 
         #dheereAiSend {
             width: 44px;
             height: 44px;
-
             flex: 0 0 44px;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             padding: 0;
-
-            border: 1px solid #f5f5f5;
-
+            border: 1px solid var(--profile-accent);
             border-radius: 9px;
-
-            background: #f5f5f5;
-
-            color: #111111;
-
+            background: var(--profile-accent);
+            color: var(--profile-accent-text);
             cursor: pointer;
-
             font-size: 17px;
-
             transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
+                opacity .2s ease,
+                transform .2s ease,
+                box-shadow .5s ease;
         }
 
         #dheereAiSend:hover:not(:disabled) {
-            opacity: 0.85;
-
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--profile-shadow);
         }
 
         #dheereAiSend:disabled {
-            opacity: 0.45;
-
+            opacity: .45;
             cursor: not-allowed;
         }
 
         .dheere-ai-hint {
             margin-top: 8px;
-
-            color: #555;
-
+            color: var(--profile-label);
             font-size: 11px;
         }
 
-        /* ==========================================
-           POSTS SECTION
-           ========================================== */
+        /* =========================================================
+           POSTS
+           ========================================================= */
 
         .posts-section {
             margin-top: 40px;
@@ -516,15 +566,10 @@
         .posts-section h2 {
             margin: 0 0 20px;
             font-size: 28px;
+            color: var(--profile-heading);
         }
 
-        /* ==========================================
-           CREATE POST
-           ========================================== */
-
         .create-post-card {
-            background: #151515;
-            border: 1px solid #2b2b2b;
             border-radius: 16px;
             padding: 25px;
         }
@@ -532,112 +577,109 @@
         .post-textarea {
             width: 100%;
             min-height: 120px;
-
             box-sizing: border-box;
-
             resize: vertical;
-
             padding: 16px;
-
-            background: #101010;
-            color: #ffffff;
-
-            border: 1px solid #292929;
+            background: var(--profile-input);
+            color: var(--profile-text);
+            border: 1px solid var(--profile-border-soft);
             border-radius: 10px;
-
             font-family: inherit;
             font-size: 15px;
-
             outline: none;
+            transition:
+                background .5s ease,
+                border-color .5s ease,
+                box-shadow .5s ease;
+        }
+
+        .post-textarea::placeholder {
+            color: var(--profile-label);
         }
 
         .post-textarea:focus {
-            border-color: #555555;
+            border-color: var(--profile-accent);
+            box-shadow: 0 0 0 3px color-mix(
+                in srgb,
+                var(--profile-accent) 9%,
+                transparent
+            );
         }
 
         .post-bottom {
             display: flex;
-
             align-items: center;
             justify-content: space-between;
-
             margin-top: 15px;
         }
 
         .post-character-count {
-            color: #777;
+            color: var(--profile-muted);
             font-size: 13px;
         }
 
         .post-button {
-            border: none;
-            background: #f5f5f5;
-            color: #111111;
-
+            border: 1px solid var(--profile-accent);
+            background: var(--profile-accent);
+            color: var(--profile-accent-text);
             padding: 12px 22px;
-
             border-radius: 8px;
-
             cursor: pointer;
-
             font-size: 14px;
+            transition:
+                transform .2s ease,
+                box-shadow .5s ease,
+                opacity .2s ease;
         }
 
-        .post-button:hover {
-            opacity: 0.85;
+        .post-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--profile-shadow);
         }
 
         .post-button:disabled {
-            opacity: 0.5;
+            opacity: .5;
             cursor: not-allowed;
         }
-
-        /* ==========================================
-           POSTS FEED
-           ========================================== */
 
         .posts-feed {
             display: grid;
             gap: 18px;
-
             margin-top: 25px;
         }
 
         .post-card {
-            background: #151515;
-            border: 1px solid #2b2b2b;
             border-radius: 14px;
-
             padding: 22px;
+        }
+
+        .post-card:hover {
+            border-color: var(--profile-accent);
+            transform: translateY(-2px);
         }
 
         .post-header {
             display: flex;
-
             align-items: center;
             justify-content: space-between;
-
             margin-bottom: 15px;
         }
 
         .post-author {
             font-size: 15px;
             font-weight: 600;
-
-            color: #ffffff;
+            color: var(--profile-text);
         }
 
         .post-date {
-            color: #777;
+            color: var(--profile-muted);
             font-size: 12px;
         }
 
         .post-content {
-            color: #d5d5d5;
-
+            color: var(--profile-text);
             font-size: 15px;
             line-height: 1.7;
-
             white-space: pre-wrap;
             word-break: break-word;
         }
@@ -645,89 +687,59 @@
         .post-meta {
             display: flex;
             gap: 18px;
-
             margin-top: 18px;
-
-            color: #777;
+            color: var(--profile-muted);
             font-size: 13px;
         }
 
-        .empty-posts {
+        .empty-posts,
+        .posts-error {
             padding: 30px;
-
-            background: #101010;
-            border: 1px solid #292929;
-
+            background: var(--profile-surface-2);
+            border: 1px solid var(--profile-border-soft);
             border-radius: 12px;
-
-            color: #777;
-
+            color: var(--profile-muted);
             text-align: center;
         }
 
         .posts-error {
-            padding: 30px;
-
-            background: #101010;
-
-            border: 1px solid #4a2525;
-
-            border-radius: 12px;
-
-            color: #c9a0a0;
-
-            text-align: center;
+            border-color: var(--profile-error-border);
+            color: var(--profile-error-text);
         }
 
-        /* ==========================================
-           NOT LOGGED IN
-           ========================================== */
+        /* =========================================================
+           LOGIN
+           ========================================================= */
 
         .login-message {
             display: none;
-
             padding: 30px;
-
-            background: #101010;
-
-            border: 1px solid #292929;
-
             border-radius: 12px;
-
-            color: #9299a8;
-
+            color: var(--profile-muted);
             line-height: 1.6;
         }
 
         .login-message strong {
             display: block;
-
             margin-bottom: 8px;
-
-            color: #ffffff;
-
+            color: var(--profile-heading);
             font-size: 20px;
         }
 
         .login-message a {
             display: inline-block;
-
             margin-top: 18px;
-
             padding: 12px 20px;
-
-            background: #f5f5f5;
-
-            color: #111111;
-
+            background: var(--profile-accent);
+            color: var(--profile-accent-text);
             border-radius: 8px;
-
             text-decoration: none;
+            border: 1px solid var(--profile-accent);
         }
 
-        /* ==========================================
+        /* =========================================================
            MOBILE
-           ========================================== */
+           ========================================================= */
 
         @media (max-width: 600px) {
 
@@ -750,16 +762,15 @@
 
             .profile-button {
                 width: 100%;
-                box-sizing: border-box;
             }
 
-            .dheere-ai-section-header h2 {
+            .dheere-ai-section-header h2,
+            .posts-section h2 {
                 font-size: 25px;
             }
 
             .dheere-ai-messages {
                 height: 340px;
-
                 padding: 16px;
             }
 
@@ -770,1105 +781,986 @@
 
             .post-bottom {
                 flex-direction: column;
-
                 align-items: stretch;
-
                 gap: 12px;
             }
 
             .post-button {
                 width: 100%;
             }
-
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            .profile-card,
+            .profile-field,
+            .dheere-ai-card,
+            .post-card,
+            .profile-button,
+            .post-button {
+                transition: none !important;
+            }
+        }
     </style>
-
 </head>
 
 <body>
 
-    <!-- ==========================================
-         HEADER
-         ========================================== -->
+<header>
+    <nav class="navbar">
 
-    <header>
+        <div class="nav-logo">
+            <a href="index.html">Dheere Studio</a>
+        </div>
 
-        <nav class="navbar">
+        <div class="nav-links">
+            <ul>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#articles">Articles</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="index.html#feedback">Feedback</a></li>
+            </ul>
+        </div>
 
-            <div class="nav-logo">
+    </nav>
+</header>
 
-                <a href="index.html">
-                    Dheere Studio
-                </a>
+<main class="profile-page">
 
+    <div class="profile-header">
+        <h1>Your Profile</h1>
+        <p>Your identity and activity on Dheere Studio.</p>
+    </div>
+
+    <!-- PROFILE -->
+
+    <section id="profileCard" class="profile-card">
+
+        <div id="profileAvatar" class="profile-avatar">?</div>
+
+        <div class="profile-info">
+
+            <div class="profile-field">
+                <span class="profile-label">Name</span>
+                <span id="profileName" class="profile-value">
+                    Loading...
+                </span>
             </div>
 
-            <div class="nav-links">
-
-                <ul>
-
-                    <li>
-                        <a href="index.html#projects">
-                            Projects
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="index.html#articles">
-                            Articles
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="community.html">
-                            Community
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="about.html">
-                            About
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="index.html#feedback">
-                            Feedback
-                        </a>
-                    </li>
-
-                </ul>
-
+            <div class="profile-field">
+                <span class="profile-label">Username</span>
+                <span id="profileUsername" class="profile-value">
+                    Loading...
+                </span>
             </div>
 
-        </nav>
+            <div class="profile-field">
+                <span class="profile-label">Email</span>
+                <span id="profileEmail" class="profile-value">
+                    Loading...
+                </span>
+            </div>
 
-    </header>
+        </div>
 
-    <!-- ==========================================
-         PROFILE
-         ========================================== -->
+        <div class="profile-actions">
 
-    <main class="profile-page">
+            <a
+                href="index.html"
+                class="profile-button back-button"
+            >
+                Back to Home
+            </a>
 
-        <div class="profile-header">
+            <button
+                id="logoutBtn"
+                type="button"
+                class="profile-button logout-button"
+            >
+                Logout
+            </button>
 
-            <h1>
-                Your Profile
-            </h1>
+        </div>
+
+    </section>
+
+    <!-- DHEERE AI -->
+
+    <section
+        id="dheereAiSection"
+        class="dheere-ai-section"
+    >
+
+        <div class="dheere-ai-section-header">
+
+            <h2>Dheere AI</h2>
 
             <p>
-                Your identity and activity on Dheere Studio.
+                Ask questions in Hindi or English.
+                Dheere AI will respond directly.
             </p>
 
         </div>
 
-        <!-- ======================================
-             LOGGED-IN PROFILE
-             ====================================== -->
+        <div class="dheere-ai-card">
 
-        <section
-            id="profileCard"
-            class="profile-card"
-        >
+            <div class="dheere-ai-topbar">
 
-            <div
-                id="profileAvatar"
-                class="profile-avatar"
-            >
-                ?
-            </div>
+                <div class="dheere-ai-brand">
 
-            <div class="profile-info">
-
-                <div class="profile-field">
-
-                    <span class="profile-label">
-                        Name
-                    </span>
-
-                    <span
-                        id="profileName"
-                        class="profile-value"
-                    >
-                        Loading...
-                    </span>
-
-                </div>
-
-                <div class="profile-field">
-
-                    <span class="profile-label">
-                        Username
-                    </span>
-
-                    <span
-                        id="profileUsername"
-                        class="profile-value"
-                    >
-                        Loading...
-                    </span>
-
-                </div>
-
-                <div class="profile-field">
-
-                    <span class="profile-label">
-                        Email
-                    </span>
-
-                    <span
-                        id="profileEmail"
-                        class="profile-value"
-                    >
-                        Loading...
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="profile-actions">
-
-                <a
-                    href="index.html"
-                    class="profile-button back-button"
-                >
-                    Back to Home
-                </a>
-
-                <button
-                    id="logoutBtn"
-                    type="button"
-                    class="profile-button logout-button"
-                >
-                    Logout
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- ======================================
-             DHEERE AI
-             ====================================== -->
-
-        <section
-            id="dheereAiSection"
-            class="dheere-ai-section"
-        >
-
-            <div class="dheere-ai-section-header">
-
-                <h2>
-                    Dheere AI
-                </h2>
-
-                <p>
-                    Ask questions in Hindi or English. Dheere AI will respond directly.
-                </p>
-
-            </div>
-
-            <div class="dheere-ai-card">
-
-                <div class="dheere-ai-topbar">
-
-                    <div class="dheere-ai-brand">
-
-                        <div class="dheere-ai-symbol">
-                            ✦
-                        </div>
-
-                        <div class="dheere-ai-brand-text">
-
-                            <strong>
-                                Dheere AI
-                            </strong>
-
-                            <span>
-                                Studio assistant
-                            </span>
-
-                        </div>
-
+                    <div class="dheere-ai-symbol">
+                        ✦
                     </div>
 
-                    <div
-                        id="dheereAiStatus"
-                        class="dheere-ai-status"
-                    >
-
-                        <span
-                            class="dheere-ai-status-dot"
-                        ></span>
-
-                        <span id="dheereAiStatusText">
-                            Ready
-                        </span>
-
+                    <div class="dheere-ai-brand-text">
+                        <strong>Dheere AI</strong>
+                        <span>Studio assistant</span>
                     </div>
 
                 </div>
 
                 <div
-                    id="dheereAiMessages"
-                    class="dheere-ai-messages"
+                    id="dheereAiStatus"
+                    class="dheere-ai-status"
                 >
-
-                    <div class="dheere-ai-welcome">
-
-                        <strong>
-                            Hello.
-                        </strong>
-
-                        <br>
-
-                        I'm Dheere AI. You can ask me something in
-                        <strong>Hindi</strong> or
-                        <strong>English</strong>.
-
-                    </div>
-
-                    <div
-                        id="dheereAiTyping"
-                        class="dheere-ai-typing"
-                    >
-                        Dheere AI is thinking...
-                    </div>
-
-                </div>
-
-                <div class="dheere-ai-input-area">
-
-                    <form
-                        id="dheereAiForm"
-                        class="dheere-ai-form"
-                    >
-
-                        <textarea
-                            id="dheereAiInput"
-                            rows="1"
-                            maxlength="4000"
-                            placeholder="Ask Dheere AI..."
-                            autocomplete="off"
-                        ></textarea>
-
-                        <button
-                            id="dheereAiSend"
-                            type="submit"
-                            aria-label="Send message"
-                        >
-                            ↑
-                        </button>
-
-                    </form>
-
-                    <div class="dheere-ai-hint">
-                        Enter to send · Shift + Enter for a new line
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- ======================================
-             POSTS
-             ====================================== -->
-
-        <section
-            id="postsSection"
-            class="posts-section"
-        >
-
-            <h2>
-                Your Posts
-            </h2>
-
-            <div class="create-post-card">
-
-                <textarea
-                    id="postContent"
-                    class="post-textarea"
-                    maxlength="2000"
-                    placeholder="Share something with the Dheere Studio community..."
-                ></textarea>
-
-                <div class="post-bottom">
-
-                    <span
-                        id="postCharacterCount"
-                        class="post-character-count"
-                    >
-                        0 / 2000
+                    <span class="dheere-ai-status-dot"></span>
+                    <span id="dheereAiStatusText">
+                        Ready
                     </span>
-
-                    <button
-                        id="createPostBtn"
-                        class="post-button"
-                        type="button"
-                    >
-                        Publish Post
-                    </button>
-
                 </div>
 
             </div>
 
             <div
-                id="postsFeed"
-                class="posts-feed"
+                id="dheereAiMessages"
+                class="dheere-ai-messages"
             >
 
-                <div class="empty-posts">
-                    Loading posts...
+                <div class="dheere-ai-welcome">
+                    <strong>Hello.</strong>
+                    <br>
+                    I'm Dheere AI. You can ask me something in
+                    <strong>Hindi</strong> or
+                    <strong>English</strong>.
+                </div>
+
+                <div
+                    id="dheereAiTyping"
+                    class="dheere-ai-typing"
+                >
+                    Dheere AI is thinking...
                 </div>
 
             </div>
 
-        </section>
+            <div class="dheere-ai-input-area">
 
-        <!-- ======================================
-             NOT LOGGED IN
-             ====================================== -->
+                <form
+                    id="dheereAiForm"
+                    class="dheere-ai-form"
+                >
 
-        <section
-            id="loginMessage"
-            class="login-message"
-        >
+                    <textarea
+                        id="dheereAiInput"
+                        rows="1"
+                        maxlength="4000"
+                        placeholder="Ask Dheere AI..."
+                        autocomplete="off"
+                    ></textarea>
 
-            <strong>
-                You're not logged in
-            </strong>
+                    <button
+                        id="dheereAiSend"
+                        type="submit"
+                        aria-label="Send message"
+                    >
+                        ↑
+                    </button>
 
-            Please log in to view your Dheere Studio profile.
+                </form>
 
-            <br>
+                <div class="dheere-ai-hint">
+                    Enter to send · Shift + Enter for a new line
+                </div>
 
-            <a href="index.html">
-                Go to Login
-            </a>
+            </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
-    <!-- ==========================================
-         PROFILE JAVASCRIPT
-         ========================================== -->
+    <!-- POSTS -->
 
-    <script>
+    <section id="postsSection" class="posts-section">
 
-        // ==========================================
-        // CONFIG
-        // ==========================================
+        <h2>Your Posts</h2>
 
-        const API_BASE =
-            "https://dheere-studio.onrender.com";
+        <div class="create-post-card">
 
-        const STORAGE_KEY =
-            "dheereStudioUser";
+            <textarea
+                id="postContent"
+                class="post-textarea"
+                maxlength="2000"
+                placeholder="Share something with the Dheere Studio community..."
+            ></textarea>
 
-        // ==========================================
-        // ELEMENTS
-        // ==========================================
+            <div class="post-bottom">
 
-        const profileCard =
-            document.getElementById(
-                "profileCard"
-            );
+                <span
+                    id="postCharacterCount"
+                    class="post-character-count"
+                >
+                    0 / 2000
+                </span>
 
-        const postsSection =
-            document.getElementById(
-                "postsSection"
-            );
+                <button
+                    id="createPostBtn"
+                    class="post-button"
+                    type="button"
+                >
+                    Publish Post
+                </button>
 
-        const loginMessage =
-            document.getElementById(
-                "loginMessage"
-            );
+            </div>
 
-        const nameElement =
-            document.getElementById(
-                "profileName"
-            );
+        </div>
 
-        const usernameElement =
-            document.getElementById(
-                "profileUsername"
-            );
+        <div id="postsFeed" class="posts-feed">
+            <div class="empty-posts">
+                Loading posts...
+            </div>
+        </div>
 
-        const emailElement =
-            document.getElementById(
-                "profileEmail"
-            );
+    </section>
 
-        const avatarElement =
-            document.getElementById(
-                "profileAvatar"
-            );
+    <!-- LOGIN MESSAGE -->
 
-        const logoutBtn =
-            document.getElementById(
-                "logoutBtn"
-            );
+    <section
+        id="loginMessage"
+        class="login-message"
+    >
 
-        const postContent =
-            document.getElementById(
-                "postContent"
-            );
+        <strong>You're not logged in</strong>
 
-        const postCharacterCount =
-            document.getElementById(
-                "postCharacterCount"
-            );
+        Please log in to view your Dheere Studio profile.
 
-        const createPostBtn =
-            document.getElementById(
-                "createPostBtn"
-            );
+        <br>
 
-        const postsFeed =
-            document.getElementById(
-                "postsFeed"
-            );
+        <a href="index.html">
+            Go to Login
+        </a>
 
-        // ==========================================
-        // AI ELEMENTS
-        // ==========================================
+    </section>
 
-        const dheereAiForm =
-            document.getElementById(
-                "dheereAiForm"
-            );
+</main>
 
-        const dheereAiInput =
-            document.getElementById(
-                "dheereAiInput"
-            );
+<!-- =========================================================
+     MOOD ENGINE
+     Must load before profile initialization
+     ========================================================= -->
 
-        const dheereAiSend =
-            document.getElementById(
-                "dheereAiSend"
-            );
+<script src="mood-engine.js"></script>
 
-        const dheereAiMessages =
-            document.getElementById(
-                "dheereAiMessages"
-            );
+<script>
 
-        const dheereAiTyping =
-            document.getElementById(
-                "dheereAiTyping"
-            );
+    "use strict";
 
-        const dheereAiStatus =
-            document.getElementById(
-                "dheereAiStatus"
-            );
+    /* =========================================================
+       CONFIG
+       ========================================================= */
 
-        const dheereAiStatusText =
-            document.getElementById(
-                "dheereAiStatusText"
-            );
+    const API_BASE =
+        "https://dheere-studio.onrender.com";
 
-        // ==========================================
-        // CURRENT USER
-        // ==========================================
+    const STORAGE_KEY =
+        "dheereStudioUser";
 
-        let currentUser = null;
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
 
-        let aiBusy = false;
+    const profileCard =
+        document.getElementById("profileCard");
 
-        // ==========================================
-        // ESCAPE HTML
-        // ==========================================
+    const postsSection =
+        document.getElementById("postsSection");
 
-        function escapeHTML(value) {
+    const loginMessage =
+        document.getElementById("loginMessage");
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+    const dheereAiSection =
+        document.getElementById("dheereAiSection");
 
-            div.textContent =
-                String(value ?? "");
+    const nameElement =
+        document.getElementById("profileName");
 
-            return div.innerHTML;
+    const usernameElement =
+        document.getElementById("profileUsername");
 
+    const emailElement =
+        document.getElementById("profileEmail");
+
+    const avatarElement =
+        document.getElementById("profileAvatar");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+    const postContent =
+        document.getElementById("postContent");
+
+    const postCharacterCount =
+        document.getElementById("postCharacterCount");
+
+    const createPostBtn =
+        document.getElementById("createPostBtn");
+
+    const postsFeed =
+        document.getElementById("postsFeed");
+
+    const dheereAiForm =
+        document.getElementById("dheereAiForm");
+
+    const dheereAiInput =
+        document.getElementById("dheereAiInput");
+
+    const dheereAiSend =
+        document.getElementById("dheereAiSend");
+
+    const dheereAiMessages =
+        document.getElementById("dheereAiMessages");
+
+    const dheereAiTyping =
+        document.getElementById("dheereAiTyping");
+
+    const dheereAiStatus =
+        document.getElementById("dheereAiStatus");
+
+    const dheereAiStatusText =
+        document.getElementById("dheereAiStatusText");
+
+    let currentUser = null;
+    let aiBusy = false;
+
+    /* =========================================================
+       ESCAPE
+       ========================================================= */
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            String(value ?? "");
+
+        return div.innerHTML;
+
+    }
+
+    /* =========================================================
+       DATE
+       ========================================================= */
+
+    function formatPostDate(dateValue) {
+
+        if (!dateValue) {
+            return "";
         }
 
-        // ==========================================
-        // FORMAT DATE
-        // ==========================================
+        const date =
+            new Date(dateValue);
 
-        function formatPostDate(dateValue) {
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "";
+        }
 
-            if (!dateValue) {
+        return date.toLocaleString(
+            undefined,
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        );
 
-                return "";
+    }
 
+    /* =========================================================
+       AI MESSAGE
+       ========================================================= */
+
+    function addAiMessage(
+        text,
+        type = "ai"
+    ) {
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            `dheere-ai-message ${type}`;
+
+        message.textContent =
+            String(text ?? "");
+
+        dheereAiMessages.insertBefore(
+            message,
+            dheereAiTyping
+        );
+
+        dheereAiMessages.scrollTop =
+            dheereAiMessages.scrollHeight;
+
+        return message;
+
+    }
+
+    /* =========================================================
+       AI STATUS
+       ========================================================= */
+
+    function setAiStatus(
+        text,
+        online = false
+    ) {
+
+        dheereAiStatusText.textContent =
+            text;
+
+        dheereAiStatus.classList.toggle(
+            "online",
+            online
+        );
+
+    }
+
+    /* =========================================================
+       AI REQUEST
+       ========================================================= */
+
+    async function sendAiMessage() {
+
+        if (aiBusy) {
+            return;
+        }
+
+        const message =
+            dheereAiInput.value.trim();
+
+        if (!message) {
+            return;
+        }
+
+        addAiMessage(
+            message,
+            "user"
+        );
+
+        dheereAiInput.value =
+            "";
+
+        dheereAiInput.style.height =
+            "auto";
+
+        aiBusy = true;
+
+        dheereAiSend.disabled =
+            true;
+
+        dheereAiTyping.classList.add(
+            "visible"
+        );
+
+        setAiStatus(
+            "Thinking..."
+        );
+
+        dheereAiMessages.scrollTop =
+            dheereAiMessages.scrollHeight;
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/ai-chat`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+                                message
+                            })
+                    }
+                );
+
+            let result = null;
+
+            try {
+                result =
+                    await response.json();
+            } catch {
+                result = null;
             }
 
-            const date =
-                new Date(dateValue);
+            if (!response.ok) {
+
+                throw new Error(
+                    result?.error ||
+                    `AI request failed (${response.status}).`
+                );
+
+            }
 
             if (
-                Number.isNaN(
-                    date.getTime()
-                )
+                !result ||
+                result.success !== true
             ) {
 
-                return "";
+                throw new Error(
+                    result?.error ||
+                    "Dheere AI did not return a valid response."
+                );
 
             }
 
-            return date.toLocaleString(
-                undefined,
-                {
-                    dateStyle: "medium",
-                    timeStyle: "short"
-                }
-            );
+            const reply =
+                result.answer;
 
-        }
+            if (
+                typeof reply !== "string" ||
+                !reply.trim()
+            ) {
 
-        // ==========================================
-        // ADD AI MESSAGE
-        // ==========================================
-
-        function addAiMessage(
-            text,
-            type = "ai"
-        ) {
-
-            const message =
-                document.createElement(
-                    "div"
+                throw new Error(
+                    "Dheere AI returned an empty response."
                 );
 
-            message.className =
-                `dheere-ai-message ${type}`;
+            }
 
-            message.textContent =
-                String(text ?? "");
-
-            dheereAiMessages.insertBefore(
-                message,
-                dheereAiTyping
+            addAiMessage(
+                reply.trim(),
+                "ai"
             );
+
+            setAiStatus(
+                "Ready",
+                true
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Dheere AI Error:",
+                error
+            );
+
+            addAiMessage(
+                error.message ||
+                "Unable to connect to Dheere AI right now.",
+                "error"
+            );
+
+            setAiStatus(
+                "Unavailable"
+            );
+
+        } finally {
+
+            aiBusy = false;
+
+            dheereAiSend.disabled =
+                false;
+
+            dheereAiTyping.classList.remove(
+                "visible"
+            );
+
+            dheereAiInput.focus();
 
             dheereAiMessages.scrollTop =
                 dheereAiMessages.scrollHeight;
 
-            return message;
-
         }
 
-        // ==========================================
-        // AI STATUS
-        // ==========================================
+    }
 
-        function setAiStatus(
-            text,
-            online = false
-        ) {
+    /* =========================================================
+       AI FORM
+       ========================================================= */
 
-            dheereAiStatusText.textContent =
-                text;
+    dheereAiForm.addEventListener(
+        "submit",
+        event => {
 
-            dheereAiStatus.classList.toggle(
-                "online",
-                online
-            );
+            event.preventDefault();
+
+            sendAiMessage();
 
         }
+    );
 
-        // ==========================================
-        // AI REQUEST
-        // ==========================================
+    dheereAiInput.addEventListener(
+        "keydown",
+        event => {
 
-        async function sendAiMessage() {
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
 
-            if (aiBusy) {
+                event.preventDefault();
 
-                return;
+                sendAiMessage();
 
             }
 
-            const message =
-                dheereAiInput.value.trim();
+        }
+    );
 
-            if (!message) {
-
-                return;
-
-            }
-
-            // ======================================
-            // SHOW USER MESSAGE
-            // ======================================
-
-            addAiMessage(
-                message,
-                "user"
-            );
-
-            dheereAiInput.value =
-                "";
+    dheereAiInput.addEventListener(
+        "input",
+        () => {
 
             dheereAiInput.style.height =
                 "auto";
 
-            // ======================================
-            // LOADING
-            // ======================================
+            dheereAiInput.style.height =
+                Math.min(
+                    dheereAiInput.scrollHeight,
+                    130
+                ) + "px";
 
-            aiBusy =
-                true;
+        }
+    );
 
-            dheereAiSend.disabled =
-                true;
+    /* =========================================================
+       PROFILE
+       ========================================================= */
 
-            dheereAiTyping.classList.add(
-                "visible"
+    function hideAuthenticatedContent() {
+
+        profileCard.style.display =
+            "none";
+
+        postsSection.style.display =
+            "none";
+
+        dheereAiSection.style.display =
+            "none";
+
+        loginMessage.style.display =
+            "block";
+
+    }
+
+    function loadProfile() {
+
+        const savedUser =
+            localStorage.getItem(
+                STORAGE_KEY
             );
 
-            setAiStatus(
-                "Thinking..."
-            );
+        if (!savedUser) {
 
-            dheereAiMessages.scrollTop =
-                dheereAiMessages.scrollHeight;
+            hideAuthenticatedContent();
 
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/ai-chat`,
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    message
-                                })
-                        }
-                    );
-
-                let result = null;
-
-                try {
-
-                    result =
-                        await response.json();
-
-                } catch {
-
-                    result = null;
-
-                }
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        result?.error ||
-                        `AI request failed (${response.status}).`
-                    );
-
-                }
-
-                if (
-                    !result ||
-                    result.success !== true
-                ) {
-
-                    throw new Error(
-                        result?.error ||
-                        "Dheere AI did not return a valid response."
-                    );
-
-                }
-
-                /*
-                 * IMPORTANT:
-                 * Backend returns:
-                 *
-                 * {
-                 *     success: true,
-                 *     answer: "..."
-                 * }
-                 *
-                 * Therefore the frontend must read
-                 * result.answer.
-                 */
-
-                const reply =
-                    result.answer;
-
-                if (
-                    typeof reply !== "string" ||
-                    !reply.trim()
-                ) {
-
-                    throw new Error(
-                        "Dheere AI returned an empty response."
-                    );
-
-                }
-
-                addAiMessage(
-                    reply.trim(),
-                    "ai"
-                );
-
-                setAiStatus(
-                    "Ready",
-                    true
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Dheere AI Error:",
-                    error
-                );
-
-                addAiMessage(
-                    error.message ||
-                    "Unable to connect to Dheere AI right now.",
-                    "error"
-                );
-
-                setAiStatus(
-                    "Unavailable"
-                );
-
-            } finally {
-
-                aiBusy =
-                    false;
-
-                dheereAiSend.disabled =
-                    false;
-
-                dheereAiTyping.classList.remove(
-                    "visible"
-                );
-
-                dheereAiInput.focus();
-
-                dheereAiMessages.scrollTop =
-                    dheereAiMessages.scrollHeight;
-
-            }
+            return false;
 
         }
 
-        // ==========================================
-        // AI FORM
-        // ==========================================
+        try {
 
-        if (dheereAiForm) {
+            currentUser =
+                JSON.parse(savedUser);
 
-            dheereAiForm.addEventListener(
-                "submit",
-                (event) => {
+            const name =
+                currentUser.name ||
+                "User";
 
-                    event.preventDefault();
+            const username =
+                currentUser.username ||
+                "";
 
-                    sendAiMessage();
+            const email =
+                currentUser.email ||
+                "Not available";
 
-                }
-            );
+            if (!username) {
 
-        }
-
-        // ==========================================
-        // AI KEYBOARD
-        // ==========================================
-
-        if (dheereAiInput) {
-
-            dheereAiInput.addEventListener(
-                "keydown",
-                (event) => {
-
-                    if (
-                        event.key === "Enter" &&
-                        !event.shiftKey
-                    ) {
-
-                        event.preventDefault();
-
-                        sendAiMessage();
-
-                    }
-
-                }
-            );
-
-            dheereAiInput.addEventListener(
-                "input",
-                () => {
-
-                    dheereAiInput.style.height =
-                        "auto";
-
-                    dheereAiInput.style.height =
-                        Math.min(
-                            dheereAiInput.scrollHeight,
-                            130
-                        ) + "px";
-
-                }
-            );
-
-        }
-
-        // ==========================================
-        // LOAD PROFILE
-        // ==========================================
-
-        function loadProfile() {
-
-            const savedUser =
-                localStorage.getItem(
-                    STORAGE_KEY
-                );
-
-            if (!savedUser) {
-
-                profileCard.style.display =
-                    "none";
-
-                postsSection.style.display =
-                    "none";
-
-                document
-                    .getElementById(
-                        "dheereAiSection"
-                    )
-                    .style.display =
-                    "none";
-
-                loginMessage.style.display =
-                    "block";
+                hideAuthenticatedContent();
 
                 return false;
 
             }
 
-            try {
+            nameElement.textContent =
+                name;
 
-                currentUser =
-                    JSON.parse(
-                        savedUser
-                    );
+            usernameElement.textContent =
+                "@" + username;
 
-                const name =
-                    currentUser.name ||
-                    "User";
+            emailElement.textContent =
+                email;
 
-                const username =
-                    currentUser.username ||
-                    "";
+            avatarElement.textContent =
+                name
+                    .charAt(0)
+                    .toUpperCase();
 
-                const email =
-                    currentUser.email ||
-                    "Not available";
+            profileCard.style.display =
+                "block";
 
-                if (!username) {
+            postsSection.style.display =
+                "block";
 
-                    console.error(
-                        "Logged-in user has no username."
-                    );
+            dheereAiSection.style.display =
+                "block";
 
-                    profileCard.style.display =
-                        "none";
+            loginMessage.style.display =
+                "none";
 
-                    postsSection.style.display =
-                        "none";
+            return true;
 
-                    document
-                        .getElementById(
-                            "dheereAiSection"
-                        )
-                        .style.display =
-                        "none";
+        } catch (error) {
 
-                    loginMessage.style.display =
-                        "block";
+            console.error(
+                "Profile data error:",
+                error
+            );
 
-                    return false;
+            localStorage.removeItem(
+                STORAGE_KEY
+            );
 
-                }
+            hideAuthenticatedContent();
 
-                nameElement.textContent =
-                    name;
-
-                usernameElement.textContent =
-                    "@" + username;
-
-                emailElement.textContent =
-                    email;
-
-                avatarElement.textContent =
-                    name
-                        .charAt(0)
-                        .toUpperCase();
-
-                profileCard.style.display =
-                    "block";
-
-                postsSection.style.display =
-                    "block";
-
-                document
-                    .getElementById(
-                        "dheereAiSection"
-                    )
-                    .style.display =
-                    "block";
-
-                loginMessage.style.display =
-                    "none";
-
-                return true;
-
-            } catch (error) {
-
-                console.error(
-                    "Profile data error:",
-                    error
-                );
-
-                localStorage.removeItem(
-                    STORAGE_KEY
-                );
-
-                profileCard.style.display =
-                    "none";
-
-                postsSection.style.display =
-                    "none";
-
-                document
-                    .getElementById(
-                        "dheereAiSection"
-                    )
-                    .style.display =
-                    "none";
-
-                loginMessage.style.display =
-                    "block";
-
-                return false;
-
-            }
+            return false;
 
         }
 
-        // ==========================================
-        // RENDER POSTS
-        // ==========================================
+    }
 
-        function renderPosts(posts) {
+    /* =========================================================
+       POSTS
+       ========================================================= */
+
+    function renderPosts(posts) {
+
+        if (
+            !posts ||
+            posts.length === 0
+        ) {
+
+            postsFeed.innerHTML = `
+                <div class="empty-posts">
+                    No posts yet. Your first post can start here.
+                </div>
+            `;
+
+            return;
+
+        }
+
+        postsFeed.innerHTML =
+            posts
+                .map(post => {
+
+                    const authorName =
+                        post.authorName ||
+                        post.username ||
+                        "User";
+
+                    const username =
+                        post.username ||
+                        "";
+
+                    const date =
+                        formatPostDate(
+                            post.createdAt
+                        );
+
+                    return `
+                        <article class="post-card">
+
+                            <div class="post-header">
+
+                                <div class="post-author">
+                                    ${escapeHTML(authorName)}
+                                    ${
+                                        username
+                                            ? ` · @${escapeHTML(username)}`
+                                            : ""
+                                    }
+                                </div>
+
+                                <div class="post-date">
+                                    ${escapeHTML(date)}
+                                </div>
+
+                            </div>
+
+                            <div class="post-content">
+                                ${escapeHTML(post.content)}
+                            </div>
+
+                            <div class="post-meta">
+
+                                <span>
+                                    ${Number(post.likes || 0)} likes
+                                </span>
+
+                                <span>
+                                    ${Number(post.comments || 0)} comments
+                                </span>
+
+                            </div>
+
+                        </article>
+                    `;
+
+                })
+                .join("");
+
+    }
+
+    async function loadUserPosts() {
+
+        if (!currentUser) {
+            return;
+        }
+
+        const username =
+            String(
+                currentUser.username || ""
+            )
+                .trim()
+                .toLowerCase();
+
+        if (!username) {
+
+            postsFeed.innerHTML = `
+                <div class="posts-error">
+                    Username is missing from your profile.
+                </div>
+            `;
+
+            return;
+
+        }
+
+        postsFeed.innerHTML = `
+            <div class="empty-posts">
+                Loading posts...
+            </div>
+        `;
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/posts/user/${encodeURIComponent(username)}`
+                );
+
+            const result =
+                await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.error ||
+                    "Could not load posts."
+                );
+
+            }
 
             if (
-                !posts ||
-                posts.length === 0
+                !result.success ||
+                !Array.isArray(result.posts)
             ) {
 
-                postsFeed.innerHTML = `
-                    <div class="empty-posts">
-                        No posts yet. Your first post can start here.
-                    </div>
-                `;
+                throw new Error(
+                    "Invalid posts response."
+                );
+
+            }
+
+            renderPosts(
+                result.posts
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Load User Posts Error:",
+                error
+            );
+
+            postsFeed.innerHTML = `
+                <div class="posts-error">
+                    Unable to load your posts right now.
+                </div>
+            `;
+
+        }
+
+    }
+
+    /* =========================================================
+       CHARACTER COUNT
+       ========================================================= */
+
+    postContent.addEventListener(
+        "input",
+        () => {
+
+            postCharacterCount.textContent =
+                `${postContent.value.length} / 2000`;
+
+        }
+    );
+
+    /* =========================================================
+       CREATE POST
+       ========================================================= */
+
+    createPostBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentUser) {
+
+                alert(
+                    "Please login first."
+                );
 
                 return;
 
             }
 
-            postsFeed.innerHTML =
-                posts
-                    .map(
-                        (post) => {
+            const content =
+                postContent.value.trim();
 
-                            const authorName =
-                                post.authorName ||
-                                post.username ||
-                                "User";
+            if (!content) {
 
-                            const username =
-                                post.username ||
-                                "";
+                alert(
+                    "Write something before publishing."
+                );
 
-                            const date =
-                                formatPostDate(
-                                    post.createdAt
-                                );
+                return;
 
-                            return `
-                                <article class="post-card">
+            }
 
-                                    <div class="post-header">
+            if (content.length > 2000) {
 
-                                        <div class="post-author">
-                                            ${escapeHTML(authorName)}
-                                            ${
-                                                username
-                                                    ? ` · @${escapeHTML(username)}`
-                                                    : ""
-                                            }
-                                        </div>
-
-                                        <div class="post-date">
-                                            ${escapeHTML(date)}
-                                        </div>
-
-                                    </div>
-
-                                    <div class="post-content">
-                                        ${escapeHTML(post.content)}
-                                    </div>
-
-                                    <div class="post-meta">
-
-                                        <span>
-                                            ${Number(post.likes || 0)} likes
-                                        </span>
-
-                                        <span>
-                                            ${Number(post.comments || 0)} comments
-                                        </span>
-
-                                    </div>
-
-                                </article>
-                            `;
-
-                        }
-                    )
-                    .join("");
-
-        }
-
-        // ==========================================
-        // LOAD USER POSTS
-        // ==========================================
-
-        async function loadUserPosts() {
-
-            if (!currentUser) {
+                alert(
+                    "Post cannot exceed 2000 characters."
+                );
 
                 return;
 
@@ -1883,27 +1775,37 @@
 
             if (!username) {
 
-                postsFeed.innerHTML = `
-                    <div class="posts-error">
-                        Username is missing from your profile.
-                    </div>
-                `;
+                alert(
+                    "Your username is missing. Please login again."
+                );
 
                 return;
 
             }
 
-            postsFeed.innerHTML = `
-                <div class="empty-posts">
-                    Loading posts...
-                </div>
-            `;
+            createPostBtn.disabled =
+                true;
+
+            createPostBtn.textContent =
+                "Publishing...";
 
             try {
 
                 const response =
                     await fetch(
-                        `${API_BASE}/posts/user/${encodeURIComponent(username)}`
+                        `${API_BASE}/posts`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+                                    username,
+                                    content
+                                })
+                        }
                     );
 
                 const result =
@@ -1913,252 +1815,87 @@
 
                     throw new Error(
                         result.error ||
-                        "Could not load posts."
+                        "Could not publish post."
                     );
 
                 }
 
-                if (
-                    !result.success ||
-                    !Array.isArray(
-                        result.posts
-                    )
-                ) {
+                if (!result.success) {
 
                     throw new Error(
-                        "Invalid posts response."
+                        result.error ||
+                        "Could not publish post."
                     );
 
                 }
 
-                renderPosts(
-                    result.posts
+                postContent.value =
+                    "";
+
+                postCharacterCount.textContent =
+                    "0 / 2000";
+
+                alert(
+                    "Post published successfully!"
                 );
+
+                await loadUserPosts();
 
             } catch (error) {
 
                 console.error(
-                    "Load User Posts Error:",
+                    "Create Post Error:",
                     error
                 );
 
-                postsFeed.innerHTML = `
-                    <div class="posts-error">
-                        Unable to load your posts right now.
-                    </div>
-                `;
+                alert(
+                    error.message ||
+                    "Unable to publish post right now."
+                );
+
+            } finally {
+
+                createPostBtn.disabled =
+                    false;
+
+                createPostBtn.textContent =
+                    "Publish Post";
 
             }
 
         }
+    );
 
-        // ==========================================
-        // CHARACTER COUNT
-        // ==========================================
+    /* =========================================================
+       LOGOUT
+       ========================================================= */
 
-        if (postContent) {
+    logoutBtn.addEventListener(
+        "click",
+        () => {
 
-            postContent.addEventListener(
-                "input",
-                () => {
-
-                    const length =
-                        postContent.value.length;
-
-                    postCharacterCount.textContent =
-                        `${length} / 2000`;
-
-                }
+            localStorage.removeItem(
+                STORAGE_KEY
             );
 
-        }
-
-        // ==========================================
-        // CREATE POST
-        // ==========================================
-
-        if (createPostBtn) {
-
-            createPostBtn.addEventListener(
-                "click",
-                async () => {
-
-                    if (!currentUser) {
-
-                        alert(
-                            "Please login first."
-                        );
-
-                        return;
-
-                    }
-
-                    const content =
-                        postContent.value.trim();
-
-                    if (!content) {
-
-                        alert(
-                            "Write something before publishing."
-                        );
-
-                        return;
-
-                    }
-
-                    if (
-                        content.length > 2000
-                    ) {
-
-                        alert(
-                            "Post cannot exceed 2000 characters."
-                        );
-
-                        return;
-
-                    }
-
-                    const username =
-                        String(
-                            currentUser.username || ""
-                        )
-                            .trim()
-                            .toLowerCase();
-
-                    if (!username) {
-
-                        alert(
-                            "Your username is missing. Please login again."
-                        );
-
-                        return;
-
-                    }
-
-                    createPostBtn.disabled =
-                        true;
-
-                    createPostBtn.textContent =
-                        "Publishing...";
-
-                    try {
-
-                        const response =
-                            await fetch(
-                                `${API_BASE}/posts`,
-                                {
-                                    method: "POST",
-
-                                    headers: {
-                                        "Content-Type":
-                                            "application/json"
-                                    },
-
-                                    body:
-                                        JSON.stringify({
-                                            username,
-                                            content
-                                        })
-                                }
-                            );
-
-                        const result =
-                            await response.json();
-
-                        if (!response.ok) {
-
-                            throw new Error(
-                                result.error ||
-                                "Could not publish post."
-                            );
-
-                        }
-
-                        if (!result.success) {
-
-                            throw new Error(
-                                result.error ||
-                                "Could not publish post."
-                            );
-
-                        }
-
-                        postContent.value =
-                            "";
-
-                        postCharacterCount.textContent =
-                            "0 / 2000";
-
-                        alert(
-                            "Post published successfully!"
-                        );
-
-                        await loadUserPosts();
-
-                    } catch (error) {
-
-                        console.error(
-                            "Create Post Error:",
-                            error
-                        );
-
-                        alert(
-                            error.message ||
-                            "Unable to publish post right now."
-                        );
-
-                    } finally {
-
-                        createPostBtn.disabled =
-                            false;
-
-                        createPostBtn.textContent =
-                            "Publish Post";
-
-                    }
-
-                }
-            );
+            window.location.href =
+                "index.html";
 
         }
+    );
 
-        // ==========================================
-        // LOGOUT
-        // ==========================================
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
 
-        if (logoutBtn) {
+    const profileLoaded =
+        loadProfile();
 
-            logoutBtn.addEventListener(
-                "click",
-                () => {
+    if (profileLoaded) {
+        loadUserPosts();
+    }
 
-                    localStorage.removeItem(
-                        STORAGE_KEY
-                    );
-
-                    window.location.href =
-                        "index.html";
-
-                }
-            );
-
-        }
-
-        // ==========================================
-        // INITIALIZE
-        // ==========================================
-
-        const profileLoaded =
-            loadProfile();
-
-        if (profileLoaded) {
-
-            loadUserPosts();
-
-        }
-
-    </script>
+</script>
 
 </body>
-
 </html>
