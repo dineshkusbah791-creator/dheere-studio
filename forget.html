@@ -10,18 +10,23 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Forgot Password — Dheere Studio
-    </title>
+    <title>Forgot Password — Dheere Studio</title>
 
     <meta
         name="description"
         content="Reset your Dheere Studio account password."
     >
 
+    <!-- Main website styles -->
     <link
         rel="stylesheet"
         href="homepage.css"
+    >
+
+    <!-- Dheere Mood environment -->
+    <link
+        rel="stylesheet"
+        href="mood.css"
     >
 
 </head>
@@ -34,11 +39,12 @@
          FORGOT PASSWORD PAGE
          ========================================== -->
 
-
     <div id="loginPage">
 
 
-        <!-- Back Button -->
+        <!-- ======================================
+             BACK BUTTON
+             ====================================== -->
 
         <button
             class="back-home-link"
@@ -52,6 +58,10 @@
 
 
 
+        <!-- ======================================
+             AUTH CONTAINER
+             ====================================== -->
+
         <div class="auth-page-container">
 
 
@@ -63,6 +73,10 @@
                     id="forgotPasswordForm"
                 >
 
+
+                    <!-- ==================================
+                         HEADING
+                         ================================== -->
 
                     <h2>
                         Forgot Password
@@ -78,8 +92,9 @@
 
 
 
-                    <!-- EMAIL -->
-
+                    <!-- ==================================
+                         EMAIL
+                         ================================== -->
 
                     <div class="input-group">
 
@@ -104,8 +119,9 @@
 
 
 
-                    <!-- BUTTON -->
-
+                    <!-- ==================================
+                         SUBMIT BUTTON
+                         ================================== -->
 
                     <button
                         type="submit"
@@ -119,15 +135,15 @@
 
 
 
-                    <!-- MESSAGE -->
-
+                    <!-- ==================================
+                         MESSAGE
+                         ================================== -->
 
                     <p
                         id="forgotMessage"
                         class="feedback-success"
                         style="display:none;"
                     ></p>
-
 
 
                 </form>
@@ -144,11 +160,21 @@
 
 
     <!-- ==========================================
+         DHEERE MOOD ENGINE
+         ========================================== -->
+
+    <script src="mood-engine.js"></script>
+
+
+
+    <!-- ==========================================
          FORGOT PASSWORD SCRIPT
          ========================================== -->
 
-
     <script>
+
+
+        "use strict";
 
 
         // ==========================================
@@ -157,6 +183,7 @@
 
         const API_BASE =
             "https://dheere-studio.onrender.com";
+
 
 
         // ==========================================
@@ -197,6 +224,7 @@
             type = "success"
         ) {
 
+
             forgotMessage.textContent =
                 message;
 
@@ -210,6 +238,7 @@
                     ? "feedback-error"
                     : "feedback-success";
 
+
         }
 
 
@@ -222,8 +251,14 @@
             "submit",
             async (event) => {
 
+
                 event.preventDefault();
 
+
+
+                // ==================================
+                // GET EMAIL
+                // ==================================
 
                 const email =
                     forgotEmail.value
@@ -231,21 +266,30 @@
                         .toLowerCase();
 
 
+
+                // ==================================
+                // VALIDATION
+                // ==================================
+
                 if (!email) {
+
 
                     showMessage(
                         "Please enter your email address.",
                         "error"
                     );
 
+
                     return;
+
 
                 }
 
 
-                // ======================================
+
+                // ==================================
                 // DISABLE BUTTON
-                // ======================================
+                // ==================================
 
                 forgotSubmitButton.disabled =
                     true;
@@ -259,7 +303,13 @@
                     "none";
 
 
+
                 try {
+
+
+                    // ==================================
+                    // API REQUEST
+                    // ==================================
 
                     const response =
                         await fetch(
@@ -269,12 +319,14 @@
                                 method:
                                     "POST",
 
+
                                 headers: {
 
                                     "Content-Type":
                                         "application/json"
 
                                 },
+
 
                                 body:
                                     JSON.stringify({
@@ -288,22 +340,37 @@
                         );
 
 
+
+                    // ==================================
+                    // RESPONSE
+                    // ==================================
+
                     let result = null;
 
 
                     try {
 
+
                         result =
                             await response.json();
 
+
                     } catch {
 
+
                         result = null;
+
 
                     }
 
 
+
+                    // ==================================
+                    // ERROR RESPONSE
+                    // ==================================
+
                     if (!response.ok) {
+
 
                         throw new Error(
 
@@ -312,12 +379,14 @@
 
                         );
 
+
                     }
 
 
-                    // ======================================
-                    // GENERIC RESPONSE
-                    // ======================================
+
+                    // ==================================
+                    // SUCCESS
+                    // ==================================
 
                     showMessage(
 
@@ -334,7 +403,13 @@
                         "";
 
 
+
                 } catch (error) {
+
+
+                    // ==================================
+                    // ERROR HANDLING
+                    // ==================================
 
                     console.error(
                         "Forgot Password Error:",
@@ -352,7 +427,13 @@
 
                     );
 
+
                 } finally {
+
+
+                    // ==================================
+                    // RESTORE BUTTON
+                    // ==================================
 
                     forgotSubmitButton.disabled =
                         false;
@@ -361,7 +442,9 @@
                     forgotSubmitButton.textContent =
                         "Continue";
 
+
                 }
+
 
             }
         );
