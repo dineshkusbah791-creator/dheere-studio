@@ -774,9 +774,8 @@ function openPublicProfile(username) {
     }
 
 
-    window.location.href =
-        `public-profile.html?username=${encodeURIComponent(cleanUsername)}`;
-
+   window.location.href =
+    `live-profile.html?username=${encodeURIComponent(cleanUsername)}`;
 }
 
 

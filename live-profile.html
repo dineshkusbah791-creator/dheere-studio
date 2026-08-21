@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Profile — Dheere Studio</title>
+
+    <meta
+        name="description"
+        content="Public profile on Dheere Studio."
+    >
+
+    <!-- =====================================================
+         SHARED CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+    <!-- =====================================================
+         PUBLIC PROFILE CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="live-profile.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="site-header">
+
+        <nav class="navbar">
+
+            <div class="nav-logo">
+
+                <a href="index.html">
+                    Dheere Studio
+                </a>
+
+            </div>
+
+
+            <div class="nav-links">
+
+                <ul>
+
+                    <li>
+                        <a href="index.html#projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#articles">
+                            Articles
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="community.html">
+                            Community
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="about.html">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#feedback">
+                            Feedback
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="nav-actions">
+
+                <a
+                    href="index.html"
+                    class="nav-profile-link"
+                >
+                    Dheere Studio
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN PUBLIC PROFILE
+         ===================================================== -->
+
+    <main class="live-profile-page">
+
+
+        <!-- =================================================
+             TOP BAR
+             ================================================= -->
+
+        <div class="live-profile-topbar">
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Back to Dheere Studio
+            </a>
+
+
+            <span class="public-profile-label">
+                PUBLIC PROFILE
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             LOADING STATE
+             ================================================= -->
+
+        <section
+            id="profileLoading"
+            class="profile-state profile-loading"
+            aria-live="polite"
+        >
+
+            <div class="loading-spinner"></div>
+
+            <p>
+                Loading profile...
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             ERROR STATE
+             ================================================= -->
+
+        <section
+            id="profileError"
+            class="profile-state profile-error"
+            hidden
+        >
+
+            <div class="state-icon">
+                !
+            </div>
+
+
+            <h1>
+                Profile unavailable
+            </h1>
+
+
+            <p id="profileErrorText">
+                We couldn't load this profile right now.
+            </p>
+
+
+            <div class="state-actions">
+
+                <button
+                    id="retryProfileBtn"
+                    type="button"
+                    class="profile-action-button primary"
+                >
+                    Try Again
+                </button>
+
+
+                <a
+                    href="index.html"
+                    class="profile-action-button secondary"
+                >
+                    Back to Dheere Studio
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PUBLIC PROFILE CONTENT
+             ================================================= -->
+
+        <div
+            id="publicProfileContent"
+            class="public-profile-content"
+            hidden
+        >
+
+
+            <!-- =============================================
+                 PROFILE CARD
+                 ============================================= -->
+
+            <section class="public-profile-card">
+
+
+                <div class="public-profile-header">
+
+
+                    <!-- =====================================
+                         AVATAR
+                         ===================================== -->
+
+                    <div class="public-avatar-wrapper">
+
+                        <div
+                            id="publicProfileAvatar"
+                            class="public-profile-avatar"
+                        >
+                            U
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         IDENTITY
+                         ===================================== -->
+
+                    <div class="public-profile-identity">
+
+
+                        <span class="public-profile-role">
+                            DHEERE STUDIO USER
+                        </span>
+
+
+                        <h1
+                            id="publicProfileName"
+                            class="public-profile-name"
+                        >
+                            User
+                        </h1>
+
+
+                        <div
+                            id="publicProfileUsername"
+                            class="public-profile-username"
+                        >
+                            @user
+                        </div>
+
+
+                        <p
+                            id="publicProfileBio"
+                            class="public-profile-bio"
+                        >
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     PUBLIC PROFILE STATS
+                     ========================================= -->
+
+                <div class="public-profile-stats">
+
+
+                    <div class="public-stat">
+
+                        <span
+                            id="publicPostCount"
+                            class="public-stat-value"
+                        >
+                            0
+                        </span>
+
+                        <span class="public-stat-label">
+                            Posts
+                        </span>
+
+                    </div>
+
+
+                    <div class="public-stat">
+
+                        <span
+                            id="publicProfileStatus"
+                            class="public-stat-value"
+                        >
+                            Public
+                        </span>
+
+                        <span class="public-stat-label">
+                            Profile
+                        </span>
+
+                    </div>
+
+
+                    <div class="public-stat">
+
+                        <span
+                            id="publicJoinedDate"
+                            class="public-stat-value"
+                        >
+                            —
+                        </span>
+
+                        <span class="public-stat-label">
+                            Joined
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =============================================
+                 PROFILE NAVIGATION
+                 ============================================= -->
+
+            <nav
+                class="live-profile-tabs"
+                aria-label="Public profile sections"
+            >
+
+                <a
+                    href="#publicPostsSection"
+                    class="live-profile-tab active"
+                >
+                    Posts
+                </a>
+
+            </nav>
+
+
+            <!-- =============================================
+                 POSTS SECTION
+                 ============================================= -->
+
+            <section
+                id="publicPostsSection"
+                class="public-posts-section"
+            >
+
+
+                <div class="public-section-heading">
+
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            ACTIVITY
+                        </span>
+
+
+                        <h2>
+                            Posts
+                        </h2>
+
+
+                        <p>
+                            Things shared publicly on
+                            Dheere Studio.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        id="publicPostsUsername"
+                        class="section-user-label"
+                    >
+                        @user
+                    </span>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     POSTS LOADING
+                     ========================================= -->
+
+                <div
+                    id="publicPostsLoading"
+                    class="posts-state"
+                >
+
+                    <div class="loading-spinner small"></div>
+
+                    <p>
+                        Loading posts...
+                    </p>
+
+                </div>
+
+
+                <!-- =========================================
+                     POSTS ERROR
+                     ========================================= -->
+
+                <div
+                    id="publicPostsError"
+                    class="posts-state error"
+                    hidden
+                >
+
+                    <p>
+                        Unable to load posts right now.
+                    </p>
+
+
+                    <button
+                        id="retryPostsBtn"
+                        type="button"
+                        class="profile-action-button secondary"
+                    >
+                        Try Again
+                    </button>
+
+                </div>
+
+
+                <!-- =========================================
+                     EMPTY POSTS
+                     ========================================= -->
+
+                <div
+                    id="publicPostsEmpty"
+                    class="posts-state empty"
+                    hidden
+                >
+
+                    <div class="empty-post-icon">
+                        ✦
+                    </div>
+
+
+                    <h3>
+                        No public posts yet
+                    </h3>
+
+
+                    <p>
+                        This user hasn't shared any posts
+                        publicly yet.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================================
+                     POSTS FEED
+                     ========================================= -->
+
+                <div
+                    id="publicPostsFeed"
+                    class="public-posts-feed"
+                ></div>
+
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="live-profile-footer">
+
+        <div class="footer-inner">
+
+            <span>
+                Dheere Studio
+            </span>
+
+            <span>
+                Public Profile
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SHARED JAVASCRIPT
+         ===================================================== -->
+
+    <script src="mood-engine.js"></script>
+
+
+    <!-- =====================================================
+         PUBLIC PROFILE JAVASCRIPT
+         ===================================================== -->
+
+    <script src="live-profile.js"></script>
+
+
+</body>
+
+</html>
