@@ -6,11 +6,22 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const { GoogleGenAI } = require("@google/genai");
 const { Resend } = require("resend");
+const cloudinary = require("cloudinary").v2;
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+
+/*
+ * Profile photos are sent as base64 Data URIs from the frontend.
+ * 6 MB JSON limit gives enough room for a 3 MB image after
+ * base64 expansion.
+ */
+app.use(
+    express.json({
+        limit: "6mb"
+    })
+);
 
 
 // ============================================================
@@ -28,6 +39,24 @@ const ai = new GoogleGenAI({
 const resend = new Resend(
     process.env.RESEND_API_KEY
 );
+
+
+// ============================================================
+// CLOUDINARY
+// ============================================================
+
+cloudinary.config({
+
+    cloud_name:
+        process.env.CLOUDINARY_CLOUD_NAME,
+
+    api_key:
+        process.env.CLOUDINARY_API_KEY,
+
+    api_secret:
+        process.env.CLOUDINARY_API_SECRET
+
+});
 
 
 // ============================================================
@@ -60,6 +89,22 @@ const MAX_AI_MESSAGE_LENGTH =
 
 const RESET_TOKEN_EXPIRY_MINUTES =
     15;
+
+/*
+ * Profile photo limit:
+ * 3 MB raw file.
+ */
+const MAX_PROFILE_PHOTO_BYTES =
+    3 * 1024 * 1024;
+
+const PROFILE_PHOTO_FOLDER =
+    "dheere-studio/profile-photos";
+
+const ALLOWED_PROFILE_PHOTO_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+];
 
 
 // ============================================================
@@ -193,6 +238,117 @@ function isValidObjectId(value) {
 }
 
 
+/*
+ * Extracts the MIME type from a Data URI.
+ *
+ * Example:
+ * data:image/jpeg;base64,/9j/4AAQ...
+ */
+
+function getDataUriMimeType(dataUri) {
+
+    if (
+        typeof dataUri !== "string"
+    ) {
+        return "";
+    }
+
+    const match =
+        dataUri.match(
+            /^data:(image\/[a-zA-Z0-9.+-]+);base64,/i
+        );
+
+    if (!match) {
+        return "";
+    }
+
+    return match[1].toLowerCase();
+}
+
+
+/*
+ * Validates and estimates the decoded size of a base64 Data URI.
+ */
+
+function getDataUriInfo(dataUri) {
+
+    if (
+        typeof dataUri !== "string"
+    ) {
+
+        return null;
+
+    }
+
+
+    const match =
+        dataUri.match(
+            /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/i
+        );
+
+
+    if (!match) {
+
+        return null;
+
+    }
+
+
+    const mimeType =
+        match[1].toLowerCase();
+
+    const base64Data =
+        match[2];
+
+
+    if (
+        !ALLOWED_PROFILE_PHOTO_TYPES.includes(
+            mimeType
+        )
+    ) {
+
+        return null;
+
+    }
+
+
+    /*
+     * Base64 uses 4 characters for every 3 bytes.
+     * Remove padding before estimating.
+     */
+
+    const padding =
+        (
+            base64Data.endsWith("==")
+                ? 2
+                : base64Data.endsWith("=")
+                    ? 1
+                    : 0
+        );
+
+
+    const estimatedBytes =
+        Math.floor(
+            (base64Data.length * 3) / 4
+        ) - padding;
+
+
+    return {
+
+        mimeType:
+            mimeType,
+
+        base64Data:
+            base64Data,
+
+        estimatedBytes:
+            estimatedBytes
+
+    };
+
+}
+
+
 // ============================================================
 // DATABASE
 // ============================================================
@@ -293,6 +449,29 @@ async function connectDatabase() {
         console.log(
             "Password reset system initialized"
         );
+
+
+        // ------------------------------------------------------
+        // CLOUDINARY CONFIG CHECK
+        // ------------------------------------------------------
+
+        if (
+            !process.env.CLOUDINARY_CLOUD_NAME ||
+            !process.env.CLOUDINARY_API_KEY ||
+            !process.env.CLOUDINARY_API_SECRET
+        ) {
+
+            console.warn(
+                "Cloudinary environment variables are incomplete"
+            );
+
+        } else {
+
+            console.log(
+                "Cloudinary system initialized"
+            );
+
+        }
 
 
     } catch (error) {
@@ -737,6 +916,9 @@ app.get(
                     bio:
                         user.bio || "",
 
+                    avatarUrl:
+                        user.avatarUrl || "",
+
                     createdAt:
                         user.createdAt,
 
@@ -762,6 +944,510 @@ app.get(
 
                 error:
                     "Could not load profile"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// UPLOAD / UPDATE PROFILE PHOTO
+// ============================================================
+
+app.put(
+    "/profile/:userId/photo",
+    async (req, res) => {
+
+        try {
+
+            const userId =
+                typeof req.params.userId === "string"
+                    ? req.params.userId.trim()
+                    : "";
+
+
+            const {
+                username,
+                image
+            } = req.body;
+
+
+            // --------------------------------------------------
+            // USER ID
+            // --------------------------------------------------
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid user ID"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // USERNAME
+            // --------------------------------------------------
+
+            const cleanUsername =
+                normalizeUsername(
+                    username
+                );
+
+
+            if (
+                !USERNAME_REGEX.test(
+                    cleanUsername
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Valid username is required"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // IMAGE
+            // --------------------------------------------------
+
+            if (
+                typeof image !== "string" ||
+                !image.trim()
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Profile photo is required"
+
+                });
+
+            }
+
+
+            const imageInfo =
+                getDataUriInfo(
+                    image
+                );
+
+
+            if (!imageInfo) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Only JPG, PNG or WebP images are allowed"
+
+                });
+
+            }
+
+
+            if (
+                imageInfo.estimatedBytes >
+                MAX_PROFILE_PHOTO_BYTES
+            ) {
+
+                return res.status(413).json({
+
+                    success: false,
+
+                    error:
+                        "Profile photo cannot exceed 3 MB"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // FIND USER
+            // --------------------------------------------------
+
+            const user =
+                await usersCollection.findOne({
+
+                    _id:
+                        new ObjectId(userId),
+
+                    username:
+                        cleanUsername
+
+                });
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "User verification failed"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // CLOUDINARY CONFIG CHECK
+            // --------------------------------------------------
+
+            if (
+                !process.env.CLOUDINARY_CLOUD_NAME ||
+                !process.env.CLOUDINARY_API_KEY ||
+                !process.env.CLOUDINARY_API_SECRET
+            ) {
+
+                console.error(
+                    "Cloudinary environment variables are missing"
+                );
+
+                return res.status(500).json({
+
+                    success: false,
+
+                    error:
+                        "Profile photo storage is not configured"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // UPLOAD TO CLOUDINARY
+            // --------------------------------------------------
+
+            const uploadResult =
+                await cloudinary.uploader.upload(
+
+                    image,
+
+                    {
+
+                        folder:
+                            PROFILE_PHOTO_FOLDER,
+
+                        public_id:
+                            user._id.toString(),
+
+                        overwrite:
+                            true,
+
+                        resource_type:
+                            "image",
+
+                        type:
+                            "upload",
+
+                        invalidate:
+                            true
+
+                    }
+
+                );
+
+
+            const avatarUrl =
+                uploadResult.secure_url;
+
+            const avatarPublicId =
+                uploadResult.public_id;
+
+
+            if (
+                !avatarUrl ||
+                !avatarPublicId
+            ) {
+
+                throw new Error(
+                    "Cloudinary did not return a valid asset"
+                );
+
+            }
+
+
+            // --------------------------------------------------
+            // SAVE URL IN MONGODB
+            // --------------------------------------------------
+
+            await usersCollection.updateOne(
+
+                {
+                    _id:
+                        user._id,
+
+                    username:
+                        cleanUsername
+
+                },
+
+                {
+                    $set: {
+
+                        avatarUrl:
+                            avatarUrl,
+
+                        avatarPublicId:
+                            avatarPublicId
+
+                    }
+
+                }
+
+            );
+
+
+            console.log(
+                "Profile photo updated:",
+                user._id.toString()
+            );
+
+
+            return res.json({
+
+                success: true,
+
+                message:
+                    "Profile photo updated successfully",
+
+                avatarUrl:
+                    avatarUrl
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Profile photo upload error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not save profile photo"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// REMOVE PROFILE PHOTO
+// ============================================================
+
+app.delete(
+    "/profile/:userId/photo",
+    async (req, res) => {
+
+        try {
+
+            const userId =
+                typeof req.params.userId === "string"
+                    ? req.params.userId.trim()
+                    : "";
+
+
+            const {
+                username
+            } = req.body;
+
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid user ID"
+
+                });
+
+            }
+
+
+            const cleanUsername =
+                normalizeUsername(
+                    username
+                );
+
+
+            if (
+                !USERNAME_REGEX.test(
+                    cleanUsername
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Valid username is required"
+
+                });
+
+            }
+
+
+            const user =
+                await usersCollection.findOne({
+
+                    _id:
+                        new ObjectId(userId),
+
+                    username:
+                        cleanUsername
+
+                });
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "User verification failed"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // DELETE CLOUDINARY ASSET
+            // --------------------------------------------------
+
+            if (
+                user.avatarPublicId
+            ) {
+
+                try {
+
+                    await cloudinary.uploader.destroy(
+
+                        user.avatarPublicId,
+
+                        {
+                            resource_type:
+                                "image",
+
+                            type:
+                                "upload",
+
+                            invalidate:
+                                true
+
+                        }
+
+                    );
+
+                } catch (cloudinaryError) {
+
+                    console.error(
+                        "Cloudinary photo delete error:",
+                        cloudinaryError
+                    );
+
+                }
+
+            }
+
+
+            // --------------------------------------------------
+            // REMOVE FROM MONGODB
+            // --------------------------------------------------
+
+            await usersCollection.updateOne(
+
+                {
+                    _id:
+                        user._id
+                },
+
+                {
+                    $unset: {
+
+                        avatarUrl: "",
+
+                        avatarPublicId: ""
+
+                    }
+
+                }
+
+            );
+
+
+            console.log(
+                "Profile photo removed:",
+                user._id.toString()
+            );
+
+
+            return res.json({
+
+                success: true,
+
+                message:
+                    "Profile photo removed successfully",
+
+                avatarUrl:
+                    ""
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Remove profile photo error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not remove profile photo"
 
             });
 
@@ -1178,6 +1864,9 @@ app.put(
                     bio:
                         cleanBioValue,
 
+                    avatarUrl:
+                        user.avatarUrl || "",
+
                     createdAt:
                         user.createdAt
 
@@ -1526,6 +2215,12 @@ app.post(
                 bio:
                     "",
 
+                avatarUrl:
+                    "",
+
+                avatarPublicId:
+                    "",
+
                 password:
                     hashedPassword,
 
@@ -1569,7 +2264,10 @@ app.post(
                         user.email,
 
                     bio:
-                        user.bio
+                        user.bio,
+
+                    avatarUrl:
+                        user.avatarUrl
 
                 }
 
@@ -1725,7 +2423,10 @@ app.post(
                         user.email,
 
                     bio:
-                        user.bio || ""
+                        user.bio || "",
+
+                    avatarUrl:
+                        user.avatarUrl || ""
 
                 }
 

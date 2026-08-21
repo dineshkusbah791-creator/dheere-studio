@@ -3171,8 +3171,8 @@
 
                         <div class="photo-note">
                             JPG, PNG or WebP · maximum 3 MB.
-                            The selected photo is saved to this
-                            browser for now.
+                            Your photo is uploaded securely to
+                            Cloudinary and linked to your profile.
                         </div>
 
                     </div>
@@ -3354,10 +3354,6 @@
 
         const STORAGE_KEY =
             "dheereStudioUser";
-
-        const AVATAR_KEY =
-            "dheereStudioProfileAvatar";
-
 
         /* =========================================================
            STATE
@@ -3730,38 +3726,19 @@
         }
 
 
-        function loadSavedAvatar() {
+        function getAvatarUrl(user = currentUser) {
 
-            try {
-
-                return localStorage.getItem(
-                    AVATAR_KEY
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Could not read saved profile photo:",
-                    error
-                );
-
-                return null;
-
-            }
+            return String(
+                user?.avatarUrl ||
+                ""
+            ).trim();
 
         }
 
 
-        /*
-         * Profile photos are stored locally immediately.
-         *
-         * The backend profile request is intentionally NOT part
-         * of this flow. That means a MongoDB/API failure cannot
-         * make the selected photo disappear.
-         *
-         * The image is resized and compressed first so it fits
-         * safely inside browser localStorage.
-         */
+        /* =========================================================
+           PROFILE PHOTO COMPRESSION
+           ========================================================= */
 
         function compressProfilePhoto(file) {
 
@@ -3895,12 +3872,6 @@
                                     );
 
 
-                                    /*
-                                     * Start with good quality, then
-                                     * reduce it if the Base64 value
-                                     * is still too large for localStorage.
-                                     */
-
                                     let quality =
                                         0.82;
 
@@ -3912,9 +3883,14 @@
                                         );
 
 
+                                    /*
+                                     * Keep the request comfortably below
+                                     * the backend's 3 MB image limit.
+                                     */
+
                                     while (
                                         dataUrl.length >
-                                            1700000 &&
+                                            2200000 &&
                                         quality >
                                             0.45
                                     ) {
@@ -3932,14 +3908,9 @@
                                     }
 
 
-                                    /*
-                                     * If the image is still too large,
-                                     * reduce dimensions once more.
-                                     */
-
                                     if (
                                         dataUrl.length >
-                                        1900000
+                                        2200000
                                     ) {
 
                                         const smallerCanvas =
@@ -4015,7 +3986,7 @@
                                         dataUrl =
                                             smallerCanvas.toDataURL(
                                                 "image/jpeg",
-                                                0.72
+                                                0.70
                                             );
 
                                     }
@@ -4044,73 +4015,96 @@
         }
 
 
-        function saveAvatarLocally(
-            imageData
-        ) {
+        /* =========================================================
+           REFRESH PROFILE FROM BACKEND
+           ========================================================= */
+
+        async function refreshProfileFromServer() {
+
+            const userId =
+                getUserId(
+                    currentUser
+                );
+
+
+            if (!userId) {
+                return;
+            }
+
 
             try {
 
-                if (!imageData) {
+                const response =
+                    await fetch(
+                        `${API_BASE}/profile/${encodeURIComponent(userId)}`,
+                        {
+                            method:
+                                "GET",
 
-                    localStorage.removeItem(
-                        AVATAR_KEY
+                            cache:
+                                "no-store"
+                        }
                     );
 
 
-                    currentAvatar =
-                        null;
-
-
-                    return true;
-
-                }
-
-
-                localStorage.setItem(
-                    AVATAR_KEY,
-                    imageData
-                );
-
-
-                /*
-                 * Read it back immediately. This catches
-                 * storage failures instead of pretending
-                 * the photo was saved.
-                 */
-
-                const saved =
-                    localStorage.getItem(
-                        AVATAR_KEY
-                    );
+                const result =
+                    await response.json();
 
 
                 if (
-                    saved !==
-                    imageData
+                    !response.ok ||
+                    !result?.success ||
+                    !result?.user
                 ) {
 
                     throw new Error(
-                        "Profile photo verification failed."
+                        result?.error ||
+                        "Could not refresh profile."
                     );
 
                 }
 
 
-                currentAvatar =
-                    saved;
+                currentUser =
+                    {
+                        ...currentUser,
+                        ...result.user
+                    };
 
 
-                return true;
+                /*
+                 * GET /profile/:userId is now the source of truth
+                 * for avatarUrl, bio, name and username.
+                 */
+
+                saveCurrentUser();
+
+                updateProfileDisplay();
+
+
+                if (
+                    result.user.postCount !== undefined
+                ) {
+
+                    profilePostCount.textContent =
+                        String(
+                            result.user.postCount
+                        );
+
+                }
 
             } catch (error) {
 
-                console.error(
-                    "Profile photo local save error:",
+                /*
+                 * Do not log the user out just because the backend
+                 * is temporarily unavailable. The existing local
+                 * session remains usable for the UI.
+                 */
+
+                console.warn(
+                    "Could not refresh profile from backend:",
                     error
                 );
-
-
-                return false;
 
             }
 
@@ -4217,7 +4211,7 @@
             renderAvatar(
                 profileAvatar,
                 name,
-                currentAvatar
+                getAvatarUrl(currentUser)
             );
 
         }
@@ -4266,7 +4260,9 @@
 
 
                 currentAvatar =
-                    loadSavedAvatar();
+                    getAvatarUrl(
+                        currentUser
+                    );
 
 
                 updateProfileDisplay();
@@ -4457,7 +4453,7 @@
                 getDisplayName(
                     currentUser
                 ),
-                currentAvatar
+                getAvatarUrl(currentUser)
             );
 
 
@@ -4935,12 +4931,39 @@
                 }
 
 
+                const userId =
+                    getUserId(
+                        currentUser
+                    );
+
+
+                const username =
+                    getUsername(
+                        currentUser
+                    );
+
+
+                if (
+                    !userId ||
+                    !username
+                ) {
+
+                    alert(
+                        "Your login session is missing the user ID or username. Please log in again."
+                    );
+
+
+                    return;
+
+                }
+
+
                 changePhotoBtn.disabled =
                     true;
 
 
                 changePhotoBtn.textContent =
-                    "Saving...";
+                    "Uploading...";
 
 
                 try {
@@ -4951,35 +4974,61 @@
                         );
 
 
-                    /*
-                     * IMPORTANT:
-                     *
-                     * Save the photo NOW.
-                     *
-                     * No backend request is made here.
-                     */
+                    const response =
+                        await fetch(
+                            `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
+                            {
+                                method:
+                                    "PUT",
 
-                    const saved =
-                        saveAvatarLocally(
-                            imageData
+                                headers:
+                                    {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                body:
+                                    JSON.stringify({
+                                        username,
+                                        image:
+                                            imageData
+                                    })
+                            }
                         );
 
 
-                    /*
-                     * A photo-save failure is a real localStorage failure,
-                     * but a backend/profile-save failure must never trigger
-                     * the photo error. The selected image has already been
-                     * persisted locally before the profile API is touched.
-                     */
-                    if (!saved) {
+                    const result =
+                        await response.json();
 
-                        alert(
-                            "The photo could not be saved in this browser. Please choose a smaller image."
+
+                    if (
+                        !response.ok ||
+                        !result?.success ||
+                        !result?.avatarUrl
+                    ) {
+
+                        throw new Error(
+                            result?.error ||
+                            "Could not upload profile photo."
                         );
-
-                        return;
 
                     }
+
+
+                    /*
+                     * Cloudinary URL returned by the backend becomes
+                     * the only persisted avatar value on the frontend.
+                     */
+
+                    currentAvatar =
+                        result.avatarUrl;
+
+
+                    currentUser.avatarUrl =
+                        result.avatarUrl;
+
+
+                    saveCurrentUser();
 
 
                     renderAvatar(
@@ -5000,12 +5049,8 @@
                     );
 
 
-                    /*
-                     * Make the persistence explicit to the user.
-                     */
-
                     setUsernameStatus(
-                        "Profile photo saved on this browser.",
+                        "✓ Profile photo uploaded successfully.",
                         "available"
                     );
 
@@ -5013,14 +5058,14 @@
                 } catch (error) {
 
                     console.error(
-                        "Profile photo save error:",
+                        "Profile photo upload error:",
                         error
                     );
 
 
                     alert(
                         error.message ||
-                        "Could not save the profile photo."
+                        "Could not upload the profile photo."
                     );
 
                 } finally {
@@ -5032,6 +5077,10 @@
                     changePhotoBtn.textContent =
                         "Change photo";
 
+
+                    photoInput.value =
+                        "";
+
                 }
 
             }
@@ -5040,45 +5089,152 @@
 
         removePhotoBtn.addEventListener(
             "click",
-            () => {
+            async () => {
 
-                const removed =
-                    saveAvatarLocally(
-                        null
+                const userId =
+                    getUserId(
+                        currentUser
                     );
 
 
-                if (!removed) {
+                const username =
+                    getUsername(
+                        currentUser
+                    );
+
+
+                if (
+                    !userId ||
+                    !username
+                ) {
 
                     alert(
-                        "Could not remove the saved profile photo."
+                        "Your login session is missing the user ID or username. Please log in again."
                     );
+
 
                     return;
 
                 }
 
 
-                renderAvatar(
-                    editAvatar,
-                    getDisplayName(
+                if (
+                    !getAvatarUrl(
                         currentUser
-                    ),
-                    null
-                );
+                    )
+                ) {
+
+                    return;
+
+                }
 
 
-                renderAvatar(
-                    profileAvatar,
-                    getDisplayName(
-                        currentUser
-                    ),
-                    null
-                );
+                removePhotoBtn.disabled =
+                    true;
 
 
-                photoInput.value =
-                    "";
+                removePhotoBtn.textContent =
+                    "Removing...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
+                            {
+                                method:
+                                    "DELETE",
+
+                                headers:
+                                    {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                body:
+                                    JSON.stringify({
+                                        username
+                                    })
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !result?.success
+                    ) {
+
+                        throw new Error(
+                            result?.error ||
+                            "Could not remove profile photo."
+                        );
+
+                    }
+
+
+                    currentAvatar =
+                        "";
+
+
+                    currentUser.avatarUrl =
+                        "";
+
+
+                    saveCurrentUser();
+
+
+                    renderAvatar(
+                        editAvatar,
+                        getDisplayName(
+                            currentUser
+                        ),
+                        ""
+                    );
+
+
+                    renderAvatar(
+                        profileAvatar,
+                        getDisplayName(
+                            currentUser
+                        ),
+                        ""
+                    );
+
+
+                    setUsernameStatus(
+                        "Profile photo removed.",
+                        "available"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Remove profile photo error:",
+                        error
+                    );
+
+
+                    alert(
+                        error.message ||
+                        "Could not remove the profile photo."
+                    );
+
+                } finally {
+
+                    removePhotoBtn.disabled =
+                        false;
+
+
+                    removePhotoBtn.textContent =
+                        "Remove";
+
+                }
 
             }
         );
@@ -5338,14 +5494,10 @@
                     saveCurrentUser();
 
 
-                    /*
-                     * The profile photo was already persisted locally
-                     * when it was selected. Do not make it dependent
-                     * on this backend request.
-                     */
-
                     currentAvatar =
-                        loadSavedAvatar();
+                        getAvatarUrl(
+                            currentUser
+                        );
 
 
                     updateProfileDisplay();
@@ -6153,6 +6305,8 @@
         if (profileLoaded) {
 
             loadUserPosts();
+
+            refreshProfileFromServer();
 
             setAiStatus(
                 "Ready",
