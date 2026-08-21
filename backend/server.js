@@ -3347,6 +3347,352 @@ app.get(
 
     }
 );
+// ============================================================
+// SEARCH USERS
+// ============================================================
+
+app.get(
+    "/search-users",
+    async (req, res) => {
+
+        try {
+
+            const query =
+                typeof req.query.q === "string"
+                    ? req.query.q.trim()
+                    : "";
+
+            if (!query) {
+
+                return res.json({
+
+                    success: true,
+
+                    users: []
+
+                });
+
+            }
+
+
+            const searchQuery =
+                query.toLowerCase();
+
+
+            const users =
+                await usersCollection
+                    .find(
+
+                        {
+                            $or: [
+
+                                {
+                                    username: {
+                                        $regex:
+                                            searchQuery,
+                                        $options:
+                                            "i"
+                                    }
+                                },
+
+                                {
+                                    name: {
+                                        $regex:
+                                            searchQuery,
+                                        $options:
+                                            "i"
+                                    }
+                                }
+
+                            ]
+                        },
+
+                        {
+                            projection: {
+
+                                /*
+                                 * PUBLIC DATA ONLY
+                                 *
+                                 * Never return:
+                                 * - email
+                                 * - dateOfBirth
+                                 * - gender
+                                 * - password
+                                 * - resetTokenHash
+                                 * - resetTokenExpiresAt
+                                 * - avatarPublicId
+                                 */
+
+                                name: 1,
+
+                                username: 1,
+
+                                bio: 1,
+
+                                avatarUrl: 1,
+
+                                createdAt: 1
+
+                            }
+
+                        }
+
+                    )
+                    .limit(20)
+                    .toArray();
+
+
+            const formattedUsers =
+                users.map(
+                    (user) => ({
+
+                        id:
+                            user._id.toString(),
+
+                        name:
+                            user.name || "",
+
+                        username:
+                            user.username || "",
+
+                        bio:
+                            user.bio || "",
+
+                        avatarUrl:
+                            user.avatarUrl || "",
+
+                        createdAt:
+                            user.createdAt
+
+                    })
+                );
+
+
+            return res.json({
+
+                success: true,
+
+                users:
+                    formattedUsers
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Search users error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not search users"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// PUBLIC PROFILE
+// ============================================================
+
+app.get(
+    "/public-profile/:username",
+    async (req, res) => {
+
+        try {
+
+            const username =
+                normalizeUsername(
+                    req.params.username
+                );
+
+
+            if (
+                !USERNAME_REGEX.test(
+                    username
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid username"
+
+                });
+
+            }
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Only public profile fields are selected.
+             *
+             * Private fields such as:
+             * email
+             * dateOfBirth
+             * gender
+             * password
+             * resetTokenHash
+             * resetTokenExpiresAt
+             * avatarPublicId
+             *
+             * are NEVER returned.
+             */
+
+            const user =
+                await usersCollection.findOne(
+
+                    {
+                        username:
+                            username
+                    },
+
+                    {
+                        projection: {
+
+                            name: 1,
+
+                            username: 1,
+
+                            bio: 1,
+
+                            avatarUrl: 1,
+
+                            createdAt: 1
+
+                        }
+
+                    }
+
+                );
+
+
+            if (!user) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "User not found"
+
+                });
+
+            }
+
+
+            const posts =
+                await postsCollection
+                    .find({
+
+                        username:
+                            username
+
+                    })
+                    .sort({
+
+                        createdAt:
+                            -1
+
+                    })
+                    .limit(100)
+                    .toArray();
+
+
+            const formattedPosts =
+                posts.map(
+                    (post) => ({
+
+                        id:
+                            post._id.toString(),
+
+                        authorId:
+                            post.authorId
+                                ? post.authorId.toString()
+                                : "",
+
+                        username:
+                            post.username || "",
+
+                        content:
+                            post.content || "",
+
+                        createdAt:
+                            post.createdAt,
+
+                        likes:
+                            post.likes || 0
+
+                    })
+                );
+
+
+            return res.json({
+
+                success: true,
+
+                user: {
+
+                    id:
+                        user._id.toString(),
+
+                    name:
+                        user.name || "",
+
+                    username:
+                        user.username || "",
+
+                    bio:
+                        user.bio || "",
+
+                    avatarUrl:
+                        user.avatarUrl || "",
+
+                    createdAt:
+                        user.createdAt
+
+                },
+
+                posts:
+                    formattedPosts
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Public profile error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not load public profile"
+
+            });
+
+        }
+
+    }
+);
 
 
 // ============================================================
