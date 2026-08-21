@@ -10,22 +10,25 @@ const API_BASE_URL = 'https://dheere-studio.onrender.com';
 // ======================================================
 
 const USER_STORAGE_KEY = 'dheereStudioUser';
-const PROFILE_AVATAR_STORAGE_KEY = 'dheereStudioProfileAvatar';
 
 
 // ======================================================
 // PAGES
 // ======================================================
 
-const homePage = document.getElementById('homepage');
-const loginPage = document.getElementById('loginPage');
+const homePage =
+    document.getElementById('homepage');
+
+const loginPage =
+    document.getElementById('loginPage');
 
 
 // ======================================================
 // NAVIGATION
 // ======================================================
 
-let goToLoginBtn = document.getElementById('goToLoginBtn');
+let goToLoginBtn =
+    document.getElementById('goToLoginBtn');
 
 const backToHomeBtn =
     document.getElementById('backToHomeBtn');
@@ -78,7 +81,9 @@ function restoreUserFromStorage() {
     try {
 
         const savedUser =
-            localStorage.getItem(USER_STORAGE_KEY);
+            localStorage.getItem(
+                USER_STORAGE_KEY
+            );
 
         currentUser =
             savedUser
@@ -158,27 +163,171 @@ function getUserEmail(user) {
 
 
 // ======================================================
-// PROFILE AVATAR STORAGE
+// PROFILE DATA FROM SERVER
+// ======================================================
+//
+// IMPORTANT:
+//
+// Profile photo is NO LONGER read from localStorage.
+//
+// The source of truth is:
+// MongoDB -> avatarUrl -> Cloudinary
+//
 // ======================================================
 
-function getProfileAvatar() {
+async function getFreshProfile() {
+
+    if (!currentUser) {
+        return null;
+    }
+
+    const userId =
+        getUserId(currentUser);
+
+    if (!userId) {
+
+        console.error(
+            'Cannot load profile: user ID is missing.'
+        );
+
+        return null;
+
+    }
 
     try {
 
-        return localStorage.getItem(
-            PROFILE_AVATAR_STORAGE_KEY
-        );
+        const response =
+            await fetch(
+                `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`
+            );
+
+        const result =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !result.success ||
+            !result.user
+        ) {
+
+            throw new Error(
+                result.error ||
+                'Could not load profile'
+            );
+
+        }
+
+        return result.user;
 
     } catch (error) {
 
         console.error(
-            'Profile avatar read error:',
+            'Get fresh profile error:',
             error
         );
 
         return null;
 
     }
+
+}
+
+
+// ======================================================
+// APPLY SERVER PROFILE TO CURRENT USER
+// ======================================================
+//
+// We keep the authenticated user in localStorage,
+// but profile data such as avatarUrl comes from
+// the backend.
+//
+// ======================================================
+
+function applyProfileToCurrentUser(profile) {
+
+    if (
+        !profile ||
+        !currentUser
+    ) {
+        return;
+    }
+
+
+    currentUser = {
+
+        ...currentUser,
+
+        id:
+            profile.id ||
+            currentUser.id,
+
+        _id:
+            profile.id ||
+            currentUser._id,
+
+        name:
+            profile.name ??
+            currentUser.name,
+
+        username:
+            profile.username ??
+            currentUser.username,
+
+        email:
+            profile.email ??
+            currentUser.email,
+
+        bio:
+            profile.bio ??
+            currentUser.bio ??
+            '',
+
+        avatarUrl:
+            profile.avatarUrl ??
+            ''
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            USER_STORAGE_KEY,
+            JSON.stringify(
+                currentUser
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Could not save current user state:',
+            error
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// REFRESH CURRENT PROFILE
+// ======================================================
+
+async function refreshCurrentProfile() {
+
+    const profile =
+        await getFreshProfile();
+
+    if (!profile) {
+        return null;
+    }
+
+    applyProfileToCurrentUser(
+        profile
+    );
+
+    return profile;
 
 }
 
@@ -218,6 +367,82 @@ function getUserInitials(user) {
 
 
 // ======================================================
+// RENDER AVATAR ELEMENT
+// ======================================================
+
+function renderAvatarElement(
+    container,
+    avatarUrl,
+    user
+) {
+
+    if (!container) {
+        return;
+    }
+
+
+    const initials =
+        getUserInitials(user);
+
+
+    container.replaceChildren();
+
+
+    if (
+        typeof avatarUrl !== 'string' ||
+        !avatarUrl.trim()
+    ) {
+
+        container.textContent =
+            initials;
+
+        return;
+
+    }
+
+
+    const img =
+        document.createElement('img');
+
+
+    img.src =
+        avatarUrl;
+
+
+    img.alt =
+        `${getUserName(user)} profile photo`;
+
+
+    img.loading =
+        'eager';
+
+
+    img.decoding =
+        'async';
+
+
+    img.addEventListener(
+        'error',
+        () => {
+
+            container.replaceChildren();
+
+            container.textContent =
+                initials;
+
+        },
+        {
+            once: true
+        }
+    );
+
+
+    container.appendChild(img);
+
+}
+
+
+// ======================================================
 // RENDER NAVBAR AVATAR
 // ======================================================
 
@@ -227,51 +452,17 @@ function renderHomepageAvatar() {
         return;
     }
 
-    const avatar =
-        getProfileAvatar();
 
-    const initials =
-        getUserInitials(currentUser);
+    const avatarUrl =
+        currentUser?.avatarUrl ||
+        '';
 
-    navProfileAvatar.replaceChildren();
 
-    if (!avatar) {
-
-        navProfileAvatar.textContent =
-            initials;
-
-        return;
-
-    }
-
-    const img =
-        document.createElement('img');
-
-    img.src = avatar;
-
-    img.alt =
-        `${getUserName(currentUser)} profile photo`;
-
-    img.loading = 'eager';
-
-    img.decoding = 'async';
-
-    img.addEventListener(
-        'error',
-        () => {
-
-            navProfileAvatar.replaceChildren();
-
-            navProfileAvatar.textContent =
-                initials;
-
-        },
-        {
-            once: true
-        }
+    renderAvatarElement(
+        navProfileAvatar,
+        avatarUrl,
+        currentUser
     );
-
-    navProfileAvatar.appendChild(img);
 
 }
 
@@ -299,15 +490,25 @@ function escapeHTML(value) {
 
 function openLoginPage() {
 
-    if (!homePage || !loginPage) {
+    if (
+        !homePage ||
+        !loginPage
+    ) {
         return;
     }
 
-    homePage.classList.add('hidden-page');
+    homePage.classList.add(
+        'hidden-page'
+    );
 
-    loginPage.classList.remove('hidden-page');
+    loginPage.classList.remove(
+        'hidden-page'
+    );
 
-    window.scrollTo(0, 0);
+    window.scrollTo(
+        0,
+        0
+    );
 
 }
 
@@ -318,15 +519,25 @@ function openLoginPage() {
 
 function backToHome() {
 
-    if (!homePage || !loginPage) {
+    if (
+        !homePage ||
+        !loginPage
+    ) {
         return;
     }
 
-    loginPage.classList.add('hidden-page');
+    loginPage.classList.add(
+        'hidden-page'
+    );
 
-    homePage.classList.remove('hidden-page');
+    homePage.classList.remove(
+        'hidden-page'
+    );
 
-    window.scrollTo(0, 0);
+    window.scrollTo(
+        0,
+        0
+    );
 
 }
 
@@ -334,48 +545,34 @@ function backToHome() {
 // ======================================================
 // UPDATE NAVBAR
 // ======================================================
-//
-// IMPORTANT:
-//
-// We DO NOT replace .nav-login.innerHTML here.
-//
-// index.html already contains:
-//   - Login button
-//   - Profile link
-//
-// We simply show/hide the correct one.
-//
-// LOGGED OUT:
-//   Login = visible
-//   Profile = hidden
-//
-// LOGGED IN:
-//   Login = hidden
-//   Profile = visible
-//
-// This prevents:
-// - duplicate login buttons
-// - broken event listeners
-// - broken CSS
-// - profile DOM being destroyed
-// ======================================================
 
 function updateNavbar() {
 
     goToLoginBtn =
-        document.getElementById('goToLoginBtn');
+        document.getElementById(
+            'goToLoginBtn'
+        );
 
     profileBtn =
-        document.getElementById('profileBtn');
+        document.getElementById(
+            'profileBtn'
+        );
 
     navUsername =
-        document.getElementById('navUsername');
+        document.getElementById(
+            'navUsername'
+        );
 
     navProfileAvatar =
-        document.getElementById('navProfileAvatar');
+        document.getElementById(
+            'navProfileAvatar'
+        );
 
 
-    if (!goToLoginBtn || !profileBtn) {
+    if (
+        !goToLoginBtn ||
+        !profileBtn
+    ) {
         return;
     }
 
@@ -386,9 +583,11 @@ function updateNavbar() {
 
     if (!currentUser) {
 
-        goToLoginBtn.style.display = '';
+        goToLoginBtn.style.display =
+            '';
 
-        profileBtn.style.display = 'none';
+        profileBtn.style.display =
+            'none';
 
         profileBtn.classList.add(
             'hidden-profile'
@@ -403,19 +602,20 @@ function updateNavbar() {
     // LOGGED IN
     // --------------------------------------------------
 
-    goToLoginBtn.style.display = 'none';
+    goToLoginBtn.style.display =
+        'none';
 
-    profileBtn.style.display = 'flex';
+    profileBtn.style.display =
+        'flex';
 
     profileBtn.classList.remove(
         'hidden-profile'
     );
 
 
-    // Make absolutely sure the profile link
-    // is not styled as a normal button.
-
-    profileBtn.classList.remove('button');
+    profileBtn.classList.remove(
+        'button'
+    );
 
     profileBtn.classList.add(
         'nav-profile-link'
@@ -427,10 +627,15 @@ function updateNavbar() {
     // --------------------------------------------------
 
     const username =
-        getUserUsername(currentUser);
+        getUserUsername(
+            currentUser
+        );
 
     const name =
-        getUserName(currentUser);
+        getUserName(
+            currentUser
+        );
+
 
     if (navUsername) {
 
@@ -494,13 +699,21 @@ if (
         'click',
         () => {
 
-            loginTabBtn.classList.add('active');
+            loginTabBtn.classList.add(
+                'active'
+            );
 
-            registerTabBtn.classList.remove('active');
+            registerTabBtn.classList.remove(
+                'active'
+            );
 
-            loginForm.classList.remove('hidden-form');
+            loginForm.classList.remove(
+                'hidden-form'
+            );
 
-            registerForm.classList.add('hidden-form');
+            registerForm.classList.add(
+                'hidden-form'
+            );
 
         }
     );
@@ -510,13 +723,21 @@ if (
         'click',
         () => {
 
-            registerTabBtn.classList.add('active');
+            registerTabBtn.classList.add(
+                'active'
+            );
 
-            loginTabBtn.classList.remove('active');
+            loginTabBtn.classList.remove(
+                'active'
+            );
 
-            registerForm.classList.remove('hidden-form');
+            registerForm.classList.remove(
+                'hidden-form'
+            );
 
-            loginForm.classList.add('hidden-form');
+            loginForm.classList.add(
+                'hidden-form'
+            );
 
         }
     );
@@ -529,7 +750,10 @@ if (
 // ======================================================
 
 const feedbackForm =
-    document.querySelector('.feedback-form');
+    document.querySelector(
+        '.feedback-form'
+    );
+
 
 if (feedbackForm) {
 
@@ -538,6 +762,7 @@ if (feedbackForm) {
         async (e) => {
 
             e.preventDefault();
+
 
             const nameInput =
                 feedbackForm.querySelector(
@@ -553,6 +778,7 @@ if (feedbackForm) {
                 feedbackForm.querySelector(
                     'textarea'
                 );
+
 
             const formData = {
 
@@ -580,7 +806,8 @@ if (feedbackForm) {
                     await fetch(
                         `${API_BASE_URL}/feedback`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -588,7 +815,9 @@ if (feedbackForm) {
                             },
 
                             body:
-                                JSON.stringify(formData)
+                                JSON.stringify(
+                                    formData
+                                )
                         }
                     );
 
@@ -638,10 +867,14 @@ if (feedbackForm) {
 // ======================================================
 
 const usernameInput =
-    document.getElementById('registerUsername');
+    document.getElementById(
+        'registerUsername'
+    );
 
 const usernameStatus =
-    document.getElementById('usernameStatus');
+    document.getElementById(
+        'usernameStatus'
+    );
 
 let usernameCheckTimer = null;
 
@@ -665,14 +898,16 @@ async function checkUsernameAvailability() {
             .toLowerCase();
 
 
-    usernameAvailable = false;
+    usernameAvailable =
+        false;
 
 
     if (!username) {
 
         if (usernameStatus) {
 
-            usernameStatus.textContent = '';
+            usernameStatus.textContent =
+                '';
 
             usernameStatus.className =
                 'username-status';
@@ -688,7 +923,11 @@ async function checkUsernameAvailability() {
         /^[a-z0-9_]{3,20}$/;
 
 
-    if (!usernameRegex.test(username)) {
+    if (
+        !usernameRegex.test(
+            username
+        )
+    ) {
 
         if (usernameStatus) {
 
@@ -733,7 +972,8 @@ async function checkUsernameAvailability() {
             result.available
         ) {
 
-            usernameAvailable = true;
+            usernameAvailable =
+                true;
 
 
             if (usernameStatus) {
@@ -748,7 +988,8 @@ async function checkUsernameAvailability() {
 
         } else {
 
-            usernameAvailable = false;
+            usernameAvailable =
+                false;
 
 
             if (usernameStatus) {
@@ -766,7 +1007,9 @@ async function checkUsernameAvailability() {
 
     } catch (error) {
 
-        usernameAvailable = false;
+        usernameAvailable =
+            false;
+
 
         console.error(
             'Username Check Error:',
@@ -799,7 +1042,9 @@ if (usernameInput) {
         'input',
         () => {
 
-            usernameAvailable = false;
+            usernameAvailable =
+                false;
+
 
             clearTimeout(
                 usernameCheckTimer
@@ -902,7 +1147,9 @@ if (registerForm) {
 
 
             if (
-                !usernameRegex.test(username)
+                !usernameRegex.test(
+                    username
+                )
             ) {
 
                 alert(
@@ -962,7 +1209,8 @@ if (registerForm) {
                     await fetch(
                         `${API_BASE_URL}/register`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -970,7 +1218,9 @@ if (registerForm) {
                             },
 
                             body:
-                                JSON.stringify(userData)
+                                JSON.stringify(
+                                    userData
+                                )
                         }
                     );
 
@@ -988,12 +1238,14 @@ if (registerForm) {
 
                     registerForm.reset();
 
-                    usernameAvailable = false;
+                    usernameAvailable =
+                        false;
 
 
                     if (usernameStatus) {
 
-                        usernameStatus.textContent = '';
+                        usernameStatus.textContent =
+                            '';
 
                         usernameStatus.className =
                             'username-status';
@@ -1094,7 +1346,10 @@ if (loginForm) {
                     : '';
 
 
-            if (!email || !password) {
+            if (
+                !email ||
+                !password
+            ) {
 
                 alert(
                     'Email and password are required.'
@@ -1111,7 +1366,8 @@ if (loginForm) {
                     await fetch(
                         `${API_BASE_URL}/login`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -1145,6 +1401,15 @@ if (loginForm) {
                     );
 
 
+                    // --------------------------------------------------
+                    // IMPORTANT:
+                    // Fetch the authoritative profile from MongoDB.
+                    // This gets the Cloudinary avatarUrl.
+                    // --------------------------------------------------
+
+                    await refreshCurrentProfile();
+
+
                     loginForm.reset();
 
 
@@ -1153,18 +1418,23 @@ if (loginForm) {
                     );
 
 
-                    loginPage.classList.add(
-                        'hidden-page'
-                    );
+                    if (loginPage) {
 
-                    homePage.classList.remove(
-                        'hidden-page'
-                    );
+                        loginPage.classList.add(
+                            'hidden-page'
+                        );
+
+                    }
 
 
-                    // IMPORTANT:
-                    // Update navbar AFTER currentUser
-                    // has been saved.
+                    if (homePage) {
+
+                        homePage.classList.remove(
+                            'hidden-page'
+                        );
+
+                    }
+
 
                     updateNavbar();
 
@@ -1282,47 +1552,71 @@ passwordToggleButtons.forEach(
 // ======================================================
 
 const profileCard =
-    document.getElementById('profileCard');
+    document.getElementById(
+        'profileCard'
+    );
 
 const postsSection =
-    document.getElementById('postsSection');
+    document.getElementById(
+        'postsSection'
+    );
 
 const loginMessage =
-    document.getElementById('loginMessage');
+    document.getElementById(
+        'loginMessage'
+    );
 
 const profileName =
-    document.getElementById('profileName');
+    document.getElementById(
+        'profileName'
+    );
 
 const profileUsername =
-    document.getElementById('profileUsername');
+    document.getElementById(
+        'profileUsername'
+    );
 
 const profileEmail =
-    document.getElementById('profileEmail');
+    document.getElementById(
+        'profileEmail'
+    );
 
 const profileAvatar =
-    document.getElementById('profileAvatar');
+    document.getElementById(
+        'profileAvatar'
+    );
 
 const logoutBtn =
-    document.getElementById('logoutBtn');
+    document.getElementById(
+        'logoutBtn'
+    );
 
 const postContent =
-    document.getElementById('postContent');
+    document.getElementById(
+        'postContent'
+    );
 
 const postCharacterCount =
-    document.getElementById('postCharacterCount');
+    document.getElementById(
+        'postCharacterCount'
+    );
 
 const createPostBtn =
-    document.getElementById('createPostBtn');
+    document.getElementById(
+        'createPostBtn'
+    );
 
 const postsFeed =
-    document.getElementById('postsFeed');
+    document.getElementById(
+        'postsFeed'
+    );
 
 
 // ======================================================
 // LOAD PROFILE
 // ======================================================
 
-function loadProfilePage() {
+async function loadProfilePage() {
 
     if (!profileCard) {
         return;
@@ -1356,14 +1650,27 @@ function loadProfilePage() {
     }
 
 
+    // --------------------------------------------------
+    // ALWAYS GET AUTHORITATIVE PROFILE DATA
+    // --------------------------------------------------
+
+    const profile =
+        await refreshCurrentProfile();
+
+
+    const user =
+        profile ||
+        currentUser;
+
+
     const name =
-        getUserName(currentUser);
+        getUserName(user);
 
     const username =
-        getUserUsername(currentUser);
+        getUserUsername(user);
 
     const email =
-        getUserEmail(currentUser);
+        getUserEmail(user);
 
 
     if (profileName) {
@@ -1394,64 +1701,11 @@ function loadProfilePage() {
 
     if (profileAvatar) {
 
-        const savedAvatar =
-            getProfileAvatar();
-
-
-        profileAvatar.replaceChildren();
-
-
-        if (savedAvatar) {
-
-            const img =
-                document.createElement('img');
-
-
-            img.src =
-                savedAvatar;
-
-
-            img.alt =
-                `${name} profile photo`;
-
-
-            img.loading =
-                'eager';
-
-
-            img.decoding =
-                'async';
-
-
-            img.addEventListener(
-                'error',
-                () => {
-
-                    profileAvatar.replaceChildren();
-
-                    profileAvatar.textContent =
-                        getUserInitials(
-                            currentUser
-                        );
-
-                },
-                {
-                    once: true
-                }
-            );
-
-
-            profileAvatar.appendChild(img);
-
-
-        } else {
-
-            profileAvatar.textContent =
-                getUserInitials(
-                    currentUser
-                );
-
-        }
+        renderAvatarElement(
+            profileAvatar,
+            user?.avatarUrl || '',
+            user
+        );
 
     }
 
@@ -1510,11 +1764,20 @@ function formatPostDate(dateValue) {
     return date.toLocaleString(
         'en-IN',
         {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit'
+            day:
+                'numeric',
+
+            month:
+                'short',
+
+            year:
+                'numeric',
+
+            hour:
+                'numeric',
+
+            minute:
+                '2-digit'
         }
     );
 
@@ -1646,7 +1909,9 @@ async function loadUserPosts() {
 
 
     const username =
-        getUserUsername(currentUser);
+        getUserUsername(
+            currentUser
+        );
 
 
     if (!username) {
@@ -1779,10 +2044,14 @@ if (createPostBtn) {
 
 
             const authorId =
-                getUserId(currentUser);
+                getUserId(
+                    currentUser
+                );
 
             const username =
-                getUserUsername(currentUser);
+                getUserUsername(
+                    currentUser
+                );
 
             const content =
                 postContent
@@ -1823,7 +2092,10 @@ if (createPostBtn) {
             }
 
 
-            if (content.length > 2000) {
+            if (
+                content.length >
+                2000
+            ) {
 
                 alert(
                     'Post cannot exceed 2000 characters.'
@@ -1847,7 +2119,8 @@ if (createPostBtn) {
                     await fetch(
                         `${API_BASE_URL}/posts`,
                         {
-                            method: 'POST',
+                            method:
+                                'POST',
 
                             headers: {
                                 'Content-Type':
@@ -1948,12 +2221,8 @@ if (logoutBtn) {
             );
 
 
-            localStorage.removeItem(
-                PROFILE_AVATAR_STORAGE_KEY
-            );
-
-
-            currentUser = null;
+            currentUser =
+                null;
 
 
             window.location.href =
@@ -1989,7 +2258,8 @@ window.addEventListener(
 
             } catch {
 
-                currentUser = null;
+                currentUser =
+                    null;
 
             }
 
@@ -1997,20 +2267,6 @@ window.addEventListener(
             updateNavbar();
 
             loadProfilePage();
-
-        }
-
-
-        if (
-            event.key ===
-            PROFILE_AVATAR_STORAGE_KEY
-        ) {
-
-            if (currentUser) {
-
-                renderHomepageAvatar();
-
-            }
 
         }
 
@@ -2024,9 +2280,17 @@ window.addEventListener(
 
 window.addEventListener(
     'pageshow',
-    () => {
+    async () => {
 
         restoreUserFromStorage();
+
+
+        if (currentUser) {
+
+            await refreshCurrentProfile();
+
+        }
+
 
         updateNavbar();
 
