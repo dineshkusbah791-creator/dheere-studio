@@ -2047,7 +2047,8 @@
 
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
 
             width:
                 100%;
@@ -2105,10 +2106,28 @@
 
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
 
             border-color:
                 var(--profile-accent);
+
+        }
+
+
+        .private-field-note {
+
+            margin-top:
+                7px;
+
+            color:
+                var(--profile-subtle);
+
+            font-size:
+                11px;
+
+            line-height:
+                1.55;
 
         }
 
@@ -3282,6 +3301,71 @@
                      EMAIL
                      ================================================= -->
 
+                <!-- =================================================
+                     DATE OF BIRTH
+                     ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="editDateOfBirth">
+                        Date of birth
+                    </label>
+
+                    <input
+                        id="editDateOfBirth"
+                        type="date"
+                        autocomplete="bday"
+                    >
+
+                    <div class="private-field-note">
+                        Private · This information is never shown on
+                        your public profile or in search results.
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     GENDER
+                     ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="editGender">
+                        Gender
+                    </label>
+
+                    <select
+                        id="editGender"
+                        autocomplete="sex"
+                    >
+
+                        <option value="">
+                            Prefer not to say
+                        </option>
+
+                        <option value="male">
+                            Male
+                        </option>
+
+                        <option value="female">
+                            Female
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+
+                    </select>
+
+                    <div class="private-field-note">
+                        Private · This information is never shown on
+                        your public profile or in search results.
+                    </div>
+
+                </div>
+
+
                 <div class="form-group">
 
                     <label for="editEmail">
@@ -3514,6 +3598,16 @@
         const editEmail =
             document.getElementById(
                 "editEmail"
+            );
+
+        const editDateOfBirth =
+            document.getElementById(
+                "editDateOfBirth"
+            );
+
+        const editGender =
+            document.getElementById(
+                "editGender"
             );
 
         const usernameStatus =
@@ -4447,6 +4541,12 @@
             editEmail.value =
                 currentUser.email || "";
 
+            editDateOfBirth.value =
+                currentUser.dateOfBirth || "";
+
+            editGender.value =
+                currentUser.gender || "";
+
 
             renderAvatar(
                 editAvatar,
@@ -5267,6 +5367,15 @@
                     editBio.value
                         .trim();
 
+                const dateOfBirth =
+                    editDateOfBirth.value
+                        .trim();
+
+                const gender =
+                    editGender.value
+                        .trim()
+                        .toLowerCase();
+
 
                 const currentUsername =
                     getUsername(
@@ -5439,7 +5548,9 @@
                                         currentUsername,
                                         name,
                                         username,
-                                        bio
+                                        bio,
+                                        dateOfBirth,
+                                        gender
                                     })
 
                             }
@@ -5489,6 +5600,12 @@
 
                     currentUser.bio =
                         bio;
+
+                    currentUser.dateOfBirth =
+                        dateOfBirth;
+
+                    currentUser.gender =
+                        gender;
 
 
                     saveCurrentUser();

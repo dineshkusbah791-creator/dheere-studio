@@ -220,6 +220,276 @@
 
 
         /* ==========================================
+           SEARCH
+           ========================================== */
+
+        .nav-search {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            margin-left: 18px;
+
+        }
+
+
+        .nav-search-wrapper {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        #userSearchInput {
+
+            width: 190px;
+
+            height: 38px;
+
+            padding: 0 40px 0 14px;
+
+            border: 1px solid rgba(255, 255, 255, 0.14);
+
+            border-radius: 20px;
+
+            outline: none;
+
+            background: rgba(255, 255, 255, 0.045);
+
+            color: inherit;
+
+            font: inherit;
+
+            font-size: 0.88rem;
+
+            transition:
+                width 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        #userSearchInput::placeholder {
+
+            color: inherit;
+
+            opacity: 0.5;
+
+        }
+
+
+        #userSearchInput:focus {
+
+            width: 220px;
+
+            border-color: rgba(255, 255, 255, 0.3);
+
+            background: rgba(255, 255, 255, 0.07);
+
+        }
+
+
+        .search-icon {
+
+            position: absolute;
+
+            right: 13px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 17px;
+
+            height: 17px;
+
+            pointer-events: none;
+
+            opacity: 0.6;
+
+        }
+
+
+        .search-results {
+
+            position: absolute;
+
+            top: calc(100% + 9px);
+
+            right: 0;
+
+            width: 320px;
+
+            max-height: 390px;
+
+            overflow-y: auto;
+
+            display: none;
+
+            padding: 7px;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 12px;
+
+            background: rgba(18, 19, 22, 0.98);
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.35);
+
+            z-index: 9999;
+
+        }
+
+
+        .search-results.active {
+
+            display: block;
+
+        }
+
+
+        .search-result-item {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 10px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: inherit;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            font: inherit;
+
+        }
+
+
+        .search-result-item:hover {
+
+            background: rgba(255, 255, 255, 0.07);
+
+        }
+
+
+        .search-result-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            flex: 0 0 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.1);
+
+            font-size: 0.82rem;
+
+            font-weight: 600;
+
+        }
+
+
+        .search-result-avatar img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+        .search-result-info {
+
+            min-width: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 2px;
+
+        }
+
+
+        .search-result-name {
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+
+        }
+
+
+        .search-result-username {
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            font-size: 0.78rem;
+
+            opacity: 0.55;
+
+        }
+
+
+        .search-message {
+
+            padding: 14px 12px;
+
+            text-align: center;
+
+            font-size: 0.82rem;
+
+            opacity: 0.6;
+
+        }
+
+
+        /* ==========================================
            SEO / ACCESSIBLE SITE NAVIGATION
            ========================================== */
 
@@ -268,6 +538,81 @@
         .article-card a {
 
             position: relative;
+
+        }
+
+
+        /* ==========================================
+           MOBILE SEARCH
+           ========================================== */
+
+        @media (max-width: 900px) {
+
+            .nav-search {
+
+                margin-left: 8px;
+
+            }
+
+
+            #userSearchInput {
+
+                width: 145px;
+
+            }
+
+
+            #userSearchInput:focus {
+
+                width: 175px;
+
+            }
+
+
+            .search-results {
+
+                right: -55px;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .nav-search {
+
+                width: 100%;
+
+                margin: 12px 0 0;
+
+            }
+
+
+            .nav-search-wrapper {
+
+                width: 100%;
+
+            }
+
+
+            #userSearchInput,
+            #userSearchInput:focus {
+
+                width: 100%;
+
+            }
+
+
+            .search-results {
+
+                left: 0;
+
+                right: 0;
+
+                width: auto;
+
+            }
 
         }
 
@@ -391,6 +736,79 @@
                         </li>
 
                     </ul>
+
+                </div>
+
+
+                <!-- ====================================================
+                     USER SEARCH
+                     ==================================================== -->
+
+                <div
+                    class="nav-search"
+                    id="userSearch"
+                >
+
+                    <div class="nav-search-wrapper">
+
+                        <!--
+                            IMPORTANT:
+                            type="text" is intentional.
+                            This avoids the browser treating the
+                            field as a special search/autofill field.
+                        -->
+
+                        <input
+                            type="text"
+                            id="userSearchInput"
+                            placeholder="Search people..."
+                            autocomplete="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            aria-label="Search users"
+                            aria-autocomplete="list"
+                            aria-controls="searchResults"
+                        >
+
+
+                        <svg
+                            class="search-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            ></circle>
+
+
+                            <path
+                                d="m20 20-4-4"
+                            ></path>
+
+                        </svg>
+
+
+                        <!--
+                            script.js will populate this container
+                            with search results from the backend.
+                        -->
+
+                        <div
+                            id="searchResults"
+                            class="search-results"
+                            role="listbox"
+                            aria-label="User search results"
+                        ></div>
+
+                    </div>
 
                 </div>
 
@@ -872,8 +1290,6 @@
                     </p>
 
 
-                    <!-- EMAIL -->
-
                     <div class="input-group">
 
                         <label for="loginEmail">
@@ -891,8 +1307,6 @@
 
                     </div>
 
-
-                    <!-- PASSWORD -->
 
                     <div class="input-group password-group">
 
@@ -951,8 +1365,6 @@
                     </div>
 
 
-                    <!-- FORGOT PASSWORD -->
-
                     <div class="form-options">
 
                         <a
@@ -964,8 +1376,6 @@
 
                     </div>
 
-
-                    <!-- LOGIN -->
 
                     <button
                         type="submit"
@@ -996,8 +1406,6 @@
                     </p>
 
 
-                    <!-- NAME -->
-
                     <div class="input-group">
 
                         <label for="registerName">
@@ -1015,8 +1423,6 @@
 
                     </div>
 
-
-                    <!-- USERNAME -->
 
                     <div class="input-group">
 
@@ -1046,8 +1452,6 @@
                     </div>
 
 
-                    <!-- EMAIL -->
-
                     <div class="input-group">
 
                         <label for="registerEmail">
@@ -1065,8 +1469,6 @@
 
                     </div>
 
-
-                    <!-- PASSWORD -->
 
                     <div class="input-group password-group">
 
@@ -1125,8 +1527,6 @@
                     </div>
 
 
-                    <!-- CONFIRM PASSWORD -->
-
                     <div class="input-group password-group">
 
                         <label for="confirmPassword">
@@ -1183,8 +1583,6 @@
 
                     </div>
 
-
-                    <!-- REGISTER -->
 
                     <button
                         type="submit"
