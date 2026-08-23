@@ -8,15 +8,21 @@ const { GoogleGenAI } = require("@google/genai");
 const { Resend } = require("resend");
 const cloudinary = require("cloudinary").v2;
 
+const createSocialRouter =
+    require("./social-routes");
+
+
 const app = express();
 
 app.use(cors());
+
 
 /*
  * Profile photos are sent as base64 Data URIs from the frontend.
  * 6 MB JSON limit gives enough room for a 3 MB image after
  * base64 expansion.
  */
+
 app.use(
     express.json({
         limit: "6mb"
@@ -32,9 +38,12 @@ const client = new MongoClient(
     process.env.MONGODB_URI
 );
 
+
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
+    apiKey:
+        process.env.GEMINI_API_KEY
 });
+
 
 const resend = new Resend(
     process.env.RESEND_API_KEY
@@ -66,6 +75,7 @@ cloudinary.config({
 let feedbackCollection;
 let usersCollection;
 let postsCollection;
+let notificationsCollection;
 
 
 // ============================================================
@@ -75,38 +85,44 @@ let postsCollection;
 const USERNAME_REGEX =
     /^[a-z0-9_]{3,20}$/;
 
-const MAX_POST_LENGTH =
-    2000;
-
-const MAX_COMMENT_LENGTH =
-    1000;
 
 const MAX_BIO_LENGTH =
     150;
 
+
 const MAX_NAME_LENGTH =
     80;
+
 
 const MAX_AI_MESSAGE_LENGTH =
     500;
 
+
 const RESET_TOKEN_EXPIRY_MINUTES =
     15;
+
 
 /*
  * Profile photo limit:
  * 3 MB raw file.
  */
+
 const MAX_PROFILE_PHOTO_BYTES =
     3 * 1024 * 1024;
+
 
 const PROFILE_PHOTO_FOLDER =
     "dheere-studio/profile-photos";
 
+
 const ALLOWED_PROFILE_PHOTO_TYPES = [
+
     "image/jpeg",
+
     "image/png",
+
     "image/webp"
+
 ];
 
 
@@ -181,6 +197,7 @@ function normalizeUsername(value) {
     return value
         .trim()
         .toLowerCase();
+
 }
 
 
@@ -193,6 +210,7 @@ function normalizeEmail(value) {
     return value
         .trim()
         .toLowerCase();
+
 }
 
 
@@ -203,19 +221,18 @@ function cleanName(value) {
     }
 
     return value.trim();
+
 }
 
 
 /*
  * Backward-compatible helper.
- *
- * Some existing routes use cleanNameValue().
- * Keep it available so those routes do not break.
  */
 
 function cleanNameValue(value) {
 
     return cleanName(value);
+
 }
 
 
@@ -228,6 +245,7 @@ function cleanBio(value) {
     return value
         .trim()
         .slice(0, MAX_BIO_LENGTH);
+
 }
 
 
@@ -243,9 +261,6 @@ function isValidObjectId(value) {
 
 /*
  * Extracts the MIME type from a Data URI.
- *
- * Example:
- * data:image/jpeg;base64,/9j/4AAQ...
  */
 
 function getDataUriMimeType(dataUri) {
@@ -253,24 +268,33 @@ function getDataUriMimeType(dataUri) {
     if (
         typeof dataUri !== "string"
     ) {
+
         return "";
+
     }
+
 
     const match =
         dataUri.match(
             /^data:(image\/[a-zA-Z0-9.+-]+);base64,/i
         );
 
+
     if (!match) {
+
         return "";
+
     }
 
+
     return match[1].toLowerCase();
+
 }
 
 
 /*
- * Validates and estimates the decoded size of a base64 Data URI.
+ * Validates and estimates the decoded size
+ * of a base64 Data URI.
  */
 
 function getDataUriInfo(dataUri) {
@@ -300,6 +324,7 @@ function getDataUriInfo(dataUri) {
     const mimeType =
         match[1].toLowerCase();
 
+
     const base64Data =
         match[2];
 
@@ -314,11 +339,6 @@ function getDataUriInfo(dataUri) {
 
     }
 
-
-    /*
-     * Base64 uses 4 characters for every 3 bytes.
-     * Remove padding before estimating.
-     */
 
     const padding =
         (
@@ -352,85 +372,6 @@ function getDataUriInfo(dataUri) {
 }
 
 
-/*
- * Safely convert a MongoDB post into the format expected
- * by the frontend.
- *
- * Old posts may only have:
- * likes: Number
- *
- * New posts also have:
- * likedBy: [ObjectId]
- * comments: [...]
- */
-
-function formatPost(post, currentUserId = "") {
-
-    const likedBy =
-        Array.isArray(post.likedBy)
-            ? post.likedBy
-            : [];
-
-
-    const comments =
-        Array.isArray(post.comments)
-            ? post.comments
-            : [];
-
-
-    let likedByCurrentUser = false;
-
-
-    if (
-        currentUserId &&
-        isValidObjectId(currentUserId)
-    ) {
-
-        likedByCurrentUser =
-            likedBy.some(
-                (id) =>
-                    id &&
-                    id.toString() === currentUserId
-            );
-
-    }
-
-
-    return {
-
-        id:
-            post._id.toString(),
-
-        authorId:
-            post.authorId
-                ? post.authorId.toString()
-                : "",
-
-        username:
-            post.username || "",
-
-        content:
-            post.content || "",
-
-        createdAt:
-            post.createdAt,
-
-        likes:
-            typeof post.likes === "number"
-                ? post.likes
-                : likedBy.length,
-
-        comments:
-            comments.length,
-
-        liked:
-            likedByCurrentUser
-
-    };
-
-}
-
-
 // ============================================================
 // DATABASE
 // ============================================================
@@ -441,6 +382,7 @@ async function connectDatabase() {
 
         await client.connect();
 
+
         const database =
             client.db("dheereStudio");
 
@@ -448,11 +390,17 @@ async function connectDatabase() {
         feedbackCollection =
             database.collection("feedback");
 
+
         usersCollection =
             database.collection("users");
 
+
         postsCollection =
             database.collection("posts");
+
+
+        notificationsCollection =
+            database.collection("notifications");
 
 
         // ------------------------------------------------------
@@ -460,12 +408,15 @@ async function connectDatabase() {
         // ------------------------------------------------------
 
         await usersCollection.createIndex(
+
             {
                 username: 1
             },
+
             {
                 unique: true
             }
+
         );
 
 
@@ -474,12 +425,15 @@ async function connectDatabase() {
         // ------------------------------------------------------
 
         await usersCollection.createIndex(
+
             {
                 email: 1
             },
+
             {
                 unique: true
             }
+
         );
 
 
@@ -488,17 +442,23 @@ async function connectDatabase() {
         // ------------------------------------------------------
 
         await postsCollection.createIndex(
+
             {
                 createdAt: -1
             }
+
         );
 
 
         await postsCollection.createIndex(
+
             {
                 authorId: 1,
+
                 createdAt: -1
+
             }
+
         );
 
 
@@ -507,12 +467,61 @@ async function connectDatabase() {
         // ------------------------------------------------------
 
         await usersCollection.createIndex(
+
             {
                 resetTokenHash: 1
             },
+
             {
                 sparse: true
             }
+
+        );
+
+
+        // ------------------------------------------------------
+        // NOTIFICATIONS
+        // ------------------------------------------------------
+
+        await notificationsCollection.createIndex(
+
+            {
+                recipientId: 1,
+
+                createdAt: -1
+
+            }
+
+        );
+
+
+        await notificationsCollection.createIndex(
+
+            {
+                recipientId: 1,
+
+                read: 1,
+
+                createdAt: -1
+
+            }
+
+        );
+
+
+        await notificationsCollection.createIndex(
+
+            {
+                recipientId: 1,
+
+                actorId: 1,
+
+                type: 1,
+
+                postId: 1
+
+            }
+
         );
 
 
@@ -520,17 +529,21 @@ async function connectDatabase() {
             "MongoDB connected successfully"
         );
 
+
         console.log(
             "Username system initialized"
         );
+
 
         console.log(
             "Posts system initialized"
         );
 
+
         console.log(
-            "Like and comment system initialized"
+            "Notifications system initialized"
         );
+
 
         console.log(
             "Password reset system initialized"
@@ -542,9 +555,13 @@ async function connectDatabase() {
         // ------------------------------------------------------
 
         if (
+
             !process.env.CLOUDINARY_CLOUD_NAME ||
+
             !process.env.CLOUDINARY_API_KEY ||
+
             !process.env.CLOUDINARY_API_SECRET
+
         ) {
 
             console.warn(
@@ -566,6 +583,7 @@ async function connectDatabase() {
             "MongoDB connection failed:",
             error
         );
+
 
         process.exit(1);
 
@@ -663,6 +681,7 @@ app.post(
                 console.error(
                     "GEMINI_API_KEY is missing"
                 );
+
 
                 return res.status(500).json({
 
@@ -836,15 +855,18 @@ app.get(
 
             const existingUser =
                 await usersCollection.findOne(
+
                     {
                         username:
                             username
                     },
+
                     {
                         projection: {
                             _id: 1
                         }
                     }
+
                 );
 
 
@@ -949,10 +971,15 @@ app.get(
 
                     {
                         projection: {
+
                             password: 0,
+
                             resetTokenHash: 0,
+
                             resetTokenExpiresAt: 0
+
                         }
+
                     }
 
                 );
@@ -1182,14 +1209,19 @@ app.put(
 
 
             if (
+
                 !process.env.CLOUDINARY_CLOUD_NAME ||
+
                 !process.env.CLOUDINARY_API_KEY ||
+
                 !process.env.CLOUDINARY_API_SECRET
+
             ) {
 
                 console.error(
                     "Cloudinary environment variables are missing"
                 );
+
 
                 return res.status(500).json({
 
@@ -1235,6 +1267,7 @@ app.put(
 
             const avatarUrl =
                 uploadResult.secure_url;
+
 
             const avatarPublicId =
                 uploadResult.public_id;
@@ -1419,6 +1452,7 @@ app.delete(
                         user.avatarPublicId,
 
                         {
+
                             resource_type:
                                 "image",
 
@@ -1572,7 +1606,9 @@ app.put(
 
 
             const cleanName =
-                cleanNameValue(name);
+                cleanNameValue(
+                    name
+                );
 
 
             const cleanUsername =
@@ -1709,6 +1745,7 @@ app.put(
                     await usersCollection.findOne(
 
                         {
+
                             username:
                                 cleanUsername,
 
@@ -1716,12 +1753,15 @@ app.put(
                                 $ne:
                                     user._id
                             }
+
                         },
 
                         {
+
                             projection: {
                                 _id: 1
                             }
+
                         }
 
                     );
@@ -1747,6 +1787,7 @@ app.put(
                 await usersCollection.updateOne(
 
                     {
+
                         _id:
                             user._id,
 
@@ -1756,6 +1797,7 @@ app.put(
                     },
 
                     {
+
                         $set: {
 
                             name:
@@ -1795,6 +1837,7 @@ app.put(
                 await postsCollection.updateMany(
 
                     {
+
                         authorId:
                             user._id,
 
@@ -1804,6 +1847,7 @@ app.put(
                     },
 
                     {
+
                         $set: {
 
                             username:
@@ -1816,12 +1860,6 @@ app.put(
                 );
 
             }
-
-
-            console.log(
-                "Profile updated:",
-                user._id.toString()
-            );
 
 
             return res.json({
@@ -2527,10 +2565,13 @@ app.post(
 
             const tokenExpiresAt =
                 new Date(
+
                     Date.now() +
+
                     RESET_TOKEN_EXPIRY_MINUTES *
                     60 *
                     1000
+
                 );
 
 
@@ -2542,6 +2583,7 @@ app.post(
                 },
 
                 {
+
                     $set: {
 
                         resetTokenHash:
@@ -2559,8 +2601,11 @@ app.post(
 
             const baseUrl =
                 (
+
                     process.env.APP_BASE_URL ||
+
                     "http://localhost:3000"
+
                 )
                     .replace(
                         /\/+$/,
@@ -2704,6 +2749,7 @@ If you did not request this, you can safely ignore this email.`,
                     emailError
                 );
 
+
                 throw new Error(
                     "Could not send password reset email"
                 );
@@ -2837,8 +2883,10 @@ app.post(
                         tokenHash,
 
                     resetTokenExpiresAt: {
+
                         $gt:
                             new Date()
+
                     }
 
                 });
@@ -2868,6 +2916,7 @@ app.post(
             await usersCollection.updateOne(
 
                 {
+
                     _id:
                         user._id,
 
@@ -2877,6 +2926,7 @@ app.post(
                 },
 
                 {
+
                     $set: {
 
                         password:
@@ -2937,1419 +2987,44 @@ app.post(
 
 
 // ============================================================
-// CREATE POST
-// ============================================================
-
-app.post(
-    "/posts",
-    async (req, res) => {
-
-        const {
-            authorId,
-            username,
-            content
-        } = req.body;
-
-
-        try {
-
-            if (
-                !authorId ||
-                !username ||
-                !content
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Author, username and content are required"
-
-                });
-
-            }
-
-
-            if (
-                !isValidObjectId(authorId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid author ID"
-
-                });
-
-            }
-
-
-            const cleanContent =
-                typeof content === "string"
-                    ? content.trim()
-                    : "";
-
-
-            const cleanUsername =
-                normalizeUsername(
-                    username
-                );
-
-
-            if (!cleanContent) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Post cannot be empty"
-
-                });
-
-            }
-
-
-            if (
-                cleanContent.length >
-                MAX_POST_LENGTH
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Post cannot exceed 2000 characters"
-
-                });
-
-            }
-
-
-            const user =
-                await usersCollection.findOne({
-
-                    _id:
-                        new ObjectId(authorId),
-
-                    username:
-                        cleanUsername
-
-                });
-
-
-            if (!user) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid user"
-
-                });
-
-            }
-
-
-            /*
-             * New posts have:
-             *
-             * likes   -> numeric count
-             * likedBy -> users who liked
-             * comments -> comment objects
-             *
-             * Keeping "likes" as a number preserves
-             * compatibility with the existing frontend.
-             */
-
-            const post = {
-
-                authorId:
-                    user._id,
-
-                username:
-                    user.username,
-
-                content:
-                    cleanContent,
-
-                createdAt:
-                    new Date(),
-
-                likes:
-                    0,
-
-                likedBy:
-                    [],
-
-                comments:
-                    []
-
-            };
-
-
-            const result =
-                await postsCollection.insertOne(
-                    post
-                );
-
-
-            console.log(
-                "New post created:",
-                result.insertedId.toString()
-            );
-
-
-            return res.status(201).json({
-
-                success: true,
-
-                message:
-                    "Post published successfully",
-
-                post:
-                    formatPost(
-                        {
-                            ...post,
-
-                            _id:
-                                result.insertedId
-
-                        }
-                    )
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Create post error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not create post"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// GET ALL POSTS
-// ============================================================
-
-app.get(
-    "/posts",
-    async (req, res) => {
-
-        try {
-
-            /*
-             * Optional:
-             *
-             * /posts?userId=...
-             *
-             * If supplied, each post gets:
-             * liked: true/false
-             */
-
-            const currentUserId =
-                typeof req.query.userId === "string"
-                    ? req.query.userId.trim()
-                    : "";
-
-
-            const posts =
-                await postsCollection
-                    .find({})
-                    .sort({
-                        createdAt: -1
-                    })
-                    .limit(100)
-                    .toArray();
-
-
-            const formattedPosts =
-                posts.map(
-                    (post) =>
-                        formatPost(
-                            post,
-                            currentUserId
-                        )
-                );
-
-
-            return res.json({
-
-                success: true,
-
-                posts:
-                    formattedPosts
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Get posts error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not load posts"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// GET POSTS BY USERNAME
-// ============================================================
-
-app.get(
-    "/posts/user/:username",
-    async (req, res) => {
-
-        try {
-
-            const username =
-                normalizeUsername(
-                    req.params.username
-                );
-
-
-            const currentUserId =
-                typeof req.query.userId === "string"
-                    ? req.query.userId.trim()
-                    : "";
-
-
-            if (
-                !USERNAME_REGEX.test(username)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid username"
-
-                });
-
-            }
-
-
-            const posts =
-                await postsCollection
-                    .find({
-                        username:
-                            username
-                    })
-                    .sort({
-                        createdAt: -1
-                    })
-                    .limit(100)
-                    .toArray();
-
-
-            const formattedPosts =
-                posts.map(
-                    (post) =>
-                        formatPost(
-                            post,
-                            currentUserId
-                        )
-                );
-
-
-            return res.json({
-
-                success: true,
-
-                username:
-                    username,
-
-                posts:
-                    formattedPosts
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Get user posts error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not load user posts"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// LIKE / UNLIKE POST
-// ============================================================
-
-app.post(
-    "/posts/:postId/like",
-    async (req, res) => {
-
-        try {
-
-            const postId =
-                typeof req.params.postId === "string"
-                    ? req.params.postId.trim()
-                    : "";
-
-
-            const {
-                userId
-            } = req.body;
-
-
-            // --------------------------------------------------
-            // VALIDATION
-            // --------------------------------------------------
-
-            if (
-                !isValidObjectId(postId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid post ID"
-
-                });
-
-            }
-
-
-            if (
-                !isValidObjectId(userId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Valid user ID is required"
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // USER EXISTS
-            // --------------------------------------------------
-
-            const user =
-                await usersCollection.findOne(
-
-                    {
-                        _id:
-                            new ObjectId(userId)
-                    },
-
-                    {
-                        projection: {
-                            _id: 1
-                        }
-                    }
-
-                );
-
-
-            if (!user) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    error:
-                        "User not found"
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // POST EXISTS
-            // --------------------------------------------------
-
-            const post =
-                await postsCollection.findOne({
-
-                    _id:
-                        new ObjectId(postId)
-
-                });
-
-
-            if (!post) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    error:
-                        "Post not found"
-
-                });
-
-            }
-
-
-            /*
-             * Old posts may not have likedBy.
-             *
-             * We use the current user's ObjectId inside
-             * likedBy for new likes.
-             */
-
-            const likedBy =
-                Array.isArray(post.likedBy)
-                    ? post.likedBy
-                    : [];
-
-
-            const alreadyLiked =
-                likedBy.some(
-                    (id) =>
-                        id &&
-                        id.toString() === userId
-                );
-
-
-            // --------------------------------------------------
-            // UNLIKE
-            // --------------------------------------------------
-
-            if (alreadyLiked) {
-
-                await postsCollection.updateOne(
-
-                    {
-                        _id:
-                            post._id
-                    },
-
-                    {
-                        $pull: {
-
-                            likedBy:
-                                new ObjectId(userId)
-
-                        },
-
-                        $inc: {
-
-                            likes:
-                                -1
-
-                        }
-
-                    }
-
-                );
-
-
-                /*
-                 * Safety:
-                 *
-                 * If an old/broken post somehow has a
-                 * negative likes count, normalize it to 0.
-                 */
-
-                await postsCollection.updateOne(
-
-                    {
-                        _id:
-                            post._id,
-
-                        likes: {
-                            $lt:
-                                0
-                        }
-
-                    },
-
-                    {
-                        $set: {
-                            likes:
-                                0
-                        }
-
-                    }
-
-                );
-
-
-                const updatedPost =
-                    await postsCollection.findOne({
-
-                        _id:
-                            post._id
-
-                    });
-
-
-                const count =
-                    typeof updatedPost.likes === "number"
-                        ? updatedPost.likes
-                        : 0;
-
-
-                return res.json({
-
-                    success: true,
-
-                    liked: false,
-
-                    likes:
-                        count
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // LIKE
-            // --------------------------------------------------
-
-            await postsCollection.updateOne(
-
-                {
-                    _id:
-                        post._id,
-
-                    likedBy: {
-                        $ne:
-                            new ObjectId(userId)
-                    }
-
-                },
-
-                {
-                    $addToSet: {
-
-                        likedBy:
-                            new ObjectId(userId)
-
-                    },
-
-                    $inc: {
-
-                        likes:
-                            1
-
-                    }
-
-                }
-
-            );
-
-
-            const updatedPost =
-                await postsCollection.findOne({
-
-                    _id:
-                        post._id
-
-                });
-
-
-            const count =
-                typeof updatedPost.likes === "number"
-                    ? updatedPost.likes
-                    : 0;
-
-
-            return res.json({
-
-                success: true,
-
-                liked: true,
-
-                likes:
-                    count
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Like post error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not update like"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// GET POST COMMENTS
-// ============================================================
-
-app.get(
-    "/posts/:postId/comments",
-    async (req, res) => {
-
-        try {
-
-            const postId =
-                typeof req.params.postId === "string"
-                    ? req.params.postId.trim()
-                    : "";
-
-
-            if (
-                !isValidObjectId(postId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid post ID"
-
-                });
-
-            }
-
-
-            const post =
-                await postsCollection.findOne(
-
-                    {
-                        _id:
-                            new ObjectId(postId)
-                    },
-
-                    {
-                        projection: {
-                            comments: 1
-                        }
-                    }
-
-                );
-
-
-            if (!post) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    error:
-                        "Post not found"
-
-                });
-
-            }
-
-
-            const comments =
-                Array.isArray(post.comments)
-                    ? post.comments
-                    : [];
-
-
-            return res.json({
-
-                success: true,
-
-                comments:
-                    comments.map(
-                        (comment) => ({
-
-                            id:
-                                comment.id ||
-                                comment._id?.toString() ||
-                                "",
-
-                            userId:
-                                comment.userId
-                                    ? comment.userId.toString()
-                                    : "",
-
-                            username:
-                                comment.username ||
-                                "Dheere User",
-
-                            content:
-                                comment.content ||
-                                "",
-
-                            createdAt:
-                                comment.createdAt
-
-                        })
-                    )
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Get comments error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not load comments"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// CREATE COMMENT
-// ============================================================
-
-app.post(
-    "/posts/:postId/comments",
-    async (req, res) => {
-
-        try {
-
-            const postId =
-                typeof req.params.postId === "string"
-                    ? req.params.postId.trim()
-                    : "";
-
-
-            const {
-                userId,
-                content
-            } = req.body;
-
-
-            // --------------------------------------------------
-            // VALIDATION
-            // --------------------------------------------------
-
-            if (
-                !isValidObjectId(postId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid post ID"
-
-                });
-
-            }
-
-
-            if (
-                !isValidObjectId(userId)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Valid user ID is required"
-
-                });
-
-            }
-
-
-            const cleanContent =
-                typeof content === "string"
-                    ? content.trim()
-                    : "";
-
-
-            if (!cleanContent) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Comment cannot be empty"
-
-                });
-
-            }
-
-
-            if (
-                cleanContent.length >
-                MAX_COMMENT_LENGTH
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        `Comment cannot exceed ${MAX_COMMENT_LENGTH} characters`
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // USER
-            // --------------------------------------------------
-
-            const user =
-                await usersCollection.findOne(
-
-                    {
-                        _id:
-                            new ObjectId(userId)
-                    },
-
-                    {
-                        projection: {
-
-                            _id: 1,
-
-                            username: 1
-
-                        }
-
-                    }
-
-                );
-
-
-            if (!user) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    error:
-                        "User not found"
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // POST
-            // --------------------------------------------------
-
-            const post =
-                await postsCollection.findOne({
-
-                    _id:
-                        new ObjectId(postId)
-
-                });
-
-
-            if (!post) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    error:
-                        "Post not found"
-
-                });
-
-            }
-
-
-            // --------------------------------------------------
-            // COMMENT
-            // --------------------------------------------------
-
-            const comment = {
-
-                id:
-                    new ObjectId().toString(),
-
-                userId:
-                    user._id,
-
-                username:
-                    user.username,
-
-                content:
-                    cleanContent,
-
-                createdAt:
-                    new Date()
-
-            };
-
-
-            await postsCollection.updateOne(
-
-                {
-                    _id:
-                        post._id
-
-                },
-
-                {
-                    $push: {
-
-                        comments:
-                            comment
-
-                    }
-
-                }
-
-            );
-
-
-            console.log(
-                "New comment created:",
-                comment.id
-            );
-
-
-            return res.status(201).json({
-
-                success: true,
-
-                message:
-                    "Comment added successfully",
-
-                comment: {
-
-                    id:
-                        comment.id,
-
-                    userId:
-                        comment.userId.toString(),
-
-                    username:
-                        comment.username,
-
-                    content:
-                        comment.content,
-
-                    createdAt:
-                        comment.createdAt
-
-                }
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Create comment error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not add comment"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// SEARCH USERS
-// ============================================================
-
-app.get(
-    "/search-users",
-    async (req, res) => {
-
-        try {
-
-            const query =
-                typeof req.query.q === "string"
-                    ? req.query.q.trim()
-                    : "";
-
-
-            if (!query) {
-
-                return res.json({
-
-                    success: true,
-
-                    users: []
-
-                });
-
-            }
-
-
-            const searchQuery =
-                query.toLowerCase();
-
-
-            const users =
-                await usersCollection
-                    .find(
-
-                        {
-                            $or: [
-
-                                {
-                                    username: {
-                                        $regex:
-                                            searchQuery,
-                                        $options:
-                                            "i"
-                                    }
-                                },
-
-                                {
-                                    name: {
-                                        $regex:
-                                            searchQuery,
-                                        $options:
-                                            "i"
-                                    }
-                                }
-
-                            ]
-                        },
-
-                        {
-                            projection: {
-
-                                name: 1,
-
-                                username: 1,
-
-                                bio: 1,
-
-                                avatarUrl: 1,
-
-                                createdAt: 1
-
-                            }
-
-                        }
-
-                    )
-                    .limit(20)
-                    .toArray();
-
-
-            const formattedUsers =
-                users.map(
-                    (user) => ({
-
-                        id:
-                            user._id.toString(),
-
-                        name:
-                            user.name || "",
-
-                        username:
-                            user.username || "",
-
-                        bio:
-                            user.bio || "",
-
-                        avatarUrl:
-                            user.avatarUrl || "",
-
-                        createdAt:
-                            user.createdAt
-
-                    })
-                );
-
-
-            return res.json({
-
-                success: true,
-
-                users:
-                    formattedUsers
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Search users error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not search users"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
-// PUBLIC PROFILE
-// ============================================================
-
-app.get(
-    "/public-profile/:username",
-    async (req, res) => {
-
-        try {
-
-            const username =
-                normalizeUsername(
-                    req.params.username
-                );
-
-
-            if (
-                !USERNAME_REGEX.test(
-                    username
-                )
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    error:
-                        "Invalid username"
-
-                });
-
-            }
-
-
-            const user =
-                await usersCollection.findOne(
-
-                    {
-                        username:
-                            username
-                    },
-
-                    {
-                        projection: {
-
-                            name: 1,
-
-                            username: 1,
-
-                            bio: 1,
-
-                            avatarUrl: 1,
-
-                            createdAt: 1
-
-                        }
-
-                    }
-
-                );
-
-
-            if (!user) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    error:
-                        "User not found"
-
-                });
-
-            }
-
-
-            const currentUserId =
-                typeof req.query.userId === "string"
-                    ? req.query.userId.trim()
-                    : "";
-
-
-            const posts =
-                await postsCollection
-                    .find({
-
-                        username:
-                            username
-
-                    })
-                    .sort({
-
-                        createdAt:
-                            -1
-
-                    })
-                    .limit(100)
-                    .toArray();
-
-
-            const formattedPosts =
-                posts.map(
-                    (post) =>
-                        formatPost(
-                            post,
-                            currentUserId
-                        )
-                );
-
-
-            return res.json({
-
-                success: true,
-
-                user: {
-
-                    id:
-                        user._id.toString(),
-
-                    name:
-                        user.name || "",
-
-                    username:
-                        user.username || "",
-
-                    bio:
-                        user.bio || "",
-
-                    avatarUrl:
-                        user.avatarUrl || "",
-
-                    createdAt:
-                        user.createdAt
-
-                },
-
-                posts:
-                    formattedPosts
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Public profile error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                error:
-                    "Could not load public profile"
-
-            });
-
-        }
-
-    }
-);
-
-
-// ============================================================
 // START SERVER
 // ============================================================
 
 async function startServer() {
 
     await connectDatabase();
+
+
+    // ========================================================
+    // SOCIAL ROUTES
+    // ========================================================
+    /*
+     * Social functionality is separated into social-routes.js.
+     *
+     * Collections passed to the social router:
+     *
+     * - postsCollection
+     * - usersCollection
+     * - notificationsCollection
+     *
+     * Existing frontend URLs remain unchanged.
+     */
+
+    app.use(
+        "/",
+        createSocialRouter({
+
+            postsCollection:
+                postsCollection,
+
+            usersCollection:
+                usersCollection,
+
+            notificationsCollection:
+                notificationsCollection
+
+        })
+    );
 
 
     if (
@@ -4374,8 +3049,11 @@ async function startServer() {
 
 
     app.listen(
+
         PORT,
+
         "0.0.0.0",
+
         () => {
 
             console.log(
@@ -4383,6 +3061,7 @@ async function startServer() {
             );
 
         }
+
     );
 
 }
