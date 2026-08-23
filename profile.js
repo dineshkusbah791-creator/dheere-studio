@@ -2253,6 +2253,988 @@ function formatPostDate(
 
 
 /* =========================================================
+   POST LIKE / COMMENT HELPERS
+   ========================================================= */
+
+function getPostId(post) {
+
+    return String(
+        post?.id ||
+        post?._id ||
+        ""
+    ).trim();
+
+}
+
+
+function getPostLikes(post) {
+
+    const value =
+        Number(
+            post?.likes
+        );
+
+    return Number.isFinite(
+        value
+    )
+        ? Math.max(
+            0,
+            value
+        )
+        : 0;
+
+}
+
+
+function getPostCommentsCount(post) {
+
+    const value =
+        Number(
+            post?.comments
+        );
+
+    return Number.isFinite(
+        value
+    )
+        ? Math.max(
+            0,
+            value
+        )
+        : 0;
+
+}
+
+
+function isPostLiked(post) {
+
+    return (
+        post?.liked === true ||
+        post?.isLiked === true
+    );
+
+}
+
+
+/* =========================================================
+   RENDER COMMENTS
+   ========================================================= */
+
+function renderComments(
+    container,
+    comments
+) {
+
+    if (!container) {
+        return;
+    }
+
+
+    if (
+        !Array.isArray(
+            comments
+        ) ||
+        comments.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="post-comments-empty">
+
+                No comments yet.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        comments.map(
+            comment => {
+
+                const username =
+                    comment.username ||
+                    "Dheere User";
+
+
+                const content =
+                    comment.content ||
+                    "";
+
+
+                const date =
+                    formatPostDate(
+                        comment.createdAt
+                    );
+
+
+                return `
+
+                    <div class="post-comment">
+
+                        <div class="post-comment-header">
+
+                            <strong>
+                                @${escapeHTML(
+                                    username
+                                )}
+                            </strong>
+
+                            ${
+                                date
+                                    ? `
+                                        <span>
+                                            ${escapeHTML(
+                                                date
+                                            )}
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="post-comment-content">
+
+                            ${escapeHTML(
+                                content
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   LOAD COMMENTS
+   ========================================================= */
+
+async function loadPostComments(
+    postId,
+    commentsContainer,
+    commentCountElement
+) {
+
+    if (!postId) {
+        return;
+    }
+
+
+    commentsContainer.innerHTML = `
+
+        <div class="post-comments-loading">
+
+            Loading comments...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(postId)}/comments`
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not load comments."
+            );
+
+        }
+
+
+        const comments =
+            Array.isArray(
+                result?.comments
+            )
+                ? result.comments
+                : [];
+
+
+        renderComments(
+            commentsContainer,
+            comments
+        );
+
+
+        if (
+            commentCountElement
+        ) {
+
+            commentCountElement.textContent =
+                String(
+                    comments.length
+                );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Load comments error:",
+            error
+        );
+
+
+        commentsContainer.innerHTML = `
+
+            <div class="post-comments-error">
+
+                Unable to load comments right now.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE COMMENT
+   ========================================================= */
+
+async function createPostComment(
+    postId,
+    input,
+    submitButton,
+    commentsContainer,
+    commentCountElement
+) {
+
+    if (!postId) {
+        return;
+    }
+
+
+    const userId =
+        getUserId(
+            currentUser
+        );
+
+
+    if (!userId) {
+
+        alert(
+            "Your login session is missing. Please log in again."
+        );
+
+        return;
+
+    }
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    if (
+        content.length >
+        1000
+    ) {
+
+        alert(
+            "Comment cannot exceed 1000 characters."
+        );
+
+        return;
+
+    }
+
+
+    submitButton.disabled =
+        true;
+
+
+    submitButton.textContent =
+        "Posting...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(postId)}/comments`,
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                    body:
+                        JSON.stringify({
+                            userId,
+                            content
+                        })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not add comment."
+            );
+
+        }
+
+
+        input.value =
+            "";
+
+
+        const comment =
+            result?.comment;
+
+
+        if (comment) {
+
+            const existingEmpty =
+                commentsContainer.querySelector(
+                    ".post-comments-empty"
+                );
+
+
+            if (existingEmpty) {
+
+                commentsContainer.innerHTML =
+                    "";
+
+            }
+
+
+            const commentElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            commentElement.className =
+                "post-comment";
+
+
+            commentElement.innerHTML = `
+
+                <div class="post-comment-header">
+
+                    <strong>
+                        @${escapeHTML(
+                            comment.username ||
+                            getUsername(
+                                currentUser
+                            )
+                        )}
+                    </strong>
+
+                    ${
+                        comment.createdAt
+                            ? `
+                                <span>
+                                    ${escapeHTML(
+                                        formatPostDate(
+                                            comment.createdAt
+                                        )
+                                    )}
+                                </span>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+
+                <div class="post-comment-content">
+
+                    ${escapeHTML(
+                        comment.content
+                    )}
+
+                </div>
+
+            `;
+
+
+            commentsContainer.appendChild(
+                commentElement
+            );
+
+        } else {
+
+            await loadPostComments(
+                postId,
+                commentsContainer,
+                commentCountElement
+            );
+
+        }
+
+
+        if (
+            commentCountElement
+        ) {
+
+            const currentCount =
+                Number(
+                    commentCountElement.textContent
+                ) || 0;
+
+
+            /*
+             * Only increment here when the response
+             * did not force a fresh comment load.
+             */
+
+            if (comment) {
+
+                commentCountElement.textContent =
+                    String(
+                        currentCount + 1
+                    );
+
+            }
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Create comment error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to add comment."
+        );
+
+    } finally {
+
+        submitButton.disabled =
+            false;
+
+
+        submitButton.textContent =
+            "Comment";
+
+    }
+
+}
+
+
+/* =========================================================
+   LIKE POST
+   ========================================================= */
+
+async function togglePostLike(
+    postId,
+    likeButton,
+    likeCountElement
+) {
+
+    if (!postId) {
+        return;
+    }
+
+
+    const userId =
+        getUserId(
+            currentUser
+        );
+
+
+    if (!userId) {
+
+        alert(
+            "Your login session is missing. Please log in again."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        likeButton.dataset.busy ===
+        "true"
+    ) {
+
+        return;
+
+    }
+
+
+    likeButton.dataset.busy =
+        "true";
+
+
+    likeButton.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(postId)}/like`,
+                {
+                    method:
+                        "POST",
+
+                    headers:
+                        {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                    body:
+                        JSON.stringify({
+                            userId
+                        })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not update like."
+            );
+
+        }
+
+
+        const liked =
+            result?.liked === true;
+
+
+        const likes =
+            Math.max(
+                0,
+                Number(
+                    result?.likes
+                ) || 0
+            );
+
+
+        likeCountElement.textContent =
+            String(
+                likes
+            );
+
+
+        likeButton.dataset.liked =
+            liked
+                ? "true"
+                : "false";
+
+
+        likeButton.classList.toggle(
+            "liked",
+            liked
+        );
+
+
+        likeButton.setAttribute(
+            "aria-pressed",
+            liked
+                ? "true"
+                : "false"
+        );
+
+
+        const icon =
+            likeButton.querySelector(
+                ".post-like-icon"
+            );
+
+
+        if (icon) {
+
+            icon.textContent =
+                liked
+                    ? "♥"
+                    : "♡";
+
+        }
+
+
+        const text =
+            likeButton.querySelector(
+                ".post-like-text"
+            );
+
+
+        if (text) {
+
+            text.textContent =
+                liked
+                    ? "Liked"
+                    : "Like";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Toggle like error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to update like."
+        );
+
+    } finally {
+
+        likeButton.disabled =
+            false;
+
+
+        likeButton.dataset.busy =
+            "false";
+
+    }
+
+}
+
+
+/* =========================================================
+   POST ACTION EVENTS
+   ========================================================= */
+
+function setupPostActions() {
+
+    if (!postsFeed) {
+        return;
+    }
+
+
+    postsFeed.addEventListener(
+        "click",
+        async event => {
+
+            const likeButton =
+                event.target.closest(
+                    ".post-like-button"
+                );
+
+
+            if (likeButton) {
+
+                const postId =
+                    likeButton.dataset.postId;
+
+
+                const likeCountElement =
+                    likeButton
+                        .closest(
+                            ".post-card"
+                        )
+                        ?.querySelector(
+                            ".post-like-count"
+                        );
+
+
+                if (
+                    likeCountElement
+                ) {
+
+                    await togglePostLike(
+                        postId,
+                        likeButton,
+                        likeCountElement
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            const commentButton =
+                event.target.closest(
+                    ".post-comment-button"
+                );
+
+
+            if (commentButton) {
+
+                const postCard =
+                    commentButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (!postCard) {
+                    return;
+                }
+
+
+                const commentsPanel =
+                    postCard.querySelector(
+                        ".post-comments-panel"
+                    );
+
+
+                if (!commentsPanel) {
+                    return;
+                }
+
+
+                const postId =
+                    commentButton.dataset.postId;
+
+
+                const isOpen =
+                    commentsPanel.classList.contains(
+                        "open"
+                    );
+
+
+                if (isOpen) {
+
+                    commentsPanel.classList.remove(
+                        "open"
+                    );
+
+
+                    commentButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    return;
+
+                }
+
+
+                commentsPanel.classList.add(
+                    "open"
+                );
+
+
+                commentButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                const commentsContainer =
+                    commentsPanel.querySelector(
+                        ".post-comments-list"
+                    );
+
+
+                const commentCountElement =
+                    postCard.querySelector(
+                        ".post-comment-count"
+                    );
+
+
+                await loadPostComments(
+                    postId,
+                    commentsContainer,
+                    commentCountElement
+                );
+
+
+                const input =
+                    commentsPanel.querySelector(
+                        ".post-comment-input"
+                    );
+
+
+                if (input) {
+
+                    input.focus();
+
+                }
+
+
+                return;
+
+            }
+
+
+            const submitCommentButton =
+                event.target.closest(
+                    ".post-submit-comment"
+                );
+
+
+            if (submitCommentButton) {
+
+                const postCard =
+                    submitCommentButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (!postCard) {
+                    return;
+                }
+
+
+                const postId =
+                    submitCommentButton.dataset.postId;
+
+
+                const input =
+                    postCard.querySelector(
+                        ".post-comment-input"
+                    );
+
+
+                const commentsContainer =
+                    postCard.querySelector(
+                        ".post-comments-list"
+                    );
+
+
+                const commentCountElement =
+                    postCard.querySelector(
+                        ".post-comment-count"
+                    );
+
+
+                if (
+                    input &&
+                    commentsContainer &&
+                    commentCountElement
+                ) {
+
+                    await createPostComment(
+                        postId,
+                        input,
+                        submitCommentButton,
+                        commentsContainer,
+                        commentCountElement
+                    );
+
+                }
+
+
+            }
+
+        }
+    );
+
+
+    postsFeed.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !== "Enter" ||
+                event.shiftKey
+            ) {
+
+                return;
+
+            }
+
+
+            const input =
+                event.target.closest(
+                    ".post-comment-input"
+                );
+
+
+            if (!input) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+
+            const postCard =
+                input.closest(
+                    ".post-card"
+                );
+
+
+            if (!postCard) {
+                return;
+            }
+
+
+            const submitButton =
+                postCard.querySelector(
+                    ".post-submit-comment"
+                );
+
+
+            if (submitButton) {
+
+                submitButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    POSTS
    ========================================================= */
 
@@ -2294,6 +3276,12 @@ function renderPosts(
         posts.map(
             post => {
 
+                const postId =
+                    getPostId(
+                        post
+                    );
+
+
                 const author =
                     post.authorName ||
                     post.username ||
@@ -2315,9 +3303,32 @@ function renderPosts(
                     );
 
 
+                const likes =
+                    getPostLikes(
+                        post
+                    );
+
+
+                const comments =
+                    getPostCommentsCount(
+                        post
+                    );
+
+
+                const liked =
+                    isPostLiked(
+                        post
+                    );
+
+
                 return `
 
-                    <article class="post-card">
+                    <article
+                        class="post-card"
+                        data-post-id="${escapeHTML(
+                            postId
+                        )}"
+                    >
 
                         <div class="post-card-header">
 
@@ -2356,23 +3367,133 @@ function renderPosts(
                         </div>
 
 
-                        <div class="post-meta">
+                        <div class="post-actions">
 
-                            <span>
-                                ${Number(
-                                    post.likes || 0
-                                )}
-                                likes
-                            </span>
+                            <button
+                                type="button"
+                                class="post-like-button ${
+                                    liked
+                                        ? "liked"
+                                        : ""
+                                }"
+                                data-post-id="${escapeHTML(
+                                    postId
+                                )}"
+                                data-liked="${
+                                    liked
+                                        ? "true"
+                                        : "false"
+                                }"
+                                aria-label="${
+                                    liked
+                                        ? "Unlike post"
+                                        : "Like post"
+                                }"
+                                aria-pressed="${
+                                    liked
+                                        ? "true"
+                                        : "false"
+                                }"
+                            >
 
-                            <span>
-                                ${Number(
-                                    post.comments || 0
-                                )}
-                                comments
-                            </span>
+                                <span
+                                    class="post-like-icon"
+                                    aria-hidden="true"
+                                >
+                                    ${
+                                        liked
+                                            ? "♥"
+                                            : "♡"
+                                    }
+                                </span>
+
+                                <span class="post-like-text">
+
+                                    ${
+                                        liked
+                                            ? "Liked"
+                                            : "Like"
+                                    }
+
+                                </span>
+
+                                <span class="post-like-count">
+
+                                    ${likes}
+
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="post-comment-button"
+                                data-post-id="${escapeHTML(
+                                    postId
+                                )}"
+                                aria-expanded="false"
+                            >
+
+                                <span
+                                    aria-hidden="true"
+                                >
+                                    💬
+                                </span>
+
+                                <span>
+                                    Comment
+                                </span>
+
+                                <span class="post-comment-count">
+
+                                    ${comments}
+
+                                </span>
+
+                            </button>
 
                         </div>
+
+
+                        <div
+                            class="post-comments-panel"
+                        >
+
+                            <div
+                                class="post-comments-list"
+                            ></div>
+
+
+                            <div
+                                class="post-comment-form"
+                            >
+
+                                <input
+                                    type="text"
+                                    class="post-comment-input"
+                                    maxlength="1000"
+                                    placeholder="Write a comment..."
+                                    autocomplete="off"
+                                />
+
+
+                                <button
+                                    type="button"
+                                    class="post-submit-comment"
+                                    data-post-id="${escapeHTML(
+                                        postId
+                                    )}"
+                                >
+
+                                    Comment
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
 
                     </article>
 
@@ -2383,6 +3504,10 @@ function renderPosts(
 
 }
 
+
+/* =========================================================
+   LOAD USER POSTS
+   ========================================================= */
 
 async function loadUserPosts() {
 
@@ -2428,9 +3553,15 @@ async function loadUserPosts() {
 
     try {
 
+        const userId =
+            getUserId(
+                currentUser
+            );
+
+
         const response =
             await fetch(
-                `${API_BASE}/posts/user/${encodeURIComponent(username)}`
+                `${API_BASE}/posts/user/${encodeURIComponent(username)}?userId=${encodeURIComponent(userId)}`
             );
 
 
@@ -2948,6 +4079,9 @@ dheereAiInput.addEventListener(
 /* =========================================================
    INITIALIZE
    ========================================================= */
+
+setupPostActions();
+
 
 const profileLoaded =
     loadProfile();

@@ -2555,3 +2555,357 @@ html[data-dheere-mood="midnight"] {
     }
 
 }
+/* =========================================================
+   POST LIKE + COMMENT ACTIONS
+   ========================================================= */
+
+.post-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 16px;
+
+    padding-top: 13px;
+
+    border-top:
+        1px solid var(--profile-border-soft);
+
+}
+
+
+.post-like-button,
+.post-comment-button {
+
+    min-height: 36px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid var(--profile-border-soft);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:
+        var(--profile-muted);
+
+    font-family:
+        inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        border-color .15s ease,
+        color .15s ease,
+        background .15s ease;
+
+}
+
+
+.post-like-button:hover,
+.post-comment-button:hover {
+
+    border-color:
+        var(--profile-accent);
+
+    color:
+        var(--profile-heading);
+
+}
+
+
+.post-like-button.liked {
+
+    border-color:
+        var(--profile-danger);
+
+    color:
+        var(--profile-danger);
+
+    background:
+        rgba(237,133,133,.07);
+
+}
+
+
+.post-like-button:disabled,
+.post-comment-button:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+}
+
+
+.post-like-icon {
+
+    font-size: 16px;
+
+    line-height: 1;
+
+}
+
+
+.post-like-count,
+.post-comment-count {
+
+    min-width: 10px;
+
+    color:
+        var(--profile-subtle);
+
+}
+
+
+.post-comments-panel {
+
+    display: none;
+
+    margin-top: 14px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid var(--profile-border-soft);
+
+}
+
+
+.post-comments-panel.open {
+
+    display: block;
+
+}
+
+
+.post-comments-list {
+
+    display: grid;
+
+    gap: 9px;
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+}
+
+
+.post-comment {
+
+    padding: 11px 12px;
+
+    border:
+        1px solid var(--profile-border-soft);
+
+    border-radius: 9px;
+
+    background:
+        var(--profile-surface-soft);
+
+}
+
+
+.post-comment-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.post-comment-header strong {
+
+    color:
+        var(--profile-text);
+
+    font-size: 12px;
+
+}
+
+
+.post-comment-header span {
+
+    color:
+        var(--profile-subtle);
+
+    font-size: 10px;
+
+}
+
+
+.post-comment-content {
+
+    color:
+        var(--profile-muted);
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.post-comments-empty,
+.post-comments-loading,
+.post-comments-error {
+
+    padding: 12px;
+
+    color:
+        var(--profile-subtle);
+
+    font-size: 12px;
+
+    text-align: center;
+
+}
+
+
+.post-comments-error {
+
+    color:
+        var(--profile-danger);
+
+}
+
+
+.post-comment-form {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 11px;
+
+}
+
+
+.post-comment-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 0 11px;
+
+    border:
+        1px solid var(--profile-border-soft);
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background:
+        var(--profile-input);
+
+    color:
+        var(--profile-text);
+
+    font-family:
+        inherit;
+
+    font-size: 12px;
+
+}
+
+
+.post-comment-input:focus {
+
+    border-color:
+        var(--profile-accent);
+
+}
+
+
+.post-submit-comment {
+
+    min-height: 38px;
+
+    padding: 0 13px;
+
+    border:
+        1px solid var(--profile-accent);
+
+    border-radius: 8px;
+
+    background:
+        var(--profile-accent);
+
+    color:
+        var(--profile-accent-dark);
+
+    font-family:
+        inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.post-submit-comment:disabled {
+
+    opacity: .45;
+
+    cursor: not-allowed;
+
+}
+
+
+@media (max-width: 450px) {
+
+    .post-actions {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .post-comment-form {
+
+        flex-direction: column;
+
+    }
+
+
+    .post-submit-comment {
+
+        width: 100%;
+
+    }
+
+}

@@ -22,7 +22,6 @@
         href="homepage.css"
     >
 
-    <!-- DHEERE MOOD ENGINE -->
     <link
         rel="stylesheet"
         href="mood.css"
@@ -579,22 +578,466 @@
         }
 
 
+        /* ==========================================
+           POST ACTIONS
+           ========================================== */
+
         .post-footer {
 
             display:
                 flex;
 
+            align-items:
+                center;
+
             gap:
-                18px;
+                8px;
 
             margin-top:
                 18px;
 
+            padding-top:
+                13px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+        }
+
+
+        .post-action-button {
+
+            min-height:
+                36px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            padding:
+                0 12px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            border-radius:
+                8px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            color:
+                #9299a8;
+
+            font-family:
+                inherit;
+
+            font-size:
+                12px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            transition:
+                border-color .15s ease,
+                color .15s ease,
+                background .15s ease;
+
+        }
+
+
+        .post-action-button:hover {
+
+            border-color:
+                #666;
+
+            color:
+                #fff;
+
+        }
+
+
+        .post-action-button:disabled {
+
+            opacity:
+                .5;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        .post-action-button.liked {
+
+            color:
+                #ed8585;
+
+            border-color:
+                rgba(
+                    237,
+                    133,
+                    133,
+                    .4
+                );
+
+            background:
+                rgba(
+                    237,
+                    133,
+                    133,
+                    .07
+                );
+
+        }
+
+
+        .post-action-icon {
+
+            font-size:
+                16px;
+
+            line-height:
+                1;
+
+        }
+
+
+        .post-action-count {
+
             color:
                 #777;
 
+            min-width:
+                10px;
+
+        }
+
+
+        /* ==========================================
+           COMMENTS
+           ========================================== */
+
+        .post-comments-panel {
+
+            display:
+                none;
+
+            margin-top:
+                14px;
+
+            padding-top:
+                14px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+        }
+
+
+        .post-comments-panel.open {
+
+            display:
+                block;
+
+        }
+
+
+        .post-comments-list {
+
+            display:
+                grid;
+
+            gap:
+                9px;
+
+            max-height:
+                320px;
+
+            overflow-y:
+                auto;
+
+        }
+
+
+        .post-comment {
+
+            padding:
+                11px 12px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            border-radius:
+                9px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+        }
+
+
+        .post-comment-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .post-comment-header strong {
+
+            color:
+                #e5e7eb;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .post-comment-header span {
+
+            color:
+                #686f7d;
+
+            font-size:
+                10px;
+
+        }
+
+
+        .post-comment-content {
+
+            color:
+                #aab2bf;
+
             font-size:
                 13px;
+
+            line-height:
+                1.55;
+
+            white-space:
+                pre-wrap;
+
+            overflow-wrap:
+                anywhere;
+
+        }
+
+
+        .post-comments-empty,
+        .post-comments-loading {
+
+            padding:
+                12px;
+
+            text-align:
+                center;
+
+            color:
+                #707887;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .post-comments-error {
+
+            padding:
+                12px;
+
+            text-align:
+                center;
+
+            color:
+                #ed8585;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .post-comment-form {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+            margin-top:
+                11px;
+
+        }
+
+
+        .post-comment-input {
+
+            flex:
+                1;
+
+            min-width:
+                0;
+
+            min-height:
+                38px;
+
+            box-sizing:
+                border-box;
+
+            padding:
+                0 11px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            border-radius:
+                8px;
+
+            outline:
+                none;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .18
+                );
+
+            color:
+                #f5f7fa;
+
+            font-family:
+                inherit;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .post-comment-input:focus {
+
+            border-color:
+                #777;
+
+        }
+
+
+        .post-comment-input::placeholder {
+
+            color:
+                #626977;
+
+        }
+
+
+        .post-submit-comment {
+
+            min-height:
+                38px;
+
+            padding:
+                0 13px;
+
+            border:
+                1px solid
+                #f5f7fa;
+
+            border-radius:
+                8px;
+
+            background:
+                #f5f7fa;
+
+            color:
+                #0b0c0e;
+
+            font-family:
+                inherit;
+
+            font-size:
+                12px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .post-submit-comment:disabled {
+
+            opacity:
+                .45;
+
+            cursor:
+                not-allowed;
 
         }
 
@@ -822,6 +1265,442 @@
 
 
         /* ==========================================
+           DHEERE MOOD
+           ========================================== */
+
+        .dheere-mood-page {
+
+            --community-heading:
+                #f5f7fa;
+
+            --community-text:
+                #aab2bf;
+
+            --community-muted:
+                #707887;
+
+            --community-border:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            --community-surface:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .035
+                );
+
+            --community-surface-strong:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            --community-accent:
+                #f5f7fa;
+
+            --community-accent-contrast:
+                #0b0c0e;
+
+        }
+
+
+        .dheere-mood-page .community-hero h1,
+        .dheere-mood-page .section-heading h2,
+        .dheere-mood-page .vision-header h2,
+        .dheere-mood-page .vision-section h3,
+        .dheere-mood-page .post-author,
+        .dheere-mood-page .login-notice strong {
+
+            color:
+                var(--community-heading);
+
+        }
+
+
+        .dheere-mood-page .community-hero p,
+        .dheere-mood-page .vision-header p,
+        .dheere-mood-page .vision-section p,
+        .dheere-mood-page .roadmap-list,
+        .dheere-mood-page .post-content {
+
+            color:
+                var(--community-text);
+
+        }
+
+
+        .dheere-mood-page .post-date,
+        .dheere-mood-page .character-count,
+        .dheere-mood-page .empty-feed,
+        .dheere-mood-page .login-notice {
+
+            color:
+                var(--community-muted);
+
+        }
+
+
+        .dheere-mood-page .create-post-card,
+        .dheere-mood-page .post-card,
+        .dheere-mood-page .empty-feed,
+        .dheere-mood-page .login-notice {
+
+            background:
+                var(--community-surface);
+
+            border-color:
+                var(--community-border);
+
+            backdrop-filter:
+                blur(8px);
+
+            -webkit-backdrop-filter:
+                blur(8px);
+
+        }
+
+
+        .dheere-mood-page .create-post-card textarea {
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .16
+                );
+
+            color:
+                var(--community-heading);
+
+            border-color:
+                var(--community-border);
+
+        }
+
+
+        .dheere-mood-page .create-post-card textarea::placeholder {
+
+            color:
+                var(--community-muted);
+
+        }
+
+
+        .dheere-mood-page .create-post-card textarea:focus {
+
+            border-color:
+                var(--community-accent);
+
+        }
+
+
+        .dheere-mood-page .community-action,
+        .dheere-mood-page .refresh-button {
+
+            border-color:
+                var(--community-border);
+
+        }
+
+
+        .dheere-mood-page .secondary-action,
+        .dheere-mood-page .refresh-button {
+
+            background:
+                var(--community-surface);
+
+            color:
+                var(--community-heading);
+
+        }
+
+
+        .dheere-mood-page .primary-action,
+        .dheere-mood-page .publish-button {
+
+            background:
+                var(--community-accent);
+
+            color:
+                var(--community-accent-contrast);
+
+            border-color:
+                var(--community-accent);
+
+        }
+
+
+        .dheere-mood-page .community-action:hover,
+        .dheere-mood-page .refresh-button:hover,
+        .dheere-mood-page .publish-button:hover {
+
+            border-color:
+                var(--community-accent);
+
+        }
+
+
+        .dheere-mood-page .lang-switch {
+
+            background:
+                var(--community-surface);
+
+            border-color:
+                var(--community-border);
+
+        }
+
+
+        .dheere-mood-page .lang-btn {
+
+            color:
+                var(--community-muted);
+
+        }
+
+
+        .dheere-mood-page .lang-btn.active {
+
+            background:
+                var(--community-accent);
+
+            color:
+                var(--community-accent-contrast);
+
+        }
+
+
+        .dheere-mood-page .vision-section {
+
+            border-bottom-color:
+                var(--community-border);
+
+        }
+
+
+        .dheere-mood-page .login-notice a,
+        .dheere-mood-page .post-author {
+
+            color:
+                var(--community-accent);
+
+        }
+
+
+        .dheere-mood-page .roadmap-list strong {
+
+            color:
+                var(--community-heading);
+
+        }
+
+
+        /* ==========================================
+           FOREST
+           ========================================== */
+
+        html[data-dheere-mood="forest"]
+        .dheere-mood-page {
+
+            --community-heading:
+                #e9f7ec;
+
+            --community-text:
+                #a5bba9;
+
+            --community-muted:
+                #718878;
+
+            --community-border:
+                rgba(
+                    92,
+                    190,
+                    118,
+                    .18
+                );
+
+            --community-surface:
+                rgba(
+                    11,
+                    31,
+                    17,
+                    .62
+                );
+
+            --community-surface-strong:
+                rgba(
+                    16,
+                    42,
+                    23,
+                    .72
+                );
+
+            --community-accent:
+                #76d88e;
+
+            --community-accent-contrast:
+                #061009;
+
+        }
+
+
+        /* ==========================================
+           OCEAN
+           ========================================== */
+
+        html[data-dheere-mood="ocean"]
+        .dheere-mood-page {
+
+            --community-heading:
+                #eaf4ff;
+
+            --community-text:
+                #a0b1c7;
+
+            --community-muted:
+                #71869e;
+
+            --community-border:
+                rgba(
+                    91,
+                    159,
+                    232,
+                    .18
+                );
+
+            --community-surface:
+                rgba(
+                    9,
+                    25,
+                    43,
+                    .64
+                );
+
+            --community-surface-strong:
+                rgba(
+                    12,
+                    34,
+                    58,
+                    .74
+                );
+
+            --community-accent:
+                #78b1f1;
+
+            --community-accent-contrast:
+                #06101d;
+
+        }
+
+
+        /* ==========================================
+           EMBER
+           ========================================== */
+
+        html[data-dheere-mood="ember"]
+        .dheere-mood-page {
+
+            --community-heading:
+                #fff0ec;
+
+            --community-text:
+                #c1a49e;
+
+            --community-muted:
+                #8f706b;
+
+            --community-border:
+                rgba(
+                    228,
+                    107,
+                    97,
+                    .19
+                );
+
+            --community-surface:
+                rgba(
+                    37,
+                    15,
+                    13,
+                    .64
+                );
+
+            --community-surface-strong:
+                rgba(
+                    48,
+                    18,
+                    15,
+                    .74
+                );
+
+            --community-accent:
+                #ef8175;
+
+            --community-accent-contrast:
+                #1b0806;
+
+        }
+
+
+        /* ==========================================
+           MIDNIGHT
+           ========================================== */
+
+        html[data-dheere-mood="midnight"]
+        .dheere-mood-page {
+
+            --community-heading:
+                #f3efff;
+
+            --community-text:
+                #aaa4bc;
+
+            --community-muted:
+                #7b748f;
+
+            --community-border:
+                rgba(
+                    155,
+                    140,
+                    242,
+                    .19
+                );
+
+            --community-surface:
+                rgba(
+                    22,
+                    17,
+                    36,
+                    .66
+                );
+
+            --community-surface-strong:
+                rgba(
+                    30,
+                    23,
+                    49,
+                    .76
+                );
+
+            --community-accent:
+                #afa3f6;
+
+            --community-accent-contrast:
+                #0d0918;
+
+        }
+
+
+        /* ==========================================
            MOBILE
            ========================================== */
 
@@ -892,203 +1771,30 @@
 
             }
 
-        }
 
-    
-        /* ==========================================
-           DHEERE MOOD — COMMUNITY TEXT & UI LAYER
-           ========================================== */
+            .post-footer {
 
-        .dheere-mood-page {
-            --community-heading: #f5f7fa;
-            --community-text: #aab2bf;
-            --community-muted: #707887;
-            --community-border: rgba(255,255,255,.09);
-            --community-surface: rgba(255,255,255,.035);
-            --community-surface-strong: rgba(255,255,255,.055);
-            --community-accent: #f5f7fa;
-            --community-accent-contrast: #0b0c0e;
-        }
+                flex-wrap:
+                    wrap;
 
-        .dheere-mood-page .community-hero h1,
-        .dheere-mood-page .section-heading h2,
-        .dheere-mood-page .vision-header h2,
-        .dheere-mood-page .vision-section h3,
-        .dheere-mood-page .post-author,
-        .dheere-mood-page .login-notice strong {
-            color: var(--community-heading);
-        }
-
-        .dheere-mood-page .community-hero p,
-        .dheere-mood-page .vision-header p,
-        .dheere-mood-page .vision-section p,
-        .dheere-mood-page .roadmap-list,
-        .dheere-mood-page .post-content {
-            color: var(--community-text);
-        }
-
-        .dheere-mood-page .post-date,
-        .dheere-mood-page .post-footer,
-        .dheere-mood-page .character-count,
-        .dheere-mood-page .empty-feed,
-        .dheere-mood-page .login-notice {
-            color: var(--community-muted);
-        }
-
-        .dheere-mood-page .create-post-card,
-        .dheere-mood-page .post-card,
-        .dheere-mood-page .empty-feed,
-        .dheere-mood-page .login-notice {
-            background: var(--community-surface);
-            border-color: var(--community-border);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        .dheere-mood-page .create-post-card textarea {
-            background: rgba(0,0,0,.16);
-            color: var(--community-heading);
-            border-color: var(--community-border);
-        }
-
-        .dheere-mood-page .create-post-card textarea::placeholder {
-            color: var(--community-muted);
-        }
-
-        .dheere-mood-page .create-post-card textarea:focus {
-            border-color: var(--community-accent);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--community-accent) 10%, transparent);
-        }
-
-        .dheere-mood-page .community-action,
-        .dheere-mood-page .refresh-button {
-            border-color: var(--community-border);
-        }
-
-        .dheere-mood-page .secondary-action,
-        .dheere-mood-page .refresh-button {
-            background: var(--community-surface);
-            color: var(--community-heading);
-        }
-
-        .dheere-mood-page .primary-action,
-        .dheere-mood-page .publish-button {
-            background: var(--community-accent);
-            color: var(--community-accent-contrast);
-            border-color: var(--community-accent);
-        }
-
-        .dheere-mood-page .community-action:hover,
-        .dheere-mood-page .refresh-button:hover,
-        .dheere-mood-page .publish-button:hover {
-            border-color: var(--community-accent);
-        }
-
-        .dheere-mood-page .lang-switch {
-            background: var(--community-surface);
-            border-color: var(--community-border);
-        }
-
-        .dheere-mood-page .lang-btn {
-            color: var(--community-muted);
-        }
-
-        .dheere-mood-page .lang-btn.active {
-            background: var(--community-accent);
-            color: var(--community-accent-contrast);
-        }
-
-        .dheere-mood-page .vision-section {
-            border-bottom-color: var(--community-border);
-        }
-
-        .dheere-mood-page .login-notice a,
-        .dheere-mood-page .post-author {
-            color: var(--community-accent);
-        }
-
-        .dheere-mood-page .roadmap-list strong {
-            color: var(--community-heading);
-        }
-
-        /* Forest */
-        html[data-dheere-mood="forest"] .dheere-mood-page {
-            --community-heading: #e9f7ec;
-            --community-text: #a5bba9;
-            --community-muted: #718878;
-            --community-border: rgba(92,190,118,.18);
-            --community-surface: rgba(11,31,17,.62);
-            --community-surface-strong: rgba(16,42,23,.72);
-            --community-accent: #76d88e;
-            --community-accent-contrast: #061009;
-        }
-
-        html[data-dheere-mood="forest"] .dheere-mood-page .post-card:hover,
-        html[data-dheere-mood="forest"] .dheere-mood-page .create-post-card:hover {
-            border-color: rgba(118,216,142,.34);
-            box-shadow: 0 16px 45px rgba(0,25,8,.18);
-        }
-
-        /* Ocean */
-        html[data-dheere-mood="ocean"] .dheere-mood-page {
-            --community-heading: #eaf4ff;
-            --community-text: #a0b1c7;
-            --community-muted: #71869e;
-            --community-border: rgba(91,159,232,.18);
-            --community-surface: rgba(9,25,43,.64);
-            --community-surface-strong: rgba(12,34,58,.74);
-            --community-accent: #78b1f1;
-            --community-accent-contrast: #06101d;
-        }
-
-        html[data-dheere-mood="ocean"] .dheere-mood-page .post-card:hover,
-        html[data-dheere-mood="ocean"] .dheere-mood-page .create-post-card:hover {
-            border-color: rgba(120,177,241,.36);
-            box-shadow: 0 16px 45px rgba(0,25,60,.20);
-        }
-
-        /* Ember */
-        html[data-dheere-mood="ember"] .dheere-mood-page {
-            --community-heading: #fff0ec;
-            --community-text: #c1a49e;
-            --community-muted: #8f706b;
-            --community-border: rgba(228,107,97,.19);
-            --community-surface: rgba(37,15,13,.64);
-            --community-surface-strong: rgba(48,18,15,.74);
-            --community-accent: #ef8175;
-            --community-accent-contrast: #1b0806;
-        }
-
-        html[data-dheere-mood="ember"] .dheere-mood-page .post-card:hover,
-        html[data-dheere-mood="ember"] .dheere-mood-page .create-post-card:hover {
-            border-color: rgba(239,129,117,.38);
-            box-shadow: 0 16px 45px rgba(65,8,3,.22);
-        }
-
-        /* Midnight */
-        html[data-dheere-mood="midnight"] .dheere-mood-page {
-            --community-heading: #f3efff;
-            --community-text: #aaa4bc;
-            --community-muted: #7b748f;
-            --community-border: rgba(155,140,242,.19);
-            --community-surface: rgba(22,17,36,.66);
-            --community-surface-strong: rgba(30,23,49,.76);
-            --community-accent: #afa3f6;
-            --community-accent-contrast: #0d0918;
-        }
-
-        html[data-dheere-mood="midnight"] .dheere-mood-page .post-card:hover,
-        html[data-dheere-mood="midnight"] .dheere-mood-page .create-post-card:hover {
-            border-color: rgba(175,163,246,.38);
-            box-shadow: 0 16px 50px rgba(20,8,60,.24);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .dheere-mood-page .post-card,
-            .dheere-mood-page .create-post-card,
-            .dheere-mood-page .community-action {
-                transition: none !important;
             }
+
+
+            .post-comment-form {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .post-submit-comment {
+
+                width:
+                    100%;
+
+            }
+
         }
 
     </style>
@@ -1287,7 +1993,6 @@
             id="visionSection"
         >
 
-
             <div class="vision-header">
 
                 <h2>
@@ -1325,9 +2030,7 @@
             </div>
 
 
-            <!-- ==================================
-                 ENGLISH VISION
-                 ================================== -->
+            <!-- ENGLISH -->
 
             <div id="englishCommunity">
 
@@ -1512,9 +2215,7 @@
             </div>
 
 
-            <!-- ==================================
-                 HINGLISH VISION
-                 ================================== -->
+            <!-- HINGLISH -->
 
             <div
                 id="hinglishCommunity"
@@ -1738,93 +2439,80 @@
 
     <script>
 
-        // ==========================================
-        // CONFIG
-        // ==========================================
+        /* ==========================================
+           CONFIG
+           ========================================== */
 
         const API_BASE_URL =
             'https://dheere-studio.onrender.com';
-
 
         const USER_STORAGE_KEY =
             'dheereStudioUser';
 
 
-        // ==========================================
-        // ELEMENTS
-        // ==========================================
+        /* ==========================================
+           ELEMENTS
+           ========================================== */
 
         const postsFeed =
             document.getElementById(
                 'postsFeed'
             );
 
-
         const refreshPostsBtn =
             document.getElementById(
                 'refreshPostsBtn'
             );
-
 
         const createPostCard =
             document.getElementById(
                 'createPostCard'
             );
 
-
         const loginNotice =
             document.getElementById(
                 'loginNotice'
             );
-
 
         const communityPostContent =
             document.getElementById(
                 'communityPostContent'
             );
 
-
         const communityCharacterCount =
             document.getElementById(
                 'communityCharacterCount'
             );
-
 
         const communityPublishBtn =
             document.getElementById(
                 'communityPublishBtn'
             );
 
-
         const exploreVisionBtn =
             document.getElementById(
                 'exploreVisionBtn'
             );
-
 
         const visionSection =
             document.getElementById(
                 'visionSection'
             );
 
-
         const btnEnglish =
             document.getElementById(
                 'btnEnglish'
             );
-
 
         const btnHinglish =
             document.getElementById(
                 'btnHinglish'
             );
 
-
         const englishCommunity =
             document.getElementById(
                 'englishCommunity'
             );
-
 
         const hinglishCommunity =
             document.getElementById(
@@ -1832,9 +2520,9 @@
             );
 
 
-        // ==========================================
-        // ESCAPE HTML
-        // ==========================================
+        /* ==========================================
+           HTML ESCAPE
+           ========================================== */
 
         function escapeHTML(value) {
 
@@ -1843,19 +2531,19 @@
                     'div'
                 );
 
-
             div.textContent =
-                String(value ?? '');
-
+                String(
+                    value ?? ''
+                );
 
             return div.innerHTML;
 
         }
 
 
-        // ==========================================
-        // GET CURRENT USER
-        // ==========================================
+        /* ==========================================
+           CURRENT USER
+           ========================================== */
 
         function getCurrentUser() {
 
@@ -1866,18 +2554,15 @@
                         USER_STORAGE_KEY
                     );
 
-
                 if (!savedUser) {
 
                     return null;
 
                 }
 
-
                 return JSON.parse(
                     savedUser
                 );
-
 
             } catch (error) {
 
@@ -1886,11 +2571,9 @@
                     error
                 );
 
-
                 localStorage.removeItem(
                     USER_STORAGE_KEY
                 );
-
 
                 return null;
 
@@ -1899,17 +2582,13 @@
         }
 
 
-        // ==========================================
-        // USER DATA HELPERS
-        // ==========================================
-
         function getUsername(user) {
 
-            return (
+            return String(
                 user?.username ||
                 user?.user?.username ||
                 ''
-            );
+            ).trim();
 
         }
 
@@ -1927,11 +2606,13 @@
         }
 
 
-        // ==========================================
-        // FORMAT DATE
-        // ==========================================
+        /* ==========================================
+           DATE
+           ========================================== */
 
-        function formatDate(dateValue) {
+        function formatDate(
+            dateValue
+        ) {
 
             if (!dateValue) {
 
@@ -1939,12 +2620,10 @@
 
             }
 
-
             const date =
                 new Date(
                     dateValue
                 );
-
 
             if (
                 Number.isNaN(
@@ -1955,7 +2634,6 @@
                 return '';
 
             }
-
 
             return date.toLocaleString(
                 'en-IN',
@@ -1980,11 +2658,709 @@
         }
 
 
-        // ==========================================
-        // RENDER POSTS
-        // ==========================================
+        /* ==========================================
+           POST HELPERS
+           ========================================== */
 
-        function renderPosts(posts) {
+        function getPostId(post) {
+
+            return String(
+                post?._id ||
+                post?.id ||
+                ''
+            ).trim();
+
+        }
+
+
+        function getLikes(post) {
+
+            const value =
+                Number(
+                    post?.likes ||
+                    0
+                );
+
+            return Number.isFinite(
+                value
+            )
+                ? Math.max(
+                    0,
+                    value
+                )
+                : 0;
+
+        }
+
+
+        function getCommentsCount(post) {
+
+            const value =
+                Number(
+                    post?.comments ||
+                    post?.commentCount ||
+                    0
+                );
+
+            return Number.isFinite(
+                value
+            )
+                ? Math.max(
+                    0,
+                    value
+                )
+                : 0;
+
+        }
+
+
+        function isPostLiked(post) {
+
+            return (
+                post?.liked === true ||
+                post?.isLiked === true
+            );
+
+        }
+
+
+        /* ==========================================
+           RENDER COMMENTS
+           ========================================== */
+
+        function renderComments(
+            container,
+            comments
+        ) {
+
+            if (!container) {
+
+                return;
+
+            }
+
+            if (
+                !Array.isArray(
+                    comments
+                ) ||
+                comments.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="post-comments-empty">
+
+                        No comments yet.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                comments.map(
+                    comment => {
+
+                        const username =
+                            comment.username ||
+                            'user';
+
+                        const content =
+                            comment.content ||
+                            '';
+
+                        const date =
+                            formatDate(
+                                comment.createdAt
+                            );
+
+                        return `
+
+                            <div class="post-comment">
+
+                                <div
+                                    class="post-comment-header"
+                                >
+
+                                    <strong>
+                                        @${escapeHTML(
+                                            username
+                                        )}
+                                    </strong>
+
+                                    ${
+                                        date
+                                            ? `
+                                                <span>
+                                                    ${escapeHTML(
+                                                        date
+                                                    )}
+                                                </span>
+                                            `
+                                            : ''
+                                    }
+
+                                </div>
+
+
+                                <div
+                                    class="post-comment-content"
+                                >
+
+                                    ${escapeHTML(
+                                        content
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join('');
+
+        }
+
+
+        /* ==========================================
+           LOAD COMMENTS
+           ========================================== */
+
+        async function loadComments(
+            postId,
+            commentsContainer,
+            countElement
+        ) {
+
+            if (!postId) {
+
+                return;
+
+            }
+
+
+            commentsContainer.innerHTML = `
+
+                <div class="post-comments-loading">
+
+                    Loading comments...
+
+                </div>
+
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/posts/${encodeURIComponent(postId)}/comments`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.error ||
+                        'Could not load comments.'
+                    );
+
+                }
+
+
+                const comments =
+                    Array.isArray(
+                        result?.comments
+                    )
+                        ? result.comments
+                        : [];
+
+
+                renderComments(
+                    commentsContainer,
+                    comments
+                );
+
+
+                if (countElement) {
+
+                    countElement.textContent =
+                        String(
+                            comments.length
+                        );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    'Load comments error:',
+                    error
+                );
+
+
+                commentsContainer.innerHTML = `
+
+                    <div class="post-comments-error">
+
+                        Unable to load comments right now.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           ADD COMMENT
+           ========================================== */
+
+        async function addComment(
+            postId,
+            input,
+            submitButton,
+            commentsContainer,
+            countElement
+        ) {
+
+            const user =
+                getCurrentUser();
+
+
+            const userId =
+                getUserId(
+                    user
+                );
+
+
+            if (!userId) {
+
+                alert(
+                    'Please login again.'
+                );
+
+                return;
+
+            }
+
+
+            const content =
+                input.value.trim();
+
+
+            if (!content) {
+
+                input.focus();
+
+                return;
+
+            }
+
+
+            if (
+                content.length >
+                1000
+            ) {
+
+                alert(
+                    'Comment cannot exceed 1000 characters.'
+                );
+
+                return;
+
+            }
+
+
+            submitButton.disabled =
+                true;
+
+
+            submitButton.textContent =
+                'Posting...';
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/posts/${encodeURIComponent(postId)}/comments`,
+                        {
+                            method:
+                                'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    userId,
+                                    content
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.error ||
+                        'Could not add comment.'
+                    );
+
+                }
+
+
+                input.value =
+                    '';
+
+
+                if (
+                    result?.comment
+                ) {
+
+                    const emptyState =
+                        commentsContainer.querySelector(
+                            '.post-comments-empty'
+                        );
+
+
+                    if (emptyState) {
+
+                        commentsContainer.innerHTML =
+                            '';
+
+                    }
+
+
+                    const comment =
+                        result.comment;
+
+
+                    const element =
+                        document.createElement(
+                            'div'
+                        );
+
+
+                    element.className =
+                        'post-comment';
+
+
+                    element.innerHTML = `
+
+                        <div
+                            class="post-comment-header"
+                        >
+
+                            <strong>
+                                @${escapeHTML(
+                                    comment.username ||
+                                    getUsername(
+                                        user
+                                    ) ||
+                                    'user'
+                                )}
+                            </strong>
+
+                            ${
+                                comment.createdAt
+                                    ? `
+                                        <span>
+                                            ${escapeHTML(
+                                                formatDate(
+                                                    comment.createdAt
+                                                )
+                                            )}
+                                        </span>
+                                    `
+                                    : ''
+                            }
+
+                        </div>
+
+
+                        <div
+                            class="post-comment-content"
+                        >
+
+                            ${escapeHTML(
+                                comment.content ||
+                                content
+                            )}
+
+                        </div>
+
+                    `;
+
+
+                    commentsContainer.appendChild(
+                        element
+                    );
+
+
+                    if (countElement) {
+
+                        const currentCount =
+                            Number(
+                                countElement.textContent
+                            ) || 0;
+
+
+                        countElement.textContent =
+                            String(
+                                currentCount + 1
+                            );
+
+                    }
+
+                } else {
+
+                    await loadComments(
+                        postId,
+                        commentsContainer,
+                        countElement
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    'Add comment error:',
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    'Unable to add comment.'
+                );
+
+            } finally {
+
+                submitButton.disabled =
+                    false;
+
+
+                submitButton.textContent =
+                    'Comment';
+
+            }
+
+        }
+
+
+        /* ==========================================
+           TOGGLE LIKE
+           ========================================== */
+
+        async function toggleLike(
+            postId,
+            button,
+            countElement
+        ) {
+
+            const user =
+                getCurrentUser();
+
+
+            const userId =
+                getUserId(
+                    user
+                );
+
+
+            if (!userId) {
+
+                alert(
+                    'Please login again.'
+                );
+
+                return;
+
+            }
+
+
+            if (
+                button.dataset.busy ===
+                'true'
+            ) {
+
+                return;
+
+            }
+
+
+            button.dataset.busy =
+                'true';
+
+
+            button.disabled =
+                true;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/posts/${encodeURIComponent(postId)}/like`,
+                        {
+                            method:
+                                'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    userId
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.error ||
+                        'Could not update like.'
+                    );
+
+                }
+
+
+                const liked =
+                    result?.liked === true;
+
+
+                const likes =
+                    Math.max(
+                        0,
+                        Number(
+                            result?.likes
+                        ) || 0
+                    );
+
+
+                countElement.textContent =
+                    String(
+                        likes
+                    );
+
+
+                button.classList.toggle(
+                    'liked',
+                    liked
+                );
+
+
+                button.dataset.liked =
+                    liked
+                        ? 'true'
+                        : 'false';
+
+
+                button.setAttribute(
+                    'aria-pressed',
+                    liked
+                        ? 'true'
+                        : 'false'
+                );
+
+
+                const icon =
+                    button.querySelector(
+                        '.post-action-icon'
+                    );
+
+
+                const text =
+                    button.querySelector(
+                        '.post-action-text'
+                    );
+
+
+                if (icon) {
+
+                    icon.textContent =
+                        liked
+                            ? '♥'
+                            : '♡';
+
+                }
+
+
+                if (text) {
+
+                    text.textContent =
+                        liked
+                            ? 'Liked'
+                            : 'Like';
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    'Like error:',
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    'Unable to update like.'
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+
+                button.dataset.busy =
+                    'false';
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RENDER POSTS
+           ========================================== */
+
+        function renderPosts(
+            posts
+        ) {
 
             if (!postsFeed) {
 
@@ -1994,7 +3370,9 @@
 
 
             if (
-                !Array.isArray(posts) ||
+                !Array.isArray(
+                    posts
+                ) ||
                 posts.length === 0
             ) {
 
@@ -2020,7 +3398,13 @@
 
             postsFeed.innerHTML =
                 posts.map(
-                    (post) => {
+                    post => {
+
+                        const postId =
+                            getPostId(
+                                post
+                            );
+
 
                         const username =
                             post.username ||
@@ -2039,8 +3423,20 @@
 
 
                         const likes =
-                            Number(
-                                post.likes || 0
+                            getLikes(
+                                post
+                            );
+
+
+                        const comments =
+                            getCommentsCount(
+                                post
+                            );
+
+
+                        const liked =
+                            isPostLiked(
+                                post
                             );
 
 
@@ -2048,6 +3444,9 @@
 
                             <article
                                 class="post-card"
+                                data-post-id="${escapeHTML(
+                                    postId
+                                )}"
                             >
 
                                 <div
@@ -2088,9 +3487,124 @@
                                     class="post-footer"
                                 >
 
-                                    <span>
-                                        ♥ ${likes}
-                                    </span>
+                                    <button
+                                        type="button"
+                                        class="post-action-button post-like-button ${
+                                            liked
+                                                ? 'liked'
+                                                : ''
+                                        }"
+                                        data-post-id="${escapeHTML(
+                                            postId
+                                        )}"
+                                        data-liked="${
+                                            liked
+                                                ? 'true'
+                                                : 'false'
+                                        }"
+                                        aria-pressed="${
+                                            liked
+                                                ? 'true'
+                                                : 'false'
+                                        }"
+                                    >
+
+                                        <span
+                                            class="post-action-icon"
+                                        >
+                                            ${
+                                                liked
+                                                    ? '♥'
+                                                    : '♡'
+                                            }
+                                        </span>
+
+
+                                        <span
+                                            class="post-action-text"
+                                        >
+                                            ${
+                                                liked
+                                                    ? 'Liked'
+                                                    : 'Like'
+                                            }
+                                        </span>
+
+
+                                        <span
+                                            class="post-action-count post-like-count"
+                                        >
+                                            ${likes}
+                                        </span>
+
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="post-action-button post-comment-button"
+                                        data-post-id="${escapeHTML(
+                                            postId
+                                        )}"
+                                        aria-expanded="false"
+                                    >
+
+                                        <span
+                                            class="post-action-icon"
+                                        >
+                                            💬
+                                        </span>
+
+
+                                        <span>
+                                            Comment
+                                        </span>
+
+
+                                        <span
+                                            class="post-action-count post-comment-count"
+                                        >
+                                            ${comments}
+                                        </span>
+
+                                    </button>
+
+                                </div>
+
+
+                                <div
+                                    class="post-comments-panel"
+                                >
+
+                                    <div
+                                        class="post-comments-list"
+                                    ></div>
+
+
+                                    <div
+                                        class="post-comment-form"
+                                    >
+
+                                        <input
+                                            type="text"
+                                            class="post-comment-input"
+                                            maxlength="1000"
+                                            placeholder="Write a comment..."
+                                            autocomplete="off"
+                                        >
+
+
+                                        <button
+                                            type="button"
+                                            class="post-submit-comment"
+                                            data-post-id="${escapeHTML(
+                                                postId
+                                            )}"
+                                        >
+                                            Comment
+                                        </button>
+
+                                    </div>
 
                                 </div>
 
@@ -2105,9 +3619,305 @@
         }
 
 
-        // ==========================================
-        // LOAD POSTS
-        // ==========================================
+        /* ==========================================
+           POST ACTION EVENT DELEGATION
+           ========================================== */
+
+        if (postsFeed) {
+
+            postsFeed.addEventListener(
+                'click',
+                async event => {
+
+                    /* ---------- LIKE ---------- */
+
+                    const likeButton =
+                        event.target.closest(
+                            '.post-like-button'
+                        );
+
+
+                    if (likeButton) {
+
+                        const postCard =
+                            likeButton.closest(
+                                '.post-card'
+                            );
+
+
+                        const postId =
+                            likeButton.dataset.postId;
+
+
+                        const countElement =
+                            postCard?.querySelector(
+                                '.post-like-count'
+                            );
+
+
+                        if (
+                            postId &&
+                            countElement
+                        ) {
+
+                            await toggleLike(
+                                postId,
+                                likeButton,
+                                countElement
+                            );
+
+                        }
+
+
+                        return;
+
+                    }
+
+
+                    /* ---------- COMMENT TOGGLE ---------- */
+
+                    const commentButton =
+                        event.target.closest(
+                            '.post-comment-button'
+                        );
+
+
+                    if (commentButton) {
+
+                        const postCard =
+                            commentButton.closest(
+                                '.post-card'
+                            );
+
+
+                        if (!postCard) {
+
+                            return;
+
+                        }
+
+
+                        const panel =
+                            postCard.querySelector(
+                                '.post-comments-panel'
+                            );
+
+
+                        const commentsContainer =
+                            postCard.querySelector(
+                                '.post-comments-list'
+                            );
+
+
+                        const countElement =
+                            postCard.querySelector(
+                                '.post-comment-count'
+                            );
+
+
+                        const postId =
+                            commentButton.dataset.postId;
+
+
+                        if (
+                            !panel ||
+                            !commentsContainer ||
+                            !postId
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const isOpen =
+                            panel.classList.contains(
+                                'open'
+                            );
+
+
+                        if (isOpen) {
+
+                            panel.classList.remove(
+                                'open'
+                            );
+
+
+                            commentButton.setAttribute(
+                                'aria-expanded',
+                                'false'
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        panel.classList.add(
+                            'open'
+                        );
+
+
+                        commentButton.setAttribute(
+                            'aria-expanded',
+                            'true'
+                        );
+
+
+                        await loadComments(
+                            postId,
+                            commentsContainer,
+                            countElement
+                        );
+
+
+                        const input =
+                            postCard.querySelector(
+                                '.post-comment-input'
+                            );
+
+
+                        if (input) {
+
+                            input.focus();
+
+                        }
+
+
+                        return;
+
+                    }
+
+
+                    /* ---------- COMMENT SUBMIT ---------- */
+
+                    const submitButton =
+                        event.target.closest(
+                            '.post-submit-comment'
+                        );
+
+
+                    if (submitButton) {
+
+                        const postCard =
+                            submitButton.closest(
+                                '.post-card'
+                            );
+
+
+                        if (!postCard) {
+
+                            return;
+
+                        }
+
+
+                        const postId =
+                            submitButton.dataset.postId;
+
+
+                        const input =
+                            postCard.querySelector(
+                                '.post-comment-input'
+                            );
+
+
+                        const commentsContainer =
+                            postCard.querySelector(
+                                '.post-comments-list'
+                            );
+
+
+                        const countElement =
+                            postCard.querySelector(
+                                '.post-comment-count'
+                            );
+
+
+                        if (
+                            postId &&
+                            input &&
+                            commentsContainer &&
+                            countElement
+                        ) {
+
+                            await addComment(
+                                postId,
+                                input,
+                                submitButton,
+                                commentsContainer,
+                                countElement
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            /* ---------- ENTER TO COMMENT ---------- */
+
+            postsFeed.addEventListener(
+                'keydown',
+                event => {
+
+                    if (
+                        event.key !==
+                        'Enter' ||
+                        event.shiftKey
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const input =
+                        event.target.closest(
+                            '.post-comment-input'
+                        );
+
+
+                    if (!input) {
+
+                        return;
+
+                    }
+
+
+                    event.preventDefault();
+
+
+                    const postCard =
+                        input.closest(
+                            '.post-card'
+                        );
+
+
+                    const submitButton =
+                        postCard?.querySelector(
+                            '.post-submit-comment'
+                        );
+
+
+                    if (submitButton) {
+
+                        submitButton.click();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==========================================
+           LOAD POSTS
+           ========================================== */
 
         async function loadPosts() {
 
@@ -2131,9 +3941,29 @@
 
             try {
 
+                const user =
+                    getCurrentUser();
+
+
+                const userId =
+                    getUserId(
+                        user
+                    );
+
+
+                const query =
+                    userId
+                        ? `?userId=${encodeURIComponent(userId)}`
+                        : '';
+
+
                 const response =
                     await fetch(
-                        `${API_BASE_URL}/posts`
+                        `${API_BASE_URL}/posts${query}`,
+                        {
+                            cache:
+                                'no-store'
+                        }
                     );
 
 
@@ -2143,19 +3973,23 @@
 
                 if (
                     !response.ok ||
-                    !result.success
+                    !result?.success
                 ) {
 
                     throw new Error(
-                        result.error ||
-                        'Could not load posts'
+                        result?.error ||
+                        'Could not load posts.'
                     );
 
                 }
 
 
                 renderPosts(
-                    result.posts
+                    Array.isArray(
+                        result.posts
+                    )
+                        ? result.posts
+                        : []
                 );
 
 
@@ -2183,9 +4017,9 @@
         }
 
 
-        // ==========================================
-        // AUTH UI
-        // ==========================================
+        /* ==========================================
+           AUTH UI
+           ========================================== */
 
         function setupAuthUI() {
 
@@ -2232,11 +4066,13 @@
         }
 
 
-        // ==========================================
-        // CHARACTER COUNT
-        // ==========================================
+        /* ==========================================
+           CHARACTER COUNT
+           ========================================== */
 
-        if (communityPostContent) {
+        if (
+            communityPostContent
+        ) {
 
             communityPostContent.addEventListener(
                 'input',
@@ -2257,11 +4093,13 @@
         }
 
 
-        // ==========================================
-        // PUBLISH POST
-        // ==========================================
+        /* ==========================================
+           PUBLISH POST
+           ========================================== */
 
-        if (communityPublishBtn) {
+        if (
+            communityPublishBtn
+        ) {
 
             communityPublishBtn.addEventListener(
                 'click',
@@ -2391,37 +4229,23 @@
 
                         if (
                             !response.ok ||
-                            !result.success
+                            !result?.success
                         ) {
 
-                            alert(
-                                result.error ||
+                            throw new Error(
+                                result?.error ||
                                 'Could not publish post.'
                             );
 
-                            return;
-
                         }
 
 
-                        if (
-                            communityPostContent
-                        ) {
-
-                            communityPostContent.value =
-                                '';
-
-                        }
+                        communityPostContent.value =
+                            '';
 
 
-                        if (
-                            communityCharacterCount
-                        ) {
-
-                            communityCharacterCount.textContent =
-                                '0 / 2000';
-
-                        }
+                        communityCharacterCount.textContent =
+                            '0 / 2000';
 
 
                         await loadPosts();
@@ -2436,6 +4260,7 @@
 
 
                         alert(
+                            error.message ||
                             'Backend server se connect nahi ho paya.'
                         );
 
@@ -2457,11 +4282,13 @@
         }
 
 
-        // ==========================================
-        // REFRESH
-        // ==========================================
+        /* ==========================================
+           REFRESH
+           ========================================== */
 
-        if (refreshPostsBtn) {
+        if (
+            refreshPostsBtn
+        ) {
 
             refreshPostsBtn.addEventListener(
                 'click',
@@ -2471,11 +4298,13 @@
         }
 
 
-        // ==========================================
-        // EXPLORE VISION
-        // ==========================================
+        /* ==========================================
+           EXPLORE VISION
+           ========================================== */
 
-        if (exploreVisionBtn) {
+        if (
+            exploreVisionBtn
+        ) {
 
             exploreVisionBtn.addEventListener(
                 'click',
@@ -2532,9 +4361,9 @@
         }
 
 
-        // ==========================================
-        // ENGLISH
-        // ==========================================
+        /* ==========================================
+           LANGUAGE SWITCH
+           ========================================== */
 
         if (
             btnEnglish &&
@@ -2599,9 +4428,9 @@
         }
 
 
-        // ==========================================
-        // INITIALIZE
-        // ==========================================
+        /* ==========================================
+           INITIALIZE
+           ========================================== */
 
         setupAuthUI();
 
