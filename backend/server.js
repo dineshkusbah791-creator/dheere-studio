@@ -78,6 +78,9 @@ const USERNAME_REGEX =
 const MAX_POST_LENGTH =
     2000;
 
+const MAX_COMMENT_LENGTH =
+    1000;
+
 const MAX_BIO_LENGTH =
     150;
 
@@ -349,6 +352,85 @@ function getDataUriInfo(dataUri) {
 }
 
 
+/*
+ * Safely convert a MongoDB post into the format expected
+ * by the frontend.
+ *
+ * Old posts may only have:
+ * likes: Number
+ *
+ * New posts also have:
+ * likedBy: [ObjectId]
+ * comments: [...]
+ */
+
+function formatPost(post, currentUserId = "") {
+
+    const likedBy =
+        Array.isArray(post.likedBy)
+            ? post.likedBy
+            : [];
+
+
+    const comments =
+        Array.isArray(post.comments)
+            ? post.comments
+            : [];
+
+
+    let likedByCurrentUser = false;
+
+
+    if (
+        currentUserId &&
+        isValidObjectId(currentUserId)
+    ) {
+
+        likedByCurrentUser =
+            likedBy.some(
+                (id) =>
+                    id &&
+                    id.toString() === currentUserId
+            );
+
+    }
+
+
+    return {
+
+        id:
+            post._id.toString(),
+
+        authorId:
+            post.authorId
+                ? post.authorId.toString()
+                : "",
+
+        username:
+            post.username || "",
+
+        content:
+            post.content || "",
+
+        createdAt:
+            post.createdAt,
+
+        likes:
+            typeof post.likes === "number"
+                ? post.likes
+                : likedBy.length,
+
+        comments:
+            comments.length,
+
+        liked:
+            likedByCurrentUser
+
+    };
+
+}
+
+
 // ============================================================
 // DATABASE
 // ============================================================
@@ -444,6 +526,10 @@ async function connectDatabase() {
 
         console.log(
             "Posts system initialized"
+        );
+
+        console.log(
+            "Like and comment system initialized"
         );
 
         console.log(
@@ -975,10 +1061,6 @@ app.put(
             } = req.body;
 
 
-            // --------------------------------------------------
-            // USER ID
-            // --------------------------------------------------
-
             if (
                 !isValidObjectId(userId)
             ) {
@@ -994,10 +1076,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // USERNAME
-            // --------------------------------------------------
 
             const cleanUsername =
                 normalizeUsername(
@@ -1022,10 +1100,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // IMAGE
-            // --------------------------------------------------
 
             if (
                 typeof image !== "string" ||
@@ -1081,10 +1155,6 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // FIND USER
-            // --------------------------------------------------
-
             const user =
                 await usersCollection.findOne({
 
@@ -1111,10 +1181,6 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // CLOUDINARY CONFIG CHECK
-            // --------------------------------------------------
-
             if (
                 !process.env.CLOUDINARY_CLOUD_NAME ||
                 !process.env.CLOUDINARY_API_KEY ||
@@ -1136,10 +1202,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // UPLOAD TO CLOUDINARY
-            // --------------------------------------------------
 
             const uploadResult =
                 await cloudinary.uploader.upload(
@@ -1189,10 +1251,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // SAVE URL IN MONGODB
-            // --------------------------------------------------
 
             await usersCollection.updateOne(
 
@@ -1350,10 +1408,6 @@ app.delete(
             }
 
 
-            // --------------------------------------------------
-            // DELETE CLOUDINARY ASSET
-            // --------------------------------------------------
-
             if (
                 user.avatarPublicId
             ) {
@@ -1389,10 +1443,6 @@ app.delete(
 
             }
 
-
-            // --------------------------------------------------
-            // REMOVE FROM MONGODB
-            // --------------------------------------------------
 
             await usersCollection.updateOne(
 
@@ -1481,10 +1531,6 @@ app.put(
             } = req.body;
 
 
-            // --------------------------------------------------
-            // USER ID
-            // --------------------------------------------------
-
             if (
                 !isValidObjectId(userId)
             ) {
@@ -1500,10 +1546,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // REQUIRED DATA
-            // --------------------------------------------------
 
             if (
                 typeof currentUsername !== "string" ||
@@ -1539,12 +1581,6 @@ app.put(
                 );
 
 
-            /*
-             * Bio is optional.
-             *
-             * Empty bio is allowed.
-             */
-
             if (
                 bio !== undefined &&
                 bio !== null &&
@@ -1568,10 +1604,6 @@ app.put(
                     bio
                 );
 
-
-            // --------------------------------------------------
-            // NAME
-            // --------------------------------------------------
 
             if (!cleanName) {
 
@@ -1604,10 +1636,6 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // USERNAME
-            // --------------------------------------------------
-
             if (
                 !USERNAME_REGEX.test(
                     cleanUsername
@@ -1626,10 +1654,6 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // BIO
-            // --------------------------------------------------
-
             if (
                 typeof bio === "string" &&
                 bio.trim().length >
@@ -1647,10 +1671,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // FIND CURRENT USER
-            // --------------------------------------------------
 
             const user =
                 await usersCollection.findOne({
@@ -1678,18 +1698,10 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // CHECK USERNAME CHANGE
-            // --------------------------------------------------
-
             const usernameChanged =
                 user.username !==
                 cleanUsername;
 
-
-            // --------------------------------------------------
-            // DUPLICATE USERNAME
-            // --------------------------------------------------
 
             if (usernameChanged) {
 
@@ -1730,10 +1742,6 @@ app.put(
 
             }
 
-
-            // --------------------------------------------------
-            // UPDATE
-            // --------------------------------------------------
 
             const updateResult =
                 await usersCollection.updateOne(
@@ -1782,10 +1790,6 @@ app.put(
             }
 
 
-            // --------------------------------------------------
-            // SYNC POSTS
-            // --------------------------------------------------
-
             if (usernameChanged) {
 
                 await postsCollection.updateMany(
@@ -1817,26 +1821,6 @@ app.put(
             console.log(
                 "Profile updated:",
                 user._id.toString()
-            );
-
-
-            console.log(
-                "Old username:",
-                cleanCurrentUsername
-            );
-
-
-            console.log(
-                "New username:",
-                cleanUsername
-            );
-
-
-            console.log(
-                "Bio updated:",
-                cleanBioValue
-                    ? "yes"
-                    : "empty"
             );
 
 
@@ -1876,10 +1860,6 @@ app.put(
 
 
         } catch (error) {
-
-            // --------------------------------------------------
-            // UNIQUE INDEX RACE CONDITION
-            // --------------------------------------------------
 
             if (
                 error &&
@@ -3076,6 +3056,17 @@ app.post(
             }
 
 
+            /*
+             * New posts have:
+             *
+             * likes   -> numeric count
+             * likedBy -> users who liked
+             * comments -> comment objects
+             *
+             * Keeping "likes" as a number preserves
+             * compatibility with the existing frontend.
+             */
+
             const post = {
 
                 authorId:
@@ -3091,7 +3082,13 @@ app.post(
                     new Date(),
 
                 likes:
-                    0
+                    0,
+
+                likedBy:
+                    [],
+
+                comments:
+                    []
 
             };
 
@@ -3115,27 +3112,16 @@ app.post(
                 message:
                     "Post published successfully",
 
-                post: {
+                post:
+                    formatPost(
+                        {
+                            ...post,
 
-                    id:
-                        result.insertedId.toString(),
+                            _id:
+                                result.insertedId
 
-                    authorId:
-                        user._id.toString(),
-
-                    username:
-                        user.username,
-
-                    content:
-                        post.content,
-
-                    createdAt:
-                        post.createdAt,
-
-                    likes:
-                        post.likes
-
-                }
+                        }
+                    )
 
             });
 
@@ -3173,6 +3159,21 @@ app.get(
 
         try {
 
+            /*
+             * Optional:
+             *
+             * /posts?userId=...
+             *
+             * If supplied, each post gets:
+             * liked: true/false
+             */
+
+            const currentUserId =
+                typeof req.query.userId === "string"
+                    ? req.query.userId.trim()
+                    : "";
+
+
             const posts =
                 await postsCollection
                     .find({})
@@ -3185,27 +3186,11 @@ app.get(
 
             const formattedPosts =
                 posts.map(
-                    (post) => ({
-
-                        id:
-                            post._id.toString(),
-
-                        authorId:
-                            post.authorId.toString(),
-
-                        username:
-                            post.username,
-
-                        content:
-                            post.content,
-
-                        createdAt:
-                            post.createdAt,
-
-                        likes:
-                            post.likes || 0
-
-                    })
+                    (post) =>
+                        formatPost(
+                            post,
+                            currentUserId
+                        )
                 );
 
 
@@ -3258,6 +3243,12 @@ app.get(
                 );
 
 
+            const currentUserId =
+                typeof req.query.userId === "string"
+                    ? req.query.userId.trim()
+                    : "";
+
+
             if (
                 !USERNAME_REGEX.test(username)
             ) {
@@ -3289,27 +3280,11 @@ app.get(
 
             const formattedPosts =
                 posts.map(
-                    (post) => ({
-
-                        id:
-                            post._id.toString(),
-
-                        authorId:
-                            post.authorId.toString(),
-
-                        username:
-                            post.username,
-
-                        content:
-                            post.content,
-
-                        createdAt:
-                            post.createdAt,
-
-                        likes:
-                            post.likes || 0
-
-                    })
+                    (post) =>
+                        formatPost(
+                            post,
+                            currentUserId
+                        )
                 );
 
 
@@ -3347,6 +3322,720 @@ app.get(
 
     }
 );
+
+
+// ============================================================
+// LIKE / UNLIKE POST
+// ============================================================
+
+app.post(
+    "/posts/:postId/like",
+    async (req, res) => {
+
+        try {
+
+            const postId =
+                typeof req.params.postId === "string"
+                    ? req.params.postId.trim()
+                    : "";
+
+
+            const {
+                userId
+            } = req.body;
+
+
+            // --------------------------------------------------
+            // VALIDATION
+            // --------------------------------------------------
+
+            if (
+                !isValidObjectId(postId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid post ID"
+
+                });
+
+            }
+
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Valid user ID is required"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // USER EXISTS
+            // --------------------------------------------------
+
+            const user =
+                await usersCollection.findOne(
+
+                    {
+                        _id:
+                            new ObjectId(userId)
+                    },
+
+                    {
+                        projection: {
+                            _id: 1
+                        }
+                    }
+
+                );
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "User not found"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // POST EXISTS
+            // --------------------------------------------------
+
+            const post =
+                await postsCollection.findOne({
+
+                    _id:
+                        new ObjectId(postId)
+
+                });
+
+
+            if (!post) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "Post not found"
+
+                });
+
+            }
+
+
+            /*
+             * Old posts may not have likedBy.
+             *
+             * We use the current user's ObjectId inside
+             * likedBy for new likes.
+             */
+
+            const likedBy =
+                Array.isArray(post.likedBy)
+                    ? post.likedBy
+                    : [];
+
+
+            const alreadyLiked =
+                likedBy.some(
+                    (id) =>
+                        id &&
+                        id.toString() === userId
+                );
+
+
+            // --------------------------------------------------
+            // UNLIKE
+            // --------------------------------------------------
+
+            if (alreadyLiked) {
+
+                await postsCollection.updateOne(
+
+                    {
+                        _id:
+                            post._id
+                    },
+
+                    {
+                        $pull: {
+
+                            likedBy:
+                                new ObjectId(userId)
+
+                        },
+
+                        $inc: {
+
+                            likes:
+                                -1
+
+                        }
+
+                    }
+
+                );
+
+
+                /*
+                 * Safety:
+                 *
+                 * If an old/broken post somehow has a
+                 * negative likes count, normalize it to 0.
+                 */
+
+                await postsCollection.updateOne(
+
+                    {
+                        _id:
+                            post._id,
+
+                        likes: {
+                            $lt:
+                                0
+                        }
+
+                    },
+
+                    {
+                        $set: {
+                            likes:
+                                0
+                        }
+
+                    }
+
+                );
+
+
+                const updatedPost =
+                    await postsCollection.findOne({
+
+                        _id:
+                            post._id
+
+                    });
+
+
+                const count =
+                    typeof updatedPost.likes === "number"
+                        ? updatedPost.likes
+                        : 0;
+
+
+                return res.json({
+
+                    success: true,
+
+                    liked: false,
+
+                    likes:
+                        count
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // LIKE
+            // --------------------------------------------------
+
+            await postsCollection.updateOne(
+
+                {
+                    _id:
+                        post._id,
+
+                    likedBy: {
+                        $ne:
+                            new ObjectId(userId)
+                    }
+
+                },
+
+                {
+                    $addToSet: {
+
+                        likedBy:
+                            new ObjectId(userId)
+
+                    },
+
+                    $inc: {
+
+                        likes:
+                            1
+
+                    }
+
+                }
+
+            );
+
+
+            const updatedPost =
+                await postsCollection.findOne({
+
+                    _id:
+                        post._id
+
+                });
+
+
+            const count =
+                typeof updatedPost.likes === "number"
+                    ? updatedPost.likes
+                    : 0;
+
+
+            return res.json({
+
+                success: true,
+
+                liked: true,
+
+                likes:
+                    count
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Like post error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not update like"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// GET POST COMMENTS
+// ============================================================
+
+app.get(
+    "/posts/:postId/comments",
+    async (req, res) => {
+
+        try {
+
+            const postId =
+                typeof req.params.postId === "string"
+                    ? req.params.postId.trim()
+                    : "";
+
+
+            if (
+                !isValidObjectId(postId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid post ID"
+
+                });
+
+            }
+
+
+            const post =
+                await postsCollection.findOne(
+
+                    {
+                        _id:
+                            new ObjectId(postId)
+                    },
+
+                    {
+                        projection: {
+                            comments: 1
+                        }
+                    }
+
+                );
+
+
+            if (!post) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "Post not found"
+
+                });
+
+            }
+
+
+            const comments =
+                Array.isArray(post.comments)
+                    ? post.comments
+                    : [];
+
+
+            return res.json({
+
+                success: true,
+
+                comments:
+                    comments.map(
+                        (comment) => ({
+
+                            id:
+                                comment.id ||
+                                comment._id?.toString() ||
+                                "",
+
+                            userId:
+                                comment.userId
+                                    ? comment.userId.toString()
+                                    : "",
+
+                            username:
+                                comment.username ||
+                                "Dheere User",
+
+                            content:
+                                comment.content ||
+                                "",
+
+                            createdAt:
+                                comment.createdAt
+
+                        })
+                    )
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Get comments error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not load comments"
+
+            });
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// CREATE COMMENT
+// ============================================================
+
+app.post(
+    "/posts/:postId/comments",
+    async (req, res) => {
+
+        try {
+
+            const postId =
+                typeof req.params.postId === "string"
+                    ? req.params.postId.trim()
+                    : "";
+
+
+            const {
+                userId,
+                content
+            } = req.body;
+
+
+            // --------------------------------------------------
+            // VALIDATION
+            // --------------------------------------------------
+
+            if (
+                !isValidObjectId(postId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Invalid post ID"
+
+                });
+
+            }
+
+
+            if (
+                !isValidObjectId(userId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Valid user ID is required"
+
+                });
+
+            }
+
+
+            const cleanContent =
+                typeof content === "string"
+                    ? content.trim()
+                    : "";
+
+
+            if (!cleanContent) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        "Comment cannot be empty"
+
+                });
+
+            }
+
+
+            if (
+                cleanContent.length >
+                MAX_COMMENT_LENGTH
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    error:
+                        `Comment cannot exceed ${MAX_COMMENT_LENGTH} characters`
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // USER
+            // --------------------------------------------------
+
+            const user =
+                await usersCollection.findOne(
+
+                    {
+                        _id:
+                            new ObjectId(userId)
+                    },
+
+                    {
+                        projection: {
+
+                            _id: 1,
+
+                            username: 1
+
+                        }
+
+                    }
+
+                );
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    error:
+                        "User not found"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // POST
+            // --------------------------------------------------
+
+            const post =
+                await postsCollection.findOne({
+
+                    _id:
+                        new ObjectId(postId)
+
+                });
+
+
+            if (!post) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    error:
+                        "Post not found"
+
+                });
+
+            }
+
+
+            // --------------------------------------------------
+            // COMMENT
+            // --------------------------------------------------
+
+            const comment = {
+
+                id:
+                    new ObjectId().toString(),
+
+                userId:
+                    user._id,
+
+                username:
+                    user.username,
+
+                content:
+                    cleanContent,
+
+                createdAt:
+                    new Date()
+
+            };
+
+
+            await postsCollection.updateOne(
+
+                {
+                    _id:
+                        post._id
+
+                },
+
+                {
+                    $push: {
+
+                        comments:
+                            comment
+
+                    }
+
+                }
+
+            );
+
+
+            console.log(
+                "New comment created:",
+                comment.id
+            );
+
+
+            return res.status(201).json({
+
+                success: true,
+
+                message:
+                    "Comment added successfully",
+
+                comment: {
+
+                    id:
+                        comment.id,
+
+                    userId:
+                        comment.userId.toString(),
+
+                    username:
+                        comment.username,
+
+                    content:
+                        comment.content,
+
+                    createdAt:
+                        comment.createdAt
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Create comment error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                error:
+                    "Could not add comment"
+
+            });
+
+        }
+
+    }
+);
+
+
 // ============================================================
 // SEARCH USERS
 // ============================================================
@@ -3361,6 +4050,7 @@ app.get(
                 typeof req.query.q === "string"
                     ? req.query.q.trim()
                     : "";
+
 
             if (!query) {
 
@@ -3409,19 +4099,6 @@ app.get(
 
                         {
                             projection: {
-
-                                /*
-                                 * PUBLIC DATA ONLY
-                                 *
-                                 * Never return:
-                                 * - email
-                                 * - dateOfBirth
-                                 * - gender
-                                 * - password
-                                 * - resetTokenHash
-                                 * - resetTokenExpiresAt
-                                 * - avatarPublicId
-                                 */
 
                                 name: 1,
 
@@ -3535,23 +4212,6 @@ app.get(
             }
 
 
-            /*
-             * IMPORTANT:
-             *
-             * Only public profile fields are selected.
-             *
-             * Private fields such as:
-             * email
-             * dateOfBirth
-             * gender
-             * password
-             * resetTokenHash
-             * resetTokenExpiresAt
-             * avatarPublicId
-             *
-             * are NEVER returned.
-             */
-
             const user =
                 await usersCollection.findOne(
 
@@ -3594,6 +4254,12 @@ app.get(
             }
 
 
+            const currentUserId =
+                typeof req.query.userId === "string"
+                    ? req.query.userId.trim()
+                    : "";
+
+
             const posts =
                 await postsCollection
                     .find({
@@ -3614,29 +4280,11 @@ app.get(
 
             const formattedPosts =
                 posts.map(
-                    (post) => ({
-
-                        id:
-                            post._id.toString(),
-
-                        authorId:
-                            post.authorId
-                                ? post.authorId.toString()
-                                : "",
-
-                        username:
-                            post.username || "",
-
-                        content:
-                            post.content || "",
-
-                        createdAt:
-                            post.createdAt,
-
-                        likes:
-                            post.likes || 0
-
-                    })
+                    (post) =>
+                        formatPost(
+                            post,
+                            currentUserId
+                        )
                 );
 
 
