@@ -12,6 +12,10 @@ const API_BASE =
     "https://dheere-studio.onrender.com";
 
 
+const USER_STORAGE_KEY =
+    "dheereStudioUser";
+
+
 /* ============================================================
    DOM REFERENCES
    ============================================================ */
@@ -136,7 +140,63 @@ let currentPosts = [];
 
 
 /* ============================================================
-   HELPERS
+   CURRENT USER
+   ============================================================ */
+
+function getCurrentUser() {
+
+    try {
+
+        const savedUser =
+            localStorage.getItem(
+                USER_STORAGE_KEY
+            );
+
+
+        if (!savedUser) {
+
+            return null;
+
+        }
+
+
+        return JSON.parse(
+            savedUser
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Could not read current user:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+function getCurrentUserId() {
+
+    const user =
+        getCurrentUser();
+
+
+    return (
+        user?.id ||
+        user?._id ||
+        user?.user?.id ||
+        user?.user?._id ||
+        ""
+    );
+
+}
+
+
+/* ============================================================
+   USERNAME FROM URL
    ============================================================ */
 
 function getUsernameFromUrl() {
@@ -148,11 +208,14 @@ function getUsernameFromUrl() {
 
 
     const username =
-        params.get("username");
+        params.get(
+            "username"
+        );
 
 
     if (
-        typeof username !== "string"
+        typeof username !==
+        "string"
     ) {
 
         return "";
@@ -162,7 +225,10 @@ function getUsernameFromUrl() {
 
     return username
         .trim()
-        .replace(/^@/, "")
+        .replace(
+            /^@/,
+            ""
+        )
         .toLowerCase();
 
 }
@@ -170,7 +236,6 @@ function getUsernameFromUrl() {
 
 /* ============================================================
    ESCAPE HTML
-   Prevent user-generated content from becoming HTML.
    ============================================================ */
 
 function escapeHtml(value) {
@@ -186,11 +251,26 @@ function escapeHtml(value) {
 
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
@@ -199,11 +279,17 @@ function escapeHtml(value) {
    INITIAL
    ============================================================ */
 
-function getInitial(name, username) {
+function getInitial(
+    name,
+    username
+) {
 
     const source =
-        String(name || username || "U")
-            .trim();
+        String(
+            name ||
+            username ||
+            "U"
+        ).trim();
 
 
     if (!source) {
@@ -224,7 +310,9 @@ function getInitial(name, username) {
    DATE FORMAT
    ============================================================ */
 
-function formatJoinedDate(dateValue) {
+function formatJoinedDate(
+    dateValue
+) {
 
     if (!dateValue) {
 
@@ -234,7 +322,9 @@ function formatJoinedDate(dateValue) {
 
 
     const date =
-        new Date(dateValue);
+        new Date(
+            dateValue
+        );
 
 
     if (
@@ -251,8 +341,11 @@ function formatJoinedDate(dateValue) {
     return date.toLocaleDateString(
         undefined,
         {
-            month: "short",
-            year: "numeric"
+            month:
+                "short",
+
+            year:
+                "numeric"
         }
     );
 
@@ -263,7 +356,9 @@ function formatJoinedDate(dateValue) {
    POST DATE FORMAT
    ============================================================ */
 
-function formatPostDate(dateValue) {
+function formatPostDate(
+    dateValue
+) {
 
     if (!dateValue) {
 
@@ -273,7 +368,9 @@ function formatPostDate(dateValue) {
 
 
     const date =
-        new Date(dateValue);
+        new Date(
+            dateValue
+        );
 
 
     if (
@@ -290,11 +387,33 @@ function formatPostDate(dateValue) {
     return date.toLocaleDateString(
         undefined,
         {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
+            day:
+                "numeric",
+
+            month:
+                "short",
+
+            year:
+                "numeric"
         }
     );
+
+}
+
+
+/* ============================================================
+   POST ID
+   ============================================================ */
+
+function getPostId(
+    post
+) {
+
+    return String(
+        post?._id ||
+        post?.id ||
+        ""
+    ).trim();
 
 }
 
@@ -379,7 +498,8 @@ function renderAvatar(
 
 
     const avatarUrl =
-        typeof user?.avatarUrl === "string"
+        typeof user?.avatarUrl ===
+        "string"
             ? user.avatarUrl.trim()
             : "";
 
@@ -397,7 +517,11 @@ function renderAvatar(
 
 
         image.alt =
-            `${user.name || user.username || "User"} profile photo`;
+            `${
+                user.name ||
+                user.username ||
+                "User"
+            } profile photo`;
 
 
         image.loading =
@@ -468,25 +592,29 @@ function renderProfile(
 
 
     const name =
-        typeof user.name === "string"
+        typeof user.name ===
+        "string"
             ? user.name.trim()
             : "";
 
 
     const username =
-        typeof user.username === "string"
+        typeof user.username ===
+        "string"
             ? user.username.trim()
             : "";
 
 
     const bio =
-        typeof user.bio === "string"
+        typeof user.bio ===
+        "string"
             ? user.bio.trim()
             : "";
 
 
     publicProfileName.textContent =
-        name || "User";
+        name ||
+        "User";
 
 
     publicProfileUsername.textContent =
@@ -562,27 +690,44 @@ async function fetchPublicProfile() {
     }
 
 
+    const viewerId =
+        getCurrentUserId();
+
+
+    const query =
+        viewerId
+            ? `?userId=${encodeURIComponent(
+                viewerId
+            )}`
+            : "";
+
+
     const url =
-        `${API_BASE}/public-profile/${encodeURIComponent(currentUsername)}`;
+        `${API_BASE}/public-profile/${encodeURIComponent(
+            currentUsername
+        )}${query}`;
 
 
     const response =
         await fetch(
             url,
             {
-                method: "GET",
+                method:
+                    "GET",
 
                 headers: {
                     "Accept":
                         "application/json"
                 },
 
-                cache: "no-store"
+                cache:
+                    "no-store"
             }
         );
 
 
-    let result = null;
+    let result =
+        null;
 
 
     try {
@@ -679,6 +824,673 @@ async function loadProfile() {
 
 
 /* ============================================================
+   COMMENT DATE
+   ============================================================ */
+
+function formatCommentDate(
+    dateValue
+) {
+
+    if (!dateValue) {
+
+        return "";
+
+    }
+
+
+    const date =
+        new Date(
+            dateValue
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return date.toLocaleDateString(
+        undefined,
+        {
+            day:
+                "numeric",
+
+            month:
+                "short",
+
+            year:
+                "numeric"
+        }
+    );
+
+}
+
+
+/* ============================================================
+   GET LIKE COUNT
+   ============================================================ */
+
+function getLikeCount(
+    post
+) {
+
+    const value =
+        Number(
+            post?.likes ||
+            0
+        );
+
+
+    if (
+        !Number.isFinite(
+            value
+        )
+    ) {
+
+        return 0;
+
+    }
+
+
+    return Math.max(
+        0,
+        value
+    );
+
+}
+
+
+/* ============================================================
+   GET COMMENT COUNT
+   ============================================================ */
+
+function getCommentCount(
+    post
+) {
+
+    const value =
+        Number(
+            post?.comments ||
+            post?.commentCount ||
+            0
+        );
+
+
+    if (
+        !Number.isFinite(
+            value
+        )
+    ) {
+
+        return 0;
+
+    }
+
+
+    return Math.max(
+        0,
+        value
+    );
+
+}
+
+
+/* ============================================================
+   CHECK LIKE STATE
+   ============================================================ */
+
+function isPostLiked(
+    post
+) {
+
+    return (
+        post?.liked === true ||
+        post?.isLiked === true
+    );
+
+}
+
+
+/* ============================================================
+   LOAD COMMENTS
+   ============================================================ */
+
+async function loadComments(
+    postId,
+    commentsList,
+    countElement
+) {
+
+    if (
+        !postId ||
+        !commentsList
+    ) {
+
+        return;
+
+    }
+
+
+    commentsList.innerHTML = `
+
+        <div class="live-comments-loading">
+
+            Loading comments...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/comments`,
+                {
+                    method:
+                        "GET",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    },
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not load comments."
+            );
+
+        }
+
+
+        const comments =
+            Array.isArray(
+                result?.comments
+            )
+                ? result.comments
+                : [];
+
+
+        if (
+            countElement &&
+            Array.isArray(comments)
+        ) {
+
+            countElement.textContent =
+                String(
+                    comments.length
+                );
+
+        }
+
+
+        if (
+            comments.length ===
+            0
+        ) {
+
+            commentsList.innerHTML = `
+
+                <div class="live-comments-empty">
+
+                    No comments yet.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        commentsList.innerHTML =
+            comments.map(
+                comment => {
+
+                    const username =
+                        comment?.username ||
+                        "user";
+
+
+                    const content =
+                        comment?.content ||
+                        "";
+
+
+                    const date =
+                        formatCommentDate(
+                            comment?.createdAt
+                        );
+
+
+                    return `
+
+                        <div
+                            class="live-comment"
+                        >
+
+                            <div
+                                class="live-comment-header"
+                            >
+
+                                <strong>
+                                    @${escapeHtml(
+                                        username
+                                    )}
+                                </strong>
+
+                                ${
+                                    date
+                                        ? `
+                                            <span>
+                                                ${escapeHtml(
+                                                    date
+                                                )}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+
+                            <div
+                                class="live-comment-content"
+                            >
+
+                                ${escapeHtml(
+                                    content
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "Live profile comments error:",
+            error
+        );
+
+
+        commentsList.innerHTML = `
+
+            <div class="live-comments-error">
+
+                Unable to load comments right now.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   ADD COMMENT
+   ============================================================ */
+
+async function addComment(
+    postId,
+    input,
+    submitButton,
+    commentsList,
+    countElement
+) {
+
+    const userId =
+        getCurrentUserId();
+
+
+    if (!userId) {
+
+        alert(
+            "Please login first."
+        );
+
+        return;
+
+    }
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    if (
+        content.length >
+        1000
+    ) {
+
+        alert(
+            "Comment cannot exceed 1000 characters."
+        );
+
+        return;
+
+    }
+
+
+    submitButton.disabled =
+        true;
+
+
+    submitButton.textContent =
+        "Posting...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/comments`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            userId,
+                            content
+                        })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not add comment."
+            );
+
+        }
+
+
+        input.value =
+            "";
+
+
+        if (
+            result?.comment
+        ) {
+
+            await loadComments(
+                postId,
+                commentsList,
+                countElement
+            );
+
+        } else {
+
+            await loadComments(
+                postId,
+                commentsList,
+                countElement
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Add live profile comment error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to add comment."
+        );
+
+    } finally {
+
+        submitButton.disabled =
+            false;
+
+
+        submitButton.textContent =
+            "Comment";
+
+    }
+
+}
+
+
+/* ============================================================
+   TOGGLE LIKE
+   ============================================================ */
+
+async function toggleLike(
+    postId,
+    button,
+    countElement
+) {
+
+    const userId =
+        getCurrentUserId();
+
+
+    if (!userId) {
+
+        alert(
+            "Please login first."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        button.dataset.busy ===
+        "true"
+    ) {
+
+        return;
+
+    }
+
+
+    button.dataset.busy =
+        "true";
+
+
+    button.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/like`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            userId
+                        })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result?.error ||
+                "Could not update like."
+            );
+
+        }
+
+
+        const liked =
+            result?.liked === true;
+
+
+        const likes =
+            Math.max(
+                0,
+                Number(
+                    result?.likes
+                ) || 0
+            );
+
+
+        countElement.textContent =
+            String(
+                likes
+            );
+
+
+        button.classList.toggle(
+            "liked",
+            liked
+        );
+
+
+        button.dataset.liked =
+            liked
+                ? "true"
+                : "false";
+
+
+        button.setAttribute(
+            "aria-pressed",
+            liked
+                ? "true"
+                : "false"
+        );
+
+
+        const icon =
+            button.querySelector(
+                ".live-post-action-icon"
+            );
+
+
+        const text =
+            button.querySelector(
+                ".live-post-action-text"
+            );
+
+
+        if (icon) {
+
+            icon.textContent =
+                liked
+                    ? "♥"
+                    : "♡";
+
+        }
+
+
+        if (text) {
+
+            text.textContent =
+                liked
+                    ? "Liked"
+                    : "Like";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Live profile like error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to update like."
+        );
+
+    } finally {
+
+        button.disabled =
+            false;
+
+
+        button.dataset.busy =
+            "false";
+
+    }
+
+}
+
+
+/* ============================================================
    RENDER POSTS
    ============================================================ */
 
@@ -720,7 +1532,7 @@ function renderPosts(
 
 
     posts.forEach(
-        (post) => {
+        post => {
 
             fragment.appendChild(
                 createPostElement(
@@ -757,6 +1569,20 @@ function createPostElement(
         "public-post-card";
 
 
+    const postId =
+        getPostId(
+            post
+        );
+
+
+    article.dataset.postId =
+        postId;
+
+
+    /* ----------------------------------------
+       HEADER
+       ---------------------------------------- */
+
     const header =
         document.createElement(
             "div"
@@ -778,7 +1604,8 @@ function createPostElement(
 
 
     const username =
-        typeof post?.username === "string"
+        typeof post?.username ===
+        "string"
             ? post.username.trim()
             : currentUsername;
 
@@ -841,6 +1668,10 @@ function createPostElement(
     );
 
 
+    /* ----------------------------------------
+       CONTENT
+       ---------------------------------------- */
+
     const content =
         document.createElement(
             "div"
@@ -852,10 +1683,15 @@ function createPostElement(
 
 
     content.textContent =
-        typeof post?.content === "string"
+        typeof post?.content ===
+        "string"
             ? post.content
             : "";
 
+
+    /* ----------------------------------------
+       ACTION FOOTER
+       ---------------------------------------- */
 
     const footer =
         document.createElement(
@@ -867,31 +1703,187 @@ function createPostElement(
         "public-post-footer";
 
 
-    const likes =
+    const likeButton =
         document.createElement(
-            "span"
+            "button"
         );
 
 
-    likes.className =
-        "public-post-stat";
+    likeButton.type =
+        "button";
 
 
-    const likesValue =
-        Number.isFinite(
-            Number(post?.likes)
-        )
-            ? Number(post.likes)
-            : 0;
+    likeButton.className =
+        "live-post-action-button live-post-like-button";
 
 
-    likes.textContent =
-        `♥ ${likesValue}`;
+    const liked =
+        isPostLiked(
+            post
+        );
+
+
+    if (liked) {
+
+        likeButton.classList.add(
+            "liked"
+        );
+
+    }
+
+
+    likeButton.dataset.postId =
+        postId;
+
+
+    likeButton.dataset.liked =
+        liked
+            ? "true"
+            : "false";
+
+
+    likeButton.setAttribute(
+        "aria-pressed",
+        liked
+            ? "true"
+            : "false"
+    );
+
+
+    likeButton.innerHTML = `
+
+        <span
+            class="live-post-action-icon"
+        >
+            ${
+                liked
+                    ? "♥"
+                    : "♡"
+            }
+        </span>
+
+
+        <span
+            class="live-post-action-text"
+        >
+            ${
+                liked
+                    ? "Liked"
+                    : "Like"
+            }
+        </span>
+
+
+        <span
+            class="live-post-action-count live-post-like-count"
+        >
+            ${getLikeCount(post)}
+        </span>
+
+    `;
+
+
+    const commentButton =
+        document.createElement(
+            "button"
+        );
+
+
+    commentButton.type =
+        "button";
+
+
+    commentButton.className =
+        "live-post-action-button live-post-comment-button";
+
+
+    commentButton.dataset.postId =
+        postId;
+
+
+    commentButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+
+    commentButton.innerHTML = `
+
+        <span
+            class="live-post-action-icon"
+        >
+            💬
+        </span>
+
+
+        <span>
+            Comment
+        </span>
+
+
+        <span
+            class="live-post-action-count live-post-comment-count"
+        >
+            ${getCommentCount(post)}
+        </span>
+
+    `;
 
 
     footer.appendChild(
-        likes
+        likeButton
     );
+
+
+    footer.appendChild(
+        commentButton
+    );
+
+
+    /* ----------------------------------------
+       COMMENTS PANEL
+       ---------------------------------------- */
+
+    const commentsPanel =
+        document.createElement(
+            "div"
+        );
+
+
+    commentsPanel.className =
+        "live-post-comments-panel";
+
+
+    commentsPanel.innerHTML = `
+
+        <div
+            class="live-comments-list"
+        ></div>
+
+
+        <div
+            class="live-comment-form"
+        >
+
+            <input
+                type="text"
+                class="live-comment-input"
+                maxlength="1000"
+                placeholder="Write a comment..."
+                autocomplete="off"
+            >
+
+
+            <button
+                type="button"
+                class="live-submit-comment"
+            >
+                Comment
+            </button>
+
+        </div>
+
+    `;
 
 
     article.appendChild(
@@ -909,7 +1901,316 @@ function createPostElement(
     );
 
 
+    article.appendChild(
+        commentsPanel
+    );
+
+
     return article;
+
+}
+
+
+/* ============================================================
+   POST EVENT DELEGATION
+   ============================================================ */
+
+if (publicPostsFeed) {
+
+    publicPostsFeed.addEventListener(
+        "click",
+        async event => {
+
+            /* ----------------------------------------
+               LIKE
+               ---------------------------------------- */
+
+            const likeButton =
+                event.target.closest(
+                    ".live-post-like-button"
+                );
+
+
+            if (likeButton) {
+
+                const postCard =
+                    likeButton.closest(
+                        ".public-post-card"
+                    );
+
+
+                const postId =
+                    likeButton.dataset.postId;
+
+
+                const countElement =
+                    postCard?.querySelector(
+                        ".live-post-like-count"
+                    );
+
+
+                if (
+                    postId &&
+                    countElement
+                ) {
+
+                    await toggleLike(
+                        postId,
+                        likeButton,
+                        countElement
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            /* ----------------------------------------
+               COMMENT TOGGLE
+               ---------------------------------------- */
+
+            const commentButton =
+                event.target.closest(
+                    ".live-post-comment-button"
+                );
+
+
+            if (commentButton) {
+
+                const postCard =
+                    commentButton.closest(
+                        ".public-post-card"
+                    );
+
+
+                if (!postCard) {
+
+                    return;
+
+                }
+
+
+                const postId =
+                    commentButton.dataset.postId;
+
+
+                const panel =
+                    postCard.querySelector(
+                        ".live-post-comments-panel"
+                    );
+
+
+                const commentsList =
+                    postCard.querySelector(
+                        ".live-comments-list"
+                    );
+
+
+                const countElement =
+                    postCard.querySelector(
+                        ".live-post-comment-count"
+                    );
+
+
+                if (
+                    !postId ||
+                    !panel ||
+                    !commentsList
+                ) {
+
+                    return;
+
+                }
+
+
+                const isOpen =
+                    panel.classList.contains(
+                        "open"
+                    );
+
+
+                if (isOpen) {
+
+                    panel.classList.remove(
+                        "open"
+                    );
+
+
+                    commentButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    return;
+
+                }
+
+
+                panel.classList.add(
+                    "open"
+                );
+
+
+                commentButton.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                await loadComments(
+                    postId,
+                    commentsList,
+                    countElement
+                );
+
+
+                const input =
+                    postCard.querySelector(
+                        ".live-comment-input"
+                    );
+
+
+                if (input) {
+
+                    input.focus();
+
+                }
+
+
+                return;
+
+            }
+
+
+            /* ----------------------------------------
+               COMMENT SUBMIT
+               ---------------------------------------- */
+
+            const submitButton =
+                event.target.closest(
+                    ".live-submit-comment"
+                );
+
+
+            if (submitButton) {
+
+                const postCard =
+                    submitButton.closest(
+                        ".public-post-card"
+                    );
+
+
+                if (!postCard) {
+
+                    return;
+
+                }
+
+
+                const postId =
+                    postCard.dataset.postId;
+
+
+                const input =
+                    postCard.querySelector(
+                        ".live-comment-input"
+                    );
+
+
+                const commentsList =
+                    postCard.querySelector(
+                        ".live-comments-list"
+                    );
+
+
+                const countElement =
+                    postCard.querySelector(
+                        ".live-post-comment-count"
+                    );
+
+
+                if (
+                    postId &&
+                    input &&
+                    commentsList &&
+                    countElement
+                ) {
+
+                    await addComment(
+                        postId,
+                        input,
+                        submitButton,
+                        commentsList,
+                        countElement
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ----------------------------------------
+       ENTER TO COMMENT
+       ---------------------------------------- */
+
+    publicPostsFeed.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !==
+                "Enter" ||
+                event.shiftKey
+            ) {
+
+                return;
+
+            }
+
+
+            const input =
+                event.target.closest(
+                    ".live-comment-input"
+                );
+
+
+            if (!input) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const postCard =
+                input.closest(
+                    ".public-post-card"
+                );
+
+
+            const submitButton =
+                postCard?.querySelector(
+                    ".live-submit-comment"
+                );
+
+
+            if (submitButton) {
+
+                submitButton.click();
+
+            }
+
+        }
+    );
 
 }
 
@@ -1016,7 +2317,8 @@ if (
         "DOMContentLoaded",
         initializeLiveProfile,
         {
-            once: true
+            once:
+                true
         }
     );
 

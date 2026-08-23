@@ -17,6 +17,7 @@
         content="Public profile on Dheere Studio."
     >
 
+
     <!-- =====================================================
          SHARED CSS
          ===================================================== -->
@@ -30,6 +31,7 @@
         rel="stylesheet"
         href="mood.css"
     >
+
 
     <!-- =====================================================
          PUBLIC PROFILE CSS
@@ -54,6 +56,7 @@
 
         <nav class="navbar">
 
+
             <div class="nav-logo">
 
                 <a href="index.html">
@@ -73,11 +76,13 @@
                         </a>
                     </li>
 
+
                     <li>
                         <a href="index.html#articles">
                             Articles
                         </a>
                     </li>
+
 
                     <li>
                         <a href="community.html">
@@ -85,11 +90,13 @@
                         </a>
                     </li>
 
+
                     <li>
                         <a href="about.html">
                             About
                         </a>
                     </li>
+
 
                     <li>
                         <a href="index.html#feedback">
@@ -113,9 +120,11 @@
 
             </div>
 
+
         </nav>
 
     </header>
+
 
 
     <!-- =====================================================
@@ -131,6 +140,7 @@
 
         <div class="live-profile-topbar">
 
+
             <a
                 href="index.html"
                 class="back-link"
@@ -143,11 +153,13 @@
                 PUBLIC PROFILE
             </span>
 
+
         </div>
 
 
+
         <!-- =================================================
-             LOADING STATE
+             PROFILE LOADING
              ================================================= -->
 
         <section
@@ -156,7 +168,11 @@
             aria-live="polite"
         >
 
-            <div class="loading-spinner"></div>
+            <div
+                class="loading-spinner"
+                aria-hidden="true"
+            ></div>
+
 
             <p>
                 Loading profile...
@@ -165,8 +181,9 @@
         </section>
 
 
+
         <!-- =================================================
-             ERROR STATE
+             PROFILE ERROR
              ================================================= -->
 
         <section
@@ -175,7 +192,11 @@
             hidden
         >
 
-            <div class="state-icon">
+
+            <div
+                class="state-icon"
+                aria-hidden="true"
+            >
                 !
             </div>
 
@@ -191,6 +212,7 @@
 
 
             <div class="state-actions">
+
 
                 <button
                     id="retryProfileBtn"
@@ -208,9 +230,12 @@
                     Back to Dheere Studio
                 </a>
 
+
             </div>
 
+
         </section>
+
 
 
         <!-- =================================================
@@ -240,14 +265,18 @@
 
                     <div class="public-avatar-wrapper">
 
+
                         <div
                             id="publicProfileAvatar"
                             class="public-profile-avatar"
+                            aria-label="Profile avatar"
                         >
                             U
                         </div>
 
+
                     </div>
+
 
 
                     <!-- =====================================
@@ -281,8 +310,7 @@
                         <p
                             id="publicProfileBio"
                             class="public-profile-bio"
-                        >
-                        </p>
+                        ></p>
 
 
                     </div>
@@ -291,14 +319,16 @@
                 </div>
 
 
+
                 <!-- =========================================
-                     PUBLIC PROFILE STATS
+                     PROFILE STATS
                      ========================================= -->
 
                 <div class="public-profile-stats">
 
 
                     <div class="public-stat">
+
 
                         <span
                             id="publicPostCount"
@@ -307,14 +337,18 @@
                             0
                         </span>
 
+
                         <span class="public-stat-label">
                             Posts
                         </span>
 
+
                     </div>
 
 
+
                     <div class="public-stat">
+
 
                         <span
                             id="publicProfileStatus"
@@ -323,14 +357,18 @@
                             Public
                         </span>
 
+
                         <span class="public-stat-label">
                             Profile
                         </span>
 
+
                     </div>
 
 
+
                     <div class="public-stat">
+
 
                         <span
                             id="publicJoinedDate"
@@ -339,9 +377,11 @@
                             —
                         </span>
 
+
                         <span class="public-stat-label">
                             Joined
                         </span>
+
 
                     </div>
 
@@ -352,8 +392,9 @@
             </section>
 
 
+
             <!-- =============================================
-                 PROFILE NAVIGATION
+                 PROFILE TABS
                  ============================================= -->
 
             <nav
@@ -361,14 +402,18 @@
                 aria-label="Public profile sections"
             >
 
+
                 <a
                     href="#publicPostsSection"
                     class="live-profile-tab active"
+                    aria-current="page"
                 >
                     Posts
                 </a>
 
+
             </nav>
+
 
 
             <!-- =============================================
@@ -386,6 +431,7 @@
 
                     <div>
 
+
                         <span class="section-eyebrow">
                             ACTIVITY
                         </span>
@@ -401,6 +447,7 @@
                             Dheere Studio.
                         </p>
 
+
                     </div>
 
 
@@ -415,6 +462,7 @@
                 </div>
 
 
+
                 <!-- =========================================
                      POSTS LOADING
                      ========================================= -->
@@ -422,15 +470,23 @@
                 <div
                     id="publicPostsLoading"
                     class="posts-state"
+                    hidden
                 >
 
-                    <div class="loading-spinner small"></div>
+
+                    <div
+                        class="loading-spinner small"
+                        aria-hidden="true"
+                    ></div>
+
 
                     <p>
                         Loading posts...
                     </p>
 
+
                 </div>
+
 
 
                 <!-- =========================================
@@ -442,6 +498,7 @@
                     class="posts-state error"
                     hidden
                 >
+
 
                     <p>
                         Unable to load posts right now.
@@ -456,7 +513,9 @@
                         Try Again
                     </button>
 
+
                 </div>
+
 
 
                 <!-- =========================================
@@ -469,7 +528,11 @@
                     hidden
                 >
 
-                    <div class="empty-post-icon">
+
+                    <div
+                        class="empty-post-icon"
+                        aria-hidden="true"
+                    >
                         ✦
                     </div>
 
@@ -484,7 +547,9 @@
                         publicly yet.
                     </p>
 
+
                 </div>
+
 
 
                 <!-- =========================================
@@ -494,6 +559,7 @@
                 <div
                     id="publicPostsFeed"
                     class="public-posts-feed"
+                    aria-live="polite"
                 ></div>
 
 
@@ -506,25 +572,32 @@
     </main>
 
 
+
     <!-- =====================================================
          FOOTER
          ===================================================== -->
 
     <footer class="live-profile-footer">
 
+
         <div class="footer-inner">
+
 
             <span>
                 Dheere Studio
             </span>
 
+
             <span>
                 Public Profile
             </span>
 
+
         </div>
 
+
     </footer>
+
 
 
     <!-- =====================================================
@@ -532,6 +605,7 @@
          ===================================================== -->
 
     <script src="mood-engine.js"></script>
+
 
 
     <!-- =====================================================
