@@ -542,6 +542,373 @@
         }
 
 
+
+        /* ==========================================
+           NOTIFICATIONS
+           ========================================== */
+
+        .notification-wrapper {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            margin-left: 10px;
+
+        }
+
+
+        .notification-button {
+
+            position: relative;
+
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 0;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.045);
+
+            color: inherit;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+
+        }
+
+
+        .notification-button:hover {
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border-color: rgba(255, 255, 255, 0.24);
+
+        }
+
+
+        .notification-button:focus-visible {
+
+            outline: 2px solid currentColor;
+
+            outline-offset: 2px;
+
+        }
+
+
+        .notification-icon {
+
+            width: 19px;
+            height: 19px;
+
+            pointer-events: none;
+
+        }
+
+
+        .notification-badge {
+
+            position: absolute;
+
+            top: -3px;
+            right: -3px;
+
+            min-width: 17px;
+            height: 17px;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 0 4px;
+
+            border: 2px solid #0b0c0e;
+
+            border-radius: 999px;
+
+            background: #fff;
+
+            color: #0b0c0e;
+
+            font-size: 0.62rem;
+
+            font-weight: 700;
+
+            line-height: 1;
+
+        }
+
+
+        .notification-badge.active {
+
+            display: flex;
+
+        }
+
+
+        .notification-panel {
+
+            position: absolute;
+
+            top: calc(100% + 10px);
+
+            right: 0;
+
+            width: 340px;
+
+            max-height: 430px;
+
+            overflow: hidden;
+
+            display: none;
+
+            flex-direction: column;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 14px;
+
+            background: rgba(18, 19, 22, 0.98);
+
+            box-shadow:
+                0 20px 55px rgba(0, 0, 0, 0.42);
+
+            z-index: 10000;
+
+        }
+
+
+        .notification-panel.active {
+
+            display: flex;
+
+        }
+
+
+        .notification-panel-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 14px 15px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+
+        }
+
+
+        .notification-panel-title {
+
+            margin: 0;
+
+            font-size: 0.92rem;
+
+            font-weight: 650;
+
+        }
+
+
+        .notification-panel-action {
+
+            border: none;
+
+            background: transparent;
+
+            color: inherit;
+
+            padding: 4px 0;
+
+            cursor: pointer;
+
+            font: inherit;
+
+            font-size: 0.75rem;
+
+            opacity: 0.55;
+
+        }
+
+
+        .notification-panel-action:hover {
+
+            opacity: 1;
+
+        }
+
+
+        .notification-list {
+
+            overflow-y: auto;
+
+            max-height: 360px;
+
+        }
+
+
+        .notification-item {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: none;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+            background: transparent;
+
+            color: inherit;
+
+            text-align: left;
+
+            font: inherit;
+
+        }
+
+
+        .notification-item.unread {
+
+            background: rgba(255, 255, 255, 0.045);
+
+        }
+
+
+        .notification-item-icon {
+
+            width: 30px;
+            height: 30px;
+
+            flex: 0 0 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            font-size: 0.75rem;
+
+        }
+
+
+        .notification-item-content {
+
+            min-width: 0;
+
+            flex: 1;
+
+        }
+
+
+        .notification-item-text {
+
+            margin: 0;
+
+            font-size: 0.8rem;
+
+            line-height: 1.45;
+
+            opacity: 0.88;
+
+        }
+
+
+        .notification-item-time {
+
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 0.68rem;
+
+            opacity: 0.42;
+
+        }
+
+
+        .notification-empty {
+
+            padding: 30px 18px;
+
+            text-align: center;
+
+            font-size: 0.8rem;
+
+            opacity: 0.55;
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .notification-wrapper {
+
+                margin-left: 6px;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .notification-wrapper {
+
+                position: static;
+
+            }
+
+
+            .notification-panel {
+
+                position: fixed;
+
+                top: 70px;
+
+                left: 12px;
+
+                right: 12px;
+
+                width: auto;
+
+                max-width: none;
+
+            }
+
+        }
+
+
         /* ==========================================
            MOBILE SEARCH
            ========================================== */
@@ -811,6 +1178,105 @@
                     </div>
 
                 </div>
+
+
+
+                <!-- ====================================================
+                     NOTIFICATIONS
+                     ==================================================== -->
+
+                <div
+                    class="notification-wrapper"
+                    id="notificationWrapper"
+                >
+
+                    <button
+                        id="notificationButton"
+                        class="notification-button"
+                        type="button"
+                        aria-label="Open notifications"
+                        aria-expanded="false"
+                        aria-controls="notificationPanel"
+                    >
+
+                        <svg
+                            class="notification-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+
+                            <path
+                                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                            ></path>
+
+                            <path
+                                d="M10 21h4"
+                            ></path>
+
+                        </svg>
+
+
+                        <span
+                            id="notificationBadge"
+                            class="notification-badge"
+                            aria-label="Unread notifications"
+                        >
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        id="notificationPanel"
+                        class="notification-panel"
+                        aria-hidden="true"
+                    >
+
+                        <div
+                            class="notification-panel-header"
+                        >
+
+                            <h2
+                                class="notification-panel-title"
+                            >
+                                Notifications
+                            </h2>
+
+
+                            <button
+                                id="markNotificationsReadBtn"
+                                class="notification-panel-action"
+                                type="button"
+                            >
+                                Mark all read
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="notificationList"
+                            class="notification-list"
+                        >
+
+                            <div
+                                class="notification-empty"
+                            >
+                                No notifications yet.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
 
 
                 <!-- ====================================================
@@ -1605,6 +2071,314 @@
     <!-- ====================================================
          JAVASCRIPT
          ==================================================== -->
+
+
+    <!-- ====================================================
+         NOTIFICATION FRONTEND
+         ==================================================== -->
+
+    <script>
+
+        (function () {
+
+            const button =
+                document.getElementById(
+                    "notificationButton"
+                );
+
+            const panel =
+                document.getElementById(
+                    "notificationPanel"
+                );
+
+            const wrapper =
+                document.getElementById(
+                    "notificationWrapper"
+                );
+
+            const list =
+                document.getElementById(
+                    "notificationList"
+                );
+
+            const badge =
+                document.getElementById(
+                    "notificationBadge"
+                );
+
+            const markReadButton =
+                document.getElementById(
+                    "markNotificationsReadBtn"
+                );
+
+
+            if (
+                !button ||
+                !panel ||
+                !wrapper ||
+                !list ||
+                !badge
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Frontend foundation only.
+             *
+             * The backend notification API is intentionally NOT
+             * called here yet because MongoDB authentication is
+             * currently unavailable.
+             *
+             * Later social-routes.js can supply real notifications
+             * such as:
+             *
+             * "username liked your post"
+             * "username commented on your post"
+             *
+             * This UI is already prepared for that data.
+             */
+
+            let notifications = [];
+
+
+            function renderNotifications() {
+
+                const unreadCount =
+                    notifications.filter(
+                        notification =>
+                            !notification.read
+                    ).length;
+
+
+                badge.textContent =
+                    unreadCount > 99
+                        ? "99+"
+                        : String(unreadCount);
+
+
+                badge.classList.toggle(
+                    "active",
+                    unreadCount > 0
+                );
+
+
+                if (
+                    notifications.length === 0
+                ) {
+
+                    list.innerHTML = `
+                        <div class="notification-empty">
+                            No notifications yet.
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                list.innerHTML =
+                    notifications
+                        .map(
+                            notification => {
+
+                                const safeText =
+                                    String(
+                                        notification.text || ""
+                                    )
+                                        .replace(
+                                            /[&<>"']/g,
+                                            character => ({
+                                                "&": "&amp;",
+                                                "<": "&lt;",
+                                                ">": "&gt;",
+                                                '"': "&quot;",
+                                                "'": "&#039;"
+                                            }[character])
+                                        );
+
+
+                                const safeTime =
+                                    String(
+                                        notification.time || ""
+                                    )
+                                        .replace(
+                                            /[&<>"']/g,
+                                            character => ({
+                                                "&": "&amp;",
+                                                "<": "&lt;",
+                                                ">": "&gt;",
+                                                '"': "&quot;",
+                                                "'": "&#039;"
+                                            }[character])
+                                        );
+
+
+                                return `
+                                    <div
+                                        class="notification-item ${
+                                            notification.read
+                                                ? ""
+                                                : "unread"
+                                        }"
+                                    >
+
+                                        <span
+                                            class="notification-item-icon"
+                                            aria-hidden="true"
+                                        >
+                                            ${
+                                                notification.type === "comment"
+                                                    ? "C"
+                                                    : "♥"
+                                            }
+                                        </span>
+
+
+                                        <div
+                                            class="notification-item-content"
+                                        >
+
+                                            <p
+                                                class="notification-item-text"
+                                            >
+                                                ${safeText}
+                                            </p>
+
+
+                                            <span
+                                                class="notification-item-time"
+                                            >
+                                                ${safeTime}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                `;
+
+                            }
+                        )
+                        .join("");
+
+            }
+
+
+            function openNotifications() {
+
+                panel.classList.add(
+                    "active"
+                );
+
+                panel.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            }
+
+
+            function closeNotifications() {
+
+                panel.classList.remove(
+                    "active"
+                );
+
+                panel.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+
+                    if (
+                        panel.classList.contains(
+                            "active"
+                        )
+                    ) {
+
+                        closeNotifications();
+
+                    } else {
+
+                        openNotifications();
+
+                    }
+
+                }
+            );
+
+
+            panel.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+                }
+            );
+
+
+            document.addEventListener(
+                "click",
+                function () {
+
+                    closeNotifications();
+
+                }
+            );
+
+
+            markReadButton?.addEventListener(
+                "click",
+                function () {
+
+                    notifications =
+                        notifications.map(
+                            notification => ({
+
+                                ...notification,
+
+                                read: true
+
+                            })
+                        );
+
+
+                    renderNotifications();
+
+                }
+            );
+
+
+            renderNotifications();
+
+        })();
+
+    </script>
+
+
 
     <script src="script.js"></script>
 
