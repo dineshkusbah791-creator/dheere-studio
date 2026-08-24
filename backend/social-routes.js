@@ -190,7 +190,17 @@ async function createNotification({
 
 
     /*
-     * Prevent duplicate like notifications.
+     * Prevent duplicate LIKE notifications.
+     *
+     * IMPORTANT:
+     * If an existing like notification is already read,
+     * do NOT change it back to unread.
+     *
+     * This prevents:
+     *
+     * read -> refresh -> unread
+     *
+     * from happening.
      */
 
     if (
@@ -205,6 +215,13 @@ async function createNotification({
 
         if (existing) {
 
+            /*
+             * Keep the existing read state.
+             *
+             * Only refresh the message/actor information
+             * without changing read -> unread.
+             */
+
             await notificationsCollection.updateOne(
 
                 {
@@ -215,14 +232,24 @@ async function createNotification({
                 {
                     $set: {
 
-                        read:
-                            false,
+                        actorName:
+                            actorName ||
+                            existing.actorName ||
+                            "Dheere User",
 
-                        createdAt:
-                            new Date(),
+                        actorUsername:
+                            actorUsername ||
+                            existing.actorUsername ||
+                            "",
 
                         message:
-                            message
+                            message ||
+                            existing.message ||
+                            "",
+
+                        createdAt:
+                            existing.createdAt ||
+                            new Date()
 
                     }
 
@@ -237,6 +264,12 @@ async function createNotification({
 
     }
 
+
+    /*
+     * Comments are separate activities.
+     *
+     * Every new comment gets its own notification.
+     */
 
     const notification = {
 
@@ -303,11 +336,6 @@ module.exports = function createSocialRouter({
     notificationsCollection
 
 }) {
-
-    /*
-     * IMPORTANT:
-     * Create a fresh router for this factory call.
-     */
 
     const router =
         express.Router();
@@ -2011,7 +2039,6 @@ module.exports = function createSocialRouter({
                         "Notification deleted"
 
                 });
-
 
             } catch (error) {
 
