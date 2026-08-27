@@ -13,7 +13,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
 }
 
 html {
@@ -22,10 +27,16 @@ html {
 
 body {
     background-color: #0b0c0e;
+
     color: #e2e8f0;
+
     line-height: 1.7;
+
     font-weight: 400;
+
     -webkit-font-smoothing: antialiased;
+
+    overflow-x: hidden;
 }
 
 
@@ -35,26 +46,36 @@ body {
 
 main {
     max-width: 900px;
+
     margin: 0 auto;
+
     padding: 0 24px;
 }
 
 section {
     padding: 100px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.06);
 }
 
 section h2 {
     font-size: 1.5rem;
+
     font-weight: 500;
+
     color: #f8fafc;
+
     letter-spacing: -0.02em;
+
     margin-bottom: 24px;
 }
 
 p {
     color: #94a3b8;
+
     font-size: 1rem;
+
     font-weight: 300;
 }
 
@@ -65,25 +86,35 @@ p {
 
 header {
     position: sticky;
+
     top: 0;
+
     z-index: 100;
 
-    background: rgba(11, 12, 14, 0.85);
+    background:
+        rgba(11, 12, 14, 0.85);
 
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter:
+        blur(12px);
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.05);
 }
 
 .navbar {
     max-width: 900px;
+
     margin: 0 auto;
 
     padding: 20px 24px;
 
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
     gap: 20px;
@@ -95,10 +126,13 @@ header {
 
 .nav-logo a {
     color: #ffffff;
+
     text-decoration: none;
 
     font-size: 1rem;
+
     font-weight: 600;
+
     letter-spacing: -0.01em;
 }
 
@@ -127,6 +161,7 @@ header {
     text-decoration: none;
 
     font-size: 0.88rem;
+
     font-weight: 400;
 
     transition:
@@ -164,13 +199,16 @@ header {
 
     background-color: #f8fafc;
 
-    border: 1px solid #f8fafc;
+    border:
+        1px solid #f8fafc;
 
-    padding: 8px 18px;
+    padding:
+        8px 18px;
 
     border-radius: 6px;
 
     font-size: 0.85rem;
+
     font-weight: 500;
 
     text-decoration: none;
@@ -183,16 +221,25 @@ header {
         background-color 0.2s ease,
         border-color 0.2s ease,
         color 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .button:hover {
     background-color: #e2e8f0;
+
     border-color: #e2e8f0;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .button:active {
-    transform: translateY(1px);
+    transform:
+        translateY(1px);
 }
 
 
@@ -209,13 +256,16 @@ header {
 
     min-height: 42px;
 
-    padding: 4px 12px 4px 5px;
+    padding:
+        4px 12px 4px 5px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
 
     border-radius: 999px;
 
-    background: rgba(255, 255, 255, 0.035);
+    background:
+        rgba(255, 255, 255, 0.035);
 
     color: #e2e8f0;
 
@@ -231,20 +281,24 @@ header {
 }
 
 .nav-profile-link:hover {
-    background: rgba(255, 255, 255, 0.075);
+    background:
+        rgba(255, 255, 255, 0.075);
 
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color:
+        rgba(255, 255, 255, 0.18);
 
     color: #ffffff;
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .nav-profile-link:active {
-    transform: translateY(0);
+    transform:
+        translateY(0);
 }
 
 
@@ -254,20 +308,24 @@ header {
 
 .nav-profile-avatar {
     width: 34px;
+
     height: 34px;
 
-    flex: 0 0 34px;
+    flex:
+        0 0 34px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     overflow: hidden;
 
     border-radius: 50%;
 
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border:
+        1px solid rgba(255, 255, 255, 0.18);
 
     background:
         linear-gradient(
@@ -287,11 +345,13 @@ header {
     user-select: none;
 
     box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+        inset 0 0 0 1px
+        rgba(255, 255, 255, 0.025);
 }
 
 .nav-profile-avatar img {
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -348,7 +408,9 @@ header {
    ==================================================== */
 
 .hero-section {
-    padding: 140px 0 100px 0;
+    padding:
+        140px 0
+        100px 0;
 }
 
 .hero-content h1 {
@@ -380,9 +442,11 @@ header {
 
 .project-card,
 .article-card {
-    background: rgba(255, 255, 255, 0.02);
+    background:
+        rgba(255, 255, 255, 0.02);
 
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border:
+        1px solid rgba(255, 255, 255, 0.06);
 
     padding: 32px;
 
@@ -390,14 +454,25 @@ header {
 
     transition:
         border-color 0.3s ease,
-        background-color 0.3s ease;
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .project-card:hover,
 .article-card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color:
+        rgba(255, 255, 255, 0.15);
 
-    background: rgba(255, 255, 255, 0.028);
+    background:
+        rgba(255, 255, 255, 0.028);
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 16px 40px
+        rgba(0, 0, 0, 0.12);
 }
 
 .project-card h3,
@@ -432,12 +507,17 @@ header {
 
     gap: 6px;
 
-    transition: opacity 0.2s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
 
 .project-card a:hover,
 .article-card a:hover {
     opacity: 0.7;
+
+    transform:
+        translateX(2px);
 }
 
 .article-card .category {
@@ -466,11 +546,14 @@ header {
 
     margin-top: 20px;
 
-    padding: 6px 12px;
+    padding:
+        6px 12px;
 
-    background: rgba(255, 255, 255, 0.03);
+    background:
+        rgba(255, 255, 255, 0.03);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
 
     border-radius: 6px;
 
@@ -487,7 +570,362 @@ header {
 
 
 /* ====================================================
-   7. FEEDBACK FORM
+   7. FOUNDER SECTION
+   ==================================================== */
+
+.founder-section {
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* subtle background glow */
+
+.founder-section::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+
+    height: 420px;
+
+    top: 50%;
+
+    right: -260px;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.055),
+            transparent 68%
+        );
+
+    pointer-events: none;
+
+    filter:
+        blur(12px);
+}
+
+
+.founder-card {
+    position: relative;
+
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns:
+        180px
+        1fr;
+
+    gap: 34px;
+
+    align-items: center;
+
+    padding: 36px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.045),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.09);
+
+    box-shadow:
+        0 24px 60px
+        rgba(0, 0, 0, 0.14);
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease;
+}
+
+
+.founder-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(255, 255, 255, 0.16);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.02)
+        );
+}
+
+
+/* Founder visual */
+
+.founder-visual {
+    position: relative;
+
+    width: 180px;
+
+    height: 180px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.founder-avatar {
+    width: 150px;
+
+    height: 150px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+    color: #ffffff;
+
+    font-size: 2.5rem;
+
+    font-weight: 600;
+
+    letter-spacing: -0.04em;
+
+    box-shadow:
+        0 20px 45px
+        rgba(0, 0, 0, 0.2),
+
+        inset
+        0 1px 0
+        rgba(255, 255, 255, 0.1);
+}
+
+
+.founder-avatar img {
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* outer ring */
+
+.founder-visual::before {
+    content: "";
+
+    position: absolute;
+
+    width: 174px;
+
+    height: 174px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    animation:
+        founderRing
+        8s linear infinite;
+}
+
+
+@keyframes founderRing {
+
+    from {
+        transform:
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/* Founder information */
+
+.founder-info {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.founder-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    color: #64748b;
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+
+.founder-label::before {
+    content: "";
+
+    width: 22px;
+
+    height: 1px;
+
+    background:
+        currentColor;
+}
+
+
+.founder-name {
+    color: #ffffff;
+
+    font-size:
+        clamp(
+            1.7rem,
+            4vw,
+            2.2rem
+        );
+
+    font-weight: 500;
+
+    letter-spacing: -0.035em;
+
+    margin-bottom: 8px;
+}
+
+
+.founder-role {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 0.88rem;
+
+    margin-bottom: 18px;
+}
+
+
+.founder-info p {
+    max-width: 560px;
+
+    line-height: 1.8;
+
+    margin-bottom: 22px;
+}
+
+
+.founder-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #f8fafc;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    font-weight: 500;
+
+    transition:
+        opacity 0.2s ease,
+        gap 0.2s ease;
+}
+
+
+.founder-link:hover {
+    opacity: 0.7;
+
+    gap: 12px;
+}
+
+
+/* Founder quote */
+
+.founder-quote {
+    position: relative;
+
+    margin-top: 18px;
+
+    padding-left: 16px;
+
+    color: #64748b;
+
+    font-size: 0.88rem;
+
+    font-style: italic;
+}
+
+
+.founder-quote::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 4px;
+
+    bottom: 4px;
+
+    width: 2px;
+
+    background:
+        rgba(255, 255, 255, 0.25);
+}
+
+
+/* ====================================================
+   8. FEEDBACK FORM
    ==================================================== */
 
 .feedback-form {
@@ -504,11 +942,14 @@ header {
 .feedback-form textarea {
     width: 100%;
 
-    padding: 12px 16px;
+    padding:
+        12px 16px;
 
-    background: rgba(255, 255, 255, 0.03);
+    background:
+        rgba(255, 255, 255, 0.03);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
 
     border-radius: 8px;
 
@@ -525,9 +966,11 @@ header {
 
 .feedback-form input:focus,
 .feedback-form textarea:focus {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color:
+        rgba(255, 255, 255, 0.3);
 
-    background: rgba(255, 255, 255, 0.045);
+    background:
+        rgba(255, 255, 255, 0.045);
 }
 
 .feedback-form button {
@@ -546,11 +989,12 @@ header {
 
 
 /* ====================================================
-   8. FOOTER
+   9. FOOTER
    ==================================================== */
 
 footer {
-    padding: 60px 0;
+    padding:
+        60px 0;
 
     text-align: center;
 
@@ -561,7 +1005,7 @@ footer {
 
 
 /* ====================================================
-   9. PAGE SWITCHER & AUTH
+   10. PAGE SWITCHER & AUTH
    ==================================================== */
 
 .page-view {
@@ -592,6 +1036,7 @@ footer {
     position: absolute;
 
     top: 32px;
+
     left: 32px;
 
     background: none;
@@ -606,7 +1051,8 @@ footer {
 
     cursor: pointer;
 
-    transition: color 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
 .back-home-link:hover {
@@ -620,9 +1066,11 @@ footer {
 }
 
 .auth-card {
-    background: rgba(255, 255, 255, 0.02);
+    background:
+        rgba(255, 255, 255, 0.02);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
 
     border-radius: 12px;
 
@@ -641,7 +1089,8 @@ footer {
 .tab-btn {
     flex: 1;
 
-    padding: 10px 0;
+    padding:
+        10px 0;
 
     border: none;
 
@@ -657,7 +1106,8 @@ footer {
 
     position: relative;
 
-    transition: color 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
 .tab-btn.active {
@@ -717,11 +1167,14 @@ footer {
 .input-group input {
     width: 100%;
 
-    padding: 10px 14px;
+    padding:
+        10px 14px;
 
-    background: rgba(255, 255, 255, 0.03);
+    background:
+        rgba(255, 255, 255, 0.03);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
 
     border-radius: 6px;
 
@@ -759,7 +1212,8 @@ footer {
 
     text-decoration: none;
 
-    transition: color 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
 .forgot-pass:hover {
@@ -778,7 +1232,7 @@ footer {
 
 
 /* ====================================================
-   10. PASSWORD FIELD
+   11. PASSWORD FIELD
    ==================================================== */
 
 .password-wrapper {
@@ -800,14 +1254,17 @@ footer {
 
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     width: 32px;
+
     height: 32px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     padding: 0;
@@ -845,7 +1302,7 @@ footer {
 
 
 /* ====================================================
-   11. DHEERE MOOD — ENVIRONMENT LAYER
+   12. DHEERE MOOD — ENVIRONMENT LAYER
    ==================================================== */
 
 #dheereEnvironment {
@@ -860,6 +1317,8 @@ footer {
     overflow: hidden;
 
     isolation: isolate;
+
+    user-select: none;
 }
 
 header,
@@ -904,17 +1363,20 @@ footer {
     position: absolute;
 
     width: 340px;
+
     height: 210px;
 
     border-radius: 50%;
 
-    filter: blur(0.4px);
+    filter:
+        blur(0.4px);
 
     opacity: 0.8;
 }
 
 .forest-canopy.left {
     top: -70px;
+
     left: -100px;
 
     background:
@@ -934,11 +1396,13 @@ footer {
             transparent 31%
         );
 
-    transform: rotate(-12deg);
+    transform:
+        rotate(-12deg);
 }
 
 .forest-canopy.right {
     top: -80px;
+
     right: -110px;
 
     background:
@@ -958,13 +1422,15 @@ footer {
             transparent 26%
         );
 
-    transform: rotate(15deg);
+    transform:
+        rotate(15deg);
 }
 
 .forest-branch {
     position: absolute;
 
     width: 230px;
+
     height: 9px;
 
     border-radius: 999px;
@@ -980,13 +1446,15 @@ footer {
 
     opacity: 0.65;
 
-    transform-origin: left center;
+    transform-origin:
+        left center;
 }
 
 .forest-leaf {
     position: absolute;
 
     width: 17px;
+
     height: 9px;
 
     border-radius:
@@ -1001,7 +1469,8 @@ footer {
 
     opacity: 0.75;
 
-    transform: rotate(35deg);
+    transform:
+        rotate(35deg);
 
     animation:
         leafFloat
@@ -1038,12 +1507,14 @@ footer {
             )
             rotate(20deg);
     }
+
 }
 
 .forest-mist {
     position: absolute;
 
     left: -10%;
+
     right: -10%;
 
     bottom: 4%;
@@ -1057,7 +1528,8 @@ footer {
             transparent 68%
         );
 
-    filter: blur(18px);
+    filter:
+        blur(18px);
 
     animation:
         forestMist
@@ -1069,16 +1541,19 @@ footer {
 @keyframes forestMist {
 
     from {
-        transform: translateX(-4%);
+        transform:
+            translateX(-4%);
 
         opacity: 0.45;
     }
 
     to {
-        transform: translateX(4%);
+        transform:
+            translateX(4%);
 
         opacity: 0.75;
     }
+
 }
 
 
@@ -1102,7 +1577,8 @@ footer {
     height: 90px;
 
     border-top:
-        1px solid rgba(112, 180, 239, 0.18);
+        1px solid
+        rgba(112, 180, 239, 0.18);
 
     border-radius: 50%;
 
@@ -1129,6 +1605,7 @@ footer {
             translateX(4%)
             scaleY(1.2);
     }
+
 }
 
 .ocean-ray {
@@ -1147,9 +1624,11 @@ footer {
             transparent 80%
         );
 
-    filter: blur(14px);
+    filter:
+        blur(14px);
 
-    transform: rotate(18deg);
+    transform:
+        rotate(18deg);
 
     animation:
         oceanRay
@@ -1176,12 +1655,14 @@ footer {
             rotate(23deg)
             translateX(35px);
     }
+
 }
 
 .ocean-particle {
     position: absolute;
 
     width: 4px;
+
     height: 4px;
 
     border-radius: 50%;
@@ -1223,6 +1704,7 @@ footer {
 
         opacity: 0;
     }
+
 }
 
 
@@ -1258,7 +1740,8 @@ footer {
             transparent 70%
         );
 
-    filter: blur(16px);
+    filter:
+        blur(16px);
 
     animation:
         emberPulse
@@ -1285,14 +1768,17 @@ footer {
 
         opacity: 1;
     }
+
 }
 
 .ember-spark {
     position: absolute;
 
-    width: var(--spark-size, 3px);
+    width:
+        var(--spark-size, 3px);
 
-    height: var(--spark-size, 3px);
+    height:
+        var(--spark-size, 3px);
 
     border-radius: 50%;
 
@@ -1300,7 +1786,8 @@ footer {
         #f47b56;
 
     box-shadow:
-        0 0 8px rgba(244, 95, 60, 0.7);
+        0 0 8px
+        rgba(244, 95, 60, 0.7);
 
     animation:
         emberRise
@@ -1338,6 +1825,7 @@ footer {
 
         opacity: 0;
     }
+
 }
 
 
@@ -1355,9 +1843,11 @@ footer {
     position: absolute;
 
     top: 12%;
+
     right: 12%;
 
     width: 95px;
+
     height: 95px;
 
     border-radius: 50%;
@@ -1371,21 +1861,29 @@ footer {
         );
 
     box-shadow:
-        0 0 45px rgba(170, 160, 245, 0.20),
-        0 0 100px rgba(130, 115, 220, 0.10);
+        0 0 45px
+        rgba(170, 160, 245, 0.20),
+
+        0 0 100px
+        rgba(130, 115, 220, 0.10);
 }
 
 .midnight-star {
     position: absolute;
 
-    width: var(--star-size, 2px);
-    height: var(--star-size, 2px);
+    width:
+        var(--star-size, 2px);
+
+    height:
+        var(--star-size, 2px);
 
     border-radius: 50%;
 
-    background: #ffffff;
+    background:
+        #ffffff;
 
-    opacity: var(--star-opacity, 0.6);
+    opacity:
+        var(--star-opacity, 0.6);
 
     animation:
         starTwinkle
@@ -1412,12 +1910,14 @@ footer {
         transform:
             scale(1.35);
     }
+
 }
 
 .midnight-particle {
     position: absolute;
 
     width: 3px;
+
     height: 3px;
 
     border-radius: 50%;
@@ -1451,26 +1951,19 @@ footer {
                 0
             );
     }
+
 }
 
 
 /* ====================================================
-   ENVIRONMENT SAFETY
-   ==================================================== */
-
-#dheereEnvironment {
-    user-select: none;
-}
-
-
-/* ====================================================
-   12. RESPONSIVE
+   13. RESPONSIVE
    ==================================================== */
 
 @media (max-width: 760px) {
 
     .navbar {
         padding-left: 20px;
+
         padding-right: 20px;
     }
 
@@ -1482,10 +1975,47 @@ footer {
         max-width: 90px;
     }
 
+
+    /* Founder */
+
+    .founder-card {
+        grid-template-columns:
+            1fr;
+
+        gap: 26px;
+
+        text-align: center;
+
+        padding: 30px;
+    }
+
+    .founder-visual {
+        margin: 0 auto;
+    }
+
+    .founder-label {
+        justify-content: center;
+    }
+
+    .founder-info p {
+        margin-left: auto;
+
+        margin-right: auto;
+    }
+
+    .founder-quote {
+        text-align: left;
+    }
+
 }
 
 
 @media (max-width: 640px) {
+
+    main {
+        padding:
+            0 20px;
+    }
 
     .hero-content h1 {
         font-size: 2rem;
@@ -1512,6 +2042,7 @@ footer {
 
     .nav-profile-avatar {
         width: 32px;
+
         height: 32px;
 
         flex-basis: 32px;
@@ -1522,7 +2053,8 @@ footer {
     }
 
     section {
-        padding: 60px 0;
+        padding:
+            60px 0;
     }
 
     #loginPage {
@@ -1535,11 +2067,13 @@ footer {
 
     .back-home-link {
         top: 20px;
+
         left: 20px;
     }
 
     .forest-canopy {
-        transform: scale(0.72);
+        transform:
+            scale(0.72);
     }
 
     .forest-leaf {
@@ -1550,15 +2084,50 @@ footer {
 
     .midnight-moon {
         width: 70px;
+
         height: 70px;
+
         right: 8%;
+    }
+
+
+    /* Founder Mobile */
+
+    .founder-card {
+        padding: 26px 20px;
+
+        border-radius: 14px;
+    }
+
+    .founder-visual {
+        width: 150px;
+
+        height: 150px;
+    }
+
+    .founder-avatar {
+        width: 125px;
+
+        height: 125px;
+
+        font-size: 2rem;
+    }
+
+    .founder-visual::before {
+        width: 145px;
+
+        height: 145px;
+    }
+
+    .founder-name {
+        font-size: 1.7rem;
     }
 
 }
 
 
 /* ====================================================
-   13. REDUCED MOTION
+   14. REDUCED MOTION
    ==================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1577,9 +2146,14 @@ footer {
     .button,
     .project-card,
     .article-card,
+    .founder-card,
     .feedback-form input,
     .feedback-form textarea {
         transition: none !important;
+    }
+
+    .founder-visual::before {
+        animation: none !important;
     }
 
 }
