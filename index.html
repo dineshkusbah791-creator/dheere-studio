@@ -983,6 +983,384 @@
 
         }
 
+
+        /* ====================================================
+           VISUAL ENHANCEMENT LAYER
+           Structure, text, IDs, links and existing JS unchanged.
+           ==================================================== */
+
+        body {
+            overflow-x: hidden;
+        }
+
+        #dheereEnvironment {
+            transition:
+                background 1.2s ease,
+                opacity 1.2s ease,
+                filter 1.2s ease;
+        }
+
+        .page-view {
+            position: relative;
+            isolation: isolate;
+        }
+
+        #homepage::before,
+        #homepage::after {
+            content: "";
+            position: fixed;
+            width: 42vw;
+            height: 42vw;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: .08;
+            filter: blur(85px);
+            background: currentColor;
+            animation: homepageAmbientOne 18s ease-in-out infinite alternate;
+        }
+
+        #homepage::before {
+            top: -20vw;
+            left: -16vw;
+        }
+
+        #homepage::after {
+            right: -18vw;
+            bottom: -22vw;
+            animation-name: homepageAmbientTwo;
+            animation-duration: 23s;
+        }
+
+        /* Header glass */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 11, 14, .48);
+            backdrop-filter: blur(18px) saturate(135%);
+            -webkit-backdrop-filter: blur(18px) saturate(135%);
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            box-shadow: 0 10px 45px rgba(0,0,0,.08);
+        }
+
+        .navbar {
+            transition: background .5s ease;
+        }
+
+        /* Hero depth */
+        .hero-section {
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            inset: 12% 8%;
+            pointer-events: none;
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(255,255,255,.09),
+                    transparent 52%
+                );
+            filter: blur(12px);
+            animation: heroBreath 7s ease-in-out infinite alternate;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1,
+        .hero-content p,
+        .hero-content .button {
+            opacity: 0;
+            animation: heroReveal .9s cubic-bezier(.22,1,.36,1) forwards;
+        }
+
+        .hero-content h1 { animation-delay: .08s; }
+        .hero-content p { animation-delay: .2s; }
+        .hero-content .button { animation-delay: .34s; }
+
+        /* Section reveal */
+        main > section,
+        footer {
+            opacity: 0;
+            transform: translateY(32px);
+            filter: blur(4px);
+            transition:
+                opacity .8s cubic-bezier(.22,1,.36,1),
+                transform .8s cubic-bezier(.22,1,.36,1),
+                filter .8s ease;
+        }
+
+        main > section.is-visible,
+        footer.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Premium glass cards */
+        .project-card,
+        .article-card,
+        .feedback-form,
+        .auth-card,
+        .notification-panel,
+        .search-results {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.09),
+                    rgba(255,255,255,.025) 48%,
+                    rgba(255,255,255,.012)
+                ) !important;
+            backdrop-filter: blur(20px) saturate(135%);
+            -webkit-backdrop-filter: blur(20px) saturate(135%);
+            border-color: rgba(255,255,255,.13) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.12),
+                0 22px 65px rgba(0,0,0,.16);
+        }
+
+        .project-card,
+        .article-card,
+        .auth-card {
+            position: relative;
+            overflow: hidden;
+            transition:
+                transform .45s cubic-bezier(.22,1,.36,1),
+                box-shadow .45s ease,
+                border-color .45s ease;
+        }
+
+        .project-card::before,
+        .article-card::before,
+        .auth-card::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -120px;
+            right: -90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.13);
+            filter: blur(30px);
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        .project-card:hover,
+        .article-card:hover,
+        .auth-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,.22) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.16),
+                0 30px 85px rgba(0,0,0,.25);
+        }
+
+        /* Buttons */
+        .button,
+        .notification-button {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            transition:
+                transform .32s cubic-bezier(.22,1,.36,1),
+                box-shadow .32s ease,
+                background .45s ease,
+                border-color .45s ease;
+        }
+
+        .button::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    110deg,
+                    transparent 20%,
+                    rgba(255,255,255,.28) 50%,
+                    transparent 80%
+                );
+            transform: translateX(-120%);
+            transition: transform .65s ease;
+            pointer-events: none;
+        }
+
+        .button:hover {
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 14px 34px rgba(0,0,0,.2);
+        }
+
+        .button:hover::before {
+            transform: translateX(120%);
+        }
+
+        .button:active,
+        .notification-button:active {
+            transform: scale(.97);
+        }
+
+        /* Navigation interaction */
+        .nav-links a,
+        .nav-logo a,
+        .footer-nav a {
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+        }
+
+        .nav-links a:hover,
+        .footer-nav a:hover {
+            transform: translateY(-2px);
+        }
+
+        #userSearchInput,
+        .notification-button {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        #userSearchInput:focus {
+            box-shadow:
+                0 0 0 4px rgba(255,255,255,.04),
+                0 10px 30px rgba(0,0,0,.12);
+        }
+
+        .search-result-item,
+        .notification-item {
+            transition:
+                transform .25s ease,
+                background .25s ease;
+        }
+
+        .search-result-item:hover,
+        .notification-item:hover {
+            transform: translateX(4px);
+        }
+
+        /* Form polish */
+        .feedback-form input,
+        .feedback-form textarea,
+        .auth-form input {
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                background .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .feedback-form input:focus,
+        .feedback-form textarea:focus,
+        .auth-form input:focus {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 28px rgba(0,0,0,.12),
+                0 0 0 3px rgba(255,255,255,.035);
+        }
+
+        /* Auth page transition feel */
+        #loginPage {
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,.045), transparent 35%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,.035), transparent 38%);
+        }
+
+        .auth-card {
+            animation: authEnter .7s cubic-bezier(.22,1,.36,1) both;
+        }
+
+        /* Mood engine compatibility */
+        html[data-dheere-mood] header,
+        html[data-dheere-mood] .project-card,
+        html[data-dheere-mood] .article-card,
+        html[data-dheere-mood] .feedback-form,
+        html[data-dheere-mood] .auth-card {
+            transition:
+                background .8s ease,
+                border-color .8s ease,
+                color .6s ease,
+                box-shadow .6s ease,
+                transform .45s cubic-bezier(.22,1,.36,1);
+        }
+
+        @keyframes heroReveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(7px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes authEnter {
+            from {
+                opacity: 0;
+                transform: translateY(28px) scale(.985);
+                filter: blur(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes heroBreath {
+            from { transform: scale(.96); opacity: .55; }
+            to { transform: scale(1.06); opacity: 1; }
+        }
+
+        @keyframes homepageAmbientOne {
+            from { transform: translate3d(0,0,0) scale(1); }
+            to { transform: translate3d(10vw,8vh,0) scale(1.14); }
+        }
+
+        @keyframes homepageAmbientTwo {
+            from { transform: translate3d(0,0,0) scale(1); }
+            to { transform: translate3d(-9vw,-7vh,0) scale(1.12); }
+        }
+
+        @media (max-width: 700px) {
+            #homepage::before,
+            #homepage::after {
+                width: 78vw;
+                height: 78vw;
+                filter: blur(65px);
+            }
+
+            .project-card:hover,
+            .article-card:hover,
+            .auth-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+
+            main > section,
+            footer {
+                opacity: 1;
+                transform: none;
+                filter: none;
+            }
+        }
+
     </style>
 
 </head>
@@ -2378,6 +2756,85 @@
 
     </script>
 
+
+
+    <!-- ====================================================
+         VISUAL SCROLL REVEAL
+         Does not modify existing links, forms or application logic.
+         ==================================================== -->
+
+    <script>
+
+        (function () {
+
+            const targets =
+                document.querySelectorAll(
+                    "main > section, footer"
+                );
+
+
+            if (
+                !(
+                    "IntersectionObserver"
+                    in window
+                )
+            ) {
+
+                targets.forEach(
+                    element =>
+                        element.classList.add(
+                            "is-visible"
+                        )
+                );
+
+                return;
+
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+                    entries => {
+
+                        entries.forEach(
+                            entry => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    entry.target.classList.add(
+                                        "is-visible"
+                                    );
+
+                                    observer.unobserve(
+                                        entry.target
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.12,
+                        rootMargin:
+                            "0px 0px -5% 0px"
+                    }
+                );
+
+
+            targets.forEach(
+                element =>
+                    observer.observe(
+                        element
+                    )
+            );
+
+        })();
+
+    </script>
 
 
     <script src="script.js"></script>

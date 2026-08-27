@@ -2,12 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>About — Dheere Studio</title>
-    <link rel="stylesheet" href="homepage.css">
-    <link rel="stylesheet" href="mood.css">
-    <meta name="description" content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences.">
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+    <meta
+        name="description"
+        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences."
+    >
+
     <style>
+
         .about-page {
             position: relative;
             isolation: isolate;
@@ -15,435 +34,1152 @@
 
         .about-page::before {
             content: "";
+
             position: fixed;
+
             inset: 0;
+
             pointer-events: none;
+
             z-index: -1;
+
             background:
-                radial-gradient(circle at 12% 18%, rgba(255,255,255,.035), transparent 28%),
-                radial-gradient(circle at 88% 72%, rgba(255,255,255,.025), transparent 30%);
+                radial-gradient(
+                    circle at 12% 18%,
+                    rgba(255,255,255,.035),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 88% 72%,
+                    rgba(255,255,255,.025),
+                    transparent 30%
+                );
+
             opacity: .8;
         }
 
+
         .nav-actions {
             display: flex;
+
             gap: 12px;
+
             align-items: center;
         }
 
+
         .lang-switch {
             display: inline-flex;
+
             gap: 4px;
+
             margin-top: 20px;
+
             padding: 4px;
+
             width: fit-content;
+
             border-radius: 9px;
-            background: rgba(255,255,255,.035);
-            border: 1px solid rgba(255,255,255,.08);
-            backdrop-filter: blur(10px);
+
+            background:
+                rgba(255,255,255,.035);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            backdrop-filter:
+                blur(10px);
         }
+
 
         .lang-btn {
             border: 0;
-            background: transparent;
-            color: #64748b;
-            padding: 7px 14px;
-            border-radius: 6px;
-            font: inherit;
-            font-size: .82rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: color .25s ease, background-color .25s ease, box-shadow .25s ease;
+
+            background:
+                transparent;
+
+            color:
+                #64748b;
+
+            padding:
+                7px 14px;
+
+            border-radius:
+                6px;
+
+            font:
+                inherit;
+
+            font-size:
+                .82rem;
+
+            font-weight:
+                500;
+
+            cursor:
+                pointer;
+
+            transition:
+                color .25s ease,
+                background-color .25s ease,
+                box-shadow .25s ease;
         }
+
 
         .lang-btn:hover {
-            color: #f8fafc;
+            color:
+                #f8fafc;
         }
+
 
         .lang-btn.active {
-            background: #f8fafc;
-            color: #0b0c0e;
-            box-shadow: 0 3px 14px rgba(0,0,0,.16);
+            background:
+                #f8fafc;
+
+            color:
+                #0b0c0e;
+
+            box-shadow:
+                0 3px 14px rgba(0,0,0,.16);
         }
+
 
         .hidden-about {
-            display: none !important;
+            display:
+                none !important;
         }
+
 
         .about-hero {
-            padding-bottom: 36px;
-            border-bottom: none;
+            padding-bottom:
+                36px;
+
+            border-bottom:
+                none;
         }
+
 
         .about-hero .hero-content {
-            max-width: 720px;
+            max-width:
+                720px;
         }
+
 
         .about-hero h1 {
-            max-width: 700px;
+            max-width:
+                700px;
         }
+
 
         .about-section > h2 {
-            margin-bottom: 22px;
+            margin-bottom:
+                22px;
         }
+
 
         .about-section > p {
-            max-width: 720px;
+            max-width:
+                720px;
         }
+
 
         .quote-box {
-            position: relative;
-            max-width: 720px;
-            margin: 28px 0 26px;
-            padding: 22px 24px;
-            border-radius: 10px;
-            background: rgba(255,255,255,.035);
-            border: 1px solid rgba(255,255,255,.09);
-            box-shadow: 0 14px 45px rgba(0,0,0,.12);
-            backdrop-filter: blur(10px);
+            position:
+                relative;
+
+            max-width:
+                720px;
+
+            margin:
+                28px 0 26px;
+
+            padding:
+                22px 24px;
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            box-shadow:
+                0 14px 45px rgba(0,0,0,.12);
+
+            backdrop-filter:
+                blur(10px);
         }
+
 
         .quote-box::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 14px;
-            bottom: 14px;
-            width: 2px;
-            border-radius: 2px;
-            background: currentColor;
-            opacity: .45;
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                0;
+
+            top:
+                14px;
+
+            bottom:
+                14px;
+
+            width:
+                2px;
+
+            border-radius:
+                2px;
+
+            background:
+                currentColor;
+
+            opacity:
+                .45;
         }
+
 
         .quote-box p {
-            margin: 0;
-            padding-left: 12px;
-            color: #f8fafc;
-            font-size: .98rem;
-            font-weight: 500;
+            margin:
+                0;
+
+            padding-left:
+                12px;
+
+            color:
+                #f8fafc;
+
+            font-size:
+                .98rem;
+
+            font-weight:
+                500;
         }
+
 
         .roadmap-list {
-            max-width: 720px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            max-width:
+                720px;
+
+            margin:
+                0;
+
+            padding:
+                0;
+
+            list-style:
+                none;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                12px;
         }
+
 
         .roadmap-list li {
-            position: relative;
-            padding: 14px 16px 14px 20px;
-            border: 1px solid rgba(255,255,255,.055);
-            border-radius: 8px;
-            background: rgba(255,255,255,.018);
-            color: #94a3b8;
-            font-size: .96rem;
-            font-weight: 300;
-            transition: background-color .3s ease, border-color .3s ease, transform .3s ease;
+            position:
+                relative;
+
+            padding:
+                14px 16px 14px 20px;
+
+            border:
+                1px solid rgba(255,255,255,.055);
+
+            border-radius:
+                8px;
+
+            background:
+                rgba(255,255,255,.018);
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .96rem;
+
+            font-weight:
+                300;
+
+            transition:
+                background-color .3s ease,
+                border-color .3s ease,
+                transform .3s ease;
         }
+
 
         .roadmap-list li::before {
-            content: "";
-            position: absolute;
-            left: 8px;
-            top: 21px;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: currentColor;
-            opacity: .55;
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                8px;
+
+            top:
+                21px;
+
+            width:
+                4px;
+
+            height:
+                4px;
+
+            border-radius:
+                50%;
+
+            background:
+                currentColor;
+
+            opacity:
+                .55;
         }
+
 
         .roadmap-list li:hover {
-            transform: translateX(3px);
-            background: rgba(255,255,255,.03);
-            border-color: rgba(255,255,255,.12);
+            transform:
+                translateX(3px);
+
+            background:
+                rgba(255,255,255,.03);
+
+            border-color:
+                rgba(255,255,255,.12);
         }
+
 
         .roadmap-list strong {
-            color: #f8fafc;
-            font-weight: 500;
+            color:
+                #f8fafc;
+
+            font-weight:
+                500;
         }
+
+
+        /* CLICKABLE CREATION LINKS */
+
+        .roadmap-link {
+            display:
+                block;
+
+            color:
+                inherit;
+
+            text-decoration:
+                none;
+        }
+
+
+        .roadmap-link:hover {
+            color:
+                inherit;
+        }
+
+
+        .roadmap-link li {
+            cursor:
+                pointer;
+        }
+
+
+        .roadmap-link li strong {
+            transition:
+                opacity .25s ease;
+        }
+
+
+        .roadmap-link:hover li strong {
+            opacity:
+                .85;
+        }
+
 
         .about-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 24px;
+            display:
+                flex;
+
+            gap:
+                12px;
+
+            flex-wrap:
+                wrap;
+
+            margin-top:
+                24px;
         }
+
 
         .about-actions .button.secondary {
-            background: transparent;
-            color: #f8fafc;
-            border-color: rgba(255,255,255,.18);
+            background:
+                transparent;
+
+            color:
+                #f8fafc;
+
+            border-color:
+                rgba(255,255,255,.18);
         }
+
 
         .about-actions .button.secondary:hover {
-            background: rgba(255,255,255,.05);
-            border-color: rgba(255,255,255,.28);
+            background:
+                rgba(255,255,255,.05);
+
+            border-color:
+                rgba(255,255,255,.28);
         }
+
 
         @media (max-width: 640px) {
+
             .nav-actions {
-                gap: 8px;
+                gap:
+                    8px;
             }
+
 
             .about-hero {
-                padding-bottom: 28px;
+                padding-bottom:
+                    28px;
             }
+
 
             .lang-switch {
-                width: 100%;
+                width:
+                    100%;
             }
+
 
             .lang-btn {
-                flex: 1;
+                flex:
+                    1;
             }
+
 
             .quote-box {
-                padding: 18px;
+                padding:
+                    18px;
             }
+
 
             .about-actions {
-                flex-direction: column;
+                flex-direction:
+                    column;
             }
+
 
             .about-actions .button {
-                width: 100%;
-                text-align: center;
+                width:
+                    100%;
+
+                text-align:
+                    center;
             }
+
         }
+
     </style>
+
     <script src="mood-engine.js"></script>
+
 </head>
+
 <body>
 
-    <div id="aboutPage" class="page-view about-page">
-        
+    <div
+        id="aboutPage"
+        class="page-view about-page"
+    >
+
         <!-- HEADER / NAVIGATION BACK -->
+
         <header>
+
             <nav class="navbar">
+
                 <div class="nav-logo">
-                    <a href="index.html">Dheere Studio</a>
+
+                    <a href="index.html">
+                        Dheere Studio
+                    </a>
+
                 </div>
-                
+
+
                 <div class="nav-actions">
-                    <a href="index.html" class="back-home-link static-link">&larr; Back to Dheere Studio</a>
+
+                    <a
+                        href="index.html"
+                        class="back-home-link static-link"
+                    >
+                        &larr; Back to Dheere Studio
+                    </a>
+
                 </div>
+
             </nav>
+
         </header>
 
+
         <!-- MAIN ABOUT CONTENT -->
+
         <main>
-            
+
+
             <!-- HERO SECTION & LANGUAGE TOGGLE -->
+
             <section class="hero-section about-hero">
+
                 <div class="hero-content">
-                    <h1>ABOUT DHEERE STUDIO</h1>
-                    <p>An independent creative studio building original stories, worlds, and experiences.</p>
-                    
+
+                    <h1>
+                        ABOUT DHEERE STUDIO
+                    </h1>
+
+
+                    <p>
+                        An independent creative studio building original stories, worlds, and experiences.
+                    </p>
+
+
                     <!-- LANGUAGE TOGGLE BUTTONS -->
+
                     <div class="lang-switch">
-                        <button id="btnEnglish" class="lang-btn active">English</button>
-                        <button id="btnHinglish" class="lang-btn">In Hinglish</button>
+
+                        <button
+                            id="btnEnglish"
+                            class="lang-btn active"
+                        >
+                            English
+                        </button>
+
+
+                        <button
+                            id="btnHinglish"
+                            class="lang-btn"
+                        >
+                            In Hinglish
+                        </button>
+
                     </div>
+
                 </div>
+
             </section>
 
 
             <!-- ====================================================
                  1. ENGLISH VERSION
                  ==================================================== -->
+
             <div id="englishAbout">
-                
+
+
                 <!-- WHAT IS DHEERE STUDIO -->
-                <section id="what-is-studio" class="about-section">
-                    <h2>What is Dheere Studio?</h2>
+
+                <section
+                    id="what-is-studio"
+                    class="about-section"
+                >
+
+                    <h2>
+                        What is Dheere Studio?
+                    </h2>
+
+
                     <p>
                         Dheere Studio is an independent studio focused on building original stories, fantasy worlds, and creative experiences across different forms of media.
                     </p>
+
                     <br>
+
                     <p>
                         We aren't just a blog or a writing account. The goal is to take a single story and let it grow over time into books, artwork, animation, games, and other creative formats when the time is right.
                     </p>
+
                 </section>
 
+
                 <!-- WHY DHEERE -->
-                <section id="why-dheere" class="about-section">
-                    <h2>Why "Dheere"?</h2>
+
+                <section
+                    id="why-dheere"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Why "Dheere"?
+                    </h2>
+
+
                     <p>
                         Dheere means slowly, but the idea isn't to move without ambition. It is about giving an idea enough time to become what it is supposed to become.
                     </p>
+
                     <br>
+
                     <p>
                         Not everything needs to be rushed out for quick attention.
                     </p>
 
+
                     <div class="quote-box">
-                        <p>"Slow does not mean lazy. Slow means deliberate."</p>
+
+                        <p>
+                            "Slow does not mean lazy. Slow means deliberate."
+                        </p>
+
                     </div>
+
 
                     <p>
                         It means taking time to think through a story, rebuild its world, and make sure the foundation is solid before sharing it with the world.
                     </p>
+
                 </section>
 
+
                 <!-- WHAT WE CREATE -->
-                <section id="what-we-create" class="about-section">
-                    <h2>What We Create</h2>
+
+                <section
+                    id="what-we-create"
+                    class="about-section"
+                >
+
+                    <h2>
+                        What We Create
+                    </h2>
+
+
                     <p>
                         Over time, our work takes shape in a few different forms:
                     </p>
+
                     <br>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Stories</strong> — Original novels and narratives.</li>
-                        <li><strong>Worlds</strong> — Characters, mythology, lore, and world rules.</li>
-                        <li><strong>Experiences</strong> — Animation, games, and interactive projects.</li>
-                        <li><strong>Ideas</strong> — Studio updates, essays, and creative experiments.</li>
+
+                        <a
+                            href="stories.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Stories</strong>
+                                — Original novels and narratives.
+                            </li>
+                        </a>
+
+
+                        <li>
+                            <strong>Worlds</strong>
+                            — Characters, mythology, lore, and world rules.
+                        </li>
+
+
+                        <a
+                            href="experiences.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Experiences</strong>
+                                — Animation, games, and interactive projects.
+                            </li>
+                        </a>
+
+
+                        <a
+                            href="ideas.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Ideas</strong>
+                                — Studio updates, essays, and creative experiments.
+                            </li>
+                        </a>
+
                     </ul>
+
                 </section>
 
+
+                <!-- ABOUT THE FOUNDER -->
+
+                <section
+                    id="about-founder"
+                    class="about-section"
+                >
+
+                    <h2>
+                        About the Founder
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio was founded by Harsh Kushwah with the goal of building original creative projects over time rather than chasing short-term attention.
+                    </p>
+
+                    <br>
+
+
+                    <p>
+                        The studio is being built around a long-term vision: create strong original stories, develop their worlds carefully, and eventually explore them across different creative forms.
+                    </p>
+
+
+                    <div class="about-actions">
+
+                        <a
+                            href="founder.html"
+                            class="button secondary"
+                        >
+                            Meet the Founder &rarr;
+                        </a>
+
+                    </div>
+
+                </section>
+
+
                 <!-- WHERE WE ARE STARTING -->
-                <section id="where-we-start" class="about-section">
-                    <h2>Where We're Starting</h2>
+
+                <section
+                    id="where-we-start"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Where We're Starting
+                    </h2>
+
+
                     <p>
                         Our first major project is <strong>Shunyavas</strong>—an original fantasy universe currently in development.
                     </p>
+
                     <br>
+
+
                     <p>
                         We are starting with a story foundation because written words build the strongest base. Before a world can turn into visuals or games, its characters, history, and rules need to be clear first.
                     </p>
+
                 </section>
 
+
                 <!-- WHAT'S NEXT -->
-                <section id="whats-next" class="about-section" style="border-bottom: none;">
-                    <h2>What's Next</h2>
+
+                <section
+                    id="whats-next"
+                    class="about-section"
+                    style="border-bottom: none;"
+                >
+
+                    <h2>
+                        What's Next
+                    </h2>
+
+
                     <p>
                         Dheere Studio is still right at the beginning. The focus right now is simple: build Shunyavas, set up the studio foundations, and bring together a community of people who want to make things of their own.
                     </p>
+
                     <br>
+
+
                     <div class="about-actions">
-                        <a href="shunyavas.html" class="button">Explore Our Projects &rarr;</a>
-                        <a href="community.html" class="button secondary">Join The Community &rarr;</a>
+
+                        <a
+                            href="shunyavas.html"
+                            class="button"
+                        >
+                            Explore Our Projects &rarr;
+                        </a>
+
+
+                        <a
+                            href="community.html"
+                            class="button secondary"
+                        >
+                            Join The Community &rarr;
+                        </a>
+
                     </div>
+
                 </section>
 
             </div>
 
 
             <!-- ====================================================
-                 2. HINGLISH VERSION (Hidden by default)
+                 2. HINGLISH VERSION
                  ==================================================== -->
-            <div id="hinglishAbout" class="hidden-about">
-                
+
+            <div
+                id="hinglishAbout"
+                class="hidden-about"
+            >
+
+
                 <!-- WHAT IS DHEERE STUDIO -->
-                <section id="what-is-studio-hi" class="about-section">
-                    <h2>Dheere Studio Kya Hai?</h2>
+
+                <section
+                    id="what-is-studio-hi"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Dheere Studio Kya Hai?
+                    </h2>
+
+
                     <p>
                         Dheere Studio ek independent creative studio hai jo original stories, fantasy worlds aur alag-alag tarah ke creative experiences banane par focus karta hai.
                     </p>
+
                     <br>
+
+
                     <p>
                         Yeh sirf koi writing account ya simple blog nahi hai. Maqsad ek kahani se shuru karke use waqt ke sath books, artwork, animation, games aur dusre formats tak le jana hai jab sahi time aaye.
                     </p>
+
                 </section>
 
+
                 <!-- WHY DHEERE -->
-                <section id="why-dheere-hi" class="about-section">
-                    <h2>"Dheere" Hi Kyun?</h2>
+
+                <section
+                    id="why-dheere-hi"
+                    class="about-section"
+                >
+
+                    <h2>
+                        "Dheere" Hi Kyun?
+                    </h2>
+
+
                     <p>
                         Dheere ka matlab slow hota hai, lekin iska matlab bina kisi ambition ke chalna nahi hai. Iska matlab hai kisi idea ko utna waqt dena jitna use sach mein accha banne ke liye chahiye.
                     </p>
+
                     <br>
+
+
                     <p>
                         Har cheez ko jaldbazi mein bahar lana zaroori nahi hota.
                     </p>
 
+
                     <div class="quote-box">
-                        <p>"Dheere hone ka matlab lazy hona nahi hai. Dheere hone ka matlab soch-samajhkar kaam karna hai."</p>
+
+                        <p>
+                            "Dheere hone ka matlab lazy hona nahi hai. Dheere hone ka matlab soch-samajhkar kaam karna hai."
+                        </p>
+
                     </div>
+
 
                     <p>
                         Iska matlab hai kahani ko waqt dena, uski duniya ko ache se samajhna, aur ek mazboot foundation taiyar karna pehle se bina kisi ghabrahat ke.
                     </p>
+
                 </section>
 
+
                 <!-- WHAT WE CREATE -->
-                <section id="what-we-create-hi" class="about-section">
-                    <h2>Hum Kya Banate Hain</h2>
+
+                <section
+                    id="what-we-create-hi"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Hum Kya Banate Hain
+                    </h2>
+
+
                     <p>
                         Waqt ke sath hamara kaam in alag-alag roop mein samne aayega:
                     </p>
+
                     <br>
+
+
                     <ul class="roadmap-list">
-                        <li><strong>Stories</strong> — Original novels aur main stories.</li>
-                        <li><strong>Worlds</strong> — Characters, mythology, lore aur universe ke rules.</li>
-                        <li><strong>Experiences</strong> — Animation, games aur interactive projects.</li>
-                        <li><strong>Ideas</strong> — Studio updates, essays aur creative experiments.</li>
+
+                        <a
+                            href="stories.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Stories</strong>
+                                — Original novels aur main stories.
+                            </li>
+                        </a>
+
+
+                        <li>
+                            <strong>Worlds</strong>
+                            — Characters, mythology, lore aur universe ke rules.
+                        </li>
+
+
+                        <a
+                            href="experiences.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Experiences</strong>
+                                — Animation, games aur interactive projects.
+                            </li>
+                        </a>
+
+
+                        <a
+                            href="ideas.html"
+                            class="roadmap-link"
+                        >
+                            <li>
+                                <strong>Ideas</strong>
+                                — Studio updates, essays aur creative experiments.
+                            </li>
+                        </a>
+
                     </ul>
+
                 </section>
 
+
+                <!-- ABOUT THE FOUNDER -->
+
+                <section
+                    id="about-founder-hi"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Founder Ke Baare Mein
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio ki shuruwaat Harsh Kushwah ne ek long-term vision ke sath ki hai—original creative projects ko jaldbazi ke bina waqt ke sath build karna.
+                    </p>
+
+                    <br>
+
+
+                    <p>
+                        Maqsad sirf ek project banana nahi hai, balki strong stories aur worlds ki foundation tayyar karna hai jo future mein alag-alag creative forms tak grow kar saken.
+                    </p>
+
+
+                    <div class="about-actions">
+
+                        <a
+                            href="founder.html"
+                            class="button secondary"
+                        >
+                            Founder Se Milen &rarr;
+                        </a>
+
+                    </div>
+
+                </section>
+
+
                 <!-- WHERE WE ARE STARTING -->
-                <section id="where-we-start-hi" class="about-section">
-                    <h2>Hum Kahan Se Shuru Kar Rahe Hain</h2>
+
+                <section
+                    id="where-we-start-hi"
+                    class="about-section"
+                >
+
+                    <h2>
+                        Hum Kahan Se Shuru Kar Rahe Hain
+                    </h2>
+
+
                     <p>
                         Hamara pehla major project hai <strong>Shunyavas</strong>—ek original fantasy universe jo abhi development mein hai.
                     </p>
+
                     <br>
+
+
                     <p>
                         Hum ek story foundation se shuru kar rahe hain kyunki likhi hui baatein sabse mazboot base banati hain. Kisi duniya ko animation ya game mein badalne se pehle uske characters, history aur rules ka pehle se clear hona zaroori hai.
                     </p>
+
                 </section>
 
+
                 <!-- WHAT'S NEXT -->
-                <section id="whats-next-hi" class="about-section" style="border-bottom: none;">
-                    <h2>Aage Kya Aane Wala Hai</h2>
+
+                <section
+                    id="whats-next-hi"
+                    class="about-section"
+                    style="border-bottom: none;"
+                >
+
+                    <h2>
+                        Aage Kya Aane Wala Hai
+                    </h2>
+
+
                     <p>
                         Dheere Studio abhi ekdum shuruwaat mein hai. Abhi ka focus ekdum simple hai: Shunyavas ko build karna, studio ki buniyaad rakhna, aur aise logo ko sath lana jo khud ka kuch original banana chahte hain.
                     </p>
+
                     <br>
+
+
                     <div class="about-actions">
-                        <a href="shunyavas.html" class="button">Projects Dekhein &rarr;</a>
-                        <a href="community.html" class="button secondary">Community Join Karein &rarr;</a>
+
+                        <a
+                            href="shunyavas.html"
+                            class="button"
+                        >
+                            Projects Dekhein &rarr;
+                        </a>
+
+
+                        <a
+                            href="community.html"
+                            class="button secondary"
+                        >
+                            Community Join Karein &rarr;
+                        </a>
+
                     </div>
+
                 </section>
 
             </div>
 
         </main>
 
+
         <!-- FOOTER -->
+
         <footer>
+
             <div class="footer-content">
-                <p>&copy; 2026 Dheere Studio. All rights reserved.</p>
+
+                <p>
+                    &copy; 2026 Dheere Studio. All rights reserved.
+                </p>
+
             </div>
+
         </footer>
 
     </div>
 
+
     <!-- SCRIPT FOR LANGUAGE TOGGLE -->
+
     <script>
-        const btnEnglish = document.getElementById('btnEnglish');
-        const btnHinglish = document.getElementById('btnHinglish');
-        const englishAbout = document.getElementById('englishAbout');
-        const hinglishAbout = document.getElementById('hinglishAbout');
 
-        btnEnglish.addEventListener('click', () => {
-            btnEnglish.classList.add('active');
-            btnHinglish.classList.remove('active');
-            englishAbout.classList.remove('hidden-about');
-            hinglishAbout.classList.add('hidden-about');
-        });
+        const btnEnglish =
+            document.getElementById(
+                'btnEnglish'
+            );
 
-        btnHinglish.addEventListener('click', () => {
-            btnHinglish.classList.add('active');
-            btnEnglish.classList.remove('active');
-            hinglishAbout.classList.remove('hidden-about');
-            englishAbout.classList.add('hidden-about');
-        });
+
+        const btnHinglish =
+            document.getElementById(
+                'btnHinglish'
+            );
+
+
+        const englishAbout =
+            document.getElementById(
+                'englishAbout'
+            );
+
+
+        const hinglishAbout =
+            document.getElementById(
+                'hinglishAbout'
+            );
+
+
+        btnEnglish.addEventListener(
+
+            'click',
+
+            () => {
+
+                btnEnglish.classList.add(
+                    'active'
+                );
+
+
+                btnHinglish.classList.remove(
+                    'active'
+                );
+
+
+                englishAbout.classList.remove(
+                    'hidden-about'
+                );
+
+
+                hinglishAbout.classList.add(
+                    'hidden-about'
+                );
+
+            }
+
+        );
+
+
+        btnHinglish.addEventListener(
+
+            'click',
+
+            () => {
+
+                btnHinglish.classList.add(
+                    'active'
+                );
+
+
+                btnEnglish.classList.remove(
+                    'active'
+                );
+
+
+                hinglishAbout.classList.remove(
+                    'hidden-about'
+                );
+
+
+                englishAbout.classList.add(
+                    'hidden-about'
+                );
+
+            }
+
+        );
+
     </script>
+
 </body>
 </html>

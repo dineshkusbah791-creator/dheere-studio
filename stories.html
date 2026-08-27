@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Explore the original stories and fictional worlds being developed by Dheere Studio."
+    >
+
+    <title>
+        Stories — Dheere Studio
+    </title>
+
+
+    <!-- EXISTING STYLES -->
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+
+    <style>
+
+        /* ============================================================
+           STORIES PAGE
+        ============================================================ */
+
+        .stories-page {
+            position: relative;
+            isolation: isolate;
+            min-height: 100vh;
+        }
+
+
+        .stories-page::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: -1;
+
+            background:
+
+                radial-gradient(
+                    circle at 12% 18%,
+                    rgba(255,255,255,.035),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 88% 72%,
+                    rgba(255,255,255,.025),
+                    transparent 30%
+                );
+
+            opacity: .8;
+        }
+
+
+        /* ============================================================
+           HERO
+        ============================================================ */
+
+        .stories-hero {
+            min-height: 68vh;
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                140px 8%
+                90px;
+        }
+
+
+        .stories-hero-content {
+            max-width: 850px;
+        }
+
+
+        .stories-label {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            font-size: .78rem;
+
+            letter-spacing: .18em;
+
+            text-transform: uppercase;
+
+            color: #94a3b8;
+        }
+
+
+        .stories-hero h1 {
+            margin: 0;
+
+            font-size:
+                clamp(
+                    3rem,
+                    8vw,
+                    7rem
+                );
+
+            line-height: .95;
+
+            letter-spacing: -.05em;
+
+            color: #f8fafc;
+        }
+
+
+        .stories-hero-text {
+            max-width: 650px;
+
+            margin-top: 30px;
+
+            font-size:
+                clamp(
+                    1rem,
+                    1.5vw,
+                    1.2rem
+                );
+
+            line-height: 1.8;
+
+            color: #94a3b8;
+        }
+
+
+        /* ============================================================
+           MAIN CONTENT
+        ============================================================ */
+
+        .stories-container {
+            width:
+                min(
+                    1100px,
+                    88%
+                );
+
+            margin:
+                0 auto;
+        }
+
+
+        .stories-section {
+            padding:
+                100px 0;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+        }
+
+
+        .section-kicker {
+            display: block;
+
+            margin-bottom: 14px;
+
+            font-size: .75rem;
+
+            font-weight: 600;
+
+            letter-spacing: .16em;
+
+            text-transform: uppercase;
+
+            color: #64748b;
+        }
+
+
+        .stories-section h2 {
+            max-width: 780px;
+
+            margin:
+                0
+                0
+                24px;
+
+            font-size:
+                clamp(
+                    2rem,
+                    4vw,
+                    4rem
+                );
+
+            line-height: 1.05;
+
+            letter-spacing: -.04em;
+
+            color: #f8fafc;
+        }
+
+
+        .stories-section p {
+            max-width: 760px;
+
+            margin:
+                0
+                0
+                18px;
+
+            font-size: 1rem;
+
+            line-height: 1.8;
+
+            color: #94a3b8;
+        }
+
+
+        /* ============================================================
+           STORY QUOTE
+        ============================================================ */
+
+        .story-quote {
+            position: relative;
+
+            max-width: 760px;
+
+            margin:
+                30px 0;
+
+            padding:
+                22px
+                24px;
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .035
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            box-shadow:
+                0 14px 45px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .12
+                );
+
+            backdrop-filter:
+                blur(10px);
+        }
+
+
+        .story-quote::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 14px;
+
+            bottom: 14px;
+
+            width: 2px;
+
+            border-radius: 2px;
+
+            background: currentColor;
+
+            opacity: .45;
+        }
+
+
+        .story-quote p {
+            margin: 0;
+
+            padding-left: 12px;
+
+            color: #f8fafc;
+
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+           FEATURED STORY
+        ============================================================ */
+
+        .featured-story {
+            display: grid;
+
+            grid-template-columns:
+                minmax(
+                    0,
+                    1.1fr
+                )
+                minmax(
+                    300px,
+                    .9fr
+                );
+
+            gap: 70px;
+
+            align-items: center;
+
+            margin-top: 45px;
+        }
+
+
+        .featured-story-info {
+            position: relative;
+        }
+
+
+        .featured-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+
+            padding:
+                8px
+                13px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .1
+                );
+
+            border-radius: 100px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            font-size: .78rem;
+
+            color: #94a3b8;
+        }
+
+
+        .status-dot {
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #f8fafc;
+        }
+
+
+        .featured-story h3 {
+            margin:
+                0
+                0
+                20px;
+
+            font-size:
+                clamp(
+                    3rem,
+                    6vw,
+                    5.5rem
+                );
+
+            line-height: .9;
+
+            letter-spacing: -.05em;
+
+            color: #f8fafc;
+        }
+
+
+        .featured-meta {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin:
+                25px
+                0
+                30px;
+        }
+
+
+        .featured-meta span {
+            padding:
+                7px
+                12px;
+
+            border-radius: 100px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .04
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+            font-size: .75rem;
+
+            color: #94a3b8;
+        }
+
+
+        /* ============================================================
+           STORY VISUAL
+        ============================================================ */
+
+        .story-visual {
+            position: relative;
+
+            min-height: 430px;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            background:
+
+                radial-gradient(
+                    circle at
+                    50% 30%,
+
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .08
+                    ),
+
+                    transparent 24%
+                ),
+
+                linear-gradient(
+                    145deg,
+
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .045
+                    ),
+
+                    rgba(
+                        0,
+                        0,
+                        0,
+                        .15
+                    )
+                );
+
+            display: flex;
+
+            align-items: flex-end;
+
+            padding: 35px;
+        }
+
+
+        .story-visual::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+
+                linear-gradient(
+                    to top,
+
+                    rgba(
+                        0,
+                        0,
+                        0,
+                        .7
+                    ),
+
+                    transparent 65%
+                );
+        }
+
+
+        .story-visual-content {
+            position: relative;
+
+            z-index: 1;
+
+            width: 100%;
+        }
+
+
+        .story-visual-content span {
+            display: block;
+
+            margin-bottom: 12px;
+
+            font-size: .72rem;
+
+            letter-spacing: .16em;
+
+            text-transform: uppercase;
+
+            color: #94a3b8;
+        }
+
+
+        /*
+           FIX:
+           Text will now scale to the card width
+           instead of being clipped.
+        */
+
+        .story-visual-content strong {
+            display: block;
+
+            width: 100%;
+
+            font-size:
+                clamp(
+                    1.8rem,
+                    3.2vw,
+                    3.4rem
+                );
+
+            line-height: 1;
+
+            letter-spacing:
+                clamp(
+                    -.04em,
+                    -0.02em,
+                    -.02em
+                );
+
+            white-space: nowrap;
+
+            color: #f8fafc;
+        }
+
+
+        /* ============================================================
+           STORY PRINCIPLES
+        ============================================================ */
+
+        .story-principles {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap: 20px;
+
+            margin-top: 45px;
+        }
+
+
+        .principle-card {
+            padding: 28px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .018
+                );
+
+            transition:
+                transform .3s ease,
+                border-color .3s ease,
+                background .3s ease;
+        }
+
+
+        .principle-card:hover {
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .15
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .03
+                );
+        }
+
+
+        .principle-number {
+            display: block;
+
+            margin-bottom: 35px;
+
+            font-size: .75rem;
+
+            color: #64748b;
+        }
+
+
+        .principle-card h3 {
+            margin:
+                0
+                0
+                12px;
+
+            font-size: 1.2rem;
+
+            color: #f8fafc;
+        }
+
+
+        .principle-card p {
+            margin: 0;
+
+            font-size: .92rem;
+
+            line-height: 1.7;
+
+            color: #94a3b8;
+        }
+
+
+        /* ============================================================
+           STORY FOUNDATION LIST
+        ============================================================ */
+
+        .story-foundation {
+            max-width: 760px;
+
+            margin:
+                35px
+                0
+                0;
+
+            padding: 0;
+
+            list-style: none;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        .story-foundation li {
+            position: relative;
+
+            padding:
+                16px
+                18px
+                16px
+                22px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            border-radius: 8px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .018
+                );
+
+            color: #94a3b8;
+
+            line-height: 1.7;
+
+            transition:
+                background-color .3s ease,
+                border-color .3s ease,
+                transform .3s ease;
+        }
+
+
+        .story-foundation li::before {
+            content: "";
+
+            position: absolute;
+
+            left: 9px;
+
+            top: 26px;
+
+            width: 4px;
+
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+            opacity: .55;
+        }
+
+
+        .story-foundation li:hover {
+            transform:
+                translateX(3px);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .03
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .12
+                );
+        }
+
+
+        .story-foundation strong {
+            color: #f8fafc;
+
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+           MORE STORIES
+        ============================================================ */
+
+        .coming-stories {
+            position: relative;
+
+            padding:
+                55px
+                40px;
+
+            margin-top: 35px;
+
+            border-radius: 16px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .018
+                );
+        }
+
+
+        .coming-stories h3 {
+            margin:
+                0
+                0
+                18px;
+
+            font-size:
+                clamp(
+                    1.8rem,
+                    3vw,
+                    3rem
+                );
+
+            color: #f8fafc;
+        }
+
+
+        .coming-stories p {
+            max-width: 760px;
+        }
+
+
+        .coming-stories p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* ============================================================
+           BUTTONS
+           Same logic as About page
+        ============================================================ */
+
+        .stories-actions {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 28px;
+        }
+
+
+        .stories-actions .button.secondary {
+            background:
+                transparent;
+
+            color:
+                #f8fafc;
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .18
+                );
+        }
+
+
+        .stories-actions .button.secondary:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .05
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .28
+                );
+        }
+
+
+        /* ============================================================
+           FINAL CTA
+        ============================================================ */
+
+        .stories-final {
+            padding:
+                110px 0
+                120px;
+
+            text-align: center;
+        }
+
+
+        .stories-final h2 {
+            max-width: 850px;
+
+            margin:
+                0 auto
+                22px;
+
+            font-size:
+                clamp(
+                    2.5rem,
+                    5vw,
+                    5rem
+                );
+
+            line-height: 1;
+
+            letter-spacing: -.05em;
+
+            color: #f8fafc;
+        }
+
+
+        .stories-final p {
+            margin:
+                0 auto
+                18px;
+
+            max-width: 680px;
+
+            color: #94a3b8;
+
+            line-height: 1.8;
+        }
+
+
+        .stories-final-actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 30px;
+        }
+
+
+        .stories-final-actions .button.secondary {
+            background:
+                transparent;
+
+            color:
+                #f8fafc;
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .18
+                );
+        }
+
+
+        .stories-final-actions .button.secondary:hover {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .05
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .28
+                );
+        }
+
+
+        /* ============================================================
+           MOBILE
+        ============================================================ */
+
+        @media (
+            max-width: 800px
+        ) {
+
+            .stories-hero {
+                min-height: 60vh;
+
+                padding:
+                    120px 6%
+                    70px;
+            }
+
+
+            .stories-container {
+                width: 88%;
+            }
+
+
+            .stories-section {
+                padding:
+                    75px 0;
+            }
+
+
+            .featured-story {
+                grid-template-columns:
+                    1fr;
+
+                gap: 40px;
+            }
+
+
+            .story-visual {
+                min-height: 360px;
+            }
+
+
+            .story-principles {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .coming-stories {
+                padding:
+                    35px
+                    25px;
+            }
+
+
+            .stories-final {
+                padding:
+                    80px 0
+                    90px;
+            }
+
+        }
+
+
+        @media (
+            max-width: 520px
+        ) {
+
+            .stories-hero {
+                padding-top:
+                    105px;
+            }
+
+
+            .featured-meta {
+                gap: 8px;
+            }
+
+
+            .story-visual {
+                min-height: 290px;
+
+                padding: 25px;
+            }
+
+
+            .story-visual-content strong {
+                font-size:
+                    clamp(
+                        1.55rem,
+                        8vw,
+                        2.3rem
+                    );
+            }
+
+
+            .coming-stories {
+                padding:
+                    30px
+                    20px;
+            }
+
+
+            .stories-actions,
+            .stories-final-actions {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .stories-actions .button,
+            .stories-final-actions .button {
+                width: 100%;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ============================================================
+         STORIES PAGE
+    ============================================================ -->
+
+    <div
+        class="stories-page"
+    >
+
+
+        <!-- ========================================================
+             NAVIGATION
+        ========================================================= -->
+
+        <header>
+
+            <nav
+                class="navbar"
+            >
+
+                <div
+                    class="nav-logo"
+                >
+
+                    <a
+                        href="index.html"
+                    >
+                        Dheere Studio
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="nav-actions"
+                >
+
+                    <a
+                        href="about.html"
+                        class="back-home-link static-link"
+                    >
+                        ← Back to About
+                    </a>
+
+                </div>
+
+            </nav>
+
+        </header>
+
+
+
+        <main>
+
+
+            <!-- ====================================================
+                 HERO
+            ===================================================== -->
+
+            <section
+                class="stories-hero"
+            >
+
+                <div
+                    class="stories-hero-content"
+                >
+
+                    <span
+                        class="stories-label"
+                    >
+                        Dheere Studio
+                    </span>
+
+
+                    <h1>
+                        STORIES
+                    </h1>
+
+
+                    <p
+                        class="stories-hero-text"
+                    >
+                        Original worlds.
+                        Original characters.
+                        Stories built to stay.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <div
+                class="stories-container"
+            >
+
+
+                <!-- =================================================
+                     WHAT STORIES MEAN HERE
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        What we build
+                    </span>
+
+
+                    <h2>
+                        Stories are where our worlds begin.
+                    </h2>
+
+
+                    <p>
+                        At Dheere Studio, stories are not treated as disposable
+                        content made only for a quick moment of attention.
+                        They are foundations.
+                    </p>
+
+
+                    <p>
+                        A strong story can grow over time—through its characters,
+                        history, conflicts, places, mythology, and the worlds
+                        built around it.
+                    </p>
+
+
+                    <p>
+                        We start with the story itself and allow everything else
+                        to develop from a foundation that is actually worth
+                        building on.
+                    </p>
+
+
+                    <div
+                        class="story-quote"
+                    >
+
+                        <p>
+                            "The world can grow, but the story has to stand first."
+                        </p>
+
+                    </div>
+
+
+                    <p>
+                        Not every story needs to become a large universe.
+                        But when an idea has enough depth, we want to give it
+                        the time and space to become more than its first form.
+                    </p>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     WHY STORY FIRST
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        Our approach
+                    </span>
+
+
+                    <h2>
+                        We begin with the foundation, not the spectacle.
+                    </h2>
+
+
+                    <p>
+                        It is easy to imagine a world through visuals, games,
+                        animation, or large concepts. The harder part is making
+                        sure there is something meaningful underneath all of it.
+                    </p>
+
+
+                    <p>
+                        That is why our process begins with the narrative.
+                        Before expanding an idea into different creative forms,
+                        we want to understand the story it is trying to tell.
+                    </p>
+
+
+                    <ul
+                        class="story-foundation"
+                    >
+
+                        <li>
+                            <strong>Characters</strong>
+                            — Who are the people inside the story, and what
+                            makes their choices matter?
+                        </li>
+
+
+                        <li>
+                            <strong>Conflict</strong>
+                            — What creates movement, tension, and change?
+                        </li>
+
+
+                        <li>
+                            <strong>History</strong>
+                            — What happened before the current story began?
+                        </li>
+
+
+                        <li>
+                            <strong>World rules</strong>
+                            — What makes the world feel consistent rather than
+                            existing only as decoration?
+                        </li>
+
+
+                        <li>
+                            <strong>Meaning</strong>
+                            — Beyond the events themselves, what makes the
+                            story worth spending time with?
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FEATURED STORY
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        Featured project
+                    </span>
+
+
+                    <h2>
+                        Currently building.
+                    </h2>
+
+
+                    <div
+                        class="featured-story"
+                    >
+
+
+                        <!-- STORY INFORMATION -->
+
+                        <div
+                            class="featured-story-info"
+                        >
+
+                            <div
+                                class="featured-status"
+                            >
+
+                                <span
+                                    class="status-dot"
+                                ></span>
+
+                                In Development
+
+                            </div>
+
+
+                            <h3>
+                                Shunyavas
+                            </h3>
+
+
+                            <p>
+                                Shunyavas is an original fantasy universe currently
+                                being developed as the first major project of
+                                Dheere Studio.
+                            </p>
+
+
+                            <p>
+                                It begins with a story foundation and expands
+                                through its characters, mythology, history,
+                                conflicts, and the rules that shape its world.
+                            </p>
+
+
+                            <p>
+                                The goal is not to rush the universe into every
+                                possible format. The first responsibility is to
+                                build the world properly and understand what the
+                                story itself needs to become.
+                            </p>
+
+
+                            <div
+                                class="featured-meta"
+                            >
+
+                                <span>
+                                    Original Fantasy
+                                </span>
+
+
+                                <span>
+                                    Worldbuilding
+                                </span>
+
+
+                                <span>
+                                    Long-Term Project
+                                </span>
+
+
+                                <span>
+                                    In Development
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="stories-actions"
+                            >
+
+                                <a
+                                    href="shunyavas.html"
+                                    class="button"
+                                >
+                                    Explore Shunyavas →
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- STORY VISUAL -->
+
+                        <div
+                            class="story-visual"
+                        >
+
+                            <div
+                                class="story-visual-content"
+                            >
+
+                                <span>
+                                    An Original Universe
+                                </span>
+
+
+                                <strong>
+                                    SHUNYAVAS
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     STORY PHILOSOPHY
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        Story before format
+                    </span>
+
+
+                    <h2>
+                        A story can become more than one format.
+                    </h2>
+
+
+                    <p>
+                        A story does not have to remain in only one form forever.
+                        When a world develops enough depth, there may eventually
+                        be different ways for people to experience it.
+                    </p>
+
+
+                    <p>
+                        Books, artwork, animation, interactive experiences, and
+                        other creative forms can all become part of that journey.
+                        But they should come from the needs of the world—not
+                        simply because expansion sounds impressive.
+                    </p>
+
+
+                    <div
+                        class="story-principles"
+                    >
+
+
+                        <article
+                            class="principle-card"
+                        >
+
+                            <span
+                                class="principle-number"
+                            >
+                                01
+                            </span>
+
+
+                            <h3>
+                                Story
+                            </h3>
+
+
+                            <p>
+                                Every project starts with a narrative strong
+                                enough to stand on its own before anything
+                                larger is built around it.
+                            </p>
+
+                        </article>
+
+
+
+                        <article
+                            class="principle-card"
+                        >
+
+                            <span
+                                class="principle-number"
+                            >
+                                02
+                            </span>
+
+
+                            <h3>
+                                World
+                            </h3>
+
+
+                            <p>
+                                Characters, places, history, mythology, and
+                                rules give a story room to grow beyond a
+                                single moment.
+                            </p>
+
+                        </article>
+
+
+
+                        <article
+                            class="principle-card"
+                        >
+
+                            <span
+                                class="principle-number"
+                            >
+                                03
+                            </span>
+
+
+                            <h3>
+                                Experience
+                            </h3>
+
+
+                            <p>
+                                In the future, some worlds may explore different
+                                creative forms when the story genuinely calls
+                                for them.
+                            </p>
+
+                        </article>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     WHAT WE ARE NOT TRYING TO DO
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        Building carefully
+                    </span>
+
+
+                    <h2>
+                        Not every idea needs to be announced immediately.
+                    </h2>
+
+
+                    <p>
+                        Some ideas are exciting at the beginning but need time
+                        before it becomes clear whether they can actually become
+                        a complete story.
+                    </p>
+
+
+                    <p>
+                        We do not want to announce a long list of projects simply
+                        to make the studio look bigger than it currently is.
+                        A name is not the same thing as a developed world.
+                    </p>
+
+
+                    <p>
+                        Some concepts will stay as experiments. Some will change
+                        completely. Others may take years before they become
+                        something ready to share.
+                    </p>
+
+
+                    <div
+                        class="story-quote"
+                    >
+
+                        <p>
+                            "An idea is only the beginning. Development decides
+                            what it can actually become."
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     MORE STORIES
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        Looking ahead
+                    </span>
+
+
+                    <h2>
+                        More stories will come with time.
+                    </h2>
+
+
+                    <div
+                        class="coming-stories"
+                    >
+
+                        <h3>
+                            Some ideas are still becoming stories.
+                        </h3>
+
+
+                        <p>
+                            Not everything being developed at Dheere Studio is
+                            ready to be announced. Some ideas need time before
+                            they become characters, worlds, and complete
+                            narratives.
+                        </p>
+
+
+                        <p>
+                            Development is not always visible from the outside.
+                            A concept may spend a long time changing, being
+                            rewritten, or simply waiting until the studio is
+                            ready to give it proper attention.
+                        </p>
+
+
+                        <p>
+                            We would rather develop something properly than
+                            announce a project before it has a real foundation.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     THE BIGGER JOURNEY
+                ================================================== -->
+
+                <section
+                    class="stories-section"
+                >
+
+                    <span
+                        class="section-kicker"
+                    >
+                        The journey ahead
+                    </span>
+
+
+                    <h2>
+                        We are building for the long term.
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio is still at the beginning. The purpose of
+                        building stories is not simply to publish as much as
+                        possible as quickly as possible.
+                    </p>
+
+
+                    <p>
+                        The larger goal is to create original work that can grow
+                        with time—stories with their own identities, worlds that
+                        feel worth returning to, and eventually a creative
+                        ecosystem around the studio itself.
+                    </p>
+
+
+                    <p>
+                        Shunyavas is the first major step in that direction.
+                        What comes after it will be built from the experience,
+                        lessons, and foundation created along the way.
+                    </p>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FINAL SECTION
+                ================================================== -->
+
+                <section
+                    class="stories-final"
+                >
+
+                    <h2>
+                        Follow the stories as they take shape.
+                    </h2>
+
+
+                    <p>
+                        Dheere Studio is at the beginning of a longer journey.
+                        Shunyavas is the first major world we are building, but
+                        it is also the beginning of a larger creative direction.
+                    </p>
+
+
+                    <p>
+                        The work will take time. That is intentional.
+                    </p>
+
+
+                    <div
+                        class="stories-final-actions"
+                    >
+
+                        <a
+                            href="shunyavas.html"
+                            class="button"
+                        >
+                            Explore Shunyavas
+                        </a>
+
+
+                        <a
+                            href="community.html"
+                            class="button secondary"
+                        >
+                            Join the Community
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+        </main>
+
+
+
+        <!-- ========================================================
+             FOOTER
+        ========================================================= -->
+
+        <footer>
+
+            <div
+                class="footer-content"
+            >
+
+                <p>
+                    © 2026 Dheere Studio.
+                    All rights reserved.
+                </p>
+
+            </div>
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- ============================================================
+         MOOD ENGINE
+    ============================================================ -->
+
+    <script
+        src="mood-engine.js"
+    ></script>
+
+
+</body>
+
+</html>
