@@ -198,42 +198,6 @@
 
 
         /* =====================================================
-           READING PROGRESS
-           ===================================================== */
-
-        .about-progress {
-
-            position:
-                fixed;
-
-            left:
-                0;
-
-            top:
-                0;
-
-            width:
-                0%;
-
-            height:
-                2px;
-
-            z-index:
-                9999;
-
-            background:
-                rgba(255,255,255,.85);
-
-            box-shadow:
-                0 0 16px rgba(255,255,255,.45);
-
-            transition:
-                width .1s linear;
-
-        }
-
-
-        /* =====================================================
            NAVIGATION
            ===================================================== */
 
@@ -1196,8 +1160,7 @@
                 .45;
 
             transition:
-                opacity .3s ease,
-                height .3s ease;
+                opacity .3s ease;
 
         }
 
@@ -1560,8 +1523,6 @@
     </style>
 
 
-    <!-- DHEERE MOOD ENGINE -->
-
     <script src="mood-engine.js"></script>
 
 
@@ -1571,24 +1532,11 @@
 <body>
 
 
-    <!-- READING PROGRESS -->
-
-    <div
-        id="aboutProgress"
-        class="about-progress"
-    ></div>
-
-
-
     <div
         id="aboutPage"
         class="page-view about-page"
     >
 
-
-        <!-- ==================================================
-             HEADER
-             ================================================== -->
 
         <header>
 
@@ -1625,15 +1573,9 @@
 
 
 
-        <!-- ==================================================
-             MAIN
-             ================================================== -->
-
         <main>
 
 
-
-            <!-- HERO -->
 
             <section class="hero-section about-hero">
 
@@ -1658,8 +1600,6 @@
                     </p>
 
 
-
-                    <!-- LANGUAGE SWITCH -->
 
                     <div
                         class="lang-switch"
@@ -1696,69 +1636,52 @@
 
 
 
-            <!-- ==============================================
-                 ENGLISH VERSION
-                 ============================================== -->
+            <!-- ENGLISH VERSION -->
 
             <div id="englishAbout">
 
-
-
-                <!-- WHAT IS DHEERE STUDIO -->
 
                 <section
                     id="what-is-studio"
                     class="about-section"
                 >
 
-
                     <h2>
                         What is Dheere Studio?
                     </h2>
-
 
                     <p>
                         Dheere Studio is an independent studio focused on building original stories, fantasy worlds, and creative experiences across different forms of media.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         We aren't just a blog or a writing account. The goal is to take a single story and let it grow over time into books, artwork, animation, games, and other creative formats when the time is right.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHY DHEERE -->
 
                 <section
                     id="why-dheere"
                     class="about-section"
                 >
 
-
                     <h2>
                         Why "Dheere"?
                     </h2>
-
 
                     <p>
                         Dheere means slowly, but the idea isn't to move without ambition. It is about giving an idea enough time to become what it is supposed to become.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         Not everything needs to be rushed out for quick attention.
                     </p>
-
 
 
                     <div class="quote-box">
@@ -1770,137 +1693,143 @@
                     </div>
 
 
-
                     <p>
                         It means taking time to think through a story, rebuild its world, and make sure the foundation is solid before sharing it with the world.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHAT WE CREATE -->
 
                 <section
                     id="what-we-create"
                     class="about-section"
                 >
 
-
                     <h2>
                         What We Create
                     </h2>
-
 
                     <p>
                         Over time, our work takes shape in a few different forms:
                     </p>
 
-
                     <br>
-
 
 
                     <ul class="roadmap-list">
 
 
-                        <a
-                            href="stories.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="stories.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Stories</strong>
 
                                 — Original novels and narratives.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
-
-
-
-                        <li>
-
-                            <strong>Worlds</strong>
-
-                            — Characters, mythology, lore, and world rules.
+                            </a>
 
                         </li>
 
 
 
-                        <a
-                            href="experiences.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="worlds.html"
+                                class="roadmap-link"
+                            >
+
+                                <strong>Worlds</strong>
+
+                                — Characters, mythology, lore, and world rules.
+
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li>
+
+                            <a
+                                href="experiences.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Experiences</strong>
 
                                 — Animation, games, and interactive projects.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
+                            </a>
+
+                        </li>
 
 
 
-                        <a
-                            href="ideas.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="ideas.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Ideas</strong>
 
                                 — Studio updates, essays, and creative experiments.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
+                            </a>
+
+                        </li>
 
 
                     </ul>
 
-
                 </section>
 
 
-
-                <!-- ABOUT THE FOUNDER -->
 
                 <section
                     id="about-founder"
                     class="about-section"
                 >
 
-
                     <h2>
                         About the Founder
                     </h2>
-
 
                     <p>
                         Dheere Studio was founded by Harsh Kushwah with the goal of building original creative projects over time rather than chasing short-term attention.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         The studio is being built around a long-term vision: create strong original stories, develop their worlds carefully, and eventually explore them across different creative forms.
                     </p>
 
 
-
                     <div class="about-actions">
-
 
                         <a
                             href="founder.html"
@@ -1909,68 +1838,52 @@
                             Meet the Founder &rarr;
                         </a>
 
-
                     </div>
-
 
                 </section>
 
 
-
-                <!-- WHERE WE ARE STARTING -->
 
                 <section
                     id="where-we-start"
                     class="about-section"
                 >
 
-
                     <h2>
                         Where We're Starting
                     </h2>
-
 
                     <p>
                         Our first major project is <strong>Shunyavas</strong>—an original fantasy universe currently in development.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         We are starting with a story foundation because written words build the strongest base. Before a world can turn into visuals or games, its characters, history, and rules need to be clear first.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHAT'S NEXT -->
 
                 <section
                     id="whats-next"
                     class="about-section"
                 >
 
-
                     <h2>
                         What's Next
                     </h2>
-
 
                     <p>
                         Dheere Studio is still right at the beginning. The focus right now is simple: build Shunyavas, set up the studio foundations, and bring together a community of people who want to make things of their own.
                     </p>
 
-
                     <br>
 
 
-
                     <div class="about-actions">
-
 
                         <a
                             href="shunyavas.html"
@@ -1980,7 +1893,6 @@
                         </a>
 
 
-
                         <a
                             href="community.html"
                             class="button secondary"
@@ -1988,9 +1900,7 @@
                             Join The Community &rarr;
                         </a>
 
-
                     </div>
-
 
                 </section>
 
@@ -1999,9 +1909,7 @@
 
 
 
-            <!-- ==============================================
-                 HINGLISH VERSION
-                 ============================================== -->
+            <!-- HINGLISH VERSION -->
 
             <div
                 id="hinglishAbout"
@@ -2009,62 +1917,47 @@
             >
 
 
-
-                <!-- WHAT IS DHEERE STUDIO -->
-
                 <section
                     id="what-is-studio-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         Dheere Studio Kya Hai?
                     </h2>
-
 
                     <p>
                         Dheere Studio ek independent creative studio hai jo original stories, fantasy worlds aur alag-alag tarah ke creative experiences banane par focus karta hai.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         Yeh sirf koi writing account ya simple blog nahi hai. Maqsad ek kahani se shuru karke use waqt ke sath books, artwork, animation, games aur dusre formats tak le jana hai jab sahi time aaye.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHY DHEERE -->
 
                 <section
                     id="why-dheere-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         "Dheere" Hi Kyun?
                     </h2>
-
 
                     <p>
                         Dheere ka matlab slow hota hai, lekin iska matlab bina kisi ambition ke chalna nahi hai. Iska matlab hai kisi idea ko utna waqt dena jitna use sach mein accha banne ke liye chahiye.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         Har cheez ko jaldbazi mein bahar lana zaroori nahi hota.
                     </p>
-
 
 
                     <div class="quote-box">
@@ -2076,137 +1969,143 @@
                     </div>
 
 
-
                     <p>
                         Iska matlab hai kahani ko waqt dena, uski duniya ko ache se samajhna, aur ek mazboot foundation taiyar karna pehle se bina kisi ghabrahat ke.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHAT WE CREATE -->
 
                 <section
                     id="what-we-create-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         Hum Kya Banate Hain
                     </h2>
-
 
                     <p>
                         Waqt ke sath hamara kaam in alag-alag roop mein samne aayega:
                     </p>
 
-
                     <br>
-
 
 
                     <ul class="roadmap-list">
 
 
-                        <a
-                            href="stories.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="stories.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Stories</strong>
 
                                 — Original novels aur main stories.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
-
-
-
-                        <li>
-
-                            <strong>Worlds</strong>
-
-                            — Characters, mythology, lore aur universe ke rules.
+                            </a>
 
                         </li>
 
 
 
-                        <a
-                            href="experiences.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="worlds.html"
+                                class="roadmap-link"
+                            >
+
+                                <strong>Worlds</strong>
+
+                                — Characters, mythology, lore aur universe ke rules.
+
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li>
+
+                            <a
+                                href="experiences.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Experiences</strong>
 
                                 — Animation, games aur interactive projects.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
+                            </a>
+
+                        </li>
 
 
 
-                        <a
-                            href="ideas.html"
-                            class="roadmap-link"
-                        >
+                        <li>
 
-                            <li>
+                            <a
+                                href="ideas.html"
+                                class="roadmap-link"
+                            >
 
                                 <strong>Ideas</strong>
 
                                 — Studio updates, essays aur creative experiments.
 
-                            </li>
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
 
-                        </a>
+                            </a>
+
+                        </li>
 
 
                     </ul>
 
-
                 </section>
 
 
-
-                <!-- ABOUT THE FOUNDER -->
 
                 <section
                     id="about-founder-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         Founder Ke Baare Mein
                     </h2>
-
 
                     <p>
                         Dheere Studio ki shuruwaat Harsh Kushwah ne ek long-term vision ke sath ki hai—original creative projects ko jaldbazi ke bina waqt ke sath build karna.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         Maqsad sirf ek project banana nahi hai, balki strong stories aur worlds ki foundation tayyar karna hai jo future mein alag-alag creative forms tak grow kar saken.
                     </p>
 
 
-
                     <div class="about-actions">
-
 
                         <a
                             href="founder.html"
@@ -2215,68 +2114,52 @@
                             Founder Se Milen &rarr;
                         </a>
 
-
                     </div>
-
 
                 </section>
 
 
-
-                <!-- WHERE WE ARE STARTING -->
 
                 <section
                     id="where-we-start-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         Hum Kahan Se Shuru Kar Rahe Hain
                     </h2>
-
 
                     <p>
                         Hamara pehla major project hai <strong>Shunyavas</strong>—ek original fantasy universe jo abhi development mein hai.
                     </p>
 
-
                     <br>
-
 
                     <p>
                         Hum ek story foundation se shuru kar rahe hain kyunki likhi hui baatein sabse mazboot base banati hain. Kisi duniya ko animation ya game mein badalne se pehle uske characters, history aur rules ka pehle se clear hona zaroori hai.
                     </p>
 
-
                 </section>
 
 
-
-                <!-- WHAT'S NEXT -->
 
                 <section
                     id="whats-next-hi"
                     class="about-section"
                 >
 
-
                     <h2>
                         Aage Kya Aane Wala Hai
                     </h2>
-
 
                     <p>
                         Dheere Studio abhi ekdum shuruwaat mein hai. Abhi ka focus ekdum simple hai: Shunyavas ko build karna, studio ki buniyaad rakhna, aur aise logo ko sath lana jo khud ka kuch original banana chahte hain.
                     </p>
 
-
                     <br>
 
 
-
                     <div class="about-actions">
-
 
                         <a
                             href="shunyavas.html"
@@ -2286,7 +2169,6 @@
                         </a>
 
 
-
                         <a
                             href="community.html"
                             class="button secondary"
@@ -2294,9 +2176,7 @@
                             Community Join Karein &rarr;
                         </a>
 
-
                     </div>
-
 
                 </section>
 
@@ -2308,12 +2188,7 @@
 
 
 
-        <!-- ==================================================
-             FOOTER
-             ================================================== -->
-
         <footer>
-
 
             <div class="footer-content">
 
@@ -2322,7 +2197,6 @@
                 </p>
 
             </div>
-
 
         </footer>
 
@@ -2339,7 +2213,6 @@
 
 
         "use strict";
-
 
 
         /* ====================================================
@@ -2368,13 +2241,6 @@
             document.getElementById(
                 "hinglishAbout"
             );
-
-
-        const aboutProgress =
-            document.getElementById(
-                "aboutProgress"
-            );
-
 
 
         /* ====================================================
@@ -2463,77 +2329,6 @@
         );
 
 
-
-        /* ====================================================
-           READING PROGRESS
-           ==================================================== */
-
-        function updateProgress() {
-
-
-            const scrollTop =
-                window.scrollY ||
-                document.documentElement.scrollTop;
-
-
-            const documentHeight =
-                document.documentElement.scrollHeight -
-                window.innerHeight;
-
-
-            if (
-                documentHeight <= 0
-            ) {
-
-                aboutProgress.style.width =
-                    "0%";
-
-
-                return;
-
-            }
-
-
-            const progress =
-                Math.min(
-                    100,
-                    Math.max(
-                        0,
-                        (
-                            scrollTop /
-                            documentHeight
-                        ) *
-                        100
-                    )
-                );
-
-
-            aboutProgress.style.width =
-                `${progress}%`;
-
-
-        }
-
-
-
-        window.addEventListener(
-
-            "scroll",
-
-            updateProgress,
-
-            {
-                passive:
-                    true
-            }
-
-        );
-
-
-        updateProgress();
-
-
-
         /* ====================================================
            SCROLL REVEAL
            ==================================================== */
@@ -2546,6 +2341,18 @@
         function initializeReveal(
             container
         ) {
+
+
+            if (
+                revealObserver
+            ) {
+
+                revealObserver.disconnect();
+
+                revealObserver =
+                    null;
+
+            }
 
 
             const sections =
@@ -2562,6 +2369,11 @@
                 sections.forEach(
 
                     section => {
+
+                        section.classList.remove(
+                            "reveal"
+                        );
+
 
                         section.classList.add(
                             "visible"

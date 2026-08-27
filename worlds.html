@@ -1,0 +1,3928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Worlds — Dheere Studio
+    </title>
+
+
+    <meta
+        name="description"
+        content="Explore the original worlds and universes being built by Dheere Studio."
+    >
+
+
+    <!-- =====================================================
+         MAIN STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+
+    <!-- =====================================================
+         MOOD SYSTEM
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+
+    <style>
+
+
+        /* =====================================================
+           GLOBAL SCROLL FIX
+           ===================================================== */
+
+        html {
+
+            overflow-x:
+                hidden;
+
+            scrollbar-width:
+                none;
+
+        }
+
+
+        html::-webkit-scrollbar {
+
+            width:
+                0;
+
+            height:
+                0;
+
+        }
+
+
+        body {
+
+            overflow-x:
+                hidden;
+
+            scrollbar-width:
+                none;
+
+        }
+
+
+        body::-webkit-scrollbar {
+
+            width:
+                0;
+
+            height:
+                0;
+
+        }
+
+
+        /* =====================================================
+           PAGE FOUNDATION
+           ===================================================== */
+
+        .worlds-page {
+
+            position:
+                relative;
+
+            isolation:
+                isolate;
+
+            overflow-x:
+                hidden;
+
+            min-height:
+                100vh;
+
+        }
+
+
+        /* =====================================================
+           AMBIENT BACKGROUND
+           ===================================================== */
+
+        .worlds-page::before {
+
+            content:
+                "";
+
+            position:
+                fixed;
+
+            inset:
+                0;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -3;
+
+            background:
+
+                radial-gradient(
+                    circle at 12% 18%,
+                    rgba(255,255,255,.06),
+                    transparent 25%
+                ),
+
+                radial-gradient(
+                    circle at 88% 30%,
+                    rgba(255,255,255,.04),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 50% 90%,
+                    rgba(255,255,255,.025),
+                    transparent 35%
+                );
+
+        }
+
+
+        .worlds-page::after {
+
+            content:
+                "";
+
+            position:
+                fixed;
+
+            width:
+                600px;
+
+            height:
+                600px;
+
+            left:
+                -300px;
+
+            top:
+                20%;
+
+            border-radius:
+                50%;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -2;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.035),
+                    transparent 70%
+                );
+
+            filter:
+                blur(35px);
+
+            animation:
+                worldOrb 16s ease-in-out infinite alternate;
+
+        }
+
+
+        @keyframes worldOrb {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    );
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(
+                        220px,
+                        -90px,
+                        0
+                    );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+           ===================================================== */
+
+        .worlds-page .navbar {
+
+            position:
+                relative;
+
+            z-index:
+                50;
+
+        }
+
+
+        .nav-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+        }
+
+
+        .back-home-link {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            background:
+                rgba(255,255,255,.025);
+
+            color:
+                inherit;
+
+            text-decoration:
+                none;
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            transition:
+                transform .3s ease,
+                background .3s ease,
+                border-color .3s ease,
+                box-shadow .3s ease;
+
+        }
+
+
+        .back-home-link::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+
+                linear-gradient(
+                    115deg,
+                    transparent,
+                    rgba(255,255,255,.08),
+                    transparent
+                );
+
+            transform:
+                translateX(-120%);
+
+            transition:
+                transform .65s ease;
+
+        }
+
+
+        .back-home-link:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                rgba(255,255,255,.055);
+
+            border-color:
+                rgba(255,255,255,.2);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,.16);
+
+        }
+
+
+        .back-home-link:hover::before {
+
+            transform:
+                translateX(120%);
+
+        }
+
+
+        /* =====================================================
+           HERO
+           ===================================================== */
+
+        .worlds-hero {
+
+            position:
+                relative;
+
+            padding:
+                80px 20px 70px;
+
+        }
+
+
+        .worlds-hero-inner {
+
+            position:
+                relative;
+
+            width:
+                min(
+                    1100px,
+                    100%
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                clamp(
+                    32px,
+                    6vw,
+                    70px
+                );
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            border-radius:
+                30px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.07),
+                    rgba(255,255,255,.015)
+                );
+
+            box-shadow:
+
+                0 35px 100px
+                rgba(0,0,0,.24),
+
+                inset
+                0 1px 0
+                rgba(255,255,255,.08);
+
+            backdrop-filter:
+                blur(24px);
+
+            -webkit-backdrop-filter:
+                blur(24px);
+
+            overflow:
+                hidden;
+
+            animation:
+                heroReveal .9s cubic-bezier(.2,.8,.2,1)
+                both;
+
+        }
+
+
+        .worlds-hero-inner::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                420px;
+
+            height:
+                420px;
+
+            right:
+                -190px;
+
+            top:
+                -210px;
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.09),
+                    transparent 70%
+                );
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .worlds-hero-inner::after {
+
+            content:
+                "WORLDS";
+
+            position:
+                absolute;
+
+            right:
+                -5px;
+
+            bottom:
+                -25px;
+
+            font-size:
+                clamp(
+                    4rem,
+                    14vw,
+                    11rem
+                );
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .08em;
+
+            color:
+                rgba(255,255,255,.022);
+
+            pointer-events:
+                none;
+
+            user-select:
+                none;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        @keyframes heroReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(30px);
+
+            }
+
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .worlds-kicker {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                18px;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .18em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .worlds-kicker::before {
+
+            content:
+                "";
+
+            width:
+                30px;
+
+            height:
+                1px;
+
+            background:
+                currentColor;
+
+            opacity:
+                .7;
+
+        }
+
+
+        .worlds-hero h1 {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                850px;
+
+            margin:
+                0 0 24px;
+
+            font-size:
+                clamp(
+                    3rem,
+                    8vw,
+                    7rem
+                );
+
+            line-height:
+                .94;
+
+            letter-spacing:
+                -.055em;
+
+        }
+
+
+        .worlds-hero p {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                720px;
+
+            margin:
+                0;
+
+            color:
+                #aeb8c7;
+
+            font-size:
+                clamp(
+                    1rem,
+                    2vw,
+                    1.15rem
+                );
+
+            line-height:
+                1.85;
+
+        }
+
+
+        /* =====================================================
+           HERO ACTIONS
+           ===================================================== */
+
+        .hero-actions {
+
+            position:
+                relative;
+
+            z-index:
+                3;
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                12px;
+
+            margin-top:
+                32px;
+
+        }
+
+
+        .hero-actions .button {
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease;
+
+        }
+
+
+        .hero-actions .button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,.2);
+
+        }
+
+
+        .hero-actions .secondary {
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px solid rgba(255,255,255,.15);
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        /* =====================================================
+           WORLD PHILOSOPHY
+           ===================================================== */
+
+        .worlds-intro {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 28px;
+
+            padding:
+                34px 38px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius:
+                22px;
+
+            background:
+                rgba(255,255,255,.018);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+        }
+
+
+        .section-label {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                15px;
+
+            color:
+                #7c8798;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .section-label::before {
+
+            content:
+                "";
+
+            width:
+                22px;
+
+            height:
+                1px;
+
+            background:
+                currentColor;
+
+        }
+
+
+        .worlds-intro h2 {
+
+            margin:
+                0 0 18px;
+
+            font-size:
+                clamp(
+                    1.8rem,
+                    4vw,
+                    3rem
+                );
+
+            letter-spacing:
+                -.035em;
+
+        }
+
+
+        .worlds-intro p {
+
+            max-width:
+                800px;
+
+            color:
+                #aab4c3;
+
+            line-height:
+                1.85;
+
+        }
+
+
+        /* =====================================================
+           PRINCIPLES
+           ===================================================== */
+
+        .principles-grid {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 70px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                14px;
+
+        }
+
+
+        .principle-card {
+
+            position:
+                relative;
+
+            padding:
+                25px 22px;
+
+            min-height:
+                190px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius:
+                18px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.035),
+                    rgba(255,255,255,.01)
+                );
+
+            overflow:
+                hidden;
+
+            transition:
+                transform .35s ease,
+                border-color .35s ease,
+                background .35s ease;
+
+        }
+
+
+        .principle-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(255,255,255,.16);
+
+            background:
+                rgba(255,255,255,.045);
+
+        }
+
+
+        .principle-number {
+
+            display:
+                block;
+
+            margin-bottom:
+                28px;
+
+            color:
+                rgba(255,255,255,.3);
+
+            font-size:
+                .72rem;
+
+            letter-spacing:
+                .14em;
+
+        }
+
+
+        .principle-card h3 {
+
+            margin:
+                0 0 10px;
+
+            font-size:
+                1.05rem;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .principle-card p {
+
+            margin:
+                0;
+
+            color:
+                #8793a3;
+
+            font-size:
+                .88rem;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        /* =====================================================
+           MAIN WORLDS SECTION
+           ===================================================== */
+
+        .worlds-section {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 80px;
+
+        }
+
+
+        .section-heading {
+
+            margin-bottom:
+                28px;
+
+        }
+
+
+        .section-heading h2 {
+
+            margin:
+                0 0 10px;
+
+            font-size:
+                clamp(
+                    2rem,
+                    5vw,
+                    4rem
+                );
+
+            letter-spacing:
+                -.04em;
+
+        }
+
+
+        .section-heading p {
+
+            max-width:
+                650px;
+
+            margin:
+                0;
+
+            color:
+                #8793a3;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        /* =====================================================
+           SHUNYAVAS FEATURED WORLD
+           ===================================================== */
+
+        .featured-world {
+
+            position:
+                relative;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1.15fr .85fr;
+
+            gap:
+                25px;
+
+            padding:
+                34px;
+
+            border:
+                1px solid rgba(255,255,255,.12);
+
+            border-radius:
+                28px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.065),
+                    rgba(255,255,255,.015)
+                );
+
+            box-shadow:
+
+                0 30px 100px
+                rgba(0,0,0,.18),
+
+                inset
+                0 1px 0
+                rgba(255,255,255,.07);
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .featured-world::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                450px;
+
+            height:
+                450px;
+
+            right:
+                -220px;
+
+            top:
+                -250px;
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.075),
+                    transparent 70%
+                );
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .featured-content {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+        }
+
+
+        .world-status {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            padding:
+                8px 12px;
+
+            margin-bottom:
+                22px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            color:
+                #9ca8b8;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .1em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .status-dot {
+
+            width:
+                6px;
+
+            height:
+                6px;
+
+            border-radius:
+                50%;
+
+            background:
+                #f8fafc;
+
+            box-shadow:
+                0 0 10px rgba(255,255,255,.6);
+
+        }
+
+
+        .featured-world h3 {
+
+            margin:
+                0 0 16px;
+
+            font-size:
+                clamp(
+                    2.4rem,
+                    6vw,
+                    5rem
+                );
+
+            letter-spacing:
+                -.055em;
+
+        }
+
+
+        .featured-world p {
+
+            max-width:
+                650px;
+
+            color:
+                #aab4c3;
+
+            line-height:
+                1.85;
+
+        }
+
+
+        .world-tags {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+
+            margin:
+                26px 0;
+
+        }
+
+
+        .world-tag {
+
+            padding:
+                8px 12px;
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .78rem;
+
+        }
+
+
+        .world-actions {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                12px;
+
+            margin-top:
+                28px;
+
+        }
+
+
+        /* =====================================================
+           WORLD VISUAL PANEL
+           ===================================================== */
+
+        .world-visual {
+
+            position:
+                relative;
+
+            min-height:
+                430px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius:
+                22px;
+
+            background:
+
+                radial-gradient(
+                    circle at 50% 40%,
+                    rgba(255,255,255,.08),
+                    transparent 12%
+                ),
+
+                radial-gradient(
+                    circle at 50% 50%,
+                    rgba(255,255,255,.035),
+                    transparent 42%
+                ),
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.025),
+                    rgba(0,0,0,.12)
+                );
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .world-ring {
+
+            position:
+                absolute;
+
+            left:
+                50%;
+
+            top:
+                50%;
+
+            width:
+                240px;
+
+            height:
+                240px;
+
+            border:
+                1px solid rgba(255,255,255,.13);
+
+            border-radius:
+                50%;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            box-shadow:
+
+                0 0 70px
+                rgba(255,255,255,.025),
+
+                inset
+                0 0 50px
+                rgba(255,255,255,.02);
+
+            animation:
+                worldPulse 7s ease-in-out infinite;
+
+        }
+
+
+        .world-ring::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                28px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius:
+                50%;
+
+        }
+
+
+        .world-ring::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                50%;
+
+            top:
+                -8px;
+
+            width:
+                10px;
+
+            height:
+                10px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,.8);
+
+            transform:
+                translateX(-50%);
+
+            box-shadow:
+                0 0 20px rgba(255,255,255,.7);
+
+        }
+
+
+        @keyframes worldPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(1);
+
+                opacity:
+                    .7;
+
+            }
+
+
+            50% {
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(1.06);
+
+                opacity:
+                    1;
+
+            }
+
+        }
+
+
+        .world-core {
+
+            position:
+                absolute;
+
+            left:
+                50%;
+
+            top:
+                50%;
+
+            width:
+                82px;
+
+            height:
+                82px;
+
+            border-radius:
+                50%;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.3),
+                    rgba(255,255,255,.04) 55%,
+                    transparent 70%
+                );
+
+            box-shadow:
+                0 0 80px rgba(255,255,255,.08);
+
+        }
+
+
+        .visual-label {
+
+            position:
+                absolute;
+
+            left:
+                28px;
+
+            bottom:
+                26px;
+
+            color:
+                rgba(255,255,255,.32);
+
+            font-size:
+                .72rem;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        /* =====================================================
+           WORLD BUILDING ELEMENTS
+           ===================================================== */
+
+        .world-building-section {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 80px;
+
+        }
+
+
+        .building-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                16px;
+
+            margin-top:
+                28px;
+
+        }
+
+
+        .building-card {
+
+            position:
+                relative;
+
+            min-height:
+                230px;
+
+            padding:
+                28px;
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            border-radius:
+                20px;
+
+            background:
+                rgba(255,255,255,.018);
+
+            overflow:
+                hidden;
+
+            transition:
+                transform .35s ease,
+                border-color .35s ease,
+                background .35s ease;
+
+        }
+
+
+        .building-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(255,255,255,.16);
+
+            background:
+                rgba(255,255,255,.04);
+
+        }
+
+
+        .building-symbol {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            width:
+                44px;
+
+            height:
+                44px;
+
+            margin-bottom:
+                28px;
+
+            border:
+                1px solid rgba(255,255,255,.12);
+
+            border-radius:
+                14px;
+
+            color:
+                rgba(255,255,255,.75);
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size:
+                1.15rem;
+
+        }
+
+
+        .building-card h3 {
+
+            margin:
+                0 0 12px;
+
+            font-size:
+                1.15rem;
+
+        }
+
+
+        .building-card p {
+
+            margin:
+                0;
+
+            color:
+                #8793a3;
+
+            font-size:
+                .92rem;
+
+            line-height:
+                1.75;
+
+        }
+
+
+        /* =====================================================
+           INDIAN SOUL SECTION
+           ===================================================== */
+
+        .indian-soul {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 80px;
+
+            padding:
+                clamp(
+                    30px,
+                    5vw,
+                    60px
+                );
+
+            border:
+                1px solid rgba(255,255,255,.09);
+
+            border-radius:
+                28px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.012)
+                );
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .indian-soul h2 {
+
+            max-width:
+                700px;
+
+            margin:
+                0 0 22px;
+
+            font-size:
+                clamp(
+                    2rem,
+                    5vw,
+                    4rem
+                );
+
+            letter-spacing:
+                -.04em;
+
+        }
+
+
+        .indian-soul p {
+
+            max-width:
+                780px;
+
+            color:
+                #aab4c3;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        .soul-points {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                12px;
+
+            margin-top:
+                32px;
+
+        }
+
+
+        .soul-point {
+
+            padding:
+                18px 20px;
+
+            border-left:
+                2px solid rgba(255,255,255,.4);
+
+            background:
+                rgba(255,255,255,.018);
+
+            color:
+                #94a3b8;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .soul-point strong {
+
+            display:
+                block;
+
+            margin-bottom:
+                4px;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        /* =====================================================
+           FUTURE WORLDS
+           ===================================================== */
+
+        .future-worlds {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 90px;
+
+        }
+
+
+        .future-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                16px;
+
+            margin-top:
+                28px;
+
+        }
+
+
+        .future-world {
+
+            position:
+                relative;
+
+            min-height:
+                260px;
+
+            padding:
+                28px;
+
+            border:
+                1px dashed rgba(255,255,255,.13);
+
+            border-radius:
+                20px;
+
+            background:
+                rgba(255,255,255,.012);
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .future-world::before {
+
+            content:
+                "?";
+
+            position:
+                absolute;
+
+            right:
+                22px;
+
+            top:
+                8px;
+
+            color:
+                rgba(255,255,255,.035);
+
+            font-size:
+                8rem;
+
+            font-weight:
+                700;
+
+            line-height:
+                1;
+
+        }
+
+
+        .future-number {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            display:
+                block;
+
+            margin-bottom:
+                42px;
+
+            color:
+                rgba(255,255,255,.3);
+
+            font-size:
+                .72rem;
+
+            letter-spacing:
+                .14em;
+
+        }
+
+
+        .future-world h3 {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            margin:
+                0 0 10px;
+
+            color:
+                #cbd5e1;
+
+            font-size:
+                1.2rem;
+
+        }
+
+
+        .future-world p {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            margin:
+                0;
+
+            color:
+                #6f7b8b;
+
+            font-size:
+                .9rem;
+
+            line-height:
+                1.75;
+
+        }
+
+
+        /* =====================================================
+           CREATOR MESSAGE
+           ===================================================== */
+
+        .creator-message {
+
+            width:
+                min(
+                    1000px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 90px;
+
+            padding:
+                45px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            border-radius:
+                26px;
+
+            background:
+                rgba(255,255,255,.018);
+
+        }
+
+
+        .creator-message blockquote {
+
+            margin:
+                0;
+
+            max-width:
+                850px;
+
+            font-size:
+                clamp(
+                    1.5rem,
+                    4vw,
+                    3rem
+                );
+
+            font-weight:
+                500;
+
+            line-height:
+                1.45;
+
+            letter-spacing:
+                -.025em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .creator-message p {
+
+            margin:
+                24px 0 0;
+
+            color:
+                #7f8b9b;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        /* =====================================================
+           CTA
+           ===================================================== */
+
+        .worlds-cta {
+
+            width:
+                min(
+                    900px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto 90px;
+
+            padding:
+                50px 35px;
+
+            text-align:
+                center;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            border-radius:
+                28px;
+
+            background:
+
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(255,255,255,.07),
+                    transparent 50%
+                ),
+
+                rgba(255,255,255,.018);
+
+        }
+
+
+        .worlds-cta h2 {
+
+            margin:
+                0 0 15px;
+
+            font-size:
+                clamp(
+                    2rem,
+                    5vw,
+                    4rem
+                );
+
+            letter-spacing:
+                -.04em;
+
+        }
+
+
+        .worlds-cta p {
+
+            max-width:
+                650px;
+
+            margin:
+                0 auto;
+
+            color:
+                #8c98a8;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        .cta-actions {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                12px;
+
+            margin-top:
+                30px;
+
+        }
+
+
+        /* =====================================================
+           REVEAL
+           ===================================================== */
+
+        .reveal {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(30px);
+
+            transition:
+
+                opacity .75s ease,
+                transform .75s cubic-bezier(.2,.8,.2,1);
+
+        }
+
+
+        .reveal.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .worlds-page footer {
+
+            position:
+                relative;
+
+            margin-top:
+                40px;
+
+            border-top:
+                1px solid rgba(255,255,255,.06);
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (
+            max-width:
+            900px
+        ) {
+
+
+            .featured-world {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .principles-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+
+            .building-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+
+            .future-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media (
+            max-width:
+            650px
+        ) {
+
+
+            .worlds-hero {
+
+                padding:
+                    45px 14px 50px;
+
+            }
+
+
+            .worlds-hero-inner {
+
+                padding:
+                    30px 22px;
+
+                border-radius:
+                    21px;
+
+            }
+
+
+            .worlds-intro {
+
+                width:
+                    calc(100% - 28px);
+
+                padding:
+                    28px 22px;
+
+            }
+
+
+            .principles-grid {
+
+                width:
+                    calc(100% - 28px);
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .worlds-section {
+
+                width:
+                    calc(100% - 28px);
+
+            }
+
+
+            .featured-world {
+
+                padding:
+                    24px 20px;
+
+                border-radius:
+                    21px;
+
+            }
+
+
+            .world-visual {
+
+                min-height:
+                    320px;
+
+            }
+
+
+            .world-building-section {
+
+                width:
+                    calc(100% - 28px);
+
+            }
+
+
+            .building-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .indian-soul {
+
+                width:
+                    calc(100% - 28px);
+
+                padding:
+                    30px 22px;
+
+            }
+
+
+            .soul-points {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .future-worlds {
+
+                width:
+                    calc(100% - 28px);
+
+            }
+
+
+            .creator-message {
+
+                width:
+                    calc(100% - 28px);
+
+                padding:
+                    30px 22px;
+
+            }
+
+
+            .worlds-cta {
+
+                width:
+                    calc(100% - 28px);
+
+                padding:
+                    38px 22px;
+
+            }
+
+
+            .hero-actions,
+            .world-actions,
+            .cta-actions {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .hero-actions .button,
+            .world-actions .button,
+            .cta-actions .button {
+
+                width:
+                    100%;
+
+                text-align:
+                    center;
+
+            }
+
+
+            .nav-actions {
+
+                gap:
+                    6px;
+
+            }
+
+
+            .back-home-link {
+
+                padding:
+                    8px 10px;
+
+                font-size:
+                    .78rem;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+           ===================================================== */
+
+        @media (
+            prefers-reduced-motion:
+            reduce
+        ) {
+
+
+            *,
+            *::before,
+            *::after {
+
+                animation:
+                    none !important;
+
+                transition:
+                    none !important;
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
+        }
+
+
+    </style>
+
+
+    <!-- =====================================================
+         DHEERE MOOD ENGINE
+         ===================================================== -->
+
+    <script
+        src="mood-engine.js"
+    ></script>
+
+
+</head>
+
+
+<body>
+
+
+    <div
+        id="worldsPage"
+        class="page-view worlds-page"
+    >
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header>
+
+
+            <nav class="navbar">
+
+
+                <div class="nav-logo">
+
+                    <a
+                        href="index.html"
+                    >
+                        Dheere Studio
+                    </a>
+
+                </div>
+
+
+                <div class="nav-actions">
+
+
+                    <a
+                        href="index.html"
+                        class="back-home-link static-link"
+                    >
+                        &larr;
+                        Back to Dheere Studio
+                    </a>
+
+
+                </div>
+
+
+            </nav>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             MAIN
+             ================================================= -->
+
+        <main>
+
+
+
+            <!-- =============================================
+                 HERO
+                 ============================================= -->
+
+            <section
+                class="worlds-hero"
+            >
+
+
+                <div
+                    class="worlds-hero-inner"
+                >
+
+
+                    <div
+                        class="worlds-kicker"
+                    >
+
+                        Original Universes
+
+                    </div>
+
+
+                    <h1>
+
+                        WORLDS
+                        BEYOND
+                        THE STORY
+
+                    </h1>
+
+
+                    <p>
+
+                        Every great story lives inside something larger.
+                        A history. A culture. A mythology.
+                        A world with its own people, conflicts,
+                        mysteries and dreams.
+
+                    </p>
+
+
+                    <p
+                        style="
+                            margin-top:18px;
+                        "
+                    >
+
+                        At Dheere Studio, we are building original
+                        worlds from the ground up—worlds designed
+                        to grow far beyond a single story.
+
+                    </p>
+
+
+                    <div
+                        class="hero-actions"
+                    >
+
+
+                        <a
+                            href="#shunyavas"
+                            class="button"
+                        >
+
+                            Enter the First World
+                            &rarr;
+
+                        </a>
+
+
+                        <a
+                            href="#world-building"
+                            class="button secondary"
+                        >
+
+                            How We Build Worlds
+                            &darr;
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 INTRO
+                 ============================================= -->
+
+            <section
+                class="worlds-intro reveal"
+            >
+
+
+                <div
+                    class="section-label"
+                >
+
+                    The Philosophy
+
+                </div>
+
+
+                <h2>
+
+                    A World Should Feel Alive.
+
+                </h2>
+
+
+                <p>
+
+                    We don't want to create backgrounds that only
+                    exist behind the main character. We want to
+                    build worlds that feel like they existed long
+                    before the story began—and will continue to
+                    exist after it ends.
+
+                </p>
+
+
+                <p>
+
+                    Every world can have its own history, kingdoms,
+                    forgotten civilizations, beliefs, legends,
+                    conflicts, creatures and unanswered questions.
+
+                </p>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 PRINCIPLES
+                 ============================================= -->
+
+            <section
+                class="principles-grid reveal"
+            >
+
+
+                <article
+                    class="principle-card"
+                >
+
+
+                    <span
+                        class="principle-number"
+                    >
+
+                        01
+
+                    </span>
+
+
+                    <h3>
+
+                        Epic Scale
+
+                    </h3>
+
+
+                    <p>
+
+                        Stories that can grow from personal journeys
+                        into conflicts and events that reshape entire
+                        civilizations.
+
+                    </p>
+
+
+                </article>
+
+
+
+                <article
+                    class="principle-card"
+                >
+
+
+                    <span
+                        class="principle-number"
+                    >
+
+                        02
+
+                    </span>
+
+
+                    <h3>
+
+                        Real Emotion
+
+                    </h3>
+
+
+                    <p>
+
+                        No matter how large the world becomes,
+                        the heart of the story should always be
+                        human emotion.
+
+                    </p>
+
+
+                </article>
+
+
+
+                <article
+                    class="principle-card"
+                >
+
+
+                    <span
+                        class="principle-number"
+                    >
+
+                        03
+
+                    </span>
+
+
+                    <h3>
+
+                        Deep Lore
+
+                    </h3>
+
+
+                    <p>
+
+                        History, mythology, mysteries and secrets
+                        that make the audience want to explore
+                        beyond the main story.
+
+                    </p>
+
+
+                </article>
+
+
+
+                <article
+                    class="principle-card"
+                >
+
+
+                    <span
+                        class="principle-number"
+                    >
+
+                        04
+
+                    </span>
+
+
+                    <h3>
+
+                        Original Identity
+
+                    </h3>
+
+
+                    <p>
+
+                        Inspired by the depth of our own culture
+                        while creating something completely original.
+
+                    </p>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 FEATURED WORLD
+                 ============================================= -->
+
+            <section
+                id="shunyavas"
+                class="worlds-section reveal"
+            >
+
+
+                <div
+                    class="section-heading"
+                >
+
+
+                    <div
+                        class="section-label"
+                    >
+
+                        First Major Project
+
+                    </div>
+
+
+                    <h2>
+
+                        The First World Begins Here.
+
+                    </h2>
+
+
+                    <p>
+
+                        Shunyavas is the first major universe
+                        currently being developed at Dheere Studio.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <article
+                    class="featured-world"
+                >
+
+
+                    <div
+                        class="featured-content"
+                    >
+
+
+                        <div
+                            class="world-status"
+                        >
+
+
+                            <span
+                                class="status-dot"
+                            ></span>
+
+
+                            In Development
+
+
+                        </div>
+
+
+                        <h3>
+
+                            SHUNYAVAS
+
+                        </h3>
+
+
+                        <p>
+
+                            An original fantasy universe being
+                            developed as the first major foundation
+                            of Dheere Studio.
+
+                        </p>
+
+
+                        <p>
+
+                            Shunyavas is not being imagined as just
+                            one isolated story. The goal is to build
+                            a larger world capable of holding
+                            different characters, histories,
+                            conflicts and stories across time.
+
+                        </p>
+
+
+                        <div
+                            class="world-tags"
+                        >
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Fantasy
+                            </span>
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Mythology
+                            </span>
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Adventure
+                            </span>
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Emotion
+                            </span>
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Lore
+                            </span>
+
+
+                            <span
+                                class="world-tag"
+                            >
+                                Original Universe
+                            </span>
+
+
+                        </div>
+
+
+                        <div
+                            class="world-actions"
+                        >
+
+
+                            <a
+                                href="shunyavas.html"
+                                class="button"
+                            >
+
+                                Explore Shunyavas
+                                &rarr;
+
+                            </a>
+
+
+                            <a
+                                href="stories.html"
+                                class="button secondary"
+                            >
+
+                                View Stories
+
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div
+                        class="world-visual"
+                    >
+
+
+                        <div
+                            class="world-ring"
+                        ></div>
+
+
+                        <div
+                            class="world-core"
+                        ></div>
+
+
+                        <div
+                            class="visual-label"
+                        >
+
+                            A universe in development
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 WORLD BUILDING
+                 ============================================= -->
+
+            <section
+                id="world-building"
+                class="world-building-section reveal"
+            >
+
+
+                <div
+                    class="section-heading"
+                >
+
+
+                    <div
+                        class="section-label"
+                    >
+
+                        The Architecture
+
+                    </div>
+
+
+                    <h2>
+
+                        What Makes A World?
+
+                    </h2>
+
+
+                    <p>
+
+                        A universe is built layer by layer.
+                        Some parts are visible immediately.
+                        Others remain hidden until the right
+                        moment in the story.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <div
+                    class="building-grid"
+                >
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ◈
+
+                        </div>
+
+
+                        <h3>
+
+                            Characters
+
+                        </h3>
+
+
+                        <p>
+
+                            Heroes, villains, rivals and ordinary
+                            people whose choices shape the future
+                            of the world.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ◇
+
+                        </div>
+
+
+                        <h3>
+
+                            Mythology
+
+                        </h3>
+
+
+                        <p>
+
+                            Ancient stories, forgotten gods,
+                            legendary beings and mysteries that
+                            influence the present.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ▲
+
+                        </div>
+
+
+                        <h3>
+
+                            Nations & Factions
+
+                        </h3>
+
+
+                        <p>
+
+                            Kingdoms, clans, organizations and
+                            groups with their own beliefs,
+                            ambitions and conflicts.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ◎
+
+                        </div>
+
+
+                        <h3>
+
+                            Power & Rules
+
+                        </h3>
+
+
+                        <p>
+
+                            Every extraordinary world needs rules.
+                            Power becomes interesting when it has
+                            limits and consequences.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ✦
+
+                        </div>
+
+
+                        <h3>
+
+                            History
+
+                        </h3>
+
+
+                        <p>
+
+                            Wars, discoveries, betrayals and
+                            forgotten eras that explain why the
+                            present world exists.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="building-card"
+                    >
+
+
+                        <div
+                            class="building-symbol"
+                        >
+
+                            ∞
+
+                        </div>
+
+
+                        <h3>
+
+                            Mystery
+
+                        </h3>
+
+
+                        <p>
+
+                            The unknown matters. Some questions
+                            should take years to answer—and some
+                            mysteries should change everything.
+
+                        </p>
+
+
+                    </article>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 INDIAN SOUL
+                 ============================================= -->
+
+            <section
+                class="indian-soul reveal"
+            >
+
+
+                <div
+                    class="section-label"
+                >
+
+                    The Creative Identity
+
+                </div>
+
+
+                <h2>
+
+                    Indian At Its Soul.
+                    Original In Its Form.
+
+                </h2>
+
+
+                <p>
+
+                    The worlds being created at Dheere Studio will
+                    draw creative energy from the incredible depth
+                    of Indian history, mythology, philosophy,
+                    geography and storytelling traditions.
+
+                </p>
+
+
+                <p>
+
+                    But the goal is not to simply repeat existing
+                    mythology. The goal is to create completely
+                    original worlds with their own characters,
+                    histories, systems and identities.
+
+                </p>
+
+
+                <div
+                    class="soul-points"
+                >
+
+
+                    <div
+                        class="soul-point"
+                    >
+
+                        <strong>
+
+                            Cultural Depth
+
+                        </strong>
+
+                        Ancient traditions, philosophies and
+                        storytelling ideas can inspire deeper
+                        original creations.
+
+
+                    </div>
+
+
+
+                    <div
+                        class="soul-point"
+                    >
+
+                        <strong>
+
+                            New Mythology
+
+                        </strong>
+
+                        New legends, creatures, civilizations and
+                        mysteries built specifically for each
+                        universe.
+
+
+                    </div>
+
+
+
+                    <div
+                        class="soul-point"
+                    >
+
+                        <strong>
+
+                            Global Scale
+
+                        </strong>
+
+                        Stories created from an Indian creative
+                        perspective but designed to connect with
+                        audiences anywhere.
+
+
+                    </div>
+
+
+
+                    <div
+                        class="soul-point"
+                    >
+
+                        <strong>
+
+                            A Distinct Identity
+
+                        </strong>
+
+                        The ambition is to create worlds that
+                        people can recognize as their own,
+                        not copies of something that already exists.
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 FUTURE WORLDS
+                 ============================================= -->
+
+            <section
+                class="future-worlds reveal"
+            >
+
+
+                <div
+                    class="section-heading"
+                >
+
+
+                    <div
+                        class="section-label"
+                    >
+
+                        Beyond Shunyavas
+
+                    </div>
+
+
+                    <h2>
+
+                        More Worlds Will Come.
+
+                    </h2>
+
+
+                    <p>
+
+                        Shunyavas is only the beginning.
+                        Dheere Studio is being built with a
+                        long-term vision to create multiple
+                        original universes over time.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <div
+                    class="future-grid"
+                >
+
+
+                    <article
+                        class="future-world"
+                    >
+
+
+                        <span
+                            class="future-number"
+                        >
+
+                            WORLD 02
+
+                        </span>
+
+
+                        <h3>
+
+                            Unrevealed
+
+                        </h3>
+
+
+                        <p>
+
+                            A future universe is waiting somewhere
+                            beyond the horizon.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="future-world"
+                    >
+
+
+                        <span
+                            class="future-number"
+                        >
+
+                            WORLD 03
+
+                        </span>
+
+
+                        <h3>
+
+                            Unrevealed
+
+                        </h3>
+
+
+                        <p>
+
+                            Every new world will begin with a
+                            question worth exploring.
+
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article
+                        class="future-world"
+                    >
+
+
+                        <span
+                            class="future-number"
+                        >
+
+                            WORLD 04
+
+                        </span>
+
+
+                        <h3>
+
+                            Unrevealed
+
+                        </h3>
+
+
+                        <p>
+
+                            The studio is still at the beginning.
+                            There is a long road ahead.
+
+                        </p>
+
+
+                    </article>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 CREATOR MESSAGE
+                 ============================================= -->
+
+            <section
+                class="creator-message reveal"
+            >
+
+
+                <blockquote>
+
+                    "The goal isn't to create one story and finish it.
+                    The goal is to build worlds people can carry
+                    with them."
+
+                </blockquote>
+
+
+                <p>
+
+                    Some stories entertain us for a moment.
+                    Others make us remember a character for years.
+                    The ambition behind Dheere Studio is to slowly
+                    build original worlds that can create that kind
+                    of connection.
+
+                </p>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 CTA
+                 ============================================= -->
+
+            <section
+                class="worlds-cta reveal"
+            >
+
+
+                <div
+                    class="section-label"
+                    style="
+                        justify-content:center;
+                    "
+                >
+
+                    The Journey Begins
+
+                </div>
+
+
+                <h2>
+
+                    Enter The Beginning.
+
+                </h2>
+
+
+                <p>
+
+                    The first world is already taking shape.
+                    Explore Shunyavas, follow the journey,
+                    and become part of the community watching
+                    these worlds grow.
+
+                </p>
+
+
+                <div
+                    class="cta-actions"
+                >
+
+
+                    <a
+                        href="shunyavas.html"
+                        class="button"
+                    >
+
+                        Explore Shunyavas
+                        &rarr;
+
+                    </a>
+
+
+                    <a
+                        href="community.html"
+                        class="button secondary"
+                    >
+
+                        Join The Community
+                        &rarr;
+
+                    </a>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer>
+
+
+            <div
+                class="footer-content"
+            >
+
+
+                <p>
+
+                    &copy; 2026 Dheere Studio.
+                    All rights reserved.
+
+                </p>
+
+
+            </div>
+
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PAGE SCRIPT
+         ===================================================== -->
+
+    <script>
+
+
+        "use strict";
+
+
+
+        /* ====================================================
+           SMOOTH INTERNAL SCROLL
+           ==================================================== */
+
+        document
+            .querySelectorAll(
+                'a[href^="#"]'
+            )
+            .forEach(
+
+                link => {
+
+
+                    link.addEventListener(
+
+                        "click",
+
+                        function (
+                            event
+                        ) {
+
+
+                            const targetId =
+                                this.getAttribute(
+                                    "href"
+                                );
+
+
+                            if (
+                                !targetId ||
+                                targetId === "#"
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            const target =
+                                document.querySelector(
+                                    targetId
+                                );
+
+
+                            if (
+                                !target
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            event.preventDefault();
+
+
+                            target.scrollIntoView({
+
+                                behavior:
+                                    "smooth",
+
+                                block:
+                                    "start"
+
+                            });
+
+
+                        }
+
+                    );
+
+
+                }
+
+            );
+
+
+
+        /* ====================================================
+           SCROLL REVEAL
+           ==================================================== */
+
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal"
+            );
+
+
+
+        if (
+            "IntersectionObserver"
+            in window
+        ) {
+
+
+            const revealObserver =
+                new IntersectionObserver(
+
+                    entries => {
+
+
+                        entries.forEach(
+
+                            entry => {
+
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+
+                                    entry.target
+                                        .classList
+                                        .add(
+                                            "visible"
+                                        );
+
+
+                                    revealObserver
+                                        .unobserve(
+                                            entry.target
+                                        );
+
+
+                                }
+
+
+                            }
+
+                        );
+
+
+                    },
+
+                    {
+
+                        threshold:
+                            0.08,
+
+                        rootMargin:
+                            "0px 0px -30px 0px"
+
+                    }
+
+                );
+
+
+
+            revealElements.forEach(
+
+                element => {
+
+
+                    revealObserver.observe(
+                        element
+                    );
+
+
+                }
+
+            );
+
+
+        } else {
+
+
+            revealElements.forEach(
+
+                element => {
+
+
+                    element.classList.add(
+                        "visible"
+                    );
+
+
+                }
+
+            );
+
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
