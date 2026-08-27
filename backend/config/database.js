@@ -1,7 +1,35 @@
-const { MongoClient } =
-    require("mongodb");
+// ============================================================
+// DEPENDENCIES
+// ============================================================
+
+const {
+    MongoClient
+} =
+    require(
+        "mongodb"
+    );
 
 
+
+// ============================================================
+// ENVIRONMENT CHECK
+// ============================================================
+
+if (
+    !process.env.MONGODB_URI
+) {
+
+    throw new Error(
+        "Missing required environment variable: MONGODB_URI"
+    );
+
+}
+
+
+
+// ============================================================
+// MONGODB CLIENT
+// ============================================================
 
 const client =
     new MongoClient(
@@ -10,216 +38,295 @@ const client =
 
 
 
+// ============================================================
+// DATABASE CONNECTION
+// ============================================================
+
 async function connectDatabase() {
 
-    await client.connect();
+    try {
+
+        // ====================================================
+        // CONNECT
+        // ====================================================
+
+        await client.connect();
 
 
 
-    const database =
-        client.db(
-            "dheereStudio"
+        // ====================================================
+        // DATABASE
+        // ====================================================
+
+        const database =
+            client.db(
+                "dheereStudio"
+            );
+
+
+
+        // ====================================================
+        // VERIFY CONNECTION
+        // ====================================================
+
+        await database.command({
+
+            ping: 1
+
+        });
+
+
+
+        // ====================================================
+        // COLLECTIONS
+        // ====================================================
+
+        const feedbackCollection =
+            database.collection(
+                "feedback"
+            );
+
+
+        const usersCollection =
+            database.collection(
+                "users"
+            );
+
+
+        const postsCollection =
+            database.collection(
+                "posts"
+            );
+
+
+        const notificationsCollection =
+            database.collection(
+                "notifications"
+            );
+
+
+
+        // ====================================================
+        // UNIQUE USERNAME
+        // ====================================================
+
+        await usersCollection.createIndex(
+
+            {
+                username:
+                    1
+            },
+
+            {
+                unique:
+                    true
+            }
+
         );
 
 
 
-    const feedbackCollection =
-        database.collection(
-            "feedback"
+        // ====================================================
+        // UNIQUE EMAIL
+        // ====================================================
+
+        await usersCollection.createIndex(
+
+            {
+                email:
+                    1
+            },
+
+            {
+                unique:
+                    true
+            }
+
         );
 
 
 
-    const usersCollection =
-        database.collection(
-            "users"
+        // ====================================================
+        // POSTS INDEX
+        // ====================================================
+
+        await postsCollection.createIndex(
+
+            {
+                createdAt:
+                    -1
+            }
+
         );
 
 
 
-    const postsCollection =
-        database.collection(
-            "posts"
+        await postsCollection.createIndex(
+
+            {
+                authorId:
+                    1,
+
+
+                createdAt:
+                    -1
+            }
+
         );
 
 
 
-    const notificationsCollection =
-        database.collection(
-            "notifications"
+        // ====================================================
+        // PASSWORD RESET INDEX
+        // ====================================================
+
+        await usersCollection.createIndex(
+
+            {
+                resetTokenHash:
+                    1
+            },
+
+            {
+                sparse:
+                    true
+            }
+
         );
 
 
 
-    // ========================================================
-    // UNIQUE USERNAME
-    // ========================================================
+        // ====================================================
+        // NOTIFICATIONS INDEXES
+        // ====================================================
 
-    await usersCollection.createIndex(
+        await notificationsCollection.createIndex(
 
-        {
-            username: 1
-        },
+            {
+                recipientId:
+                    1,
 
-        {
-            unique: true
-        }
 
-    );
+                createdAt:
+                    -1
+            }
 
+        );
 
 
-    // ========================================================
-    // UNIQUE EMAIL
-    // ========================================================
 
-    await usersCollection.createIndex(
+        await notificationsCollection.createIndex(
 
-        {
-            email: 1
-        },
+            {
+                recipientId:
+                    1,
 
-        {
-            unique: true
-        }
 
-    );
+                read:
+                    1,
 
 
+                createdAt:
+                    -1
+            }
 
-    // ========================================================
-    // POSTS
-    // ========================================================
+        );
 
-    await postsCollection.createIndex(
 
-        {
-            createdAt: -1
-        }
 
-    );
+        await notificationsCollection.createIndex(
 
+            {
+                recipientId:
+                    1,
 
 
-    await postsCollection.createIndex(
+                actorId:
+                    1,
 
-        {
-            authorId: 1,
 
-            createdAt: -1
-        }
+                type:
+                    1,
 
-    );
 
+                postId:
+                    1
+            }
 
+        );
 
-    // ========================================================
-    // PASSWORD RESET
-    // ========================================================
 
-    await usersCollection.createIndex(
 
-        {
-            resetTokenHash: 1
-        },
+        // ====================================================
+        // SUCCESS LOGS
+        // ====================================================
 
-        {
-            sparse: true
-        }
+        console.log(
+            "MongoDB connected successfully"
+        );
 
-    );
 
+        console.log(
+            "Username system initialized"
+        );
 
 
-    // ========================================================
-    // NOTIFICATIONS
-    // ========================================================
+        console.log(
+            "Notifications system initialized"
+        );
 
-    await notificationsCollection.createIndex(
 
-        {
-            recipientId: 1,
+        console.log(
+            "Password reset system initialized"
+        );
 
-            createdAt: -1
-        }
 
-    );
 
+        // ====================================================
+        // RETURN DATABASE OBJECTS
+        // ====================================================
 
+        return {
 
-    await notificationsCollection.createIndex(
+            client,
 
-        {
-            recipientId: 1,
+            database,
 
-            read: 1,
+            feedbackCollection,
 
-            createdAt: -1
-        }
+            usersCollection,
 
-    );
+            postsCollection,
 
+            notificationsCollection
 
+        };
 
-    await notificationsCollection.createIndex(
 
-        {
-            recipientId: 1,
+    } catch (error) {
 
-            actorId: 1,
+        // ====================================================
+        // CONNECTION ERROR
+        // ====================================================
 
-            type: 1,
+        console.error(
+            "MongoDB connection failed:",
+            error.message
+        );
 
-            postId: 1
-        }
 
-    );
 
+        throw error;
 
-
-    console.log(
-        "MongoDB connected successfully"
-    );
-
-
-
-    console.log(
-        "Username system initialized"
-    );
-
-
-
-    console.log(
-        "Notifications system initialized"
-    );
-
-
-
-    console.log(
-        "Password reset system initialized"
-    );
-
-
-
-    return {
-
-        client,
-
-        database,
-
-        feedbackCollection,
-
-        usersCollection,
-
-        postsCollection,
-
-        notificationsCollection
-
-    };
+    }
 
 }
 
 
+
+// ============================================================
+// MODULE EXPORTS
+// ============================================================
 
 module.exports = {
 

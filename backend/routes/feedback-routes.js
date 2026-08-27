@@ -1,5 +1,5 @@
 // ============================================================
-// FEEDBACK ROUTES
+// DEPENDENCIES
 // ============================================================
 
 const express =
@@ -8,10 +8,16 @@ const express =
     );
 
 
+const rateLimit =
+    require(
+        "express-rate-limit"
+    );
+
 
 const {
     cleanName,
-    normalizeEmail
+    normalizeEmail,
+    MAX_NAME_LENGTH
 } =
     require(
         "../utils/validators"
@@ -19,8 +25,66 @@ const {
 
 
 
+// ============================================================
+// ROUTER
+// ============================================================
+
 const router =
     express.Router();
+
+
+
+// ============================================================
+// CONFIG
+// ============================================================
+
+const MAX_FEEDBACK_MESSAGE_LENGTH =
+    3000;
+
+
+
+const EMAIL_REGEX =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
+// ============================================================
+// FEEDBACK RATE LIMIT
+// ============================================================
+
+const feedbackLimiter =
+    rateLimit({
+
+        windowMs:
+            15 *
+            60 *
+            1000,
+
+
+        max:
+            5,
+
+
+        standardHeaders:
+            true,
+
+
+        legacyHeaders:
+            false,
+
+
+        message: {
+
+            success:
+                false,
+
+
+            error:
+                "Too many feedback submissions. Please try again later."
+
+        }
+
+    });
 
 
 
@@ -32,15 +96,21 @@ function createFeedbackRouter(
     feedbackCollection
 ) {
 
+
     // ========================================================
     // FEEDBACK
     // ========================================================
 
     router.post(
+
         "/feedback",
+
+        feedbackLimiter,
+
         async (req, res) => {
 
             try {
+
 
                 // =================================================
                 // GET DATA
@@ -56,13 +126,20 @@ function createFeedbackRouter(
 
 
                 // =================================================
-                // REQUIRED FIELDS
+                // VALIDATE TYPES
                 // =================================================
 
                 if (
-                    !name ||
-                    !email ||
-                    !message
+
+                    typeof name !==
+                    "string" ||
+
+                    typeof email !==
+                    "string" ||
+
+                    typeof message !==
+                    "string"
+
                 ) {
 
                     return res.status(400).json({
@@ -70,8 +147,9 @@ function createFeedbackRouter(
                         success:
                             false,
 
+
                         error:
-                            "All fields are required"
+                            "Invalid feedback data"
 
                     });
 
@@ -83,44 +161,37 @@ function createFeedbackRouter(
                 // CLEAN DATA
                 // =================================================
 
-                const feedback = {
-
-                    name:
-                        cleanName(
-                            name
-                        ),
+                const cleanFeedbackName =
+                    cleanName(
+                        name
+                    );
 
 
-                    email:
-                        normalizeEmail(
-                            email
-                        ),
+
+                const cleanFeedbackEmail =
+                    normalizeEmail(
+                        email
+                    );
 
 
-                    message:
-                        typeof message ===
-                        "string"
 
-                            ? message.trim()
-
-                            : "",
-
-
-                    createdAt:
-                        new Date()
-
-                };
+                const cleanFeedbackMessage =
+                    message.trim();
 
 
 
                 // =================================================
-                // VALIDATE CLEANED DATA
+                // REQUIRED FIELDS
                 // =================================================
 
                 if (
-                    !feedback.name ||
-                    !feedback.email ||
-                    !feedback.message
+
+                    !cleanFeedbackName ||
+
+                    !cleanFeedbackEmail ||
+
+                    !cleanFeedbackMessage
+
                 ) {
 
                     return res.status(400).json({
@@ -128,12 +199,143 @@ function createFeedbackRouter(
                         success:
                             false,
 
+
                         error:
                             "All fields are required"
 
                     });
 
                 }
+
+
+
+                // =================================================
+                // NAME LENGTH
+                // =================================================
+
+                if (
+
+                    cleanFeedbackName.length >
+                    MAX_NAME_LENGTH
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            `Name must not exceed ${MAX_NAME_LENGTH} characters`
+
+                    });
+
+                }
+
+
+
+                // =================================================
+                // EMAIL LENGTH
+                // =================================================
+
+                if (
+
+                    cleanFeedbackEmail.length >
+                    254
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            "Email address is too long"
+
+                    });
+
+                }
+
+
+
+                // =================================================
+                // EMAIL VALIDATION
+                // =================================================
+
+                if (
+
+                    !EMAIL_REGEX.test(
+                        cleanFeedbackEmail
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            "Please provide a valid email address"
+
+                    });
+
+                }
+
+
+
+                // =================================================
+                // MESSAGE LENGTH
+                // =================================================
+
+                if (
+
+                    cleanFeedbackMessage.length >
+                    MAX_FEEDBACK_MESSAGE_LENGTH
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            `Feedback message must not exceed ${MAX_FEEDBACK_MESSAGE_LENGTH} characters`
+
+                    });
+
+                }
+
+
+
+                // =================================================
+                // CREATE FEEDBACK
+                // =================================================
+
+                const feedback = {
+
+                    name:
+                        cleanFeedbackName,
+
+
+                    email:
+                        cleanFeedbackEmail,
+
+
+                    message:
+                        cleanFeedbackMessage,
+
+
+                    createdAt:
+                        new Date()
+
+                };
 
 
 
@@ -157,10 +359,11 @@ function createFeedbackRouter(
                 // SUCCESS
                 // =================================================
 
-                return res.json({
+                return res.status(201).json({
 
                     success:
                         true,
+
 
                     message:
                         "Feedback received successfully"
@@ -169,6 +372,7 @@ function createFeedbackRouter(
 
 
             } catch (error) {
+
 
                 // =================================================
                 // ERROR
@@ -186,6 +390,7 @@ function createFeedbackRouter(
                     success:
                         false,
 
+
                     error:
                         "Could not save feedback"
 
@@ -194,6 +399,7 @@ function createFeedbackRouter(
             }
 
         }
+
     );
 
 

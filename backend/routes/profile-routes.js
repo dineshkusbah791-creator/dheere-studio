@@ -2,6 +2,11 @@
 // PROFILE ROUTES
 // ============================================================
 
+
+// ============================================================
+// DEPENDENCIES
+// ============================================================
+
 const express =
     require(
         "express"
@@ -22,6 +27,21 @@ const cloudinary =
     ).v2;
 
 
+// ============================================================
+// AUTH
+// ============================================================
+
+const {
+    authenticateToken
+} =
+    require(
+        "../middleware/auth-middleware"
+    );
+
+
+// ============================================================
+// VALIDATORS
+// ============================================================
 
 const {
     USERNAME_REGEX,
@@ -42,6 +62,9 @@ const {
     );
 
 
+// ============================================================
+// IMAGE UTILITIES
+// ============================================================
 
 const {
     PROFILE_PHOTO_FOLDER,
@@ -52,7 +75,6 @@ const {
     require(
         "../utils/image-utils"
     );
-
 
 
 // ============================================================
@@ -79,6 +101,46 @@ function isValidObjectId(
 }
 
 
+// ============================================================
+// AUTHORIZATION CHECK
+// ============================================================
+
+function isAuthorizedUser(
+
+    requestedUserId,
+
+    authenticatedUserId
+
+) {
+
+    if (
+
+        !isValidObjectId(
+            requestedUserId
+        )
+
+        ||
+
+        !isValidObjectId(
+            authenticatedUserId
+        )
+
+    ) {
+
+        return false;
+
+    }
+
+
+    return (
+
+        requestedUserId ===
+        authenticatedUserId
+
+    );
+
+}
+
 
 // ============================================================
 // CONFIGURE CLOUDINARY
@@ -102,6 +164,28 @@ function configureCloudinary() {
 }
 
 
+// ============================================================
+// CHECK CLOUDINARY CONFIGURATION
+// ============================================================
+
+function isCloudinaryConfigured() {
+
+    return Boolean(
+
+        process.env.CLOUDINARY_CLOUD_NAME
+
+        &&
+
+        process.env.CLOUDINARY_API_KEY
+
+        &&
+
+        process.env.CLOUDINARY_API_SECRET
+
+    );
+
+}
+
 
 // ============================================================
 // CREATE PROFILE ROUTER
@@ -119,16 +203,25 @@ function createProfileRouter(
 
 
 
+
     // ========================================================
     // GET PROFILE
+    //
+    // Public route.
+    //
+    // Email is intentionally NOT exposed.
     // ========================================================
 
     router.get(
+
         "/profile/:userId",
 
         async (
+
             req,
+
             res
+
         ) => {
 
 
@@ -144,6 +237,10 @@ function createProfileRouter(
                         : "";
 
 
+
+                // ============================================
+                // VALIDATE USER ID
+                // ============================================
 
                 if (
 
@@ -167,6 +264,10 @@ function createProfileRouter(
 
 
 
+                // ============================================
+                // FIND USER
+                // ============================================
+
                 const user =
                     await usersCollection.findOne(
 
@@ -189,9 +290,6 @@ function createProfileRouter(
                                 username:
                                     1,
 
-                                email:
-                                    1,
-
                                 bio:
                                     1,
 
@@ -209,8 +307,14 @@ function createProfileRouter(
 
 
 
+                // ============================================
+                // USER NOT FOUND
+                // ============================================
+
                 if (
+
                     !user
+
                 ) {
 
                     return res.status(404).json({
@@ -226,6 +330,10 @@ function createProfileRouter(
                 }
 
 
+
+                // ============================================
+                // SUCCESS
+                // ============================================
 
                 return res.json({
 
@@ -245,10 +353,6 @@ function createProfileRouter(
 
                         username:
                             user.username ||
-                            "",
-
-                        email:
-                            user.email ||
                             "",
 
                         bio:
@@ -301,669 +405,26 @@ function createProfileRouter(
 
 
 
-    // ========================================================
-    // UPDATE PROFILE PHOTO
-    // ========================================================
-
-    router.put(
-
-        "/profile/:userId/photo",
-
-        async (
-            req,
-            res
-        ) => {
-
-
-            try {
-
-
-                const userId =
-                    typeof req.params.userId ===
-                    "string"
-
-                        ? req.params.userId.trim()
-
-                        : "";
-
-
-
-                const {
-
-                    username,
-
-                    image
-
-                } =
-                    req.body;
-
-
-
-                // ============================================
-                // VALIDATE USER ID
-                // ============================================
-
-                if (
-
-                    !isValidObjectId(
-                        userId
-                    )
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Invalid user ID"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // VALIDATE USERNAME
-                // ============================================
-
-                const cleanUsername =
-                    normalizeUsername(
-                        username
-                    );
-
-
-
-                if (
-
-                    !USERNAME_REGEX.test(
-                        cleanUsername
-                    )
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Valid username is required"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // VALIDATE IMAGE
-                // ============================================
-
-                const validation =
-                    validateProfilePhoto(
-                        image
-                    );
-
-
-
-                if (
-
-                    !validation.valid
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            validation.error
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // VERIFY USER
-                // ============================================
-
-                const user =
-                    await usersCollection.findOne({
-
-                        _id:
-                            new ObjectId(
-                                userId
-                            ),
-
-                        username:
-                            cleanUsername
-
-                    });
-
-
-
-                if (
-                    !user
-                ) {
-
-                    return res.status(401).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "User verification failed"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // CHECK CLOUDINARY
-                // ============================================
-
-                if (
-
-                    !process.env.CLOUDINARY_CLOUD_NAME
-
-                    ||
-
-                    !process.env.CLOUDINARY_API_KEY
-
-                    ||
-
-                    !process.env.CLOUDINARY_API_SECRET
-
-                ) {
-
-                    console.error(
-
-                        "Cloudinary environment variables are missing"
-
-                    );
-
-
-
-                    return res.status(500).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Profile photo storage is not configured"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // CONFIGURE CLOUDINARY
-                // ============================================
-
-                configureCloudinary();
-
-
-
-                // ============================================
-                // UPLOAD IMAGE
-                // ============================================
-
-                const uploadResult =
-                    await cloudinary.uploader.upload(
-
-                        image,
-
-                        {
-
-                            folder:
-                                PROFILE_PHOTO_FOLDER,
-
-                            public_id:
-                                user
-                                    ._id
-                                    .toString(),
-
-                            overwrite:
-                                true,
-
-                            resource_type:
-                                "image",
-
-                            type:
-                                "upload",
-
-                            invalidate:
-                                true
-
-                        }
-
-                    );
-
-
-
-                const avatarUrl =
-                    uploadResult.secure_url;
-
-
-
-                const avatarPublicId =
-                    uploadResult.public_id;
-
-
-
-                if (
-
-                    !avatarUrl
-
-                    ||
-
-                    !avatarPublicId
-
-                ) {
-
-                    throw new Error(
-
-                        "Cloudinary did not return a valid asset"
-
-                    );
-
-                }
-
-
-
-                // ============================================
-                // SAVE IMAGE DATA
-                // ============================================
-
-                await usersCollection.updateOne(
-
-                    {
-
-                        _id:
-                            user._id,
-
-                        username:
-                            cleanUsername
-
-                    },
-
-                    {
-
-                        $set: {
-
-                            avatarUrl:
-                                avatarUrl,
-
-                            avatarPublicId:
-                                avatarPublicId
-
-                        }
-
-                    }
-
-                );
-
-
-
-                console.log(
-
-                    "Profile photo updated:",
-
-                    user
-                        ._id
-                        .toString()
-
-                );
-
-
-
-                return res.json({
-
-                    success:
-                        true,
-
-                    message:
-                        "Profile photo updated successfully",
-
-                    avatarUrl:
-                        avatarUrl
-
-                });
-
-
-            } catch (
-                error
-            ) {
-
-
-                console.error(
-
-                    "Profile photo upload error:",
-
-                    error
-
-                );
-
-
-
-                return res.status(500).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Could not save profile photo"
-
-                });
-
-            }
-
-
-        }
-
-    );
-
-
-
-    // ========================================================
-    // REMOVE PROFILE PHOTO
-    // ========================================================
-
-    router.delete(
-
-        "/profile/:userId/photo",
-
-        async (
-            req,
-            res
-        ) => {
-
-
-            try {
-
-
-                const userId =
-                    typeof req.params.userId ===
-                    "string"
-
-                        ? req.params.userId.trim()
-
-                        : "";
-
-
-
-                const {
-
-                    username
-
-                } =
-                    req.body;
-
-
-
-                // ============================================
-                // VALIDATE USER ID
-                // ============================================
-
-                if (
-
-                    !isValidObjectId(
-                        userId
-                    )
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Invalid user ID"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // VALIDATE USERNAME
-                // ============================================
-
-                const cleanUsername =
-                    normalizeUsername(
-                        username
-                    );
-
-
-
-                if (
-
-                    !USERNAME_REGEX.test(
-                        cleanUsername
-                    )
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Valid username is required"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // VERIFY USER
-                // ============================================
-
-                const user =
-                    await usersCollection.findOne({
-
-                        _id:
-                            new ObjectId(
-                                userId
-                            ),
-
-                        username:
-                            cleanUsername
-
-                    });
-
-
-
-                if (
-                    !user
-                ) {
-
-                    return res.status(401).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "User verification failed"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // DELETE FROM CLOUDINARY
-                // ============================================
-
-                if (
-                    user.avatarPublicId
-                ) {
-
-                    try {
-
-
-                        configureCloudinary();
-
-
-
-                        await cloudinary.uploader.destroy(
-
-                            user.avatarPublicId,
-
-                            {
-
-                                resource_type:
-                                    "image",
-
-                                type:
-                                    "upload",
-
-                                invalidate:
-                                    true
-
-                            }
-
-                        );
-
-
-                    } catch (
-                        cloudinaryError
-                    ) {
-
-
-                        console.error(
-
-                            "Cloudinary photo delete error:",
-
-                            cloudinaryError
-
-                        );
-
-
-                    }
-
-                }
-
-
-
-                // ============================================
-                // REMOVE FROM DATABASE
-                // ============================================
-
-                await usersCollection.updateOne(
-
-                    {
-
-                        _id:
-                            user._id
-
-                    },
-
-                    {
-
-                        $unset: {
-
-                            avatarUrl:
-                                "",
-
-                            avatarPublicId:
-                                ""
-
-                        }
-
-                    }
-
-                );
-
-
-
-                console.log(
-
-                    "Profile photo removed:",
-
-                    user
-                        ._id
-                        .toString()
-
-                );
-
-
-
-                return res.json({
-
-                    success:
-                        true,
-
-                    message:
-                        "Profile photo removed successfully",
-
-                    avatarUrl:
-                        ""
-
-                });
-
-
-            } catch (
-                error
-            ) {
-
-
-                console.error(
-
-                    "Remove profile photo error:",
-
-                    error
-
-                );
-
-
-
-                return res.status(500).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Could not remove profile photo"
-
-                });
-
-            }
-
-
-        }
-
-    );
-
-
 
     // ========================================================
     // UPDATE PROFILE
+    //
+    // Protected route.
+    // JWT user must match :userId.
     // ========================================================
 
     router.put(
 
         "/profile/:userId",
 
+        authenticateToken,
+
         async (
+
             req,
+
             res
+
         ) => {
 
 
@@ -979,10 +440,11 @@ function createProfileRouter(
                         : "";
 
 
+                const authenticatedUserId =
+                    req.user?.userId;
+
 
                 const {
-
-                    currentUsername,
 
                     name,
 
@@ -991,7 +453,8 @@ function createProfileRouter(
                     bio
 
                 } =
-                    req.body;
+                    req.body ||
+                    {};
 
 
 
@@ -1022,15 +485,40 @@ function createProfileRouter(
 
 
                 // ============================================
-                // VALIDATE REQUIRED VALUES
+                // AUTHORIZE USER
                 // ============================================
 
                 if (
 
-                    typeof currentUsername !==
-                    "string"
+                    !isAuthorizedUser(
 
-                    ||
+                        userId,
+
+                        authenticatedUserId
+
+                    )
+
+                ) {
+
+                    return res.status(403).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "You are not authorized to modify this profile"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // VALIDATE INPUT TYPES
+                // ============================================
+
+                if (
 
                     typeof name !==
                     "string"
@@ -1040,6 +528,19 @@ function createProfileRouter(
                     typeof username !==
                     "string"
 
+                    ||
+
+                    (
+
+                        bio !== undefined
+
+                        &&
+
+                        typeof bio !==
+                        "string"
+
+                    )
+
                 ) {
 
                     return res.status(400).json({
@@ -1048,7 +549,7 @@ function createProfileRouter(
                             false,
 
                         error:
-                            "Name, username and current username are required"
+                            "Invalid profile data"
 
                     });
 
@@ -1060,18 +561,10 @@ function createProfileRouter(
                 // CLEAN VALUES
                 // ============================================
 
-                const cleanCurrentUsername =
-                    normalizeUsername(
-                        currentUsername
-                    );
-
-
-
-                const cleanName =
+                const cleanedName =
                     cleanNameValue(
                         name
                     );
-
 
 
                 const cleanUsername =
@@ -1080,53 +573,22 @@ function createProfileRouter(
                     );
 
 
-
-                // ============================================
-                // BIO TYPE
-                // ============================================
-
-                if (
-
-                    bio !== undefined
-
-                    &&
-
-                    bio !== null
-
-                    &&
-
-                    typeof bio !==
-                    "string"
-
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Bio must be text"
-
-                    });
-
-                }
-
-
-
                 const cleanBioValue =
                     cleanBio(
-                        bio
+                        bio ||
+                        ""
                     );
 
 
 
                 // ============================================
-                // NAME VALIDATION
+                // VALIDATE NAME
                 // ============================================
 
                 if (
-                    !cleanName
+
+                    !cleanedName
+
                 ) {
 
                     return res.status(400).json({
@@ -1135,7 +597,7 @@ function createProfileRouter(
                             false,
 
                         error:
-                            "Name cannot be empty"
+                            "Name is required"
 
                     });
 
@@ -1145,7 +607,7 @@ function createProfileRouter(
 
                 if (
 
-                    cleanName.length >
+                    cleanedName.length >
 
                     MAX_NAME_LENGTH
 
@@ -1157,7 +619,7 @@ function createProfileRouter(
                             false,
 
                         error:
-                            `Name cannot exceed ${MAX_NAME_LENGTH} characters`
+                            `Name must not exceed ${MAX_NAME_LENGTH} characters`
 
                     });
 
@@ -1166,7 +628,7 @@ function createProfileRouter(
 
 
                 // ============================================
-                // USERNAME VALIDATION
+                // VALIDATE USERNAME
                 // ============================================
 
                 if (
@@ -1183,7 +645,7 @@ function createProfileRouter(
                             false,
 
                         error:
-                            "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+                            "Username must be 3-20 characters and contain only lowercase letters, numbers, and underscores"
 
                     });
 
@@ -1192,17 +654,12 @@ function createProfileRouter(
 
 
                 // ============================================
-                // BIO LENGTH VALIDATION
+                // VALIDATE BIO
                 // ============================================
 
                 if (
 
-                    typeof bio ===
-                    "string"
-
-                    &&
-
-                    bio.trim().length >
+                    cleanBioValue.length >
 
                     MAX_BIO_LENGTH
 
@@ -1214,7 +671,7 @@ function createProfileRouter(
                             false,
 
                         error:
-                            `Bio cannot exceed ${MAX_BIO_LENGTH} characters`
+                            `Bio must not exceed ${MAX_BIO_LENGTH} characters`
 
                     });
 
@@ -1223,35 +680,38 @@ function createProfileRouter(
 
 
                 // ============================================
-                // VERIFY CURRENT USER
+                // FIND AUTHENTICATED USER
                 // ============================================
 
                 const user =
-                    await usersCollection.findOne({
+                    await usersCollection.findOne(
 
-                        _id:
-                            new ObjectId(
-                                userId
-                            ),
+                        {
 
-                        username:
-                            cleanCurrentUsername
+                            _id:
+                                new ObjectId(
+                                    authenticatedUserId
+                                )
 
-                    });
+                        }
+
+                    );
 
 
 
                 if (
+
                     !user
+
                 ) {
 
-                    return res.status(401).json({
+                    return res.status(404).json({
 
                         success:
                             false,
 
                         error:
-                            "User verification failed"
+                            "User not found"
 
                     });
 
@@ -1270,16 +730,22 @@ function createProfileRouter(
 
 
                 if (
+
                     usernameChanged
+
                 ) {
 
                     const usernameOwner =
-                        await usersCollection.findOne({
+                        await usersCollection.findOne(
 
-                            username:
-                                cleanUsername
+                            {
 
-                        });
+                                username:
+                                    cleanUsername
+
+                            }
+
+                        );
 
 
 
@@ -1291,7 +757,10 @@ function createProfileRouter(
 
                         usernameOwner
                             ._id
-                            .toString() !==
+                            .toString()
+
+                        !==
+
                         user
                             ._id
                             .toString()
@@ -1332,7 +801,7 @@ function createProfileRouter(
                         $set: {
 
                             name:
-                                cleanName,
+                                cleanedName,
 
                             username:
                                 cleanUsername,
@@ -1349,7 +818,7 @@ function createProfileRouter(
 
 
                 // ============================================
-                // SUCCESS RESPONSE
+                // SUCCESS
                 // ============================================
 
                 return res.json({
@@ -1368,7 +837,7 @@ function createProfileRouter(
                                 .toString(),
 
                         name:
-                            cleanName,
+                            cleanedName,
 
                         username:
                             cleanUsername,
@@ -1449,6 +918,670 @@ function createProfileRouter(
         }
 
     );
+
+
+
+
+    // ========================================================
+    // UPDATE PROFILE PHOTO
+    //
+    // Protected route.
+    // JWT user must match :userId.
+    // ========================================================
+
+    router.put(
+
+        "/profile/:userId/photo",
+
+        authenticateToken,
+
+        async (
+
+            req,
+
+            res
+
+        ) => {
+
+
+            try {
+
+
+                const userId =
+                    typeof req.params.userId ===
+                    "string"
+
+                        ? req.params.userId.trim()
+
+                        : "";
+
+
+                const authenticatedUserId =
+                    req.user?.userId;
+
+
+                const {
+                    image
+                } =
+                    req.body ||
+                    {};
+
+
+
+                // ============================================
+                // VALIDATE USER ID
+                // ============================================
+
+                if (
+
+                    !isValidObjectId(
+                        userId
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Invalid user ID"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // AUTHORIZE USER
+                // ============================================
+
+                if (
+
+                    !isAuthorizedUser(
+
+                        userId,
+
+                        authenticatedUserId
+
+                    )
+
+                ) {
+
+                    return res.status(403).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "You are not authorized to modify this profile"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // VALIDATE IMAGE
+                // ============================================
+
+                const validation =
+                    validateProfilePhoto(
+                        image
+                    );
+
+
+
+                if (
+
+                    !validation.valid
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        error:
+                            validation.error
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // FIND USER
+                // ============================================
+
+                const user =
+                    await usersCollection.findOne(
+
+                        {
+
+                            _id:
+                                new ObjectId(
+                                    authenticatedUserId
+                                )
+
+                        }
+
+                    );
+
+
+
+                if (
+
+                    !user
+
+                ) {
+
+                    return res.status(404).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "User not found"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // CHECK CLOUDINARY
+                // ============================================
+
+                if (
+
+                    !isCloudinaryConfigured()
+
+                ) {
+
+                    console.error(
+
+                        "Cloudinary environment variables are missing"
+
+                    );
+
+
+
+                    return res.status(500).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Profile photo storage is not configured"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // CONFIGURE CLOUDINARY
+                // ============================================
+
+                configureCloudinary();
+
+
+
+                // ============================================
+                // UPLOAD IMAGE
+                // ============================================
+
+                const uploadResult =
+                    await cloudinary.uploader.upload(
+
+                        image,
+
+                        {
+
+                            folder:
+                                PROFILE_PHOTO_FOLDER,
+
+                            public_id:
+                                user
+                                    ._id
+                                    .toString(),
+
+                            overwrite:
+                                true,
+
+                            resource_type:
+                                "image",
+
+                            type:
+                                "upload",
+
+                            invalidate:
+                                true
+
+                        }
+
+                    );
+
+
+
+                const avatarUrl =
+                    uploadResult.secure_url;
+
+
+                const avatarPublicId =
+                    uploadResult.public_id;
+
+
+
+                if (
+
+                    !avatarUrl
+
+                    ||
+
+                    !avatarPublicId
+
+                ) {
+
+                    throw new Error(
+
+                        "Cloudinary did not return a valid asset"
+
+                    );
+
+                }
+
+
+
+                // ============================================
+                // SAVE IMAGE DATA
+                // ============================================
+
+                await usersCollection.updateOne(
+
+                    {
+
+                        _id:
+                            user._id
+
+                    },
+
+                    {
+
+                        $set: {
+
+                            avatarUrl:
+                                avatarUrl,
+
+                            avatarPublicId:
+                                avatarPublicId
+
+                        }
+
+                    }
+
+                );
+
+
+
+                console.log(
+
+                    "Profile photo updated:",
+
+                    user
+                        ._id
+                        .toString()
+
+                );
+
+
+
+                // ============================================
+                // SUCCESS
+                // ============================================
+
+                return res.json({
+
+                    success:
+                        true,
+
+                    message:
+                        "Profile photo updated successfully",
+
+                    avatarUrl:
+                        avatarUrl
+
+                });
+
+
+            } catch (
+                error
+            ) {
+
+
+                console.error(
+
+                    "Profile photo upload error:",
+
+                    error
+
+                );
+
+
+
+                return res.status(500).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Could not save profile photo"
+
+                });
+
+            }
+
+
+        }
+
+    );
+
+
+
+
+    // ========================================================
+    // REMOVE PROFILE PHOTO
+    //
+    // Protected route.
+    // JWT user must match :userId.
+    // ========================================================
+
+    router.delete(
+
+        "/profile/:userId/photo",
+
+        authenticateToken,
+
+        async (
+
+            req,
+
+            res
+
+        ) => {
+
+
+            try {
+
+
+                const userId =
+                    typeof req.params.userId ===
+                    "string"
+
+                        ? req.params.userId.trim()
+
+                        : "";
+
+
+                const authenticatedUserId =
+                    req.user?.userId;
+
+
+
+                // ============================================
+                // VALIDATE USER ID
+                // ============================================
+
+                if (
+
+                    !isValidObjectId(
+                        userId
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Invalid user ID"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // AUTHORIZE USER
+                // ============================================
+
+                if (
+
+                    !isAuthorizedUser(
+
+                        userId,
+
+                        authenticatedUserId
+
+                    )
+
+                ) {
+
+                    return res.status(403).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "You are not authorized to modify this profile"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // FIND USER
+                // ============================================
+
+                const user =
+                    await usersCollection.findOne(
+
+                        {
+
+                            _id:
+                                new ObjectId(
+                                    authenticatedUserId
+                                )
+
+                        }
+
+                    );
+
+
+
+                if (
+
+                    !user
+
+                ) {
+
+                    return res.status(404).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "User not found"
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // DELETE FROM CLOUDINARY
+                // ============================================
+
+                if (
+
+                    user.avatarPublicId
+
+                    &&
+
+                    isCloudinaryConfigured()
+
+                ) {
+
+                    try {
+
+
+                        configureCloudinary();
+
+
+
+                        await cloudinary.uploader.destroy(
+
+                            user.avatarPublicId,
+
+                            {
+
+                                resource_type:
+                                    "image",
+
+                                type:
+                                    "upload",
+
+                                invalidate:
+                                    true
+
+                            }
+
+                        );
+
+
+                    } catch (
+                        cloudinaryError
+                    ) {
+
+
+                        console.error(
+
+                            "Cloudinary photo delete error:",
+
+                            cloudinaryError
+
+                        );
+
+                    }
+
+                }
+
+
+
+                // ============================================
+                // REMOVE FROM DATABASE
+                // ============================================
+
+                await usersCollection.updateOne(
+
+                    {
+
+                        _id:
+                            user._id
+
+                    },
+
+                    {
+
+                        $unset: {
+
+                            avatarUrl:
+                                "",
+
+                            avatarPublicId:
+                                ""
+
+                        }
+
+                    }
+
+                );
+
+
+
+                console.log(
+
+                    "Profile photo removed:",
+
+                    user
+                        ._id
+                        .toString()
+
+                );
+
+
+
+                // ============================================
+                // SUCCESS
+                // ============================================
+
+                return res.json({
+
+                    success:
+                        true,
+
+                    message:
+                        "Profile photo removed successfully"
+
+                });
+
+
+            } catch (
+                error
+            ) {
+
+
+                console.error(
+
+                    "Profile photo delete error:",
+
+                    error
+
+                );
+
+
+
+                return res.status(500).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Could not remove profile photo"
+
+                });
+
+            }
+
+
+        }
+
+    );
+
 
 
 

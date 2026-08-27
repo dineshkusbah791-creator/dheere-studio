@@ -20,6 +20,18 @@ const crypto =
     );
 
 
+const jwt =
+    require(
+        "jsonwebtoken"
+    );
+
+
+const rateLimit =
+    require(
+        "express-rate-limit"
+    );
+
+
 
 const {
     USERNAME_REGEX,
@@ -57,6 +69,329 @@ const RESET_TOKEN_EXPIRY_MINUTES =
     15;
 
 
+const BCRYPT_SALT_ROUNDS =
+    12;
+
+
+const MAX_EMAIL_LENGTH =
+    254;
+
+
+const MIN_PASSWORD_LENGTH =
+    8;
+
+
+const MAX_PASSWORD_LENGTH =
+    128;
+
+
+const JWT_EXPIRES_IN =
+    "7d";
+
+
+
+// ============================================================
+// DUMMY PASSWORD HASH
+//
+// This is generated from a dummy password and is used when
+// an account does not exist.
+//
+// It ensures bcrypt.compare() still runs, reducing timing
+// differences that could help attackers enumerate accounts.
+// ============================================================
+
+const DUMMY_PASSWORD_HASH =
+    bcrypt.hashSync(
+
+        crypto.randomBytes(
+            32
+        ).toString(
+            "hex"
+        ),
+
+        BCRYPT_SALT_ROUNDS
+
+    );
+
+
+
+// ============================================================
+// JWT HELPER
+// ============================================================
+
+function createAuthToken(
+    userId
+) {
+
+    if (
+        !process.env.JWT_SECRET
+    ) {
+
+        throw new Error(
+            "JWT_SECRET is missing"
+        );
+
+    }
+
+
+
+    return jwt.sign(
+
+        {
+
+            userId:
+                String(
+                    userId
+                )
+
+        },
+
+        process.env.JWT_SECRET,
+
+        {
+
+            expiresIn:
+                JWT_EXPIRES_IN
+
+        }
+
+    );
+
+}
+
+
+
+// ============================================================
+// RATE LIMITER CONFIG
+// ============================================================
+
+function createLimiter(
+    {
+        windowMs,
+        max,
+        message
+    }
+) {
+
+    return rateLimit({
+
+        windowMs:
+            windowMs,
+
+
+        max:
+            max,
+
+
+        standardHeaders:
+            true,
+
+
+        legacyHeaders:
+            false,
+
+
+        message: {
+
+            success:
+                false,
+
+
+            error:
+                message
+
+        }
+
+    });
+
+}
+
+
+
+// ============================================================
+// RATE LIMITERS
+// ============================================================
+
+const registerLimiter =
+    createLimiter({
+
+        windowMs:
+            60 *
+            60 *
+            1000,
+
+
+        max:
+            10,
+
+
+        message:
+            "Too many registration attempts. Please try again later."
+
+    });
+
+
+
+const loginLimiter =
+    createLimiter({
+
+        windowMs:
+            15 *
+            60 *
+            1000,
+
+
+        max:
+            10,
+
+
+        message:
+            "Too many login attempts. Please try again later."
+
+    });
+
+
+
+const forgotPasswordLimiter =
+    createLimiter({
+
+        windowMs:
+            60 *
+            60 *
+            1000,
+
+
+        max:
+            5,
+
+
+        message:
+            "Too many password reset requests. Please try again later."
+
+    });
+
+
+
+const resetPasswordLimiter =
+    createLimiter({
+
+        windowMs:
+            15 *
+            60 *
+            1000,
+
+
+        max:
+            10,
+
+
+        message:
+            "Too many password reset attempts. Please try again later."
+
+    });
+
+
+
+// ============================================================
+// PASSWORD VALIDATION
+// ============================================================
+
+function isValidPassword(
+    password
+) {
+
+    return (
+
+        typeof password ===
+        "string"
+
+        &&
+
+        password.length >=
+        MIN_PASSWORD_LENGTH
+
+        &&
+
+        password.length <=
+        MAX_PASSWORD_LENGTH
+
+    );
+
+}
+
+
+
+// ============================================================
+// VALIDATE EMAIL
+// ============================================================
+
+function isValidEmail(
+    email
+) {
+
+    if (
+
+        typeof email !==
+        "string"
+
+        ||
+
+        !email
+
+        ||
+
+        email.length >
+        MAX_EMAIL_LENGTH
+
+    ) {
+
+        return false;
+
+    }
+
+
+
+    /*
+     * Basic structural validation.
+     *
+     * This is intentionally not an overly complex RFC regex.
+     */
+
+    const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
+    return emailRegex.test(
+        email
+    );
+
+}
+
+
+
+// ============================================================
+// CREATE RESET TOKEN HASH
+// ============================================================
+
+function hashResetToken(
+    token
+) {
+
+    return crypto
+        .createHash(
+            "sha256"
+        )
+        .update(
+            token
+        )
+        .digest(
+            "hex"
+        );
+
+}
+
+
 
 // ============================================================
 // CREATE AUTH ROUTER
@@ -79,32 +414,55 @@ function createAuthRouter(
     // ========================================================
 
     router.post(
+
         "/register",
-        async (req, res) => {
 
+        registerLimiter,
 
-            const {
-                name,
-                username,
-                email,
-                password
-            } =
-                req.body;
-
+        async (
+            req,
+            res
+        ) => {
 
 
             try {
 
 
+                const {
+                    name,
+                    username,
+                    email,
+                    password
+                } =
+                    req.body ||
+                    {};
+
+
+
                 // ============================================
-                // REQUIRED FIELDS
+                // TYPE VALIDATION
                 // ============================================
 
                 if (
-                    !name ||
-                    !username ||
-                    !email ||
-                    !password
+
+                    typeof name !==
+                    "string"
+
+                    ||
+
+                    typeof username !==
+                    "string"
+
+                    ||
+
+                    typeof email !==
+                    "string"
+
+                    ||
+
+                    typeof password !==
+                    "string"
+
                 ) {
 
                     return res.status(400).json({
@@ -112,8 +470,9 @@ function createAuthRouter(
                         success:
                             false,
 
+
                         error:
-                            "All fields are required"
+                            "Invalid registration data"
 
                     });
 
@@ -157,6 +516,7 @@ function createAuthRouter(
                         success:
                             false,
 
+
                         error:
                             "Name is required"
 
@@ -167,8 +527,11 @@ function createAuthRouter(
 
 
                 if (
+
                     cleanedName.length >
+
                     MAX_NAME_LENGTH
+
                 ) {
 
                     return res.status(400).json({
@@ -176,8 +539,9 @@ function createAuthRouter(
                         success:
                             false,
 
+
                         error:
-                            "Name cannot exceed 80 characters"
+                            `Name cannot exceed ${MAX_NAME_LENGTH} characters`
 
                     });
 
@@ -190,9 +554,11 @@ function createAuthRouter(
                 // ============================================
 
                 if (
+
                     !USERNAME_REGEX.test(
                         cleanUsername
                     )
+
                 ) {
 
                     return res.status(400).json({
@@ -200,8 +566,36 @@ function createAuthRouter(
                         success:
                             false,
 
+
                         error:
                             "Username must be 3-20 characters and contain only letters, numbers, and underscores."
+
+                    });
+
+                }
+
+
+
+                // ============================================
+                // EMAIL VALIDATION
+                // ============================================
+
+                if (
+
+                    !isValidEmail(
+                        cleanEmail
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            "Invalid email"
 
                     });
 
@@ -214,8 +608,11 @@ function createAuthRouter(
                 // ============================================
 
                 if (
-                    typeof password !==
-                    "string"
+
+                    !isValidPassword(
+                        password
+                    )
+
                 ) {
 
                     return res.status(400).json({
@@ -223,91 +620,9 @@ function createAuthRouter(
                         success:
                             false,
 
-                        error:
-                            "Invalid password"
-
-                    });
-
-                }
-
-
-
-                if (
-                    password.length <
-                    8
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
 
                         error:
-                            "Password must be at least 8 characters long"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // CHECK EXISTING EMAIL
-                // ============================================
-
-                const existingEmail =
-                    await usersCollection.findOne({
-
-                        email:
-                            cleanEmail
-
-                    });
-
-
-
-                if (
-                    existingEmail
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Email already registered"
-
-                    });
-
-                }
-
-
-
-                // ============================================
-                // CHECK EXISTING USERNAME
-                // ============================================
-
-                const existingUsername =
-                    await usersCollection.findOne({
-
-                        username:
-                            cleanUsername
-
-                    });
-
-
-
-                if (
-                    existingUsername
-                ) {
-
-                    return res.status(409).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Username already taken"
+                            `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters long`
 
                     });
 
@@ -324,7 +639,7 @@ function createAuthRouter(
 
                         password,
 
-                        10
+                        BCRYPT_SALT_ROUNDS
 
                     );
 
@@ -334,28 +649,31 @@ function createAuthRouter(
                 // CREATE USER
                 // ============================================
 
-                const user = {
+                const newUser = {
 
                     name:
                         cleanedName,
 
+
                     username:
                         cleanUsername,
+
 
                     email:
                         cleanEmail,
 
+
+                    password:
+                        hashedPassword,
+
+
                     bio:
                         "",
+
 
                     avatarUrl:
                         "",
 
-                    avatarPublicId:
-                        "",
-
-                    password:
-                        hashedPassword,
 
                     createdAt:
                         new Date()
@@ -370,20 +688,27 @@ function createAuthRouter(
 
                 const result =
                     await usersCollection.insertOne(
-                        user
+                        newUser
                     );
 
 
 
-                console.log(
-                    "New user registered:",
-                    cleanUsername
-                );
+                // ============================================
+                // GENERATE AUTH TOKEN
+                // ============================================
+
+                const token =
+                    createAuthToken(
+
+                        result
+                            .insertedId
+
+                    );
 
 
 
                 // ============================================
-                // SUCCESS RESPONSE
+                // SUCCESS
                 // ============================================
 
                 return res.status(201).json({
@@ -391,8 +716,14 @@ function createAuthRouter(
                     success:
                         true,
 
+
                     message:
                         "Registration successful",
+
+
+                    token:
+                        token,
+
 
                     user: {
 
@@ -401,46 +732,56 @@ function createAuthRouter(
                                 .insertedId
                                 .toString(),
 
+
                         name:
-                            user.name,
+                            newUser.name,
+
 
                         username:
-                            user.username,
+                            newUser.username,
+
 
                         email:
-                            user.email,
+                            newUser.email,
+
 
                         bio:
-                            user.bio,
+                            newUser.bio,
+
 
                         avatarUrl:
-                            user.avatarUrl
+                            newUser.avatarUrl
 
                     }
 
                 });
 
 
-
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
 
                 // ============================================
-                // DUPLICATE KEY ERROR
+                // DUPLICATE KEY
                 // ============================================
 
                 if (
+
                     error &&
-                    error.code === 11000
+                    error.code ===
+                    11000
+
                 ) {
 
-                    return res.status(409).json({
+                    return res.status(400).json({
 
                         success:
                             false,
 
+
                         error:
-                            "Username or email already exists"
+                            "Email or username is already registered"
 
                     });
 
@@ -449,8 +790,11 @@ function createAuthRouter(
 
 
                 console.error(
+
                     "Registration error:",
+
                     error
+
                 );
 
 
@@ -459,6 +803,7 @@ function createAuthRouter(
 
                     success:
                         false,
+
 
                     error:
                         "Could not register user"
@@ -469,6 +814,7 @@ function createAuthRouter(
 
 
         }
+
     );
 
 
@@ -478,34 +824,50 @@ function createAuthRouter(
     // ========================================================
 
     router.post(
+
         "/login",
-        async (req, res) => {
 
+        loginLimiter,
 
-            const {
-                email,
-                password
-            } =
-                req.body;
-
+        async (
+            req,
+            res
+        ) => {
 
 
             try {
 
 
+                const {
+                    email,
+                    password
+                } =
+                    req.body ||
+                    {};
+
+
+
                 // ============================================
-                // VALIDATION
+                // TYPE VALIDATION
                 // ============================================
 
                 if (
-                    !email ||
-                    !password
+
+                    typeof email !==
+                    "string"
+
+                    ||
+
+                    typeof password !==
+                    "string"
+
                 ) {
 
                     return res.status(400).json({
 
                         success:
                             false,
+
 
                         error:
                             "Email and password are required"
@@ -516,18 +878,30 @@ function createAuthRouter(
 
 
 
+                // ============================================
+                // PASSWORD LENGTH PROTECTION
+                // ============================================
+
                 if (
-                    typeof password !==
-                    "string"
+
+                    password.length ===
+                    0
+
+                    ||
+
+                    password.length >
+                    MAX_PASSWORD_LENGTH
+
                 ) {
 
-                    return res.status(400).json({
+                    return res.status(401).json({
 
                         success:
                             false,
 
+
                         error:
-                            "Invalid password"
+                            "Invalid email or password"
 
                     });
 
@@ -547,50 +921,58 @@ function createAuthRouter(
                 // ============================================
 
                 const user =
-                    await usersCollection.findOne({
+                    isValidEmail(
+                        cleanEmail
+                    )
 
-                        email:
-                            cleanEmail
+                        ? await usersCollection.findOne(
 
-                    });
+                            {
 
+                                email:
+                                    cleanEmail
 
+                            }
 
-                if (
-                    !user
-                ) {
+                        )
 
-                    return res.status(404).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "Account not found. Please register first."
-
-                    });
-
-                }
+                        : null;
 
 
 
                 // ============================================
-                // CHECK PASSWORD
+                // PASSWORD CHECK
                 // ============================================
+
+                const passwordHash =
+                    user?.password ||
+                    DUMMY_PASSWORD_HASH;
+
+
 
                 const passwordMatch =
                     await bcrypt.compare(
 
                         password,
 
-                        user.password
+                        passwordHash
 
                     );
 
 
 
+                // ============================================
+                // GENERIC FAILURE
+                // ============================================
+
                 if (
+
+                    !user
+
+                    ||
+
                     !passwordMatch
+
                 ) {
 
                     return res.status(401).json({
@@ -598,8 +980,9 @@ function createAuthRouter(
                         success:
                             false,
 
+
                         error:
-                            "Incorrect password."
+                            "Invalid email or password"
 
                     });
 
@@ -607,15 +990,21 @@ function createAuthRouter(
 
 
 
-                console.log(
-                    "User logged in:",
-                    user.username
-                );
+                // ============================================
+                // GENERATE AUTH TOKEN
+                // ============================================
+
+                const token =
+                    createAuthToken(
+
+                        user._id
+
+                    );
 
 
 
                 // ============================================
-                // SUCCESS RESPONSE
+                // SUCCESS
                 // ============================================
 
                 return res.json({
@@ -623,8 +1012,14 @@ function createAuthRouter(
                     success:
                         true,
 
+
                     message:
                         "Login successful",
+
+
+                    token:
+                        token,
+
 
                     user: {
 
@@ -633,18 +1028,23 @@ function createAuthRouter(
                                 ._id
                                 .toString(),
 
+
                         name:
                             user.name,
+
 
                         username:
                             user.username,
 
+
                         email:
                             user.email,
+
 
                         bio:
                             user.bio ||
                             "",
+
 
                         avatarUrl:
                             user.avatarUrl ||
@@ -655,13 +1055,17 @@ function createAuthRouter(
                 });
 
 
-
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
 
                 console.error(
+
                     "Login error:",
+
                     error
+
                 );
 
 
@@ -670,6 +1074,7 @@ function createAuthRouter(
 
                     success:
                         false,
+
 
                     error:
                         "Could not login"
@@ -680,6 +1085,7 @@ function createAuthRouter(
 
 
         }
+
     );
 
 
@@ -689,8 +1095,20 @@ function createAuthRouter(
     // ========================================================
 
     router.post(
+
         "/forgot-password",
-        async (req, res) => {
+
+        forgotPasswordLimiter,
+
+        async (
+            req,
+            res
+        ) => {
+
+
+            const genericMessage =
+                "If an account exists for this email, a password reset link has been sent.";
+
 
 
             try {
@@ -699,28 +1117,23 @@ function createAuthRouter(
                 const {
                     email
                 } =
-                    req.body;
+                    req.body ||
+                    {};
 
 
-
-                const genericMessage =
-                    "If an account exists for this email, a password reset link has been sent.";
-
-
-
-                // ============================================
-                // GENERIC RESPONSE
-                // ============================================
 
                 if (
+
                     typeof email !==
                     "string"
+
                 ) {
 
                     return res.json({
 
                         success:
                             true,
+
 
                         message:
                             genericMessage
@@ -739,13 +1152,18 @@ function createAuthRouter(
 
 
                 if (
-                    !cleanEmail
+
+                    !isValidEmail(
+                        cleanEmail
+                    )
+
                 ) {
 
                     return res.json({
 
                         success:
                             true,
+
 
                         message:
                             genericMessage
@@ -761,16 +1179,33 @@ function createAuthRouter(
                 // ============================================
 
                 const user =
-                    await usersCollection.findOne({
+                    await usersCollection.findOne(
 
-                        email:
-                            cleanEmail
+                        {
 
-                    });
+                            email:
+                                cleanEmail
+
+                        },
+
+                        {
+
+                            projection: {
+
+                                _id:
+                                    1
+
+                            }
+
+                        }
+
+                    );
 
 
 
-                // Do not reveal whether an account exists.
+                // ============================================
+                // DO NOT REVEAL ACCOUNT EXISTENCE
+                // ============================================
 
                 if (
                     !user
@@ -780,6 +1215,7 @@ function createAuthRouter(
 
                         success:
                             true,
+
 
                         message:
                             genericMessage
@@ -791,7 +1227,7 @@ function createAuthRouter(
 
 
                 // ============================================
-                // CREATE RESET TOKEN
+                // CREATE SECURE RESET TOKEN
                 // ============================================
 
                 const rawToken =
@@ -806,23 +1242,18 @@ function createAuthRouter(
 
 
                 const tokenHash =
-                    crypto
-                        .createHash(
-                            "sha256"
-                        )
-                        .update(
-                            rawToken
-                        )
-                        .digest(
-                            "hex"
-                        );
+                    hashResetToken(
+                        rawToken
+                    );
 
 
 
                 const tokenExpiresAt =
                     new Date(
 
-                        Date.now() +
+                        Date.now()
+
+                        +
 
                         RESET_TOKEN_EXPIRY_MINUTES *
                         60 *
@@ -839,8 +1270,10 @@ function createAuthRouter(
                 await usersCollection.updateOne(
 
                     {
+
                         _id:
                             user._id
+
                     },
 
                     {
@@ -849,6 +1282,7 @@ function createAuthRouter(
 
                             resetTokenHash:
                                 tokenHash,
+
 
                             resetTokenExpiresAt:
                                 tokenExpiresAt
@@ -867,9 +1301,11 @@ function createAuthRouter(
 
                 const baseUrl =
                     (
+
                         process.env.APP_BASE_URL ||
 
                         "http://localhost:3000"
+
                     )
                         .replace(
                             /\/+$/,
@@ -892,8 +1328,10 @@ function createAuthRouter(
                     email:
                         cleanEmail,
 
+
                     resetUrl:
                         resetUrl,
+
 
                     expiryMinutes:
                         RESET_TOKEN_EXPIRY_MINUTES
@@ -907,30 +1345,36 @@ function createAuthRouter(
                     success:
                         true,
 
+
                     message:
                         genericMessage
 
                 });
 
 
-
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
 
                 console.error(
+
                     "Forgot password error:",
+
                     error
+
                 );
 
 
 
-                return res.status(500).json({
+                return res.json({
 
                     success:
-                        false,
+                        true,
 
-                    error:
-                        "Could not process password reset request"
+
+                    message:
+                        genericMessage
 
                 });
 
@@ -938,6 +1382,7 @@ function createAuthRouter(
 
 
         }
+
     );
 
 
@@ -947,8 +1392,15 @@ function createAuthRouter(
     // ========================================================
 
     router.post(
+
         "/reset-password",
-        async (req, res) => {
+
+        resetPasswordLimiter,
+
+        async (
+            req,
+            res
+        ) => {
 
 
             try {
@@ -958,7 +1410,8 @@ function createAuthRouter(
                     token,
                     password
                 } =
-                    req.body;
+                    req.body ||
+                    {};
 
 
 
@@ -967,14 +1420,17 @@ function createAuthRouter(
                 // ============================================
 
                 if (
+
                     typeof token !==
                     "string"
+
                 ) {
 
                     return res.status(400).json({
 
                         success:
                             false,
+
 
                         error:
                             "Invalid reset token"
@@ -991,13 +1447,21 @@ function createAuthRouter(
 
 
                 if (
+
                     !cleanToken
+
+                    ||
+
+                    cleanToken.length >
+                    256
+
                 ) {
 
                     return res.status(400).json({
 
                         success:
                             false,
+
 
                         error:
                             "Invalid reset token"
@@ -1013,8 +1477,11 @@ function createAuthRouter(
                 // ============================================
 
                 if (
-                    typeof password !==
-                    "string"
+
+                    !isValidPassword(
+                        password
+                    )
+
                 ) {
 
                     return res.status(400).json({
@@ -1022,27 +1489,9 @@ function createAuthRouter(
                         success:
                             false,
 
-                        error:
-                            "Invalid password"
-
-                    });
-
-                }
-
-
-
-                if (
-                    password.length <
-                    8
-                ) {
-
-                    return res.status(400).json({
-
-                        success:
-                            false,
 
                         error:
-                            "Password must be at least 8 characters long"
+                            `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters long`
 
                     });
 
@@ -1055,16 +1504,9 @@ function createAuthRouter(
                 // ============================================
 
                 const tokenHash =
-                    crypto
-                        .createHash(
-                            "sha256"
-                        )
-                        .update(
-                            cleanToken
-                        )
-                        .digest(
-                            "hex"
-                        );
+                    hashResetToken(
+                        cleanToken
+                    );
 
 
 
@@ -1072,20 +1514,41 @@ function createAuthRouter(
                 // FIND VALID TOKEN
                 // ============================================
 
+                const now =
+                    new Date();
+
+
+
                 const user =
-                    await usersCollection.findOne({
+                    await usersCollection.findOne(
 
-                        resetTokenHash:
-                            tokenHash,
+                        {
 
-                        resetTokenExpiresAt: {
+                            resetTokenHash:
+                                tokenHash,
 
-                            $gt:
-                                new Date()
+
+                            resetTokenExpiresAt: {
+
+                                $gt:
+                                    now
+
+                            }
+
+                        },
+
+                        {
+
+                            projection: {
+
+                                _id:
+                                    1
+
+                            }
 
                         }
 
-                    });
+                    );
 
 
 
@@ -1097,6 +1560,7 @@ function createAuthRouter(
 
                         success:
                             false,
+
 
                         error:
                             "This password reset link is invalid or has expired."
@@ -1116,57 +1580,84 @@ function createAuthRouter(
 
                         password,
 
-                        10
+                        BCRYPT_SALT_ROUNDS
 
                     );
 
 
 
                 // ============================================
-                // UPDATE PASSWORD
+                // ATOMIC PASSWORD UPDATE
                 // ============================================
 
-                await usersCollection.updateOne(
+                const updateResult =
+                    await usersCollection.updateOne(
 
-                    {
+                        {
 
-                        _id:
-                            user._id,
+                            _id:
+                                user._id,
 
-                        resetTokenHash:
-                            tokenHash
 
-                    },
+                            resetTokenHash:
+                                tokenHash,
 
-                    {
 
-                        $set: {
+                            resetTokenExpiresAt: {
 
-                            password:
-                                hashedPassword
+                                $gt:
+                                    new Date()
+
+                            }
 
                         },
 
-                        $unset: {
+                        {
 
-                            resetTokenHash:
-                                "",
+                            $set: {
 
-                            resetTokenExpiresAt:
-                                ""
+                                password:
+                                    hashedPassword
+
+                            },
+
+
+                            $unset: {
+
+                                resetTokenHash:
+                                    "",
+
+
+                                resetTokenExpiresAt:
+                                    ""
+
+                            }
 
                         }
 
-                    }
-
-                );
+                    );
 
 
 
-                console.log(
-                    "Password reset successfully for:",
-                    user.email
-                );
+                if (
+
+                    updateResult.modifiedCount !==
+                    1
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+
+                        error:
+                            "This password reset link is invalid or has expired."
+
+                    });
+
+                }
 
 
 
@@ -1175,19 +1666,24 @@ function createAuthRouter(
                     success:
                         true,
 
+
                     message:
                         "Password updated successfully"
 
                 });
 
 
-
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
 
                 console.error(
+
                     "Reset password error:",
+
                     error
+
                 );
 
 
@@ -1196,6 +1692,7 @@ function createAuthRouter(
 
                     success:
                         false,
+
 
                     error:
                         "Could not reset password"
@@ -1206,6 +1703,7 @@ function createAuthRouter(
 
 
         }
+
     );
 
 
