@@ -13,6 +13,62 @@ const API_BASE_URL =
 const USER_STORAGE_KEY =
     'dheereStudioUser';
 
+const TOKEN_STORAGE_KEY =
+    'dheereStudioToken';
+
+
+// ======================================================
+// AUTH TOKEN HELPERS
+// ======================================================
+
+function getAuthToken() {
+
+    return localStorage.getItem(
+        TOKEN_STORAGE_KEY
+    );
+
+}
+
+
+function getAuthHeaders() {
+
+    const token =
+        getAuthToken();
+
+
+    const headers = {
+
+        'Content-Type':
+            'application/json'
+
+    };
+
+
+    if (token) {
+
+        headers.Authorization =
+            `Bearer ${token}`;
+
+    }
+
+
+    return headers;
+
+}
+
+
+function clearAuthStorage() {
+
+    localStorage.removeItem(
+        USER_STORAGE_KEY
+    );
+
+    localStorage.removeItem(
+        TOKEN_STORAGE_KEY
+    );
+
+}
+
 
 // ======================================================
 // PAGES
@@ -102,10 +158,52 @@ function restoreUserFromStorage() {
                 USER_STORAGE_KEY
             );
 
+        const savedToken =
+            localStorage.getItem(
+                TOKEN_STORAGE_KEY
+            );
+
+
+        // --------------------------------------------------
+        // NO USER
+        // --------------------------------------------------
+
+        if (!savedUser) {
+
+            currentUser =
+                null;
+
+            return;
+
+        }
+
+
+        // --------------------------------------------------
+        // OLD SESSION WITHOUT JWT
+        //
+        // User must login again after JWT update.
+        // --------------------------------------------------
+
+        if (!savedToken) {
+
+            currentUser =
+                null;
+
+
+            localStorage.removeItem(
+                USER_STORAGE_KEY
+            );
+
+            return;
+
+        }
+
+
         currentUser =
-            savedUser
-                ? JSON.parse(savedUser)
-                : null;
+            JSON.parse(
+                savedUser
+            );
+
 
     } catch (error) {
 
@@ -114,11 +212,12 @@ function restoreUserFromStorage() {
             error
         );
 
-        currentUser = null;
 
-        localStorage.removeItem(
-            USER_STORAGE_KEY
-        );
+        currentUser =
+            null;
+
+
+        clearAuthStorage();
 
     }
 
@@ -189,8 +288,10 @@ async function getFreshProfile() {
         return null;
     }
 
+
     const userId =
         getUserId(currentUser);
+
 
     if (!userId) {
 
@@ -202,6 +303,7 @@ async function getFreshProfile() {
 
     }
 
+
     try {
 
         const response =
@@ -209,8 +311,10 @@ async function getFreshProfile() {
                 `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`
             );
 
+
         const result =
             await response.json();
+
 
         if (
             !response.ok ||
@@ -225,7 +329,9 @@ async function getFreshProfile() {
 
         }
 
+
         return result.user;
+
 
     } catch (error) {
 
@@ -321,13 +427,16 @@ async function refreshCurrentProfile() {
     const profile =
         await getFreshProfile();
 
+
     if (!profile) {
         return null;
     }
 
+
     applyProfileToCurrentUser(
         profile
     );
+
 
     return profile;
 
@@ -345,12 +454,15 @@ function getUserInitials(user) {
             getUserName(user) || 'User'
         ).trim();
 
+
     if (!name) {
         return 'U';
     }
 
+
     const parts =
         name.split(/\s+/);
+
 
     if (parts.length === 1) {
 
@@ -359,6 +471,7 @@ function getUserInitials(user) {
             .toUpperCase();
 
     }
+
 
     return (
         parts[0].charAt(0) +
@@ -478,8 +591,10 @@ function escapeHTML(value) {
     const div =
         document.createElement('div');
 
+
     div.textContent =
         String(value ?? '');
+
 
     return div.innerHTML;
 
@@ -499,13 +614,16 @@ function openLoginPage() {
         return;
     }
 
+
     homePage.classList.add(
         'hidden-page'
     );
 
+
     loginPage.classList.remove(
         'hidden-page'
     );
+
 
     window.scrollTo(
         0,
@@ -528,13 +646,16 @@ function backToHome() {
         return;
     }
 
+
     loginPage.classList.add(
         'hidden-page'
     );
 
+
     homePage.classList.remove(
         'hidden-page'
     );
+
 
     window.scrollTo(
         0,
@@ -555,15 +676,18 @@ function updateNavbar() {
             'goToLoginBtn'
         );
 
+
     profileBtn =
         document.getElementById(
             'profileBtn'
         );
 
+
     navUsername =
         document.getElementById(
             'navUsername'
         );
+
 
     navProfileAvatar =
         document.getElementById(
@@ -588,8 +712,10 @@ function updateNavbar() {
         goToLoginBtn.style.display =
             '';
 
+
         profileBtn.style.display =
             'none';
+
 
         profileBtn.classList.add(
             'hidden-profile'
@@ -628,8 +754,10 @@ function updateNavbar() {
     goToLoginBtn.style.display =
         'none';
 
+
     profileBtn.style.display =
         'flex';
+
 
     profileBtn.classList.remove(
         'hidden-profile'
@@ -640,6 +768,7 @@ function updateNavbar() {
         'button'
     );
 
+
     profileBtn.classList.add(
         'nav-profile-link'
     );
@@ -649,6 +778,7 @@ function updateNavbar() {
         getUserUsername(
             currentUser
         );
+
 
     const name =
         getUserName(
@@ -668,13 +798,6 @@ function updateNavbar() {
 
     renderHomepageAvatar();
 
-
-    /*
-     * notification.js is loaded separately.
-     *
-     * These checks prevent script.js from throwing
-     * an error if notification.js has not loaded yet.
-     */
 
     if (
         typeof initializeNotificationUI ===
@@ -748,7 +871,9 @@ function clearSearchResults() {
         return;
     }
 
+
     searchResults.replaceChildren();
+
 
     searchResults.classList.remove(
         'active'
@@ -834,8 +959,10 @@ function createSearchResultItem(user) {
     const username =
         getSearchResultUsername(user);
 
+
     const name =
         getSearchResultName(user);
+
 
     const avatarUrl =
         getSearchResultAvatar(user);
@@ -968,6 +1095,7 @@ function createSearchResultItem(user) {
         nameElement
     );
 
+
     info.appendChild(
         usernameElement
     );
@@ -976,6 +1104,7 @@ function createSearchResultItem(user) {
     button.appendChild(
         avatar
     );
+
 
     button.appendChild(
         info
@@ -2054,6 +2183,34 @@ if (loginForm) {
 
                 if (result.success) {
 
+                    // ------------------------------------------
+                    // JWT TOKEN CHECK
+                    // ------------------------------------------
+
+                    if (
+                        !result.token ||
+                        typeof result.token !==
+                        'string'
+                    ) {
+
+                        console.error(
+                            'Login successful but JWT token is missing.'
+                        );
+
+
+                        alert(
+                            'Login token was not received. Please try again.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    // ------------------------------------------
+                    // SAVE CURRENT USER
+                    // ------------------------------------------
+
                     currentUser =
                         result.user;
 
@@ -2065,6 +2222,20 @@ if (loginForm) {
                         )
                     );
 
+
+                    // ------------------------------------------
+                    // SAVE JWT TOKEN
+                    // ------------------------------------------
+
+                    localStorage.setItem(
+                        TOKEN_STORAGE_KEY,
+                        result.token
+                    );
+
+
+                    // ------------------------------------------
+                    // REFRESH PROFILE
+                    // ------------------------------------------
 
                     await refreshCurrentProfile();
 
@@ -2697,6 +2868,10 @@ if (createPostBtn) {
         'click',
         async () => {
 
+            // ----------------------------------------------
+            // CHECK LOGIN
+            // ----------------------------------------------
+
             if (!currentUser) {
 
                 alert(
@@ -2708,15 +2883,31 @@ if (createPostBtn) {
             }
 
 
-            const authorId =
-                getUserId(
-                    currentUser
+            // ----------------------------------------------
+            // CHECK JWT TOKEN
+            // ----------------------------------------------
+
+            const token =
+                getAuthToken();
+
+
+            if (!token) {
+
+                alert(
+                    'Your login session has expired. Please login again.'
                 );
 
-            const username =
-                getUserUsername(
-                    currentUser
-                );
+                clearAuthStorage();
+
+                currentUser =
+                    null;
+
+                updateNavbar();
+
+                return;
+
+            }
+
 
             const content =
                 postContent
@@ -2724,27 +2915,9 @@ if (createPostBtn) {
                     : '';
 
 
-            if (!authorId) {
-
-                alert(
-                    'Your login session is missing the user ID. Please logout and login again.'
-                );
-
-                return;
-
-            }
-
-
-            if (!username) {
-
-                alert(
-                    'Your username is missing. Please logout and login again.'
-                );
-
-                return;
-
-            }
-
+            // ----------------------------------------------
+            // VALIDATE CONTENT
+            // ----------------------------------------------
 
             if (!content) {
 
@@ -2771,6 +2944,10 @@ if (createPostBtn) {
             }
 
 
+            // ----------------------------------------------
+            // LOADING STATE
+            // ----------------------------------------------
+
             createPostBtn.disabled =
                 true;
 
@@ -2780,6 +2957,10 @@ if (createPostBtn) {
 
             try {
 
+                // ------------------------------------------
+                // AUTHENTICATED POST REQUEST
+                // ------------------------------------------
+
                 const response =
                     await fetch(
                         `${API_BASE_URL}/posts`,
@@ -2787,16 +2968,12 @@ if (createPostBtn) {
                             method:
                                 'POST',
 
-                            headers: {
-                                'Content-Type':
-                                    'application/json'
-                            },
+                            headers:
+                                getAuthHeaders(),
 
                             body:
                                 JSON.stringify({
 
-                                    authorId,
-                                    username,
                                     content
 
                                 })
@@ -2807,6 +2984,36 @@ if (createPostBtn) {
                 const result =
                     await response.json();
 
+
+                // ------------------------------------------
+                // UNAUTHORIZED
+                // ------------------------------------------
+
+                if (
+                    response.status ===
+                    401
+                ) {
+
+                    alert(
+                        result.error ||
+                        'Your login session has expired. Please login again.'
+                    );
+
+                    clearAuthStorage();
+
+                    currentUser =
+                        null;
+
+                    updateNavbar();
+
+                    return;
+
+                }
+
+
+                // ------------------------------------------
+                // OTHER ERROR
+                // ------------------------------------------
 
                 if (
                     !response.ok ||
@@ -2822,6 +3029,10 @@ if (createPostBtn) {
 
                 }
 
+
+                // ------------------------------------------
+                // SUCCESS
+                // ------------------------------------------
 
                 if (postContent) {
 
@@ -2901,9 +3112,11 @@ if (logoutBtn) {
             }
 
 
-            localStorage.removeItem(
-                USER_STORAGE_KEY
-            );
+            // ----------------------------------------------
+            // REMOVE USER + JWT TOKEN
+            // ----------------------------------------------
+
+            clearAuthStorage();
 
 
             currentUser =
@@ -2929,27 +3142,16 @@ window.addEventListener(
 
         if (
             event.key ===
-            USER_STORAGE_KEY
+            USER_STORAGE_KEY ||
+            event.key ===
+            TOKEN_STORAGE_KEY
         ) {
 
-            try {
-
-                currentUser =
-                    event.newValue
-                        ? JSON.parse(
-                            event.newValue
-                        )
-                        : null;
-
-            } catch {
-
-                currentUser =
-                    null;
-
-            }
+            restoreUserFromStorage();
 
 
             updateNavbar();
+
 
             loadProfilePage();
 
@@ -2978,6 +3180,7 @@ window.addEventListener(
 
 
         updateNavbar();
+
 
         loadProfilePage();
 
