@@ -10,6 +10,9 @@ const API_BASE =
 const STORAGE_KEY =
     "dheereStudioUser";
 
+const TOKEN_STORAGE_KEY =
+    "dheereStudioToken";
+
 
 /* =========================================================
    STATE
@@ -224,6 +227,112 @@ const dheereAiStatusText =
 
 
 /* =========================================================
+   AUTH HELPERS
+   ========================================================= */
+
+function getAuthToken() {
+
+    return localStorage.getItem(
+        TOKEN_STORAGE_KEY
+    );
+
+}
+
+
+function getAuthHeaders() {
+
+    const token =
+        getAuthToken();
+
+
+    const headers = {
+        "Content-Type":
+            "application/json"
+    };
+
+
+    if (token) {
+
+        headers.Authorization =
+            `Bearer ${token}`;
+
+    }
+
+
+    return headers;
+
+}
+
+
+function hasValidLoginSession() {
+
+    return Boolean(
+        currentUser &&
+        getAuthToken()
+    );
+
+}
+
+
+function clearAuthStorage() {
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    localStorage.removeItem(
+        TOKEN_STORAGE_KEY
+    );
+
+
+    currentUser =
+        null;
+
+}
+
+
+function handleAuthError(
+    message
+) {
+
+    clearAuthStorage();
+
+
+    alert(
+        message ||
+        "Authentication required. Please login again."
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* =========================================================
+   RESPONSE HELPER
+   ========================================================= */
+
+async function parseResponse(
+    response
+) {
+
+    try {
+
+        return await response.json();
+
+    } catch {
+
+        return {};
+
+    }
+
+}
+
+
+/* =========================================================
    HELPERS
    ========================================================= */
 
@@ -234,8 +343,12 @@ function escapeHTML(value) {
             "div"
         );
 
+
     div.textContent =
-        String(value ?? "");
+        String(
+            value ?? ""
+        );
+
 
     return div.innerHTML;
 
@@ -244,12 +357,14 @@ function escapeHTML(value) {
 
 function getUserId(user) {
 
-    return (
+    return String(
         user?._id ||
         user?.id ||
         user?.userId ||
+        user?.user?._id ||
+        user?.user?.id ||
         ""
-    );
+    ).trim();
 
 }
 
@@ -258,6 +373,7 @@ function getUsername(user) {
 
     return String(
         user?.username ||
+        user?.user?.username ||
         ""
     )
         .trim()
@@ -270,7 +386,21 @@ function getDisplayName(user) {
 
     return String(
         user?.name ||
+        user?.user?.name ||
+        user?.username ||
         "User"
+    ).trim();
+
+}
+
+
+function getAvatarUrl(user) {
+
+    return String(
+        user?.avatarUrl ||
+        user?.avatar ||
+        user?.user?.avatarUrl ||
+        ""
     ).trim();
 
 }
@@ -278,12 +408,83 @@ function getDisplayName(user) {
 
 function saveCurrentUser() {
 
+    if (!currentUser) {
+
+        return;
+
+    }
+
+
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(
             currentUser
         )
     );
+
+}
+
+
+function loadStoredUser() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!saved) {
+
+            currentUser =
+                null;
+
+
+            return false;
+
+        }
+
+
+        const token =
+            getAuthToken();
+
+
+        if (!token) {
+
+            currentUser =
+                null;
+
+
+            return false;
+
+        }
+
+
+        currentUser =
+            JSON.parse(
+                saved
+            );
+
+
+        return Boolean(
+            currentUser
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Stored user error:",
+            error
+        );
+
+
+        clearAuthStorage();
+
+
+        return false;
+
+    }
 
 }
 
@@ -299,12 +500,19 @@ function getInitials(name) {
             name || "User"
         ).trim();
 
+
     if (!value) {
+
         return "U";
+
     }
 
+
     const parts =
-        value.split(/\s+/);
+        value.split(
+            /\s+/
+        );
+
 
     if (parts.length === 1) {
 
@@ -314,9 +522,14 @@ function getInitials(name) {
 
     }
 
+
     return (
-        parts[0].charAt(0) +
-        parts[parts.length - 1].charAt(0)
+        parts[0]
+            .charAt(0) +
+        parts[
+            parts.length - 1
+        ]
+            .charAt(0)
     ).toUpperCase();
 
 }
@@ -333,8 +546,11 @@ function renderAvatar(
 ) {
 
     if (!element) {
+
         return;
+
     }
+
 
     element.replaceChildren();
 
@@ -346,14 +562,18 @@ function renderAvatar(
                 "img"
             );
 
+
         img.src =
             image;
+
 
         img.alt =
             `${name || "Profile"} photo`;
 
+
         img.loading =
             "eager";
+
 
         img.decoding =
             "async";
@@ -363,14 +583,14 @@ function renderAvatar(
             "error",
             () => {
 
+                element.replaceChildren();
+
+
                 element.textContent =
                     getInitials(
                         name
                     );
 
-            },
-            {
-                once: true
             }
         );
 
@@ -378,6 +598,7 @@ function renderAvatar(
         element.appendChild(
             img
         );
+
 
         return;
 
@@ -392,402 +613,6 @@ function renderAvatar(
 }
 
 
-function getAvatarUrl(user = currentUser) {
-
-    return String(
-        user?.avatarUrl ||
-        ""
-    ).trim();
-
-}
-
-
-/* =========================================================
-   PROFILE PHOTO COMPRESSION
-   ========================================================= */
-
-function compressProfilePhoto(file) {
-
-    return new Promise(
-        (
-            resolve,
-            reject
-        ) => {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onerror =
-                () => {
-
-                    reject(
-                        new Error(
-                            "Could not read the selected image."
-                        )
-                    );
-
-                };
-
-
-            reader.onload =
-                () => {
-
-                    const image =
-                        new Image();
-
-
-                    image.onerror =
-                        () => {
-
-                            reject(
-                                new Error(
-                                    "The selected image could not be opened."
-                                )
-                            );
-
-                        };
-
-
-                    image.onload =
-                        () => {
-
-                            const MAX_SIZE =
-                                1000;
-
-
-                            let width =
-                                image.naturalWidth;
-
-                            let height =
-                                image.naturalHeight;
-
-
-                            if (
-                                width >
-                                    MAX_SIZE ||
-                                height >
-                                    MAX_SIZE
-                            ) {
-
-                                const ratio =
-                                    Math.min(
-                                        MAX_SIZE / width,
-                                        MAX_SIZE / height
-                                    );
-
-
-                                width =
-                                    Math.max(
-                                        1,
-                                        Math.round(
-                                            width * ratio
-                                        )
-                                    );
-
-
-                                height =
-                                    Math.max(
-                                        1,
-                                        Math.round(
-                                            height * ratio
-                                        )
-                                    );
-
-                            }
-
-
-                            const canvas =
-                                document.createElement(
-                                    "canvas"
-                                );
-
-
-                            canvas.width =
-                                width;
-
-                            canvas.height =
-                                height;
-
-
-                            const context =
-                                canvas.getContext(
-                                    "2d"
-                                );
-
-
-                            if (!context) {
-
-                                reject(
-                                    new Error(
-                                        "Your browser cannot process this image."
-                                    )
-                                );
-
-                                return;
-
-                            }
-
-
-                            context.drawImage(
-                                image,
-                                0,
-                                0,
-                                width,
-                                height
-                            );
-
-
-                            let quality =
-                                0.82;
-
-
-                            let dataUrl =
-                                canvas.toDataURL(
-                                    "image/jpeg",
-                                    quality
-                                );
-
-
-                            while (
-                                dataUrl.length >
-                                    2200000 &&
-                                quality >
-                                    0.45
-                            ) {
-
-                                quality -=
-                                    0.07;
-
-
-                                dataUrl =
-                                    canvas.toDataURL(
-                                        "image/jpeg",
-                                        quality
-                                    );
-
-                            }
-
-
-                            if (
-                                dataUrl.length >
-                                2200000
-                            ) {
-
-                                const smallerCanvas =
-                                    document.createElement(
-                                        "canvas"
-                                    );
-
-
-                                const smallerRatio =
-                                    700 /
-                                    Math.max(
-                                        width,
-                                        height
-                                    );
-
-
-                                const smallerWidth =
-                                    Math.max(
-                                        1,
-                                        Math.round(
-                                            width *
-                                            smallerRatio
-                                        )
-                                    );
-
-
-                                const smallerHeight =
-                                    Math.max(
-                                        1,
-                                        Math.round(
-                                            height *
-                                            smallerRatio
-                                        )
-                                    );
-
-
-                                smallerCanvas.width =
-                                    smallerWidth;
-
-
-                                smallerCanvas.height =
-                                    smallerHeight;
-
-
-                                const smallerContext =
-                                    smallerCanvas.getContext(
-                                        "2d"
-                                    );
-
-
-                                if (!smallerContext) {
-
-                                    reject(
-                                        new Error(
-                                            "Your browser cannot process this image."
-                                        )
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                smallerContext.drawImage(
-                                    image,
-                                    0,
-                                    0,
-                                    smallerWidth,
-                                    smallerHeight
-                                );
-
-
-                                dataUrl =
-                                    smallerCanvas.toDataURL(
-                                        "image/jpeg",
-                                        0.70
-                                    );
-
-                            }
-
-
-                            resolve(
-                                dataUrl
-                            );
-
-                        };
-
-
-                    image.src =
-                        reader.result;
-
-                };
-
-
-            reader.readAsDataURL(
-                file
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   REFRESH PROFILE FROM BACKEND
-   ========================================================= */
-
-async function refreshProfileFromServer() {
-
-    const userId =
-        getUserId(
-            currentUser
-        );
-
-
-    if (!userId) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/profile/${encodeURIComponent(userId)}`,
-                {
-                    method:
-                        "GET",
-
-                    cache:
-                        "no-store"
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !result?.success ||
-            !result?.user
-        ) {
-
-            throw new Error(
-                result?.error ||
-                "Could not refresh profile."
-            );
-
-        }
-
-
-        currentUser =
-            {
-                ...currentUser,
-                ...result.user
-            };
-
-
-        saveCurrentUser();
-
-        updateProfileDisplay();
-
-
-        if (
-            result.user.postCount !== undefined
-        ) {
-
-            profilePostCount.textContent =
-                String(
-                    result.user.postCount
-                );
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Could not refresh profile from backend:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   BIO
-   ========================================================= */
-
-function updateBioCounter() {
-
-    const length =
-        editBio.value.length;
-
-    bioCounter.textContent =
-        `${length} / 150`;
-
-
-    bioCounter.classList.toggle(
-        "limit",
-        length >= 150
-    );
-
-}
-
-
-editBio.addEventListener(
-    "input",
-    updateBioCounter
-);
-
-
 /* =========================================================
    PROFILE DISPLAY
    ========================================================= */
@@ -795,7 +620,9 @@ editBio.addEventListener(
 function updateProfileDisplay() {
 
     if (!currentUser) {
+
         return;
+
     }
 
 
@@ -813,47 +640,52 @@ function updateProfileDisplay() {
 
     const email =
         currentUser.email ||
-        "Not available";
+        currentUser?.user?.email ||
+        "";
 
 
     const bio =
-        String(
-            currentUser.bio ||
-            ""
-        ).trim();
+        currentUser.bio ||
+        "";
 
 
-    profileName.textContent =
-        name;
-
-
-    profileUsername.textContent =
-        username
-            ? `@${username}`
-            : "@user";
-
-
-    profileEmail.textContent =
-        email;
-
-
-    if (bio) {
-
-        profileBio.textContent =
-            bio;
-
-        profileBio.classList.remove(
-            "empty"
+    currentAvatar =
+        getAvatarUrl(
+            currentUser
         );
 
-    } else {
+
+    if (profileName) {
+
+        profileName.textContent =
+            name;
+
+    }
+
+
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            username
+                ? `@${username}`
+                : "";
+
+    }
+
+
+    if (profileEmail) {
+
+        profileEmail.textContent =
+            email;
+
+    }
+
+
+    if (profileBio) {
 
         profileBio.textContent =
-            "Add a bio to tell people a little about yourself.";
-
-        profileBio.classList.add(
-            "empty"
-        );
+            bio ||
+            "";
 
     }
 
@@ -861,8 +693,52 @@ function updateProfileDisplay() {
     renderAvatar(
         profileAvatar,
         name,
-        getAvatarUrl(currentUser)
+        currentAvatar
     );
+
+}
+
+
+/* =========================================================
+   PROFILE AUTH UI
+   ========================================================= */
+
+function showLoginState() {
+
+    if (authenticatedContent) {
+
+        authenticatedContent.style.display =
+            "none";
+
+    }
+
+
+    if (loginMessage) {
+
+        loginMessage.style.display =
+            "block";
+
+    }
+
+}
+
+
+function showAuthenticatedState() {
+
+    if (authenticatedContent) {
+
+        authenticatedContent.style.display =
+            "block";
+
+    }
+
+
+    if (loginMessage) {
+
+        loginMessage.style.display =
+            "none";
+
+    }
 
 }
 
@@ -873,82 +749,139 @@ function updateProfileDisplay() {
 
 function loadProfile() {
 
-    const rawUser =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
+    const loaded =
+        loadStoredUser();
 
 
-    if (!rawUser) {
+    if (!loaded) {
 
-        authenticatedContent.style.display =
-            "none";
+        showLoginState();
 
-        loginMessage.style.display =
-            "block";
 
         return false;
 
     }
 
 
+    showAuthenticatedState();
+
+
+    updateProfileDisplay();
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   REFRESH PROFILE FROM SERVER
+   ========================================================= */
+
+async function refreshProfileFromServer() {
+
+    if (
+        !currentUser ||
+        !hasValidLoginSession()
+    ) {
+
+        return;
+
+    }
+
+
+    const userId =
+        getUserId(
+            currentUser
+        );
+
+
+    if (!userId) {
+
+        return;
+
+    }
+
+
     try {
 
-        currentUser =
-            JSON.parse(
-                rawUser
+        const response =
+            await fetch(
+                `${API_BASE}/profile/${encodeURIComponent(userId)}`,
+                {
+                    headers:
+                        getAuthHeaders(),
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
-        if (!currentUser) {
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
 
             throw new Error(
-                "Invalid user."
+                result?.error ||
+                "Could not refresh profile."
             );
 
         }
 
 
-        currentAvatar =
-            getAvatarUrl(
-                currentUser
-            );
+        const user =
+            result?.user ||
+            result?.profile ||
+            null;
+
+
+        if (!user) {
+
+            return;
+
+        }
+
+
+        currentUser = {
+            ...currentUser,
+            ...user
+        };
+
+
+        saveCurrentUser();
 
 
         updateProfileDisplay();
 
 
-        authenticatedContent.style.display =
-            "block";
-
-        loginMessage.style.display =
-            "none";
-
-
-        return true;
-
-
     } catch (error) {
 
         console.error(
-            "Profile load error:",
+            "Refresh profile error:",
             error
         );
-
-
-        localStorage.removeItem(
-            STORAGE_KEY
-        );
-
-
-        authenticatedContent.style.display =
-            "none";
-
-        loginMessage.style.display =
-            "block";
-
-
-        return false;
 
     }
 
@@ -959,16 +892,177 @@ function loadProfile() {
    EDIT MODAL
    ========================================================= */
 
+function openEditModal() {
+
+    if (
+        !currentUser ||
+        !editOverlay
+    ) {
+
+        return;
+
+    }
+
+
+    const name =
+        getDisplayName(
+            currentUser
+        );
+
+
+    const username =
+        getUsername(
+            currentUser
+        );
+
+
+    if (editName) {
+
+        editName.value =
+            name;
+
+    }
+
+
+    if (editUsername) {
+
+        editUsername.value =
+            username;
+
+    }
+
+
+    if (editBio) {
+
+        editBio.value =
+            currentUser.bio ||
+            "";
+
+    }
+
+
+    if (editEmail) {
+
+        editEmail.value =
+            currentUser.email ||
+            "";
+
+    }
+
+
+    if (editDateOfBirth) {
+
+        editDateOfBirth.value =
+            currentUser.dateOfBirth ||
+            "";
+
+    }
+
+
+    if (editGender) {
+
+        editGender.value =
+            currentUser.gender ||
+            "";
+
+    }
+
+
+    currentAvatar =
+        getAvatarUrl(
+            currentUser
+        );
+
+
+    renderAvatar(
+        editAvatar,
+        name,
+        currentAvatar
+    );
+
+
+    usernameAvailable =
+        true;
+
+
+    updateBioCounter();
+
+
+    setUsernameStatus(
+        "",
+        ""
+    );
+
+
+    editOverlay.classList.add(
+        "active"
+    );
+
+
+    editOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function closeEditModal() {
+
+    if (!editOverlay) {
+
+        return;
+
+    }
+
+
+    editOverlay.classList.remove(
+        "active"
+    );
+
+
+    editOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    if (photoInput) {
+
+        photoInput.value =
+            "";
+
+    }
+
+}
+
+
+/* =========================================================
+   USERNAME STATUS
+   ========================================================= */
+
 function setUsernameStatus(
     message,
-    type = ""
+    type
 ) {
 
-    usernameStatus.textContent =
-        message;
+    if (!usernameStatus) {
 
-    usernameStatus.className =
-        "username-status";
+        return;
+
+    }
+
+
+    usernameStatus.textContent =
+        message ||
+        "";
+
+
+    usernameStatus.classList.remove(
+        "available",
+        "taken",
+        "checking"
+    );
 
 
     if (type) {
@@ -982,46 +1076,42 @@ function setUsernameStatus(
 }
 
 
-function resetUsernameState() {
+/* =========================================================
+   BIO COUNTER
+   ========================================================= */
 
-    usernameAvailable =
-        false;
+function updateBioCounter() {
 
-    usernameCheckToken++;
+    if (
+        !editBio ||
+        !bioCounter
+    ) {
 
-
-    if (usernameCheckTimer) {
-
-        clearTimeout(
-            usernameCheckTimer
-        );
-
-        usernameCheckTimer =
-            null;
+        return;
 
     }
 
 
-    editUsername.classList.remove(
-        "input-valid",
-        "input-invalid"
-    );
-
-
-    setUsernameStatus(
-        ""
-    );
-
-
-    updateSaveButton();
+    bioCounter.textContent =
+        `${editBio.value.length} / 150`;
 
 }
 
 
-function updateSaveButton() {
+/* =========================================================
+   USERNAME AVAILABILITY
+   ========================================================= */
 
-    const nameValid =
-        editName.value.trim().length > 0;
+async function checkUsernameAvailability() {
+
+    if (
+        !editUsername ||
+        !currentUser
+    ) {
+
+        return;
+
+    }
 
 
     const username =
@@ -1036,224 +1126,21 @@ function updateSaveButton() {
         );
 
 
-    const usernameValid =
-        /^[a-z0-9_]{3,20}$/.test(
-            username
-        );
+    if (!username) {
+
+        usernameAvailable =
+            false;
 
 
-    const usernameUnchanged =
-        username ===
-        currentUsername;
-
-
-    const bioValid =
-        editBio.value.length <= 150;
-
-
-    const canSave =
-        nameValid &&
-        usernameValid &&
-        bioValid &&
-        (
-            usernameUnchanged ||
-            usernameAvailable
-        );
-
-
-    saveProfileBtn.disabled =
-        !canSave;
-
-}
-
-
-function openEditModal() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    editName.value =
-        currentUser.name || "";
-
-
-    editUsername.value =
-        getUsername(
-            currentUser
-        );
-
-
-    editBio.value =
-        String(
-            currentUser.bio ||
+        setUsernameStatus(
+            "",
             ""
-        ).slice(
-            0,
-            150
         );
 
 
-    editEmail.value =
-        currentUser.email || "";
-
-    editDateOfBirth.value =
-        currentUser.dateOfBirth || "";
-
-    editGender.value =
-        currentUser.gender || "";
-
-
-    renderAvatar(
-        editAvatar,
-        getDisplayName(
-            currentUser
-        ),
-        getAvatarUrl(currentUser)
-    );
-
-
-    updateBioCounter();
-
-
-    resetUsernameState();
-
-
-    usernameAvailable =
-        true;
-
-
-    editUsername.classList.add(
-        "input-valid"
-    );
-
-
-    setUsernameStatus(
-        "✓ This is your current username.",
-        "available"
-    );
-
-
-    updateSaveButton();
-
-
-    editOverlay.classList.add(
-        "open"
-    );
-
-
-    editOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    setTimeout(
-        () => {
-
-            editName.focus();
-
-        },
-        50
-    );
-
-}
-
-
-function closeEditModal() {
-
-    editOverlay.classList.remove(
-        "open"
-    );
-
-
-    editOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    resetUsernameState();
-
-}
-
-
-editProfileBtn.addEventListener(
-    "click",
-    openEditModal
-);
-
-
-avatarQuickEdit.addEventListener(
-    "click",
-    openEditModal
-);
-
-
-closeEditBtn.addEventListener(
-    "click",
-    closeEditModal
-);
-
-
-cancelEditBtn.addEventListener(
-    "click",
-    closeEditModal
-);
-
-
-editOverlay.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            editOverlay
-        ) {
-
-            closeEditModal();
-
-        }
+        return;
 
     }
-);
-
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape" &&
-            editOverlay.classList.contains(
-                "open"
-            )
-        ) {
-
-            closeEditModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   USERNAME AVAILABILITY
-   ========================================================= */
-
-async function checkUsernameAvailability(
-    username
-) {
-
-    const token =
-        ++usernameCheckToken;
-
-
-    const currentUsername =
-        getUsername(
-            currentUser
-        );
 
 
     if (
@@ -1265,23 +1152,11 @@ async function checkUsernameAvailability(
             true;
 
 
-        editUsername.classList.remove(
-            "input-invalid"
-        );
-
-
-        editUsername.classList.add(
-            "input-valid"
-        );
-
-
         setUsernameStatus(
-            "✓ This is your current username.",
+            "✓ Current username",
             "available"
         );
 
-
-        updateSaveButton();
 
         return;
 
@@ -1298,62 +1173,53 @@ async function checkUsernameAvailability(
             false;
 
 
-        editUsername.classList.remove(
-            "input-valid"
-        );
-
-
-        editUsername.classList.add(
-            "input-invalid"
-        );
-
-
         setUsernameStatus(
             "Username must be 3–20 characters using lowercase letters, numbers or underscores.",
-            "invalid"
+            "taken"
         );
 
-
-        updateSaveButton();
 
         return;
 
     }
 
 
-    usernameAvailable =
-        false;
+    const userId =
+        getUserId(
+            currentUser
+        );
 
 
-    editUsername.classList.remove(
-        "input-valid",
-        "input-invalid"
-    );
+    const requestToken =
+        ++usernameCheckToken;
 
 
     setUsernameStatus(
-        "Checking availability...",
+        "Checking username...",
         "checking"
     );
 
 
-    updateSaveButton();
+    usernameAvailable =
+        false;
 
 
     try {
 
         const response =
             await fetch(
-                `${API_BASE}/check-username/${encodeURIComponent(username)}?userId=${encodeURIComponent(getUserId(currentUser))}`
+                `${API_BASE}/check-username/${encodeURIComponent(username)}?userId=${encodeURIComponent(userId)}`
             );
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
 
 
         if (
-            token !==
+            requestToken !==
             usernameCheckToken
         ) {
 
@@ -1362,850 +1228,228 @@ async function checkUsernameAvailability(
         }
 
 
-        if (!response.ok) {
+        if (
+            !response.ok
+        ) {
 
             throw new Error(
                 result?.error ||
-                "Unable to check username."
+                "Could not check username."
             );
 
         }
-
-
-        const available =
-            result?.available === true;
 
 
         usernameAvailable =
-            available;
+            result?.available ===
+            true;
 
 
-        if (available) {
-
-            editUsername.classList.remove(
-                "input-invalid"
-            );
-
-
-            editUsername.classList.add(
-                "input-valid"
-            );
-
-
-            setUsernameStatus(
-                "✓ Username is available.",
-                "available"
-            );
-
-        } else {
-
-            editUsername.classList.remove(
-                "input-valid"
-            );
-
-
-            editUsername.classList.add(
-                "input-invalid"
-            );
-
-
-            setUsernameStatus(
-                "✕ Username is already taken.",
-                "taken"
-            );
-
-        }
+        setUsernameStatus(
+            usernameAvailable
+                ? "✓ Username is available."
+                : "✕ Username is already taken.",
+            usernameAvailable
+                ? "available"
+                : "taken"
+        );
 
 
     } catch (error) {
 
-        if (
-            token !==
-            usernameCheckToken
-        ) {
-
-            return;
-
-        }
+        console.error(
+            "Username check error:",
+            error
+        );
 
 
         usernameAvailable =
             false;
 
 
-        editUsername.classList.remove(
-            "input-valid"
-        );
-
-
-        editUsername.classList.add(
-            "input-invalid"
-        );
-
-
         setUsernameStatus(
-            "Could not check username availability. Try again.",
-            "error"
-        );
-
-
-        console.error(
-            "Username availability error:",
-            error
+            "Could not check username.",
+            "taken"
         );
 
     }
-
-
-    updateSaveButton();
 
 }
 
 
-editUsername.addEventListener(
-    "input",
-    () => {
+/* =========================================================
+   IMAGE COMPRESSION
+   ========================================================= */
 
-        const username =
-            editUsername.value
-                .trim()
-                .toLowerCase();
+function compressProfilePhoto(
+    file
+) {
 
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
 
-        editUsername.value =
-            username;
-
-
-        usernameAvailable =
-            false;
-
-
-        if (usernameCheckTimer) {
-
-            clearTimeout(
-                usernameCheckTimer
-            );
-
-        }
+            const reader =
+                new FileReader();
 
 
-        usernameCheckTimer =
-            setTimeout(
+            reader.onerror =
                 () => {
 
-                    checkUsernameAvailability(
-                        username
+                    reject(
+                        new Error(
+                            "Could not read image."
+                        )
                     );
 
-                },
-                350
+                };
+
+
+            reader.onload =
+                event => {
+
+                    const image =
+                        new Image();
+
+
+                    image.onerror =
+                        () => {
+
+                            reject(
+                                new Error(
+                                    "Could not process image."
+                                )
+                            );
+
+                        };
+
+
+                    image.onload =
+                        () => {
+
+                            const maxSize =
+                                900;
+
+
+                            let width =
+                                image.width;
+
+
+                            let height =
+                                image.height;
+
+
+                            if (
+                                width >
+                                maxSize
+                            ) {
+
+                                height =
+                                    Math.round(
+                                        height *
+                                        (
+                                            maxSize /
+                                            width
+                                        )
+                                    );
+
+
+                                width =
+                                    maxSize;
+
+                            }
+
+
+                            if (
+                                height >
+                                maxSize
+                            ) {
+
+                                width =
+                                    Math.round(
+                                        width *
+                                        (
+                                            maxSize /
+                                            height
+                                        )
+                                    );
+
+
+                                height =
+                                    maxSize;
+
+                            }
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                width;
+
+
+                            canvas.height =
+                                height;
+
+
+                            const context =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            if (!context) {
+
+                                reject(
+                                    new Error(
+                                        "Image processing is unavailable."
+                                    )
+                                );
+
+
+                                return;
+
+                            }
+
+
+                            context.drawImage(
+                                image,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+                            resolve(
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.85
+                                )
+                            );
+
+                        };
+
+
+                    image.src =
+                        event.target.result;
+
+                };
+
+
+            reader.readAsDataURL(
+                file
             );
-
-
-        updateSaveButton();
-
-    }
-);
-
-
-editName.addEventListener(
-    "input",
-    updateSaveButton
-);
-
-
-/* =========================================================
-   PHOTO SELECTION
-   ========================================================= */
-
-changePhotoBtn.addEventListener(
-    "click",
-    () => {
-
-        photoInput.click();
-
-    }
-);
-
-
-photoInput.addEventListener(
-    "change",
-    async event => {
-
-        const file =
-            event.target.files?.[0];
-
-
-        if (!file) {
-            return;
-        }
-
-
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
-
-
-        if (
-            !allowedTypes.includes(
-                file.type
-            )
-        ) {
-
-            alert(
-                "Please choose a JPG, PNG or WebP image."
-            );
-
-
-            photoInput.value =
-                "";
-
-
-            return;
-
-        }
-
-
-        if (
-            file.size >
-            3 * 1024 * 1024
-        ) {
-
-            alert(
-                "Please choose an image smaller than 3 MB."
-            );
-
-
-            photoInput.value =
-                "";
-
-
-            return;
-
-        }
-
-
-        const userId =
-            getUserId(
-                currentUser
-            );
-
-
-        const username =
-            getUsername(
-                currentUser
-            );
-
-
-        if (
-            !userId ||
-            !username
-        ) {
-
-            alert(
-                "Your login session is missing the user ID or username. Please log in again."
-            );
-
-
-            return;
-
-        }
-
-
-        changePhotoBtn.disabled =
-            true;
-
-
-        changePhotoBtn.textContent =
-            "Uploading...";
-
-
-        try {
-
-            const imageData =
-                await compressProfilePhoto(
-                    file
-                );
-
-
-            const response =
-                await fetch(
-                    `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
-                    {
-                        method:
-                            "PUT",
-
-                        headers:
-                            {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                        body:
-                            JSON.stringify({
-                                username,
-                                image:
-                                    imageData
-                            })
-                    }
-                );
-
-
-            const result =
-                await response.json();
-
-
-            if (
-                !response.ok ||
-                !result?.success ||
-                !result?.avatarUrl
-            ) {
-
-                throw new Error(
-                    result?.error ||
-                    "Could not upload profile photo."
-                );
-
-            }
-
-
-            currentAvatar =
-                result.avatarUrl;
-
-
-            currentUser.avatarUrl =
-                result.avatarUrl;
-
-
-            saveCurrentUser();
-
-
-            renderAvatar(
-                editAvatar,
-                getDisplayName(
-                    currentUser
-                ),
-                currentAvatar
-            );
-
-
-            renderAvatar(
-                profileAvatar,
-                getDisplayName(
-                    currentUser
-                ),
-                currentAvatar
-            );
-
-
-            setUsernameStatus(
-                "✓ Profile photo uploaded successfully.",
-                "available"
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Profile photo upload error:",
-                error
-            );
-
-
-            alert(
-                error.message ||
-                "Could not upload the profile photo."
-            );
-
-        } finally {
-
-            changePhotoBtn.disabled =
-                false;
-
-
-            changePhotoBtn.textContent =
-                "Change photo";
-
-
-            photoInput.value =
-                "";
 
         }
+    );
 
-    }
-);
-
-
-removePhotoBtn.addEventListener(
-    "click",
-    async () => {
-
-        const userId =
-            getUserId(
-                currentUser
-            );
-
-
-        const username =
-            getUsername(
-                currentUser
-            );
-
-
-        if (
-            !userId ||
-            !username
-        ) {
-
-            alert(
-                "Your login session is missing the user ID or username. Please log in again."
-            );
-
-
-            return;
-
-        }
-
-
-        if (
-            !getAvatarUrl(
-                currentUser
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        removePhotoBtn.disabled =
-            true;
-
-
-        removePhotoBtn.textContent =
-            "Removing...";
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
-                    {
-                        method:
-                            "DELETE",
-
-                        headers:
-                            {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                        body:
-                            JSON.stringify({
-                                username
-                            })
-                    }
-                );
-
-
-            const result =
-                await response.json();
-
-
-            if (
-                !response.ok ||
-                !result?.success
-            ) {
-
-                throw new Error(
-                    result?.error ||
-                    "Could not remove profile photo."
-                );
-
-            }
-
-
-            currentAvatar =
-                "";
-
-
-            currentUser.avatarUrl =
-                "";
-
-
-            saveCurrentUser();
-
-
-            renderAvatar(
-                editAvatar,
-                getDisplayName(
-                    currentUser
-                ),
-                ""
-            );
-
-
-            renderAvatar(
-                profileAvatar,
-                getDisplayName(
-                    currentUser
-                ),
-                ""
-            );
-
-
-            setUsernameStatus(
-                "Profile photo removed.",
-                "available"
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Remove profile photo error:",
-                error
-            );
-
-
-            alert(
-                error.message ||
-                "Could not remove the profile photo."
-            );
-
-        } finally {
-
-            removePhotoBtn.disabled =
-                false;
-
-
-            removePhotoBtn.textContent =
-                "Remove";
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   SAVE PROFILE
-   ========================================================= */
-
-saveProfileBtn.addEventListener(
-    "click",
-    async () => {
-
-        if (!currentUser) {
-            return;
-        }
-
-
-        const name =
-            editName.value.trim();
-
-
-        const username =
-            editUsername.value
-                .trim()
-                .toLowerCase();
-
-
-        const bio =
-            editBio.value
-                .trim();
-
-        const dateOfBirth =
-            editDateOfBirth.value
-                .trim();
-
-        const gender =
-            editGender.value
-                .trim()
-                .toLowerCase();
-
-
-        const currentUsername =
-            getUsername(
-                currentUser
-            );
-
-
-        if (!name) {
-
-            alert(
-                "Display name cannot be empty."
-            );
-
-
-            editName.focus();
-
-            return;
-
-        }
-
-
-        if (
-            !/^[a-z0-9_]{3,20}$/.test(
-                username
-            )
-        ) {
-
-            alert(
-                "Username must be 3–20 characters using lowercase letters, numbers or underscores."
-            );
-
-
-            editUsername.focus();
-
-            return;
-
-        }
-
-
-        if (
-            bio.length >
-            150
-        ) {
-
-            alert(
-                "Bio cannot be longer than 150 characters."
-            );
-
-
-            editBio.focus();
-
-            return;
-
-        }
-
-
-        if (
-            username !==
-            currentUsername &&
-            !usernameAvailable
-        ) {
-
-            alert(
-                "Please choose an available username first."
-            );
-
-
-            editUsername.focus();
-
-            return;
-
-        }
-
-
-        const userId =
-            getUserId(
-                currentUser
-            );
-
-
-        if (!userId) {
-
-            alert(
-                "Your account ID is missing. Please log in again."
-            );
-
-
-            return;
-
-        }
-
-
-        saveProfileBtn.disabled =
-            true;
-
-
-        saveProfileBtn.textContent =
-            "Saving...";
-
-
-        try {
-
-            if (
-                username !==
-                currentUsername
-            ) {
-
-                const availabilityResponse =
-                    await fetch(
-                        `${API_BASE}/check-username/${encodeURIComponent(username)}?userId=${encodeURIComponent(userId)}`
-                    );
-
-
-                const availabilityResult =
-                    await availabilityResponse.json();
-
-
-                if (
-                    !availabilityResponse.ok ||
-                    availabilityResult?.available !== true
-                ) {
-
-                    usernameAvailable =
-                        false;
-
-
-                    setUsernameStatus(
-                        "✕ Username is no longer available.",
-                        "taken"
-                    );
-
-
-                    throw new Error(
-                        "Username is no longer available."
-                    );
-
-                }
-
-            }
-
-
-            const response =
-                await fetch(
-                    `${API_BASE}/profile/${encodeURIComponent(userId)}`,
-                    {
-                        method:
-                            "PUT",
-
-                        headers:
-                            {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                        body:
-                            JSON.stringify({
-                                currentUsername,
-                                name,
-                                username,
-                                bio,
-                                dateOfBirth,
-                                gender
-                            })
-
-                    }
-                );
-
-
-            const result =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    result?.error ||
-                    "Profile update failed."
-                );
-
-            }
-
-
-            const updatedUser =
-                result?.user ||
-                result?.profile ||
-                null;
-
-
-            if (updatedUser) {
-
-                currentUser =
-                    {
-                        ...currentUser,
-                        ...updatedUser
-                    };
-
-            }
-
-
-            currentUser.name =
-                name;
-
-            currentUser.username =
-                username;
-
-            currentUser.bio =
-                bio;
-
-            currentUser.dateOfBirth =
-                dateOfBirth;
-
-            currentUser.gender =
-                gender;
-
-
-            saveCurrentUser();
-
-
-            currentAvatar =
-                getAvatarUrl(
-                    currentUser
-                );
-
-
-            updateProfileDisplay();
-
-
-            closeEditModal();
-
-
-            await loadUserPosts();
-
-
-        } catch (error) {
-
-            console.error(
-                "Save profile error:",
-                error
-            );
-
-
-            alert(
-                error.message ||
-                "Unable to update your profile."
-            );
-
-
-        } finally {
-
-            saveProfileBtn.textContent =
-                "Save Changes";
-
-
-            updateSaveButton();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-
-logoutBtn.addEventListener(
-    "click",
-    () => {
-
-        localStorage.removeItem(
-            STORAGE_KEY
-        );
-
-
-        window.location.href =
-            "index.html";
-
-    }
-);
+}
 
 
 /* =========================================================
@@ -2217,7 +1461,9 @@ function formatPostDate(
 ) {
 
     if (!value) {
+
         return "";
+
     }
 
 
@@ -2253,7 +1499,7 @@ function formatPostDate(
 
 
 /* =========================================================
-   POST LIKE / COMMENT HELPERS
+   POST HELPERS
    ========================================================= */
 
 function getPostId(post) {
@@ -2274,6 +1520,7 @@ function getPostLikes(post) {
             post?.likes
         );
 
+
     return Number.isFinite(
         value
     )
@@ -2290,8 +1537,11 @@ function getPostCommentsCount(post) {
 
     const value =
         Number(
-            post?.comments
+            post?.comments ??
+            post?.commentCount ??
+            0
         );
+
 
     return Number.isFinite(
         value
@@ -2325,7 +1575,9 @@ function renderComments(
 ) {
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -2339,9 +1591,7 @@ function renderComments(
         container.innerHTML = `
 
             <div class="post-comments-empty">
-
                 No comments yet.
-
             </div>
 
         `;
@@ -2379,18 +1629,14 @@ function renderComments(
                         <div class="post-comment-header">
 
                             <strong>
-                                @${escapeHTML(
-                                    username
-                                )}
+                                @${escapeHTML(username)}
                             </strong>
 
                             ${
                                 date
                                     ? `
                                         <span>
-                                            ${escapeHTML(
-                                                date
-                                            )}
+                                            ${escapeHTML(date)}
                                         </span>
                                     `
                                     : ""
@@ -2398,13 +1644,8 @@ function renderComments(
 
                         </div>
 
-
                         <div class="post-comment-content">
-
-                            ${escapeHTML(
-                                content
-                            )}
-
+                            ${escapeHTML(content)}
                         </div>
 
                     </div>
@@ -2412,7 +1653,8 @@ function renderComments(
                 `;
 
             }
-        ).join("");
+        )
+        .join("");
 
 }
 
@@ -2427,17 +1669,20 @@ async function loadPostComments(
     commentCountElement
 ) {
 
-    if (!postId) {
+    if (
+        !postId ||
+        !commentsContainer
+    ) {
+
         return;
+
     }
 
 
     commentsContainer.innerHTML = `
 
         <div class="post-comments-loading">
-
             Loading comments...
-
         </div>
 
     `;
@@ -2452,7 +1697,9 @@ async function loadPostComments(
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
 
 
         if (!response.ok) {
@@ -2502,9 +1749,7 @@ async function loadPostComments(
         commentsContainer.innerHTML = `
 
             <div class="post-comments-error">
-
                 Unable to load comments right now.
-
             </div>
 
         `;
@@ -2526,22 +1771,21 @@ async function createPostComment(
     commentCountElement
 ) {
 
-    if (!postId) {
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        alert(
+            "Please login first."
+        );
+
+
         return;
+
     }
 
 
-    const userId =
-        getUserId(
-            currentUser
-        );
-
-
-    if (!userId) {
-
-        alert(
-            "Your login session is missing. Please log in again."
-        );
+    if (!postId) {
 
         return;
 
@@ -2549,12 +1793,14 @@ async function createPostComment(
 
 
     const content =
-        input.value.trim();
+        input?.value
+            .trim();
 
 
     if (!content) {
 
-        input.focus();
+        input?.focus();
+
 
         return;
 
@@ -2569,6 +1815,7 @@ async function createPostComment(
         alert(
             "Comment cannot exceed 1000 characters."
         );
+
 
         return;
 
@@ -2593,23 +1840,35 @@ async function createPostComment(
                         "POST",
 
                     headers:
-                        {
-                            "Content-Type":
-                                "application/json"
-                        },
+                        getAuthHeaders(),
 
                     body:
                         JSON.stringify({
-                            userId,
                             content
                         })
-
                 }
             );
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return;
+
+        }
 
 
         if (!response.ok) {
@@ -2626,19 +1885,21 @@ async function createPostComment(
             "";
 
 
-        const comment =
-            result?.comment;
+        if (
+            result?.comment
+        ) {
+
+            const comment =
+                result.comment;
 
 
-        if (comment) {
-
-            const existingEmpty =
-                commentsContainer.querySelector(
+            const emptyState =
+                commentsContainer?.querySelector(
                     ".post-comments-empty"
                 );
 
 
-            if (existingEmpty) {
+            if (emptyState) {
 
                 commentsContainer.innerHTML =
                     "";
@@ -2646,26 +1907,25 @@ async function createPostComment(
             }
 
 
-            const commentElement =
+            const element =
                 document.createElement(
                     "div"
                 );
 
 
-            commentElement.className =
+            element.className =
                 "post-comment";
 
 
-            commentElement.innerHTML = `
+            element.innerHTML = `
 
                 <div class="post-comment-header">
 
                     <strong>
                         @${escapeHTML(
                             comment.username ||
-                            getUsername(
-                                currentUser
-                            )
+                            getUsername(currentUser) ||
+                            "user"
                         )}
                     </strong>
 
@@ -2685,21 +1945,38 @@ async function createPostComment(
 
                 </div>
 
-
                 <div class="post-comment-content">
-
                     ${escapeHTML(
-                        comment.content
+                        comment.content ||
+                        content
                     )}
-
                 </div>
 
             `;
 
 
-            commentsContainer.appendChild(
-                commentElement
+            commentsContainer?.appendChild(
+                element
             );
+
+
+            if (
+                commentCountElement
+            ) {
+
+                const count =
+                    Number(
+                        commentCountElement.textContent
+                    ) || 0;
+
+
+                commentCountElement.textContent =
+                    String(
+                        count + 1
+                    );
+
+            }
+
 
         } else {
 
@@ -2708,33 +1985,6 @@ async function createPostComment(
                 commentsContainer,
                 commentCountElement
             );
-
-        }
-
-
-        if (
-            commentCountElement
-        ) {
-
-            const currentCount =
-                Number(
-                    commentCountElement.textContent
-                ) || 0;
-
-
-            /*
-             * Only increment here when the response
-             * did not force a fresh comment load.
-             */
-
-            if (comment) {
-
-                commentCountElement.textContent =
-                    String(
-                        currentCount + 1
-                    );
-
-            }
 
         }
 
@@ -2752,6 +2002,7 @@ async function createPostComment(
             "Unable to add comment."
         );
 
+
     } finally {
 
         submitButton.disabled =
@@ -2767,31 +2018,23 @@ async function createPostComment(
 
 
 /* =========================================================
-   LIKE POST
+   TOGGLE LIKE
    ========================================================= */
 
-async function togglePostLike(
+async function toggleLike(
     postId,
-    likeButton,
-    likeCountElement
+    button,
+    countElement
 ) {
 
-    if (!postId) {
-        return;
-    }
-
-
-    const userId =
-        getUserId(
-            currentUser
-        );
-
-
-    if (!userId) {
+    if (
+        !hasValidLoginSession()
+    ) {
 
         alert(
-            "Your login session is missing. Please log in again."
+            "Please login first."
         );
+
 
         return;
 
@@ -2799,7 +2042,7 @@ async function togglePostLike(
 
 
     if (
-        likeButton.dataset.busy ===
+        button.dataset.busy ===
         "true"
     ) {
 
@@ -2808,11 +2051,11 @@ async function togglePostLike(
     }
 
 
-    likeButton.dataset.busy =
+    button.dataset.busy =
         "true";
 
 
-    likeButton.disabled =
+    button.disabled =
         true;
 
 
@@ -2826,22 +2069,30 @@ async function togglePostLike(
                         "POST",
 
                     headers:
-                        {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                    body:
-                        JSON.stringify({
-                            userId
-                        })
-
+                        getAuthHeaders()
                 }
             );
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return;
+
+        }
 
 
         if (!response.ok) {
@@ -2855,7 +2106,8 @@ async function togglePostLike(
 
 
         const liked =
-            result?.liked === true;
+            result?.liked ===
+            true;
 
 
         const likes =
@@ -2867,25 +2119,31 @@ async function togglePostLike(
             );
 
 
-        likeCountElement.textContent =
-            String(
-                likes
-            );
+        if (
+            countElement
+        ) {
+
+            countElement.textContent =
+                String(
+                    likes
+                );
+
+        }
 
 
-        likeButton.dataset.liked =
-            liked
-                ? "true"
-                : "false";
-
-
-        likeButton.classList.toggle(
+        button.classList.toggle(
             "liked",
             liked
         );
 
 
-        likeButton.setAttribute(
+        button.dataset.liked =
+            liked
+                ? "true"
+                : "false";
+
+
+        button.setAttribute(
             "aria-pressed",
             liked
                 ? "true"
@@ -2894,8 +2152,14 @@ async function togglePostLike(
 
 
         const icon =
-            likeButton.querySelector(
-                ".post-like-icon"
+            button.querySelector(
+                ".post-action-icon"
+            );
+
+
+        const text =
+            button.querySelector(
+                ".post-action-text"
             );
 
 
@@ -2907,12 +2171,6 @@ async function togglePostLike(
                     : "♡";
 
         }
-
-
-        const text =
-            likeButton.querySelector(
-                ".post-like-text"
-            );
 
 
         if (text) {
@@ -2928,7 +2186,7 @@ async function togglePostLike(
     } catch (error) {
 
         console.error(
-            "Toggle like error:",
+            "Like error:",
             error
         );
 
@@ -2938,13 +2196,14 @@ async function togglePostLike(
             "Unable to update like."
         );
 
+
     } finally {
 
-        likeButton.disabled =
+        button.disabled =
             false;
 
 
-        likeButton.dataset.busy =
+        button.dataset.busy =
             "false";
 
     }
@@ -2953,321 +2212,57 @@ async function togglePostLike(
 
 
 /* =========================================================
-   POST ACTION EVENTS
-   ========================================================= */
-
-function setupPostActions() {
-
-    if (!postsFeed) {
-        return;
-    }
-
-
-    postsFeed.addEventListener(
-        "click",
-        async event => {
-
-            const likeButton =
-                event.target.closest(
-                    ".post-like-button"
-                );
-
-
-            if (likeButton) {
-
-                const postId =
-                    likeButton.dataset.postId;
-
-
-                const likeCountElement =
-                    likeButton
-                        .closest(
-                            ".post-card"
-                        )
-                        ?.querySelector(
-                            ".post-like-count"
-                        );
-
-
-                if (
-                    likeCountElement
-                ) {
-
-                    await togglePostLike(
-                        postId,
-                        likeButton,
-                        likeCountElement
-                    );
-
-                }
-
-
-                return;
-
-            }
-
-
-            const commentButton =
-                event.target.closest(
-                    ".post-comment-button"
-                );
-
-
-            if (commentButton) {
-
-                const postCard =
-                    commentButton.closest(
-                        ".post-card"
-                    );
-
-
-                if (!postCard) {
-                    return;
-                }
-
-
-                const commentsPanel =
-                    postCard.querySelector(
-                        ".post-comments-panel"
-                    );
-
-
-                if (!commentsPanel) {
-                    return;
-                }
-
-
-                const postId =
-                    commentButton.dataset.postId;
-
-
-                const isOpen =
-                    commentsPanel.classList.contains(
-                        "open"
-                    );
-
-
-                if (isOpen) {
-
-                    commentsPanel.classList.remove(
-                        "open"
-                    );
-
-
-                    commentButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-
-                    return;
-
-                }
-
-
-                commentsPanel.classList.add(
-                    "open"
-                );
-
-
-                commentButton.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
-
-
-                const commentsContainer =
-                    commentsPanel.querySelector(
-                        ".post-comments-list"
-                    );
-
-
-                const commentCountElement =
-                    postCard.querySelector(
-                        ".post-comment-count"
-                    );
-
-
-                await loadPostComments(
-                    postId,
-                    commentsContainer,
-                    commentCountElement
-                );
-
-
-                const input =
-                    commentsPanel.querySelector(
-                        ".post-comment-input"
-                    );
-
-
-                if (input) {
-
-                    input.focus();
-
-                }
-
-
-                return;
-
-            }
-
-
-            const submitCommentButton =
-                event.target.closest(
-                    ".post-submit-comment"
-                );
-
-
-            if (submitCommentButton) {
-
-                const postCard =
-                    submitCommentButton.closest(
-                        ".post-card"
-                    );
-
-
-                if (!postCard) {
-                    return;
-                }
-
-
-                const postId =
-                    submitCommentButton.dataset.postId;
-
-
-                const input =
-                    postCard.querySelector(
-                        ".post-comment-input"
-                    );
-
-
-                const commentsContainer =
-                    postCard.querySelector(
-                        ".post-comments-list"
-                    );
-
-
-                const commentCountElement =
-                    postCard.querySelector(
-                        ".post-comment-count"
-                    );
-
-
-                if (
-                    input &&
-                    commentsContainer &&
-                    commentCountElement
-                ) {
-
-                    await createPostComment(
-                        postId,
-                        input,
-                        submitCommentButton,
-                        commentsContainer,
-                        commentCountElement
-                    );
-
-                }
-
-
-            }
-
-        }
-    );
-
-
-    postsFeed.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key !== "Enter" ||
-                event.shiftKey
-            ) {
-
-                return;
-
-            }
-
-
-            const input =
-                event.target.closest(
-                    ".post-comment-input"
-                );
-
-
-            if (!input) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-
-            const postCard =
-                input.closest(
-                    ".post-card"
-                );
-
-
-            if (!postCard) {
-                return;
-            }
-
-
-            const submitButton =
-                postCard.querySelector(
-                    ".post-submit-comment"
-                );
-
-
-            if (submitButton) {
-
-                submitButton.click();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   POSTS
+   RENDER POSTS
    ========================================================= */
 
 function renderPosts(
     posts
 ) {
 
-    profilePostCount.textContent =
-        String(
-            posts.length
-        );
+    if (!postsFeed) {
+
+        return;
+
+    }
 
 
     if (
-        !posts.length
+        !Array.isArray(posts) ||
+        posts.length === 0
     ) {
 
         postsFeed.innerHTML = `
 
             <div class="empty-state">
-
-                You haven't shared anything yet.
-
-                <br>
-
-                Your first post can start here.
-
+                No posts yet.
             </div>
 
         `;
 
 
+        if (
+            profilePostCount
+        ) {
+
+            profilePostCount.textContent =
+                "0";
+
+        }
+
+
         return;
+
+    }
+
+
+    if (
+        profilePostCount
+    ) {
+
+        profilePostCount.textContent =
+            String(
+                posts.length
+            );
 
     }
 
@@ -3282,19 +2277,17 @@ function renderPosts(
                     );
 
 
-                const author =
-                    post.authorName ||
-                    post.username ||
-                    getDisplayName(
-                        currentUser
-                    );
-
-
                 const username =
                     post.username ||
                     getUsername(
                         currentUser
-                    );
+                    ) ||
+                    "user";
+
+
+                const content =
+                    post.content ||
+                    "";
 
 
                 const date =
@@ -3325,27 +2318,18 @@ function renderPosts(
 
                     <article
                         class="post-card"
-                        data-post-id="${escapeHTML(
-                            postId
-                        )}"
+                        data-post-id="${escapeHTML(postId)}"
                     >
 
-                        <div class="post-card-header">
+                        <div class="post-header">
 
                             <div class="post-author">
 
-                                ${escapeHTML(
-                                    author
+                                @${escapeHTML(
+                                    username
                                 )}
 
-                                ${
-                                    username
-                                        ? ` · @${escapeHTML(username)}`
-                                        : ""
-                                }
-
                             </div>
-
 
                             <div class="post-date">
 
@@ -3361,7 +2345,7 @@ function renderPosts(
                         <div class="post-content">
 
                             ${escapeHTML(
-                                post.content
+                                content
                             )}
 
                         </div>
@@ -3371,56 +2355,21 @@ function renderPosts(
 
                             <button
                                 type="button"
-                                class="post-like-button ${
-                                    liked
-                                        ? "liked"
-                                        : ""
-                                }"
-                                data-post-id="${escapeHTML(
-                                    postId
-                                )}"
-                                data-liked="${
-                                    liked
-                                        ? "true"
-                                        : "false"
-                                }"
-                                aria-label="${
-                                    liked
-                                        ? "Unlike post"
-                                        : "Like post"
-                                }"
-                                aria-pressed="${
-                                    liked
-                                        ? "true"
-                                        : "false"
-                                }"
+                                class="post-action post-like-btn ${liked ? "liked" : ""}"
+                                data-liked="${liked ? "true" : "false"}"
+                                aria-pressed="${liked ? "true" : "false"}"
                             >
 
-                                <span
-                                    class="post-like-icon"
-                                    aria-hidden="true"
-                                >
-                                    ${
-                                        liked
-                                            ? "♥"
-                                            : "♡"
-                                    }
+                                <span class="post-action-icon">
+                                    ${liked ? "♥" : "♡"}
                                 </span>
 
-                                <span class="post-like-text">
-
-                                    ${
-                                        liked
-                                            ? "Liked"
-                                            : "Like"
-                                    }
-
+                                <span class="post-action-text">
+                                    ${liked ? "Liked" : "Like"}
                                 </span>
 
                                 <span class="post-like-count">
-
                                     ${likes}
-
                                 </span>
 
                             </button>
@@ -3428,27 +2377,19 @@ function renderPosts(
 
                             <button
                                 type="button"
-                                class="post-comment-button"
-                                data-post-id="${escapeHTML(
-                                    postId
-                                )}"
-                                aria-expanded="false"
+                                class="post-action post-comment-toggle"
                             >
 
-                                <span
-                                    aria-hidden="true"
-                                >
+                                <span class="post-action-icon">
                                     💬
                                 </span>
 
-                                <span>
+                                <span class="post-action-text">
                                     Comment
                                 </span>
 
                                 <span class="post-comment-count">
-
                                     ${comments}
-
                                 </span>
 
                             </button>
@@ -3457,50 +2398,50 @@ function renderPosts(
 
 
                         <div
-                            class="post-comments-panel"
+                            class="post-comments"
+                            hidden
                         >
 
                             <div
                                 class="post-comments-list"
-                            ></div>
+                            >
+
+                                <div class="post-comments-empty">
+                                    No comments loaded yet.
+                                </div>
+
+                            </div>
 
 
                             <div
                                 class="post-comment-form"
                             >
 
-                                <input
-                                    type="text"
+                                <textarea
                                     class="post-comment-input"
                                     maxlength="1000"
                                     placeholder="Write a comment..."
-                                    autocomplete="off"
-                                />
+                                ></textarea>
 
 
                                 <button
                                     type="button"
                                     class="post-submit-comment"
-                                    data-post-id="${escapeHTML(
-                                        postId
-                                    )}"
                                 >
-
                                     Comment
-
                                 </button>
 
                             </div>
 
                         </div>
 
-
                     </article>
 
                 `;
 
             }
-        ).join("");
+        )
+        .join("");
 
 }
 
@@ -3511,8 +2452,13 @@ function renderPosts(
 
 async function loadUserPosts() {
 
-    if (!currentUser) {
+    if (
+        !currentUser ||
+        !postsFeed
+    ) {
+
         return;
+
     }
 
 
@@ -3522,14 +2468,18 @@ async function loadUserPosts() {
         );
 
 
+    const userId =
+        getUserId(
+            currentUser
+        );
+
+
     if (!username) {
 
         postsFeed.innerHTML = `
 
             <div class="empty-state error-state">
-
                 Username is missing from your profile.
-
             </div>
 
         `;
@@ -3543,9 +2493,7 @@ async function loadUserPosts() {
     postsFeed.innerHTML = `
 
         <div class="empty-state">
-
             Loading your posts...
-
         </div>
 
     `;
@@ -3553,20 +2501,26 @@ async function loadUserPosts() {
 
     try {
 
-        const userId =
-            getUserId(
-                currentUser
-            );
+        const query =
+            userId
+                ? `?userId=${encodeURIComponent(userId)}`
+                : "";
 
 
         const response =
             await fetch(
-                `${API_BASE}/posts/user/${encodeURIComponent(username)}?userId=${encodeURIComponent(userId)}`
+                `${API_BASE}/posts/user/${encodeURIComponent(username)}${query}`,
+                {
+                    cache:
+                        "no-store"
+                }
             );
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
 
 
         if (!response.ok) {
@@ -3580,9 +2534,8 @@ async function loadUserPosts() {
 
 
         if (
-            !result ||
             !Array.isArray(
-                result.posts
+                result?.posts
             )
         ) {
 
@@ -3606,16 +2559,20 @@ async function loadUserPosts() {
         );
 
 
-        profilePostCount.textContent =
-            "—";
+        if (
+            profilePostCount
+        ) {
+
+            profilePostCount.textContent =
+                "—";
+
+        }
 
 
         postsFeed.innerHTML = `
 
             <div class="empty-state error-state">
-
                 Unable to load your posts right now.
-
             </div>
 
         `;
@@ -3626,181 +2583,1329 @@ async function loadUserPosts() {
 
 
 /* =========================================================
-   CREATE POST
+   POST ACTIONS
    ========================================================= */
 
-postContent.addEventListener(
-    "input",
-    () => {
+function setupPostActions() {
 
-        postCharacterCount.textContent =
-            `${postContent.value.length} / 2000`;
+    if (!postsFeed) {
+
+        return;
 
     }
-);
 
 
-createPostBtn.addEventListener(
-    "click",
-    async () => {
+    postsFeed.addEventListener(
+        "click",
+        async event => {
 
-        if (!currentUser) {
-            return;
-        }
-
-
-        const content =
-            postContent.value.trim();
-
-
-        if (!content) {
-
-            alert(
-                "Write something before publishing."
-            );
-
-
-            return;
-
-        }
-
-
-        if (
-            content.length >
-            2000
-        ) {
-
-            alert(
-                "Post cannot exceed 2000 characters."
-            );
-
-
-            return;
-
-        }
-
-
-        const username =
-            getUsername(
-                currentUser
-            );
-
-
-        const authorId =
-            getUserId(
-                currentUser
-            );
-
-
-        if (!username) {
-
-            alert(
-                "Your username is missing."
-            );
-
-
-            return;
-
-        }
-
-
-        if (!authorId) {
-
-            alert(
-                "Your account ID is missing. Please log in again."
-            );
-
-
-            return;
-
-        }
-
-
-        createPostBtn.disabled =
-            true;
-
-
-        createPostBtn.textContent =
-            "Publishing...";
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API_BASE}/posts`,
-                    {
-                        method:
-                            "POST",
-
-                        headers:
-                            {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                        body:
-                            JSON.stringify({
-                                authorId,
-                                username,
-                                content
-                            })
-
-                    }
+            const likeButton =
+                event.target.closest(
+                    ".post-like-btn"
                 );
 
 
-            const result =
-                await response.json();
+            if (likeButton) {
+
+                const postCard =
+                    likeButton.closest(
+                        ".post-card"
+                    );
 
 
-            if (!response.ok) {
+                const postId =
+                    postCard?.dataset.postId;
 
-                throw new Error(
-                    result?.error ||
-                    "Unable to publish post."
-                );
+
+                const countElement =
+                    likeButton.querySelector(
+                        ".post-like-count"
+                    );
+
+
+                if (postId) {
+
+                    await toggleLike(
+                        postId,
+                        likeButton,
+                        countElement
+                    );
+
+                }
+
+
+                return;
 
             }
 
 
-            postContent.value =
-                "";
+            const commentToggle =
+                event.target.closest(
+                    ".post-comment-toggle"
+                );
 
 
-            postCharacterCount.textContent =
-                "0 / 2000";
+            if (commentToggle) {
+
+                const postCard =
+                    commentToggle.closest(
+                        ".post-card"
+                    );
 
 
-            await loadUserPosts();
+                const postId =
+                    postCard?.dataset.postId;
 
 
-        } catch (error) {
-
-            console.error(
-                "Create post error:",
-                error
-            );
+                const commentsBox =
+                    postCard?.querySelector(
+                        ".post-comments"
+                    );
 
 
-            alert(
-                error.message ||
-                "Unable to publish post."
-            );
+                const commentsList =
+                    postCard?.querySelector(
+                        ".post-comments-list"
+                    );
 
-        } finally {
+
+                const countElement =
+                    postCard?.querySelector(
+                        ".post-comment-count"
+                    );
+
+
+                if (!commentsBox) {
+
+                    return;
+
+                }
+
+
+                const opening =
+                    commentsBox.hidden;
+
+
+                commentsBox.hidden =
+                    !opening;
+
+
+                if (
+                    opening &&
+                    postId &&
+                    commentsList
+                ) {
+
+                    await loadPostComments(
+                        postId,
+                        commentsList,
+                        countElement
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            const submitButton =
+                event.target.closest(
+                    ".post-submit-comment"
+                );
+
+
+            if (submitButton) {
+
+                const postCard =
+                    submitButton.closest(
+                        ".post-card"
+                    );
+
+
+                const postId =
+                    postCard?.dataset.postId;
+
+
+                const input =
+                    postCard?.querySelector(
+                        ".post-comment-input"
+                    );
+
+
+                const commentsContainer =
+                    postCard?.querySelector(
+                        ".post-comments-list"
+                    );
+
+
+                const countElement =
+                    postCard?.querySelector(
+                        ".post-comment-count"
+                    );
+
+
+                if (
+                    postId &&
+                    input &&
+                    commentsContainer
+                ) {
+
+                    await createPostComment(
+                        postId,
+                        input,
+                        submitButton,
+                        commentsContainer,
+                        countElement
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    postsFeed.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !==
+                "Enter" ||
+                event.shiftKey
+            ) {
+
+                return;
+
+            }
+
+
+            const input =
+                event.target.closest(
+                    ".post-comment-input"
+                );
+
+
+            if (!input) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const postCard =
+                input.closest(
+                    ".post-card"
+                );
+
+
+            const submitButton =
+                postCard?.querySelector(
+                    ".post-submit-comment"
+                );
+
+
+            if (submitButton) {
+
+                submitButton.click();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CREATE POST
+   ========================================================= */
+
+if (postContent) {
+
+    postContent.addEventListener(
+        "input",
+        () => {
+
+            if (
+                postCharacterCount
+            ) {
+
+                postCharacterCount.textContent =
+                    `${postContent.value.length} / 2000`;
+
+            }
+
+        }
+    );
+
+}
+
+
+if (createPostBtn) {
+
+    createPostBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !hasValidLoginSession()
+            ) {
+
+                alert(
+                    "Please login first."
+                );
+
+
+                return;
+
+            }
+
+
+            const content =
+                postContent?.value
+                    .trim();
+
+
+            if (!content) {
+
+                alert(
+                    "Write something before publishing."
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                content.length >
+                2000
+            ) {
+
+                alert(
+                    "Post cannot exceed 2000 characters."
+                );
+
+
+                return;
+
+            }
+
 
             createPostBtn.disabled =
-                false;
+                true;
 
 
             createPostBtn.textContent =
-                "Publish Post";
+                "Publishing...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/posts`,
+                        {
+                            method:
+                                "POST",
+
+                            headers:
+                                getAuthHeaders(),
+
+                            body:
+                                JSON.stringify({
+                                    content
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await parseResponse(
+                        response
+                    );
+
+
+                if (
+                    response.status ===
+                    401
+                ) {
+
+                    handleAuthError(
+                        result?.error
+                    );
+
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    result?.success === false
+                ) {
+
+                    throw new Error(
+                        result?.error ||
+                        "Unable to publish post."
+                    );
+
+                }
+
+
+                postContent.value =
+                    "";
+
+
+                if (
+                    postCharacterCount
+                ) {
+
+                    postCharacterCount.textContent =
+                        "0 / 2000";
+
+                }
+
+
+                await loadUserPosts();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Create post error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Unable to publish post."
+                );
+
+
+            } finally {
+
+                createPostBtn.disabled =
+                    false;
+
+
+                createPostBtn.textContent =
+                    "Publish Post";
+
+            }
 
         }
+    );
 
-    }
-);
+}
+
+
+/* =========================================================
+   EDIT BUTTONS
+   ========================================================= */
+
+if (editProfileBtn) {
+
+    editProfileBtn.addEventListener(
+        "click",
+        openEditModal
+    );
+
+}
+
+
+if (avatarQuickEdit) {
+
+    avatarQuickEdit.addEventListener(
+        "click",
+        openEditModal
+    );
+
+}
+
+
+if (closeEditBtn) {
+
+    closeEditBtn.addEventListener(
+        "click",
+        closeEditModal
+    );
+
+}
+
+
+if (cancelEditBtn) {
+
+    cancelEditBtn.addEventListener(
+        "click",
+        closeEditModal
+    );
+
+}
+
+
+if (editOverlay) {
+
+    editOverlay.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                editOverlay
+            ) {
+
+                closeEditModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   EDIT INPUT EVENTS
+   ========================================================= */
+
+if (editBio) {
+
+    editBio.addEventListener(
+        "input",
+        updateBioCounter
+    );
+
+}
+
+
+if (editUsername) {
+
+    editUsername.addEventListener(
+        "input",
+        () => {
+
+            clearTimeout(
+                usernameCheckTimer
+            );
+
+
+            usernameAvailable =
+                false;
+
+
+            usernameCheckTimer =
+                setTimeout(
+                    checkUsernameAvailability,
+                    450
+                );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHANGE PHOTO
+   ========================================================= */
+
+if (
+    changePhotoBtn &&
+    photoInput
+) {
+
+    changePhotoBtn.addEventListener(
+        "click",
+        () => {
+
+            photoInput.click();
+
+        }
+    );
+
+}
+
+
+if (photoInput) {
+
+    photoInput.addEventListener(
+        "change",
+        async event => {
+
+            const file =
+                event.target.files?.[0];
+
+
+            if (!file) {
+
+                return;
+
+            }
+
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+
+            if (
+                !allowedTypes.includes(
+                    file.type
+                )
+            ) {
+
+                alert(
+                    "Please choose a JPG, PNG or WebP image."
+                );
+
+
+                photoInput.value =
+                    "";
+
+
+                return;
+
+            }
+
+
+            if (
+                file.size >
+                3 * 1024 * 1024
+            ) {
+
+                alert(
+                    "Please choose an image smaller than 3 MB."
+                );
+
+
+                photoInput.value =
+                    "";
+
+
+                return;
+
+            }
+
+
+            if (
+                !hasValidLoginSession()
+            ) {
+
+                alert(
+                    "Please login again."
+                );
+
+
+                return;
+
+            }
+
+
+            const userId =
+                getUserId(
+                    currentUser
+                );
+
+
+            if (!userId) {
+
+                alert(
+                    "Your account ID is missing. Please login again."
+                );
+
+
+                return;
+
+            }
+
+
+            if (changePhotoBtn) {
+
+                changePhotoBtn.disabled =
+                    true;
+
+
+                changePhotoBtn.textContent =
+                    "Uploading...";
+
+            }
+
+
+            try {
+
+                const imageData =
+                    await compressProfilePhoto(
+                        file
+                    );
+
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
+                        {
+                            method:
+                                "PUT",
+
+                            headers:
+                                getAuthHeaders(),
+
+                            body:
+                                JSON.stringify({
+                                    image:
+                                        imageData
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await parseResponse(
+                        response
+                    );
+
+
+                if (
+                    response.status ===
+                    401
+                ) {
+
+                    handleAuthError(
+                        result?.error
+                    );
+
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    !result?.success ||
+                    !result?.avatarUrl
+                ) {
+
+                    throw new Error(
+                        result?.error ||
+                        "Could not upload profile photo."
+                    );
+
+                }
+
+
+                currentAvatar =
+                    result.avatarUrl;
+
+
+                currentUser.avatarUrl =
+                    result.avatarUrl;
+
+
+                saveCurrentUser();
+
+
+                updateProfileDisplay();
+
+
+                renderAvatar(
+                    editAvatar,
+                    getDisplayName(
+                        currentUser
+                    ),
+                    currentAvatar
+                );
+
+
+                setUsernameStatus(
+                    "✓ Profile photo uploaded successfully.",
+                    "available"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Profile photo upload error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Could not upload the profile photo."
+                );
+
+
+            } finally {
+
+                if (changePhotoBtn) {
+
+                    changePhotoBtn.disabled =
+                        false;
+
+
+                    changePhotoBtn.textContent =
+                        "Change photo";
+
+                }
+
+
+                photoInput.value =
+                    "";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   REMOVE PHOTO
+   ========================================================= */
+
+if (removePhotoBtn) {
+
+    removePhotoBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !hasValidLoginSession()
+            ) {
+
+                alert(
+                    "Please login again."
+                );
+
+
+                return;
+
+            }
+
+
+            const userId =
+                getUserId(
+                    currentUser
+                );
+
+
+            if (!userId) {
+
+                alert(
+                    "Your account ID is missing."
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                !getAvatarUrl(
+                    currentUser
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            removePhotoBtn.disabled =
+                true;
+
+
+            removePhotoBtn.textContent =
+                "Removing...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/profile/${encodeURIComponent(userId)}/photo`,
+                        {
+                            method:
+                                "DELETE",
+
+                            headers:
+                                getAuthHeaders()
+                        }
+                    );
+
+
+                const result =
+                    await parseResponse(
+                        response
+                    );
+
+
+                if (
+                    response.status ===
+                    401
+                ) {
+
+                    handleAuthError(
+                        result?.error
+                    );
+
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    result?.success === false
+                ) {
+
+                    throw new Error(
+                        result?.error ||
+                        "Could not remove profile photo."
+                    );
+
+                }
+
+
+                currentAvatar =
+                    "";
+
+
+                currentUser.avatarUrl =
+                    "";
+
+
+                saveCurrentUser();
+
+
+                updateProfileDisplay();
+
+
+                renderAvatar(
+                    editAvatar,
+                    getDisplayName(
+                        currentUser
+                    ),
+                    ""
+                );
+
+
+                setUsernameStatus(
+                    "Profile photo removed.",
+                    "available"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Remove profile photo error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Could not remove the profile photo."
+                );
+
+
+            } finally {
+
+                removePhotoBtn.disabled =
+                    false;
+
+
+                removePhotoBtn.textContent =
+                    "Remove";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SAVE PROFILE
+   ========================================================= */
+
+if (saveProfileBtn) {
+
+    saveProfileBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !currentUser ||
+                !hasValidLoginSession()
+            ) {
+
+                alert(
+                    "Please login again."
+                );
+
+
+                return;
+
+            }
+
+
+            const name =
+                editName?.value
+                    .trim() ||
+                "";
+
+
+            const username =
+                editUsername?.value
+                    .trim()
+                    .toLowerCase() ||
+                "";
+
+
+            const bio =
+                editBio?.value
+                    .trim() ||
+                "";
+
+
+            const dateOfBirth =
+                editDateOfBirth?.value
+                    .trim() ||
+                "";
+
+
+            const gender =
+                editGender?.value
+                    .trim()
+                    .toLowerCase() ||
+                "";
+
+
+            const currentUsername =
+                getUsername(
+                    currentUser
+                );
+
+
+            if (!name) {
+
+                alert(
+                    "Display name cannot be empty."
+                );
+
+
+                editName?.focus();
+
+
+                return;
+
+            }
+
+
+            if (
+                !/^[a-z0-9_]{3,20}$/.test(
+                    username
+                )
+            ) {
+
+                alert(
+                    "Username must be 3–20 characters using lowercase letters, numbers or underscores."
+                );
+
+
+                editUsername?.focus();
+
+
+                return;
+
+            }
+
+
+            if (
+                bio.length >
+                150
+            ) {
+
+                alert(
+                    "Bio cannot be longer than 150 characters."
+                );
+
+
+                editBio?.focus();
+
+
+                return;
+
+            }
+
+
+            if (
+                username !==
+                currentUsername &&
+                !usernameAvailable
+            ) {
+
+                alert(
+                    "Please choose an available username first."
+                );
+
+
+                editUsername?.focus();
+
+
+                return;
+
+            }
+
+
+            const userId =
+                getUserId(
+                    currentUser
+                );
+
+
+            if (!userId) {
+
+                alert(
+                    "Your account ID is missing. Please log in again."
+                );
+
+
+                return;
+
+            }
+
+
+            saveProfileBtn.disabled =
+                true;
+
+
+            saveProfileBtn.textContent =
+                "Saving...";
+
+
+            try {
+
+                if (
+                    username !==
+                    currentUsername
+                ) {
+
+                    const availabilityResponse =
+                        await fetch(
+                            `${API_BASE}/check-username/${encodeURIComponent(username)}?userId=${encodeURIComponent(userId)}`
+                        );
+
+
+                    const availabilityResult =
+                        await parseResponse(
+                            availabilityResponse
+                        );
+
+
+                    if (
+                        !availabilityResponse.ok ||
+                        availabilityResult?.available !==
+                        true
+                    ) {
+
+                        usernameAvailable =
+                            false;
+
+
+                        setUsernameStatus(
+                            "✕ Username is no longer available.",
+                            "taken"
+                        );
+
+
+                        throw new Error(
+                            "Username is no longer available."
+                        );
+
+                    }
+
+                }
+
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/profile/${encodeURIComponent(userId)}`,
+                        {
+                            method:
+                                "PUT",
+
+                            headers:
+                                getAuthHeaders(),
+
+                            body:
+                                JSON.stringify({
+                                    name,
+                                    username,
+                                    bio,
+                                    dateOfBirth,
+                                    gender
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await parseResponse(
+                        response
+                    );
+
+
+                if (
+                    response.status ===
+                    401
+                ) {
+
+                    handleAuthError(
+                        result?.error
+                    );
+
+
+                    return;
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result?.error ||
+                        "Profile update failed."
+                    );
+
+                }
+
+
+                const updatedUser =
+                    result?.user ||
+                    result?.profile ||
+                    null;
+
+
+                if (updatedUser) {
+
+                    currentUser = {
+                        ...currentUser,
+                        ...updatedUser
+                    };
+
+                }
+
+
+                currentUser.name =
+                    name;
+
+
+                currentUser.username =
+                    username;
+
+
+                currentUser.bio =
+                    bio;
+
+
+                currentUser.dateOfBirth =
+                    dateOfBirth;
+
+
+                currentUser.gender =
+                    gender;
+
+
+                saveCurrentUser();
+
+
+                currentAvatar =
+                    getAvatarUrl(
+                        currentUser
+                    );
+
+
+                updateProfileDisplay();
+
+
+                closeEditModal();
+
+
+                await loadUserPosts();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Save profile error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Unable to update your profile."
+                );
+
+
+            } finally {
+
+                saveProfileBtn.disabled =
+                    false;
+
+
+                saveProfileBtn.textContent =
+                    "Save Changes";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener(
+        "click",
+        () => {
+
+            clearAuthStorage();
+
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
 
 
 /* =========================================================
@@ -3812,14 +3917,22 @@ function setAiStatus(
     online = false
 ) {
 
-    dheereAiStatusText.textContent =
-        text;
+    if (dheereAiStatusText) {
+
+        dheereAiStatusText.textContent =
+            text;
+
+    }
 
 
-    dheereAiStatus.classList.toggle(
-        "online",
-        online
-    );
+    if (dheereAiStatus) {
+
+        dheereAiStatus.classList.toggle(
+            "online",
+            online
+        );
+
+    }
 
 }
 
@@ -3828,6 +3941,13 @@ function addAiMessage(
     text,
     type
 ) {
+
+    if (!dheereAiMessages) {
+
+        return;
+
+    }
+
 
     const element =
         document.createElement(
@@ -3845,10 +3965,20 @@ function addAiMessage(
         );
 
 
-    dheereAiMessages.insertBefore(
-        element,
-        dheereAiTyping
-    );
+    if (dheereAiTyping) {
+
+        dheereAiMessages.insertBefore(
+            element,
+            dheereAiTyping
+        );
+
+    } else {
+
+        dheereAiMessages.appendChild(
+            element
+        );
+
+    }
 
 
     dheereAiMessages.scrollTop =
@@ -3859,17 +3989,25 @@ function addAiMessage(
 
 async function sendAiMessage() {
 
-    if (aiBusy) {
+    if (
+        aiBusy ||
+        !dheereAiInput
+    ) {
+
         return;
+
     }
 
 
     const message =
-        dheereAiInput.value.trim();
+        dheereAiInput.value
+            .trim();
 
 
     if (!message) {
+
         return;
+
     }
 
 
@@ -3891,13 +4029,21 @@ async function sendAiMessage() {
         true;
 
 
-    dheereAiSend.disabled =
-        true;
+    if (dheereAiSend) {
+
+        dheereAiSend.disabled =
+            true;
+
+    }
 
 
-    dheereAiTyping.classList.add(
-        "visible"
-    );
+    if (dheereAiTyping) {
+
+        dheereAiTyping.classList.add(
+            "visible"
+        );
+
+    }
 
 
     setAiStatus(
@@ -3924,13 +4070,14 @@ async function sendAiMessage() {
                         JSON.stringify({
                             message
                         })
-
                 }
             );
 
 
         const result =
-            await response.json();
+            await parseResponse(
+                response
+            );
 
 
         if (!response.ok) {
@@ -3945,7 +4092,8 @@ async function sendAiMessage() {
 
         if (
             !result ||
-            result.success !== true
+            result.success !==
+            true
         ) {
 
             throw new Error(
@@ -3958,7 +4106,7 @@ async function sendAiMessage() {
 
         if (
             typeof result.answer !==
-                "string" ||
+            "string" ||
             !result.answer.trim()
         ) {
 
@@ -4007,50 +4155,127 @@ async function sendAiMessage() {
             false;
 
 
-        dheereAiSend.disabled =
-            false;
+        if (dheereAiSend) {
+
+            dheereAiSend.disabled =
+                false;
+
+        }
 
 
-        dheereAiTyping.classList.remove(
-            "visible"
-        );
+        if (dheereAiTyping) {
+
+            dheereAiTyping.classList.remove(
+                "visible"
+            );
+
+        }
 
 
         dheereAiInput.focus();
 
 
-        dheereAiMessages.scrollTop =
-            dheereAiMessages.scrollHeight;
+        if (dheereAiMessages) {
+
+            dheereAiMessages.scrollTop =
+                dheereAiMessages.scrollHeight;
+
+        }
 
     }
 
 }
 
 
-dheereAiForm.addEventListener(
-    "submit",
-    event => {
+/* =========================================================
+   AI EVENTS
+   ========================================================= */
 
-        event.preventDefault();
+if (dheereAiForm) {
 
-        sendAiMessage();
-
-    }
-);
-
-
-dheereAiInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+    dheereAiForm.addEventListener(
+        "submit",
+        event => {
 
             event.preventDefault();
 
+
             sendAiMessage();
+
+        }
+    );
+
+}
+
+
+if (dheereAiInput) {
+
+    dheereAiInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+
+                sendAiMessage();
+
+            }
+
+        }
+    );
+
+
+    dheereAiInput.addEventListener(
+        "input",
+        () => {
+
+            dheereAiInput.style.height =
+                "auto";
+
+
+            dheereAiInput.style.height =
+                Math.min(
+                    dheereAiInput.scrollHeight,
+                    125
+                ) + "px";
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CROSS TAB SYNC
+   ========================================================= */
+
+window.addEventListener(
+    "storage",
+    event => {
+
+        if (
+            event.key ===
+            STORAGE_KEY ||
+            event.key ===
+            TOKEN_STORAGE_KEY
+        ) {
+
+            loadProfile();
+
+
+            if (currentUser) {
+
+                refreshProfileFromServer();
+
+                loadUserPosts();
+
+            }
 
         }
 
@@ -4058,19 +4283,25 @@ dheereAiInput.addEventListener(
 );
 
 
-dheereAiInput.addEventListener(
-    "input",
-    () => {
+/* =========================================================
+   PAGE SHOW
+   ========================================================= */
 
-        dheereAiInput.style.height =
-            "auto";
+window.addEventListener(
+    "pageshow",
+    async () => {
+
+        const loaded =
+            loadProfile();
 
 
-        dheereAiInput.style.height =
-            Math.min(
-                dheereAiInput.scrollHeight,
-                125
-            ) + "px";
+        if (loaded) {
+
+            await refreshProfileFromServer();
+
+            await loadUserPosts();
+
+        }
 
     }
 );
