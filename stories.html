@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -10,22 +11,30 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="description"
-        content="Explore the original stories and fictional worlds being developed by Dheere Studio."
-    >
-
     <title>
         Stories — Dheere Studio
     </title>
 
 
-    <!-- EXISTING STYLES -->
+    <meta
+        name="description"
+        content="Explore the original stories, fictional worlds, and long-term creative vision behind Dheere Studio."
+    >
+
+
+    <!-- ============================================================
+         BASE STYLES
+    ============================================================ -->
 
     <link
         rel="stylesheet"
         href="homepage.css"
     >
+
+
+    <!-- ============================================================
+         DHEERE MOOD SYSTEM
+    ============================================================ -->
 
     <link
         rel="stylesheet"
@@ -33,332 +42,263 @@
     >
 
 
+    <!-- ============================================================
+         STORIES PAGE STYLES
+    ============================================================ -->
+
     <style>
 
+
         /* ============================================================
-           STORIES PAGE
+           PAGE FOUNDATION
         ============================================================ */
 
         .stories-page {
-            position: relative;
-            isolation: isolate;
-            min-height: 100vh;
+
+            min-height:
+                100vh;
+
+            position:
+                relative;
+
+            isolation:
+                isolate;
+
+            overflow:
+                hidden;
+
         }
 
 
         .stories-page::before {
-            content: "";
 
-            position: fixed;
+            content:
+                "";
 
-            inset: 0;
+            position:
+                fixed;
 
-            pointer-events: none;
+            inset:
+                0;
 
-            z-index: -1;
+            z-index:
+                -3;
+
+            pointer-events:
+                none;
 
             background:
 
                 radial-gradient(
                     circle at 12% 18%,
-                    rgba(255,255,255,.035),
-                    transparent 28%
+                    rgba(255,255,255,.055),
+                    transparent 30%
                 ),
 
                 radial-gradient(
-                    circle at 88% 72%,
-                    rgba(255,255,255,.025),
-                    transparent 30%
+                    circle at 88% 68%,
+                    rgba(255,255,255,.035),
+                    transparent 34%
+                ),
+
+                radial-gradient(
+                    circle at 52% 42%,
+                    rgba(255,255,255,.018),
+                    transparent 45%
                 );
 
-            opacity: .8;
+            animation:
+                storiesAmbient
+                18s
+                ease-in-out
+                infinite
+                alternate;
+
         }
 
 
-        /* ============================================================
-           HERO
-        ============================================================ */
+        .stories-page::after {
 
-        .stories-hero {
-            min-height: 68vh;
+            content:
+                "";
 
-            display: flex;
+            position:
+                fixed;
 
-            align-items: center;
-
-            padding:
-                140px 8%
-                90px;
-        }
-
-
-        .stories-hero-content {
-            max-width: 850px;
-        }
-
-
-        .stories-label {
-            display: inline-block;
-
-            margin-bottom: 20px;
-
-            font-size: .78rem;
-
-            letter-spacing: .18em;
-
-            text-transform: uppercase;
-
-            color: #94a3b8;
-        }
-
-
-        .stories-hero h1 {
-            margin: 0;
-
-            font-size:
-                clamp(
-                    3rem,
-                    8vw,
-                    7rem
-                );
-
-            line-height: .95;
-
-            letter-spacing: -.05em;
-
-            color: #f8fafc;
-        }
-
-
-        .stories-hero-text {
-            max-width: 650px;
-
-            margin-top: 30px;
-
-            font-size:
-                clamp(
-                    1rem,
-                    1.5vw,
-                    1.2rem
-                );
-
-            line-height: 1.8;
-
-            color: #94a3b8;
-        }
-
-
-        /* ============================================================
-           MAIN CONTENT
-        ============================================================ */
-
-        .stories-container {
             width:
-                min(
-                    1100px,
-                    88%
-                );
+                560px;
 
-            margin:
-                0 auto;
-        }
-
-
-        .stories-section {
-            padding:
-                100px 0;
-
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
-        }
-
-
-        .section-kicker {
-            display: block;
-
-            margin-bottom: 14px;
-
-            font-size: .75rem;
-
-            font-weight: 600;
-
-            letter-spacing: .16em;
-
-            text-transform: uppercase;
-
-            color: #64748b;
-        }
-
-
-        .stories-section h2 {
-            max-width: 780px;
-
-            margin:
-                0
-                0
-                24px;
-
-            font-size:
-                clamp(
-                    2rem,
-                    4vw,
-                    4rem
-                );
-
-            line-height: 1.05;
-
-            letter-spacing: -.04em;
-
-            color: #f8fafc;
-        }
-
-
-        .stories-section p {
-            max-width: 760px;
-
-            margin:
-                0
-                0
-                18px;
-
-            font-size: 1rem;
-
-            line-height: 1.8;
-
-            color: #94a3b8;
-        }
-
-
-        /* ============================================================
-           STORY QUOTE
-        ============================================================ */
-
-        .story-quote {
-            position: relative;
-
-            max-width: 760px;
-
-            margin:
-                30px 0;
-
-            padding:
-                22px
-                24px;
+            height:
+                560px;
 
             border-radius:
-                10px;
+                50%;
+
+            right:
+                -240px;
+
+            top:
+                18%;
+
+            z-index:
+                -2;
+
+            pointer-events:
+                none;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.045),
+                    transparent 68%
+                );
+
+            filter:
+                blur(25px);
+
+            animation:
+                storiesOrb
+                16s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes storiesAmbient {
+
+            from {
+
+                transform:
+                    scale(1);
+
+                opacity:
+                    .65;
+
+            }
+
+
+            to {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    1;
+
+            }
+
+        }
+
+
+        @keyframes storiesOrb {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    scale(
+                        1
+                    );
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(
+                        -140px,
+                        90px,
+                        0
+                    )
+                    scale(
+                        1.12
+                    );
+
+            }
+
+        }
+
+
+        /* ============================================================
+           READING PROGRESS
+        ============================================================ */
+
+        .stories-progress {
+
+            position:
+                fixed;
+
+            top:
+                0;
+
+            left:
+                0;
+
+            width:
+                0%;
+
+            height:
+                2px;
+
+            z-index:
+                9999;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    .035
-                );
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .09
+                    .9
                 );
 
             box-shadow:
-                0 14px 45px
+                0 0 18px
                 rgba(
-                    0,
-                    0,
-                    0,
-                    .12
+                    255,
+                    255,
+                    255,
+                    .45
                 );
 
-            backdrop-filter:
-                blur(10px);
-        }
-
-
-        .story-quote::before {
-            content: "";
-
-            position: absolute;
-
-            left: 0;
-
-            top: 14px;
-
-            bottom: 14px;
-
-            width: 2px;
-
-            border-radius: 2px;
-
-            background: currentColor;
-
-            opacity: .45;
-        }
-
-
-        .story-quote p {
-            margin: 0;
-
-            padding-left: 12px;
-
-            color: #f8fafc;
-
-            font-weight: 500;
         }
 
 
         /* ============================================================
-           FEATURED STORY
+           NAVIGATION
         ============================================================ */
 
-        .featured-story {
-            display: grid;
+        .nav-actions {
 
-            grid-template-columns:
-                minmax(
-                    0,
-                    1.1fr
-                )
-                minmax(
-                    300px,
-                    .9fr
-                );
+            display:
+                flex;
 
-            gap: 70px;
+            align-items:
+                center;
 
-            align-items: center;
+            gap:
+                12px;
 
-            margin-top: 45px;
         }
 
 
-        .featured-story-info {
-            position: relative;
-        }
+        .back-home-link {
 
+            position:
+                relative;
 
-        .featured-status {
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            margin-bottom: 22px;
+            overflow:
+                hidden;
 
             padding:
-                8px
-                13px;
+                10px
+                15px;
 
             border:
                 1px solid
@@ -369,7 +309,8 @@
                     .1
                 );
 
-            border-radius: 100px;
+            border-radius:
+                12px;
 
             background:
                 rgba(
@@ -379,64 +320,934 @@
                     .025
                 );
 
-            font-size: .78rem;
+            backdrop-filter:
+                blur(
+                    16px
+                );
 
-            color: #94a3b8;
+            -webkit-backdrop-filter:
+                blur(
+                    16px
+                );
+
+            transition:
+
+                transform
+                .3s
+                ease,
+
+                background
+                .3s
+                ease,
+
+                border-color
+                .3s
+                ease,
+
+                box-shadow
+                .3s
+                ease;
+
         }
 
 
-        .status-dot {
-            width: 6px;
+        .back-home-link::before {
 
-            height: 6px;
+            content:
+                "";
 
-            border-radius: 50%;
+            position:
+                absolute;
 
-            background: #f8fafc;
+            inset:
+                0;
+
+            background:
+
+                linear-gradient(
+                    115deg,
+                    transparent,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .08
+                    ),
+                    transparent
+                );
+
+            transform:
+                translateX(
+                    -120%
+                );
+
+            transition:
+                transform
+                .65s
+                ease;
+
         }
 
 
-        .featured-story h3 {
+        .back-home-link:hover {
+
+            transform:
+                translateY(
+                    -2px
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .2
+                );
+
+            box-shadow:
+                0
+                14px
+                32px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .14
+                );
+
+        }
+
+
+        .back-home-link:hover::before {
+
+            transform:
+                translateX(
+                    120%
+                );
+
+        }
+
+
+        /* ============================================================
+           HERO
+        ============================================================ */
+
+        .stories-hero {
+
+            position:
+                relative;
+
+            min-height:
+                72vh;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            padding:
+
+                140px
+                8%
+                90px;
+
+        }
+
+
+        .stories-hero-content {
+
+            position:
+                relative;
+
+            width:
+                min(
+                    1050px,
+                    100%
+                );
+
+            margin:
+                0
+                auto;
+
+            padding:
+                52px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .1
+                );
+
+            border-radius:
+                28px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .075
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .018
+                    )
+                );
+
+            box-shadow:
+
+                0
+                35px
+                100px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .2
+                ),
+
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            backdrop-filter:
+                blur(
+                    24px
+                );
+
+            -webkit-backdrop-filter:
+                blur(
+                    24px
+                );
+
+            overflow:
+                hidden;
+
+            animation:
+                heroReveal
+                .9s
+                cubic-bezier(
+                    .2,
+                    .8,
+                    .2,
+                    1
+                )
+                both;
+
+        }
+
+
+        .stories-hero-content::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                330px;
+
+            height:
+                330px;
+
+            border-radius:
+                50%;
+
+            right:
+                -110px;
+
+            top:
+                -150px;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .11
+                    ),
+                    transparent
+                    68%
+                );
+
+            animation:
+                heroGlow
+                9s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        .stories-hero-content::after {
+
+            content:
+                "STORIES";
+
+            position:
+                absolute;
+
+            right:
+                24px;
+
+            bottom:
+                12px;
+
+            font-size:
+                clamp(
+                    3rem,
+                    10vw,
+                    8rem
+                );
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .14em;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .022
+                );
+
+            pointer-events:
+                none;
+
+            user-select:
+                none;
+
+        }
+
+
+        @keyframes heroReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(
+                        30px
+                    );
+
+                filter:
+                    blur(
+                        7px
+                    );
+
+            }
+
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(
+                        0
+                    );
+
+                filter:
+                    blur(
+                        0
+                    );
+
+            }
+
+        }
+
+
+        @keyframes heroGlow {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    scale(
+                        .95
+                    );
+
+                opacity:
+                    .55;
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(
+                        -30px,
+                        45px,
+                        0
+                    )
+                    scale(
+                        1.12
+                    );
+
+                opacity:
+                    1;
+
+            }
+
+        }
+
+
+        .stories-label {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                22px;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .75rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .18em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .stories-label::before {
+
+            content:
+                "";
+
+            width:
+                30px;
+
+            height:
+                1px;
+
+            background:
+                currentColor;
+
+            opacity:
+                .7;
+
+        }
+
+
+        .stories-hero h1 {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            margin:
+                0;
+
+            font-size:
+
+                clamp(
+                    4rem,
+                    11vw,
+                    8rem
+                );
+
+            line-height:
+                .88;
+
+            letter-spacing:
+                -.065em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .stories-hero-text {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                680px;
+
+            margin:
+                28px
+                0
+                0;
+
+            font-size:
+
+                clamp(
+                    1rem,
+                    1.7vw,
+                    1.25rem
+                );
+
+            line-height:
+                1.8;
+
+            color:
+                #94a3b8;
+
+        }
+
+
+        /* ============================================================
+           MAIN CONTAINER
+        ============================================================ */
+
+        .stories-container {
+
+            width:
+
+                min(
+                    1100px,
+                    88%
+                );
+
+            margin:
+                0
+                auto;
+
+        }
+
+
+        /* ============================================================
+           SECTIONS
+        ============================================================ */
+
+        .stories-section {
+
+            position:
+                relative;
+
+            margin:
+                28px
+                0;
+
+            padding:
+                48px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .075
+                );
+
+            border-radius:
+                24px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .035
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .012
+                    )
+                );
+
+            box-shadow:
+
+                0
+                22px
+                70px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .09
+                ),
+
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .035
+                );
+
+            backdrop-filter:
+                blur(
+                    16px
+                );
+
+            -webkit-backdrop-filter:
+                blur(
+                    16px
+                );
+
+            overflow:
+                hidden;
+
+            transition:
+
+                transform
+                .45s
+                cubic-bezier(
+                    .2,
+                    .8,
+                    .2,
+                    1
+                ),
+
+                border-color
+                .45s
+                ease,
+
+                background
+                .45s
+                ease,
+
+                box-shadow
+                .45s
+                ease;
+
+        }
+
+
+        .stories-section::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            pointer-events:
+                none;
+
+            background:
+
+                linear-gradient(
+                    115deg,
+                    transparent
+                    30%,
+
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .025
+                    ),
+
+                    transparent
+                    70%
+                );
+
+            opacity:
+                0;
+
+            transition:
+                opacity
+                .4s
+                ease;
+
+        }
+
+
+        .stories-section:hover {
+
+            transform:
+                translateY(
+                    -4px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .14
+                );
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .05
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .016
+                    )
+                );
+
+            box-shadow:
+
+                0
+                30px
+                85px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .14
+                );
+
+        }
+
+
+        .stories-section:hover::before {
+
+            opacity:
+                1;
+
+        }
+
+
+        .stories-section > * {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+        }
+
+
+        .section-kicker {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+            margin-bottom:
+                20px;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .15em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .section-kicker::before {
+
+            content:
+                "";
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                50%;
+
+            background:
+                currentColor;
+
+            box-shadow:
+                0
+                0
+                14px
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .25
+                );
+
+        }
+
+
+        .stories-section h2 {
+
+            max-width:
+                780px;
+
+            margin:
+                0
+                0
+                26px;
+
+            font-size:
+
+                clamp(
+                    2rem,
+                    4vw,
+                    3.4rem
+                );
+
+            line-height:
+                1.05;
+
+            letter-spacing:
+                -.045em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .stories-section p {
+
+            max-width:
+                780px;
+
             margin:
                 0
                 0
                 20px;
 
             font-size:
-                clamp(
-                    3rem,
-                    6vw,
-                    5.5rem
-                );
+                1rem;
 
-            line-height: .9;
+            line-height:
+                1.9;
 
-            letter-spacing: -.05em;
+            color:
+                #94a3b8;
 
-            color: #f8fafc;
         }
 
 
-        .featured-meta {
-            display: flex;
+        .stories-section strong {
 
-            flex-wrap: wrap;
+            color:
+                #f8fafc;
 
-            gap: 10px;
+        }
+
+
+        /* ============================================================
+           QUOTE
+        ============================================================ */
+
+        .story-quote {
+
+            position:
+                relative;
+
+            max-width:
+                760px;
 
             margin:
-                25px
-                0
-                30px;
-        }
 
+                34px
+                0;
 
-        .featured-meta span {
             padding:
-                7px
-                12px;
 
-            border-radius: 100px;
+                28px
+                30px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .1
+                );
+
+            border-radius:
+                18px;
 
             background:
                 rgba(
@@ -446,302 +1257,184 @@
                     .04
                 );
 
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
+            backdrop-filter:
+                blur(
+                    16px
                 );
 
-            font-size: .75rem;
+            overflow:
+                hidden;
 
-            color: #94a3b8;
         }
 
 
-        /* ============================================================
-           STORY VISUAL
-        ============================================================ */
+        .story-quote::before {
 
-        .story-visual {
-            position: relative;
+            content:
+                "“";
 
-            min-height: 430px;
+            position:
+                absolute;
 
-            overflow: hidden;
+            left:
+                16px;
 
-            border-radius: 16px;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .09
-                );
-
-            background:
-
-                radial-gradient(
-                    circle at
-                    50% 30%,
-
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .08
-                    ),
-
-                    transparent 24%
-                ),
-
-                linear-gradient(
-                    145deg,
-
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .045
-                    ),
-
-                    rgba(
-                        0,
-                        0,
-                        0,
-                        .15
-                    )
-                );
-
-            display: flex;
-
-            align-items: flex-end;
-
-            padding: 35px;
-        }
-
-
-        .story-visual::before {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-
-                linear-gradient(
-                    to top,
-
-                    rgba(
-                        0,
-                        0,
-                        0,
-                        .7
-                    ),
-
-                    transparent 65%
-                );
-        }
-
-
-        .story-visual-content {
-            position: relative;
-
-            z-index: 1;
-
-            width: 100%;
-        }
-
-
-        .story-visual-content span {
-            display: block;
-
-            margin-bottom: 12px;
-
-            font-size: .72rem;
-
-            letter-spacing: .16em;
-
-            text-transform: uppercase;
-
-            color: #94a3b8;
-        }
-
-
-        /*
-           FIX:
-           Text will now scale to the card width
-           instead of being clipped.
-        */
-
-        .story-visual-content strong {
-            display: block;
-
-            width: 100%;
+            top:
+                -22px;
 
             font-size:
-                clamp(
-                    1.8rem,
-                    3.2vw,
-                    3.4rem
-                );
+                8rem;
 
-            line-height: 1;
+            font-family:
+                Georgia,
+                serif;
 
-            letter-spacing:
-                clamp(
-                    -.04em,
-                    -0.02em,
-                    -.02em
-                );
-
-            white-space: nowrap;
-
-            color: #f8fafc;
-        }
-
-
-        /* ============================================================
-           STORY PRINCIPLES
-        ============================================================ */
-
-        .story-principles {
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
-
-            gap: 20px;
-
-            margin-top: 45px;
-        }
-
-
-        .principle-card {
-            padding: 28px;
-
-            border-radius: 12px;
-
-            border:
-                1px solid
+            color:
                 rgba(
                     255,
                     255,
                     255,
-                    .07
+                    .045
                 );
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
-                );
-
-            transition:
-                transform .3s ease,
-                border-color .3s ease,
-                background .3s ease;
         }
 
 
-        .principle-card:hover {
-            transform:
-                translateY(-5px);
+        .story-quote::after {
 
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .15
-                );
+            content:
+                "";
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
-        }
+            position:
+                absolute;
 
-
-        .principle-number {
-            display: block;
-
-            margin-bottom: 35px;
-
-            font-size: .75rem;
-
-            color: #64748b;
-        }
-
-
-        .principle-card h3 {
-            margin:
-                0
-                0
-                12px;
-
-            font-size: 1.2rem;
-
-            color: #f8fafc;
-        }
-
-
-        .principle-card p {
-            margin: 0;
-
-            font-size: .92rem;
-
-            line-height: 1.7;
-
-            color: #94a3b8;
-        }
-
-
-        /* ============================================================
-           STORY FOUNDATION LIST
-        ============================================================ */
-
-        .story-foundation {
-            max-width: 760px;
-
-            margin:
-                35px
-                0
+            left:
                 0;
 
-            padding: 0;
+            top:
+                20px;
 
-            list-style: none;
+            bottom:
+                20px;
 
-            display: flex;
+            width:
+                2px;
 
-            flex-direction: column;
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .55
+                );
 
-            gap: 12px;
+            box-shadow:
+                0
+                0
+                12px
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .25
+                );
+
         }
 
 
-        .story-foundation li {
-            position: relative;
+        .story-quote p {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            margin:
+                0;
+
+            padding-left:
+                10px;
+
+            color:
+                #f8fafc;
+
+            font-size:
+
+                clamp(
+                    1.05rem,
+                    2vw,
+                    1.25rem
+                );
+
+            font-weight:
+                500;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        /* ============================================================
+           FEATURED STORY
+        ============================================================ */
+
+        .featured-story {
+
+            display:
+                grid;
+
+            grid-template-columns:
+
+                minmax(
+                    0,
+                    1fr
+                )
+
+                minmax(
+                    320px,
+                    .9fr
+                );
+
+            gap:
+                34px;
+
+            align-items:
+                stretch;
+
+        }
+
+
+        .featured-story-copy {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            justify-content:
+                center;
+
+        }
+
+
+        .featured-label {
+
+            display:
+                inline-flex;
+
+            width:
+                fit-content;
+
+            margin-bottom:
+                18px;
 
             padding:
-                16px
-                18px
-                16px
-                22px;
+
+                7px
+                11px;
 
             border:
                 1px solid
@@ -749,94 +1442,72 @@
                     255,
                     255,
                     255,
-                    .055
+                    .1
                 );
 
-            border-radius: 8px;
+            border-radius:
+                999px;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    .018
+                    .035
                 );
 
-            color: #94a3b8;
+            color:
+                #94a3b8;
 
-            line-height: 1.7;
+            font-size:
+                .72rem;
 
-            transition:
-                background-color .3s ease,
-                border-color .3s ease,
-                transform .3s ease;
+            letter-spacing:
+                .08em;
+
+            text-transform:
+                uppercase;
+
         }
 
 
-        .story-foundation li::before {
-            content: "";
+        .featured-story h2 {
 
-            position: absolute;
+            margin-bottom:
+                18px;
 
-            left: 9px;
-
-            top: 26px;
-
-            width: 4px;
-
-            height: 4px;
-
-            border-radius: 50%;
-
-            background: currentColor;
-
-            opacity: .55;
         }
 
 
-        .story-foundation li:hover {
-            transform:
-                translateX(3px);
+        .featured-meta {
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
+            display:
+                flex;
 
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .12
-                );
+            flex-wrap:
+                wrap;
+
+            gap:
+                10px;
+
+            margin:
+
+                22px
+                0
+                28px;
+
         }
 
 
-        .story-foundation strong {
-            color: #f8fafc;
-
-            font-weight: 500;
-        }
-
-
-        /* ============================================================
-           MORE STORIES
-        ============================================================ */
-
-        .coming-stories {
-            position: relative;
+        .featured-meta span {
 
             padding:
-                55px
-                40px;
 
-            margin-top: 35px;
+                7px
+                11px;
 
-            border-radius: 16px;
+            border-radius:
+                999px;
 
             border:
                 1px solid
@@ -852,78 +1523,523 @@
                     255,
                     255,
                     255,
-                    .018
+                    .025
                 );
-        }
 
-
-        .coming-stories h3 {
-            margin:
-                0
-                0
-                18px;
+            color:
+                #94a3b8;
 
             font-size:
-                clamp(
-                    1.8rem,
-                    3vw,
-                    3rem
+                .78rem;
+
+        }
+
+
+        /* ============================================================
+           STORY VISUAL
+        ============================================================ */
+
+        .story-visual {
+
+            position:
+                relative;
+
+            min-height:
+                440px;
+
+            display:
+                flex;
+
+            align-items:
+                flex-end;
+
+            padding:
+                34px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .12
                 );
 
-            color: #f8fafc;
+            border-radius:
+                22px;
+
+            overflow:
+                hidden;
+
+            background:
+
+                radial-gradient(
+                    circle at 68% 28%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .09
+                    ),
+                    transparent
+                    25%
+                ),
+
+                radial-gradient(
+                    circle at 35% 75%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .05
+                    ),
+                    transparent
+                    42%
+                ),
+
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .018
+                );
+
+            box-shadow:
+
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                ),
+
+                0
+                25px
+                70px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .18
+                );
+
         }
 
 
-        .coming-stories p {
-            max-width: 760px;
+        .story-visual::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                310px;
+
+            height:
+                310px;
+
+            top:
+                45px;
+
+            right:
+                -70px;
+
+            border-radius:
+                50%;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .11
+                );
+
+            box-shadow:
+
+                0
+                0
+                90px
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .045
+                ),
+
+                inset
+                0
+                0
+                60px
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .02
+                );
+
+            animation:
+                visualOrbit
+                14s
+                ease-in-out
+                infinite
+                alternate;
+
         }
 
 
-        .coming-stories p:last-child {
-            margin-bottom: 0;
+        .story-visual::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                180px;
+
+            height:
+                180px;
+
+            top:
+                110px;
+
+            right:
+                30px;
+
+            border-radius:
+                50%;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            animation:
+                visualOrbitInner
+                10s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes visualOrbit {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    rotate(
+                        0deg
+                    );
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(
+                        -25px,
+                        25px,
+                        0
+                    )
+                    rotate(
+                        8deg
+                    );
+
+            }
+
+        }
+
+
+        @keyframes visualOrbitInner {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    scale(
+                        1
+                    );
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(
+                        -12px,
+                        18px,
+                        0
+                    )
+                    scale(
+                        1.12
+                    );
+
+            }
+
+        }
+
+
+        .story-visual-stars {
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            opacity:
+                .5;
+
+            background-image:
+
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .5
+                    )
+                    1px,
+
+                    transparent
+                    1px
+                );
+
+            background-size:
+                55px
+                55px;
+
+            mask-image:
+
+                linear-gradient(
+                    to
+                    bottom,
+
+                    transparent,
+
+                    black
+                    25%,
+
+                    black
+                    75%,
+
+                    transparent
+                );
+
+            -webkit-mask-image:
+
+                linear-gradient(
+                    to
+                    bottom,
+
+                    transparent,
+
+                    black
+                    25%,
+
+                    black
+                    75%,
+
+                    transparent
+                );
+
+        }
+
+
+        .story-visual-content {
+
+            position:
+                relative;
+
+            z-index:
+                5;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                10px;
+
+        }
+
+
+        .story-visual-content span {
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .15em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .story-visual-content strong {
+
+            color:
+                #f8fafc;
+
+            font-size:
+
+                clamp(
+                    2rem,
+                    4vw,
+                    3.6rem
+                );
+
+            letter-spacing:
+                -.04em;
+
         }
 
 
         /* ============================================================
            BUTTONS
-           Same logic as About page
         ============================================================ */
 
         .stories-actions {
-            display: flex;
 
-            gap: 12px;
+            display:
+                flex;
 
-            flex-wrap: wrap;
+            flex-wrap:
+                wrap;
 
-            margin-top: 28px;
+            gap:
+                12px;
+
+            margin-top:
+                28px;
+
         }
 
 
-        .stories-actions .button.secondary {
+        .stories-actions .button,
+        .stories-final-actions .button {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            transition:
+
+                transform
+                .3s
+                ease,
+
+                box-shadow
+                .3s
+                ease,
+
+                background
+                .3s
+                ease;
+
+        }
+
+
+        .stories-actions .button:hover,
+        .stories-final-actions .button:hover {
+
+            transform:
+                translateY(
+                    -3px
+                );
+
+            box-shadow:
+
+                0
+                16px
+                36px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .2
+                );
+
+        }
+
+
+        .button.secondary {
+
             background:
-                transparent;
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .15
+                );
 
             color:
                 #f8fafc;
 
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .18
+            backdrop-filter:
+                blur(
+                    12px
                 );
+
         }
 
 
-        .stories-actions .button.secondary:hover {
+        .button.secondary:hover {
+
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    .05
+                    .065
                 );
 
             border-color:
@@ -933,103 +2049,705 @@
                     255,
                     .28
                 );
+
         }
 
 
         /* ============================================================
-           FINAL CTA
+           PRINCIPLES
         ============================================================ */
 
-        .stories-final {
-            padding:
-                110px 0
-                120px;
+        .story-principles {
 
-            text-align: center;
-        }
+            display:
+                grid;
 
+            grid-template-columns:
 
-        .stories-final h2 {
-            max-width: 850px;
-
-            margin:
-                0 auto
-                22px;
-
-            font-size:
-                clamp(
-                    2.5rem,
-                    5vw,
-                    5rem
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
                 );
 
-            line-height: 1;
+            gap:
+                16px;
 
-            letter-spacing: -.05em;
+            margin-top:
+                36px;
 
-            color: #f8fafc;
         }
 
 
-        .stories-final p {
-            margin:
-                0 auto
+        .principle-card {
+
+            position:
+                relative;
+
+            min-height:
+                240px;
+
+            padding:
+                26px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            border-radius:
                 18px;
 
-            max-width: 680px;
-
-            color: #94a3b8;
-
-            line-height: 1.8;
-        }
-
-
-        .stories-final-actions {
-            display: flex;
-
-            justify-content: center;
-
-            gap: 12px;
-
-            flex-wrap: wrap;
-
-            margin-top: 30px;
-        }
-
-
-        .stories-final-actions .button.secondary {
             background:
-                transparent;
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            overflow:
+                hidden;
+
+            transition:
+
+                transform
+                .35s
+                cubic-bezier(
+                    .2,
+                    .8,
+                    .2,
+                    1
+                ),
+
+                border-color
+                .35s
+                ease,
+
+                background
+                .35s
+                ease;
+
+        }
+
+
+        .principle-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                120px;
+
+            height:
+                120px;
+
+            border-radius:
+                50%;
+
+            right:
+                -55px;
+
+            top:
+                -55px;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .07
+                    ),
+                    transparent
+                    70%
+                );
+
+        }
+
+
+        .principle-card:hover {
+
+            transform:
+                translateY(
+                    -6px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .17
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .045
+                );
+
+        }
+
+
+        .principle-number {
+
+            display:
+                block;
+
+            margin-bottom:
+                34px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .35
+                );
+
+            font-size:
+                .75rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .1em;
+
+        }
+
+
+        .principle-card h3 {
+
+            margin:
+
+                0
+                0
+                14px;
+
+            font-size:
+                1.25rem;
 
             color:
                 #f8fafc;
 
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .18
-                );
         }
 
 
-        .stories-final-actions .button.secondary:hover {
-            background:
+        .principle-card p {
+
+            margin:
+                0;
+
+            font-size:
+                .92rem;
+
+            line-height:
+                1.75;
+
+        }
+
+
+        /* ============================================================
+           COMING STORIES
+        ============================================================ */
+
+        .coming-stories {
+
+            position:
+                relative;
+
+            margin-top:
+                32px;
+
+            padding:
+
+                36px
+                38px;
+
+            border-radius:
+                20px;
+
+            border:
+                1px dashed
                 rgba(
                     255,
                     255,
                     255,
-                    .05
+                    .14
                 );
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .035
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .01
+                    )
+                );
+
+        }
+
+
+        .coming-stories::after {
+
+            content:
+                "IN DEVELOPMENT";
+
+            position:
+                absolute;
+
+            right:
+                20px;
+
+            top:
+                18px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .04
+                );
+
+            font-size:
+                .7rem;
+
+            font-weight:
+                700;
+
+            letter-spacing:
+                .18em;
+
+        }
+
+
+        .coming-stories h3 {
+
+            max-width:
+                620px;
+
+            margin:
+
+                0
+                0
+                20px;
+
+            font-size:
+
+                clamp(
+                    1.35rem,
+                    3vw,
+                    2rem
+                );
+
+            letter-spacing:
+                -.025em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        /* ============================================================
+           FINAL
+        ============================================================ */
+
+        .stories-final {
+
+            position:
+                relative;
+
+            margin:
+
+                70px
+                0
+                100px;
+
+            padding:
+
+                65px
+                50px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .1
+                );
+
+            border-radius:
+                26px;
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .07
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .018
+                    )
+                );
+
+            box-shadow:
+
+                0
+                35px
+                100px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .18
+                ),
+
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+            backdrop-filter:
+                blur(
+                    22px
+                );
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .stories-final::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                340px;
+
+            height:
+                340px;
+
+            border-radius:
+                50%;
+
+            left:
+                -140px;
+
+            bottom:
+                -180px;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .08
+                    ),
+                    transparent
+                    70%
+                );
+
+        }
+
+
+        .stories-final h2 {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                700px;
+
+            margin:
+
+                0
+                0
+                22px;
+
+            font-size:
+
+                clamp(
+                    2.1rem,
+                    5vw,
+                    4rem
+                );
+
+            line-height:
+                1.02;
+
+            letter-spacing:
+                -.05em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .stories-final p {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                680px;
+
+            color:
+                #94a3b8;
+
+            line-height:
+                1.85;
+
+        }
+
+
+        .stories-final-actions {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                12px;
+
+            margin-top:
+                30px;
+
+        }
+
+
+        /* ============================================================
+           SCROLL REVEAL
+        ============================================================ */
+
+        .reveal-on-scroll {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(
+                    30px
+                );
+
+            filter:
+                blur(
+                    5px
+                );
+
+            transition:
+
+                opacity
+                .75s
+                ease,
+
+                transform
+                .75s
+                cubic-bezier(
+                    .2,
+                    .8,
+                    .2,
+                    1
+                ),
+
+                filter
+                .75s
+                ease;
+
+        }
+
+
+        .reveal-on-scroll.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(
+                    0
+                );
+
+            filter:
+                blur(
+                    0
+                );
+
+        }
+
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+
+        .stories-page footer {
+
+            position:
+                relative;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
+
+        }
+
+
+        /* ============================================================
+           MOOD ACCENTS
+        ============================================================ */
+
+        html[data-dheere-mood="ember"]
+        .stories-label {
+
+            color:
+                #e4786d;
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .stories-section:hover {
 
             border-color:
                 rgba(
-                    255,
-                    255,
-                    255,
+                    228,
+                    120,
+                    109,
                     .28
                 );
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .stories-label {
+
+            color:
+                #aa9df5;
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .stories-section:hover {
+
+            border-color:
+                rgba(
+                    155,
+                    140,
+                    242,
+                    .28
+                );
+
+        }
+
+
+        /* ============================================================
+           TABLET
+        ============================================================ */
+
+        @media (
+            max-width:
+            850px
+        ) {
+
+
+            .featured-story {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .story-principles {
+
+                grid-template-columns:
+
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+
+            .stories-hero-content {
+
+                padding:
+                    40px;
+
+            }
+
         }
 
 
@@ -1038,126 +2756,248 @@
         ============================================================ */
 
         @media (
-            max-width: 800px
+            max-width:
+            640px
         ) {
 
+
             .stories-hero {
-                min-height: 60vh;
+
+                min-height:
+                    auto;
 
                 padding:
-                    120px 6%
-                    70px;
+
+                    105px
+                    6%
+                    50px;
+
+            }
+
+
+            .stories-hero-content {
+
+                padding:
+
+                    30px
+                    22px;
+
+                border-radius:
+                    20px;
+
+            }
+
+
+            .stories-hero h1 {
+
+                font-size:
+
+                    clamp(
+                        3.4rem,
+                        18vw,
+                        5rem
+                    );
+
             }
 
 
             .stories-container {
-                width: 88%;
+
+                width:
+                    calc(
+                        100% -
+                        28px
+                    );
+
             }
 
 
             .stories-section {
+
                 padding:
-                    75px 0;
+
+                    30px
+                    22px;
+
+                border-radius:
+                    19px;
+
             }
 
 
-            .featured-story {
-                grid-template-columns:
-                    1fr;
+            .stories-section:hover {
 
-                gap: 40px;
-            }
+                transform:
+                    none;
 
-
-            .story-visual {
-                min-height: 360px;
             }
 
 
             .story-principles {
+
                 grid-template-columns:
                     1fr;
+
             }
 
 
-            .coming-stories {
-                padding:
-                    35px
-                    25px;
-            }
+            .principle-card:hover {
 
+                transform:
+                    none;
 
-            .stories-final {
-                padding:
-                    80px 0
-                    90px;
-            }
-
-        }
-
-
-        @media (
-            max-width: 520px
-        ) {
-
-            .stories-hero {
-                padding-top:
-                    105px;
-            }
-
-
-            .featured-meta {
-                gap: 8px;
             }
 
 
             .story-visual {
-                min-height: 290px;
 
-                padding: 25px;
-            }
+                min-height:
+                    330px;
 
+                padding:
+                    25px;
 
-            .story-visual-content strong {
-                font-size:
-                    clamp(
-                        1.55rem,
-                        8vw,
-                        2.3rem
-                    );
             }
 
 
             .coming-stories {
+
                 padding:
-                    30px
+
+                    28px
                     20px;
+
+            }
+
+
+            .stories-final {
+
+                margin:
+
+                    45px
+                    0
+                    70px;
+
+                padding:
+
+                    42px
+                    24px;
+
+                border-radius:
+                    21px;
+
             }
 
 
             .stories-actions,
             .stories-final-actions {
-                flex-direction: column;
 
-                align-items: stretch;
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
             }
 
 
             .stories-actions .button,
             .stories-final-actions .button {
-                width: 100%;
 
-                text-align: center;
+                width:
+                    100%;
+
+                text-align:
+                    center;
+
+            }
+
+
+            .back-home-link {
+
+                padding:
+
+                    8px
+                    10px;
+
+                font-size:
+                    .78rem;
+
+            }
+
+
+            .story-quote {
+
+                padding:
+
+                    23px
+                    20px;
+
             }
 
         }
 
+
+        /* ============================================================
+           REDUCED MOTION
+        ============================================================ */
+
+        @media (
+            prefers-reduced-motion:
+            reduce
+        ) {
+
+
+            *,
+            *::before,
+            *::after {
+
+                animation:
+                    none !important;
+
+                transition:
+                    none !important;
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
+
+            .reveal-on-scroll {
+
+                opacity:
+                    1;
+
+                transform:
+                    none;
+
+                filter:
+                    none;
+
+            }
+
+        }
+
+
     </style>
+
 
 </head>
 
 
 <body>
+
+
+    <!-- ============================================================
+         READING PROGRESS
+    ============================================================ -->
+
+    <div
+        id="storiesProgress"
+        class="stories-progress"
+    ></div>
+
 
 
     <!-- ============================================================
@@ -1175,9 +3015,11 @@
 
         <header>
 
+
             <nav
                 class="navbar"
             >
+
 
                 <div
                     class="nav-logo"
@@ -1190,6 +3032,7 @@
                     </a>
 
                 </div>
+
 
 
                 <div
@@ -1205,11 +3048,17 @@
 
                 </div>
 
+
             </nav>
+
 
         </header>
 
 
+
+        <!-- ========================================================
+             MAIN
+        ========================================================= -->
 
         <main>
 
@@ -1222,9 +3071,11 @@
                 class="stories-hero"
             >
 
+
                 <div
                     class="stories-hero-content"
                 >
+
 
                     <span
                         class="stories-label"
@@ -1246,11 +3097,17 @@
                         Stories built to stay.
                     </p>
 
+
                 </div>
+
 
             </section>
 
 
+
+            <!-- ====================================================
+                 CONTENT
+            ===================================================== -->
 
             <div
                 class="stories-container"
@@ -1258,12 +3115,13 @@
 
 
                 <!-- =================================================
-                     WHAT STORIES MEAN HERE
+                     WHAT STORIES MEAN
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1278,23 +3136,23 @@
 
 
                     <p>
-                        At Dheere Studio, stories are not treated as disposable
-                        content made only for a quick moment of attention.
-                        They are foundations.
+                        At Dheere Studio, stories are not treated as
+                        disposable content made only for a quick moment
+                        of attention. They are foundations.
                     </p>
 
 
                     <p>
-                        A strong story can grow over time—through its characters,
-                        history, conflicts, places, mythology, and the worlds
-                        built around it.
+                        A strong story can grow over time—through its
+                        characters, history, conflicts, places,
+                        mythology, and the worlds built around it.
                     </p>
 
 
                     <p>
-                        We start with the story itself and allow everything else
-                        to develop from a foundation that is actually worth
-                        building on.
+                        We start with the story itself and allow
+                        everything else to develop from a foundation
+                        that is actually worth building on.
                     </p>
 
 
@@ -1303,93 +3161,20 @@
                     >
 
                         <p>
-                            "The world can grow, but the story has to stand first."
+                            "The world can grow, but the story has to
+                            stand first."
                         </p>
 
                     </div>
 
 
                     <p>
-                        Not every story needs to become a large universe.
-                        But when an idea has enough depth, we want to give it
-                        the time and space to become more than its first form.
+                        Not every story needs to become a large
+                        universe. But when an idea has enough depth,
+                        we want to give it the time and space to become
+                        more than its first form.
                     </p>
 
-                </section>
-
-
-
-                <!-- =================================================
-                     WHY STORY FIRST
-                ================================================== -->
-
-                <section
-                    class="stories-section"
-                >
-
-                    <span
-                        class="section-kicker"
-                    >
-                        Our approach
-                    </span>
-
-
-                    <h2>
-                        We begin with the foundation, not the spectacle.
-                    </h2>
-
-
-                    <p>
-                        It is easy to imagine a world through visuals, games,
-                        animation, or large concepts. The harder part is making
-                        sure there is something meaningful underneath all of it.
-                    </p>
-
-
-                    <p>
-                        That is why our process begins with the narrative.
-                        Before expanding an idea into different creative forms,
-                        we want to understand the story it is trying to tell.
-                    </p>
-
-
-                    <ul
-                        class="story-foundation"
-                    >
-
-                        <li>
-                            <strong>Characters</strong>
-                            — Who are the people inside the story, and what
-                            makes their choices matter?
-                        </li>
-
-
-                        <li>
-                            <strong>Conflict</strong>
-                            — What creates movement, tension, and change?
-                        </li>
-
-
-                        <li>
-                            <strong>History</strong>
-                            — What happened before the current story began?
-                        </li>
-
-
-                        <li>
-                            <strong>World rules</strong>
-                            — What makes the world feel consistent rather than
-                            existing only as decoration?
-                        </li>
-
-
-                        <li>
-                            <strong>Meaning</strong>
-                            — Beyond the events themselves, what makes the
-                            story worth spending time with?
-                        </li>
-
-                    </ul>
 
                 </section>
 
@@ -1400,19 +3185,15 @@
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
                     >
-                        Featured project
+                        The first major world
                     </span>
-
-
-                    <h2>
-                        Currently building.
-                    </h2>
 
 
                     <div
@@ -1420,49 +3201,43 @@
                     >
 
 
-                        <!-- STORY INFORMATION -->
-
                         <div
-                            class="featured-story-info"
+                            class="featured-story-copy"
                         >
 
-                            <div
-                                class="featured-status"
+
+                            <span
+                                class="featured-label"
                             >
-
-                                <span
-                                    class="status-dot"
-                                ></span>
-
-                                In Development
-
-                            </div>
+                                Currently in development
+                            </span>
 
 
-                            <h3>
+                            <h2>
                                 Shunyavas
-                            </h3>
+                            </h2>
 
 
                             <p>
-                                Shunyavas is an original fantasy universe currently
-                                being developed as the first major project of
+                                Shunyavas is the first major original
+                                fantasy universe being developed at
                                 Dheere Studio.
                             </p>
 
 
                             <p>
-                                It begins with a story foundation and expands
-                                through its characters, mythology, history,
-                                conflicts, and the rules that shape its world.
+                                It begins with a story foundation.
+                                Characters, conflicts, history,
+                                mythology, and the larger world need
+                                room to develop before anything else
+                                tries to grow around them.
                             </p>
 
 
                             <p>
-                                The goal is not to rush the universe into every
-                                possible format. The first responsibility is to
-                                build the world properly and understand what the
-                                story itself needs to become.
+                                The goal is not to pretend the final
+                                scale already exists. The goal is to
+                                build something real enough to grow.
                             </p>
 
 
@@ -1471,23 +3246,19 @@
                             >
 
                                 <span>
-                                    Original Fantasy
+                                    Original Universe
                                 </span>
 
 
                                 <span>
-                                    Worldbuilding
-                                </span>
-
-
-                                <span>
-                                    Long-Term Project
+                                    Fantasy
                                 </span>
 
 
                                 <span>
                                     In Development
                                 </span>
+
 
                             </div>
 
@@ -1503,17 +3274,23 @@
                                     Explore Shunyavas →
                                 </a>
 
+
                             </div>
+
 
                         </div>
 
 
 
-                        <!-- STORY VISUAL -->
-
                         <div
                             class="story-visual"
                         >
+
+
+                            <div
+                                class="story-visual-stars"
+                            ></div>
+
 
                             <div
                                 class="story-visual-content"
@@ -1528,11 +3305,15 @@
                                     SHUNYAVAS
                                 </strong>
 
+
                             </div>
+
 
                         </div>
 
+
                     </div>
+
 
                 </section>
 
@@ -1543,8 +3324,9 @@
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1559,17 +3341,19 @@
 
 
                     <p>
-                        A story does not have to remain in only one form forever.
-                        When a world develops enough depth, there may eventually
-                        be different ways for people to experience it.
+                        A story does not have to remain in only one
+                        form forever. When a world develops enough
+                        depth, there may eventually be different ways
+                        for people to experience it.
                     </p>
 
 
                     <p>
-                        Books, artwork, animation, interactive experiences, and
-                        other creative forms can all become part of that journey.
-                        But they should come from the needs of the world—not
-                        simply because expansion sounds impressive.
+                        Books, artwork, animation, interactive
+                        experiences, and other creative forms can all
+                        become part of that journey. But they should
+                        come from the needs of the world—not simply
+                        because expansion sounds impressive.
                     </p>
 
 
@@ -1595,10 +3379,12 @@
 
 
                             <p>
-                                Every project starts with a narrative strong
-                                enough to stand on its own before anything
-                                larger is built around it.
+                                Every project starts with a narrative
+                                strong enough to stand on its own
+                                before anything larger is built around
+                                it.
                             </p>
+
 
                         </article>
 
@@ -1621,10 +3407,11 @@
 
 
                             <p>
-                                Characters, places, history, mythology, and
-                                rules give a story room to grow beyond a
-                                single moment.
+                                Characters, places, history,
+                                mythology, and rules give a story room
+                                to grow beyond a single moment.
                             </p>
+
 
                         </article>
 
@@ -1647,27 +3434,30 @@
 
 
                             <p>
-                                In the future, some worlds may explore different
-                                creative forms when the story genuinely calls
-                                for them.
+                                In the future, some worlds may explore
+                                different creative forms when the story
+                                genuinely calls for them.
                             </p>
+
 
                         </article>
 
 
                     </div>
 
+
                 </section>
 
 
 
                 <!-- =================================================
-                     WHAT WE ARE NOT TRYING TO DO
+                     BUILDING CAREFULLY
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1682,23 +3472,24 @@
 
 
                     <p>
-                        Some ideas are exciting at the beginning but need time
-                        before it becomes clear whether they can actually become
-                        a complete story.
+                        Some ideas are exciting at the beginning but
+                        need time before it becomes clear whether they
+                        can actually become a complete story.
                     </p>
 
 
                     <p>
-                        We do not want to announce a long list of projects simply
-                        to make the studio look bigger than it currently is.
-                        A name is not the same thing as a developed world.
+                        We do not want to announce a long list of
+                        projects simply to make the studio look bigger
+                        than it currently is. A name is not the same
+                        thing as a developed world.
                     </p>
 
 
                     <p>
-                        Some concepts will stay as experiments. Some will change
-                        completely. Others may take years before they become
-                        something ready to share.
+                        Some concepts will stay as experiments. Some
+                        will change completely. Others may take years
+                        before they become something ready to share.
                     </p>
 
 
@@ -1707,11 +3498,13 @@
                     >
 
                         <p>
-                            "An idea is only the beginning. Development decides
-                            what it can actually become."
+                            "An idea is only the beginning.
+                            Development decides what it can actually
+                            become."
                         </p>
 
                     </div>
+
 
                 </section>
 
@@ -1722,8 +3515,9 @@
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1741,45 +3535,51 @@
                         class="coming-stories"
                     >
 
+
                         <h3>
                             Some ideas are still becoming stories.
                         </h3>
 
 
                         <p>
-                            Not everything being developed at Dheere Studio is
-                            ready to be announced. Some ideas need time before
-                            they become characters, worlds, and complete
-                            narratives.
+                            Not everything being developed at Dheere
+                            Studio is ready to be announced. Some ideas
+                            need time before they become characters,
+                            worlds, and complete narratives.
                         </p>
 
 
                         <p>
-                            Development is not always visible from the outside.
-                            A concept may spend a long time changing, being
-                            rewritten, or simply waiting until the studio is
-                            ready to give it proper attention.
+                            Development is not always visible from the
+                            outside. A concept may spend a long time
+                            changing, being rewritten, or simply waiting
+                            until the studio is ready to give it proper
+                            attention.
                         </p>
 
 
                         <p>
-                            We would rather develop something properly than
-                            announce a project before it has a real foundation.
+                            We would rather develop something properly
+                            than announce a project before it has a
+                            real foundation.
                         </p>
+
 
                     </div>
+
 
                 </section>
 
 
 
                 <!-- =================================================
-                     THE BIGGER JOURNEY
+                     BIGGER JOURNEY
                 ================================================== -->
 
                 <section
-                    class="stories-section"
+                    class="stories-section reveal-on-scroll"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1794,37 +3594,42 @@
 
 
                     <p>
-                        Dheere Studio is still at the beginning. The purpose of
-                        building stories is not simply to publish as much as
-                        possible as quickly as possible.
+                        Dheere Studio is still at the beginning. The
+                        purpose of building stories is not simply to
+                        publish as much as possible as quickly as
+                        possible.
                     </p>
 
 
                     <p>
-                        The larger goal is to create original work that can grow
-                        with time—stories with their own identities, worlds that
-                        feel worth returning to, and eventually a creative
-                        ecosystem around the studio itself.
+                        The larger goal is to create original work that
+                        can grow with time—stories with their own
+                        identities, worlds that feel worth returning to,
+                        and eventually a creative ecosystem around the
+                        studio itself.
                     </p>
 
 
                     <p>
-                        Shunyavas is the first major step in that direction.
-                        What comes after it will be built from the experience,
-                        lessons, and foundation created along the way.
+                        Shunyavas is the first major step in that
+                        direction. What comes after it will be built
+                        from the experience, lessons, and foundation
+                        created along the way.
                     </p>
+
 
                 </section>
 
 
 
                 <!-- =================================================
-                     FINAL SECTION
+                     FINAL
                 ================================================== -->
 
                 <section
-                    class="stories-final"
+                    class="stories-final reveal-on-scroll"
                 >
+
 
                     <h2>
                         Follow the stories as they take shape.
@@ -1832,9 +3637,10 @@
 
 
                     <p>
-                        Dheere Studio is at the beginning of a longer journey.
-                        Shunyavas is the first major world we are building, but
-                        it is also the beginning of a larger creative direction.
+                        Dheere Studio is at the beginning of a longer
+                        journey. Shunyavas is the first major world we
+                        are building, but it is also the beginning of a
+                        larger creative direction.
                     </p>
 
 
@@ -1846,6 +3652,7 @@
                     <div
                         class="stories-final-actions"
                     >
+
 
                         <a
                             href="shunyavas.html"
@@ -1862,7 +3669,9 @@
                             Join the Community
                         </a>
 
+
                     </div>
+
 
                 </section>
 
@@ -1880,6 +3689,7 @@
 
         <footer>
 
+
             <div
                 class="footer-content"
             >
@@ -1890,6 +3700,7 @@
                 </p>
 
             </div>
+
 
         </footer>
 
@@ -1905,6 +3716,207 @@
     <script
         src="mood-engine.js"
     ></script>
+
+
+
+    <!-- ============================================================
+         STORIES PAGE SCRIPT
+    ============================================================ -->
+
+    <script>
+
+
+        "use strict";
+
+
+
+        /* ========================================================
+           READING PROGRESS
+        ======================================================== */
+
+        const storiesProgress =
+            document.getElementById(
+                "storiesProgress"
+            );
+
+
+
+        function updateStoriesProgress() {
+
+
+            const scrollTop =
+                window.scrollY ||
+                document.documentElement.scrollTop;
+
+
+            const documentHeight =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+
+            if (
+                documentHeight <= 0
+            ) {
+
+                storiesProgress.style.width =
+                    "0%";
+
+
+                return;
+
+            }
+
+
+            const progress =
+
+                Math.min(
+                    100,
+
+                    Math.max(
+
+                        0,
+
+                        (
+                            scrollTop /
+                            documentHeight
+                        ) *
+                        100
+
+                    )
+
+                );
+
+
+            storiesProgress.style.width =
+                `${progress}%`;
+
+
+        }
+
+
+
+        window.addEventListener(
+
+            "scroll",
+
+            updateStoriesProgress,
+
+            {
+
+                passive:
+                    true
+
+            }
+
+        );
+
+
+        updateStoriesProgress();
+
+
+
+        /* ========================================================
+           SCROLL REVEAL
+        ======================================================== */
+
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal-on-scroll"
+            );
+
+
+
+        if (
+            "IntersectionObserver"
+            in
+            window
+        ) {
+
+
+            const revealObserver =
+
+                new IntersectionObserver(
+
+                    entries => {
+
+
+                        entries.forEach(
+
+                            entry => {
+
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+
+                                    entry.target.classList.add(
+                                        "visible"
+                                    );
+
+
+                                    revealObserver.unobserve(
+                                        entry.target
+                                    );
+
+
+                                }
+
+
+                            }
+
+                        );
+
+
+                    },
+
+                    {
+
+                        threshold:
+                            .08,
+
+                        rootMargin:
+                            "0px 0px -30px 0px"
+
+                    }
+
+                );
+
+
+
+            revealElements.forEach(
+
+                element => {
+
+                    revealObserver.observe(
+                        element
+                    );
+
+                }
+
+            );
+
+
+        } else {
+
+
+            revealElements.forEach(
+
+                element => {
+
+                    element.classList.add(
+                        "visible"
+                    );
+
+                }
+
+            );
+
+
+        }
+
+
+    </script>
 
 
 </body>

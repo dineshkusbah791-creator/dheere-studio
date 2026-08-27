@@ -10,19 +10,12 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <title>Ideas — Dheere Studio</title>
+
     <meta
         name="description"
-        content="Explore the ideas, vision, worlds, stories, and creative possibilities behind Dheere Studio."
+        content="The ideas, philosophy, worlds, and long-term creative vision behind Dheere Studio."
     >
-
-    <title>
-        Ideas — Dheere Studio
-    </title>
-
-
-    <!-- ============================================================
-         EXISTING STYLES
-    ============================================================ -->
 
     <link
         rel="stylesheet"
@@ -37,547 +30,906 @@
 
     <style>
 
-        /* ============================================================
-           IDEAS PAGE
-        ============================================================ */
+        /* =====================================================
+           IDEAS PAGE — PREMIUM VISUAL LAYER
+        ===================================================== */
+
+        :root {
+
+            --ideas-glass:
+                rgba(255, 255, 255, 0.055);
+
+            --ideas-glass-strong:
+                rgba(255, 255, 255, 0.085);
+
+            --ideas-border:
+                rgba(255, 255, 255, 0.12);
+
+            --ideas-border-hover:
+                rgba(255, 255, 255, 0.25);
+
+            --ideas-text-soft:
+                rgba(255, 255, 255, 0.68);
+
+            --ideas-shadow:
+                0 30px 80px
+                rgba(0, 0, 0, 0.20);
+
+        }
+
+
+        * {
+
+            box-sizing:
+                border-box;
+
+        }
+
+
+        html {
+
+            scroll-behavior:
+                smooth;
+
+        }
+
+
+        body {
+
+            overflow-x:
+                hidden;
+
+        }
+
 
         .ideas-page {
 
-            min-height: 100vh;
+            min-height:
+                100vh;
 
-            position: relative;
+            position:
+                relative;
 
-            isolation: isolate;
+            overflow:
+                hidden;
 
         }
 
 
-        .ideas-page::before {
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
 
-            content: "";
+        header {
 
-            position: fixed;
+            position:
+                relative;
 
-            inset: 0;
+            z-index:
+                20;
 
-            z-index: -1;
+        }
 
-            pointer-events: none;
+
+        .navbar {
+
+            position:
+                relative;
+
+            width:
+                min(1180px, calc(100% - 40px));
+
+            margin:
+                0 auto;
+
+            padding:
+                24px 0;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+        }
+
+
+        .nav-logo a {
+
+            text-decoration:
+                none;
+
+            color:
+                inherit;
+
+            font-weight:
+                700;
+
+            letter-spacing:
+                -0.02em;
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .nav-logo a:hover {
+
+            opacity:
+                0.78;
+
+        }
+
+
+        .back-home-link {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            min-height:
+                42px;
+
+            padding:
+                0 16px;
+
+            border:
+                1px solid var(--ideas-border);
+
+            border-radius:
+                999px;
 
             background:
+                rgba(255, 255, 255, 0.035);
 
-                radial-gradient(
-                    circle at 15% 20%,
-                    rgba(255, 255, 255, .035),
-                    transparent 30%
-                ),
+            backdrop-filter:
+                blur(14px);
 
-                radial-gradient(
-                    circle at 85% 75%,
-                    rgba(255, 255, 255, .02),
-                    transparent 32%
-                );
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            text-decoration:
+                none;
+
+            color:
+                inherit;
+
+            font-size:
+                0.9rem;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
 
         }
 
 
-        /* ============================================================
+        .back-home-link:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border-color:
+                var(--ideas-border-hover);
+
+            box-shadow:
+                0 12px 30px
+                rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        /* =====================================================
            HERO
-        ============================================================ */
+        ===================================================== */
 
         .ideas-hero {
 
-            min-height: 72vh;
+            position:
+                relative;
 
-            display: flex;
+            min-height:
+                540px;
 
-            align-items: center;
+            display:
+                flex;
+
+            align-items:
+                center;
 
             padding:
-                140px 8%
-                90px;
+                70px 20px 110px;
+
+            isolation:
+                isolate;
+
+        }
+
+
+        .ideas-hero::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                500px;
+
+            height:
+                500px;
+
+            border-radius:
+                50%;
+
+            top:
+                -220px;
+
+            right:
+                -120px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.13),
+                    transparent 68%
+                );
+
+            filter:
+                blur(12px);
+
+            opacity:
+                0.7;
+
+            animation:
+                ideasAmbientOne
+                12s
+                ease-in-out
+                infinite
+                alternate;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -1;
+
+        }
+
+
+        .ideas-hero::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                320px;
+
+            height:
+                320px;
+
+            border-radius:
+                50%;
+
+            left:
+                -150px;
+
+            bottom:
+                -120px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.08),
+                    transparent 70%
+                );
+
+            filter:
+                blur(18px);
+
+            animation:
+                ideasAmbientTwo
+                15s
+                ease-in-out
+                infinite
+                alternate;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -1;
+
+        }
+
+
+        @keyframes ideasAmbientOne {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0)
+                    scale(1);
+
+            }
+
+
+            100% {
+
+                transform:
+                    translate3d(-60px,70px,0)
+                    scale(1.16);
+
+            }
+
+        }
+
+
+        @keyframes ideasAmbientTwo {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0);
+
+            }
+
+
+            100% {
+
+                transform:
+                    translate3d(90px,-45px,0)
+                    scale(1.12);
+
+            }
 
         }
 
 
         .ideas-hero-content {
 
-            max-width: 950px;
+            width:
+                min(100%, 920px);
+
+            margin:
+                0 auto;
+
+            text-align:
+                center;
+
+            position:
+                relative;
+
+            z-index:
+                2;
 
         }
 
 
         .ideas-label {
 
-            display: inline-flex;
+            display:
+                inline-flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 8px;
+            padding:
+                9px 16px;
 
-            margin-bottom: 20px;
+            margin-bottom:
+                28px;
 
-            font-size: .78rem;
+            border:
+                1px solid var(--ideas-border);
 
-            font-weight: 600;
+            border-radius:
+                999px;
 
-            letter-spacing: .18em;
+            background:
+                rgba(255, 255, 255, 0.04);
 
-            text-transform: uppercase;
+            backdrop-filter:
+                blur(16px);
 
-            color: #94a3b8;
+            -webkit-backdrop-filter:
+                blur(16px);
 
-        }
+            font-size:
+                0.78rem;
 
+            letter-spacing:
+                0.16em;
 
-        .ideas-label::before {
+            text-transform:
+                uppercase;
 
-            content: "";
+            opacity:
+                0;
 
-            width: 28px;
+            transform:
+                translateY(18px);
 
-            height: 1px;
-
-            background: currentColor;
-
-            opacity: .6;
+            animation:
+                heroReveal
+                0.8s
+                0.1s
+                ease
+                forwards;
 
         }
 
 
         .ideas-hero h1 {
 
-            margin: 0;
-
-            max-width: 900px;
+            margin:
+                0;
 
             font-size:
-                clamp(
-                    3.5rem,
-                    9vw,
-                    7.5rem
-                );
+                clamp(4.5rem, 13vw, 10rem);
 
-            line-height: .93;
+            line-height:
+                0.9;
 
-            letter-spacing: -.055em;
+            letter-spacing:
+                -0.075em;
 
-            color: #f8fafc;
+            font-weight:
+                800;
+
+            opacity:
+                0;
+
+            transform:
+                translateY(26px);
+
+            animation:
+                heroReveal
+                0.9s
+                0.22s
+                cubic-bezier(.22,.9,.28,1)
+                forwards;
 
         }
 
 
         .ideas-hero-text {
 
-            max-width: 720px;
+            max-width:
+                720px;
 
-            margin-top: 32px;
+            margin:
+                34px auto 0;
 
             font-size:
-                clamp(
-                    1rem,
-                    1.5vw,
-                    1.2rem
-                );
+                clamp(1rem, 2vw, 1.25rem);
 
-            line-height: 1.85;
+            line-height:
+                1.8;
 
-            color: #94a3b8;
+            color:
+                var(--ideas-text-soft);
+
+            opacity:
+                0;
+
+            transform:
+                translateY(22px);
+
+            animation:
+                heroReveal
+                0.9s
+                0.4s
+                ease
+                forwards;
 
         }
 
 
-        /* ============================================================
-           MAIN CONTAINER
-        ============================================================ */
+        @keyframes heroReveal {
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
 
         .ideas-container {
 
             width:
-                min(
-                    1100px,
-                    88%
-                );
+                min(1000px, calc(100% - 40px));
 
-            margin: 0 auto;
+            margin:
+                0 auto;
+
+            padding:
+                30px 0 120px;
 
         }
 
 
         .ideas-section {
 
-            padding:
-                105px 0;
+            position:
+                relative;
 
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+            margin:
+                0 0 130px;
+
+            opacity:
+                0;
+
+            transform:
+                translateY(42px);
+
+            transition:
+                opacity 0.85s ease,
+                transform 0.85s cubic-bezier(.22,.9,.28,1);
+
+        }
+
+
+        .ideas-section.is-visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
 
         }
 
 
         .section-kicker {
 
-            display: block;
+            display:
+                inline-flex;
 
-            margin-bottom: 14px;
-
-            font-size: .75rem;
-
-            font-weight: 600;
-
-            letter-spacing: .16em;
-
-            text-transform: uppercase;
-
-            color: #64748b;
-
-        }
-
-
-        .ideas-section h2 {
-
-            max-width: 850px;
-
-            margin:
-                0
-                0
-                26px;
-
-            font-size:
-                clamp(
-                    2.2rem,
-                    4vw,
-                    4rem
-                );
-
-            line-height: 1.05;
-
-            letter-spacing: -.04em;
-
-            color: #f8fafc;
-
-        }
-
-
-        .ideas-section p {
-
-            max-width: 780px;
-
-            margin:
-                0
-                0
+            margin-bottom:
                 18px;
 
-            font-size: 1rem;
+            font-size:
+                0.78rem;
 
-            line-height: 1.85;
+            font-weight:
+                600;
 
-            color: #94a3b8;
+            letter-spacing:
+                0.13em;
 
-        }
+            text-transform:
+                uppercase;
 
-
-        /* ============================================================
-           CORE VISION
-        ============================================================ */
-
-        .vision-statement {
-
-            position: relative;
-
-            overflow: hidden;
-
-            margin-top: 48px;
-
-            padding:
-                55px
-                50px;
-
-            border-radius: 16px;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
-                );
+            opacity:
+                0.68;
 
         }
 
 
-        .vision-statement::after {
+        .ideas-section > h2 {
 
-            content: "";
-
-            position: absolute;
-
-            width: 400px;
-
-            height: 400px;
-
-            right: -180px;
-
-            top: -220px;
-
-            border-radius: 50%;
-
-            background:
-
-                radial-gradient(
-                    circle,
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .06
-                    ),
-                    transparent 70%
-                );
-
-            pointer-events: none;
-
-        }
-
-
-        .vision-content {
-
-            position: relative;
-
-            z-index: 1;
-
-        }
-
-
-        .vision-statement h3 {
-
-            max-width: 780px;
+            max-width:
+                850px;
 
             margin:
-                0
-                0
-                22px;
+                0 0 28px;
 
             font-size:
-                clamp(
-                    1.9rem,
-                    3vw,
-                    3.1rem
-                );
+                clamp(2rem, 4.4vw, 3.8rem);
 
-            line-height: 1.12;
+            line-height:
+                1.08;
 
-            letter-spacing: -.035em;
-
-            color: #f8fafc;
+            letter-spacing:
+                -0.045em;
 
         }
 
 
-        .vision-statement p {
+        .ideas-section > p {
 
-            max-width: 730px;
-
-            margin-bottom: 0;
-
-        }
-
-
-        /* ============================================================
-           IDEA TO WORLD
-        ============================================================ */
-
-        .idea-flow {
-
-            margin-top: 50px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    4,
-                    1fr
-                );
-
-            gap: 16px;
-
-        }
-
-
-        .idea-flow-item {
-
-            position: relative;
-
-            min-height: 230px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: flex-end;
-
-            padding: 28px;
-
-            overflow: hidden;
-
-            border-radius: 14px;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
-                );
-
-            transition:
-                transform .3s ease,
-                border-color .3s ease,
-                background .3s ease;
-
-        }
-
-
-        .idea-flow-item:hover {
-
-            transform:
-                translateY(-5px);
-
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .16
-                );
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
-
-        }
-
-
-        .idea-flow-number {
-
-            position: absolute;
-
-            top: 24px;
-
-            left: 28px;
-
-            font-size: .72rem;
-
-            font-weight: 600;
-
-            letter-spacing: .12em;
-
-            color: #64748b;
-
-        }
-
-
-        .idea-flow-item h3 {
+            max-width:
+                760px;
 
             margin:
-                0
-                0
-                10px;
+                0 0 20px;
 
-            font-size: 1.35rem;
+            font-size:
+                1.03rem;
 
-            color: #f8fafc;
+            line-height:
+                1.85;
 
-        }
-
-
-        .idea-flow-item p {
-
-            margin: 0;
-
-            font-size: .9rem;
-
-            line-height: 1.7;
+            color:
+                var(--ideas-text-soft);
 
         }
 
 
-        /* ============================================================
+        /* =====================================================
+           GLASS PANELS
+        ===================================================== */
+
+        .vision-statement,
+        .genre-statement,
+        .future-ideas {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            margin-top:
+                42px;
+
+            padding:
+                48px;
+
+            border:
+                1px solid var(--ideas-border);
+
+            border-radius:
+                28px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.085),
+                    rgba(255,255,255,0.025)
+                );
+
+            backdrop-filter:
+                blur(20px)
+                saturate(125%);
+
+            -webkit-backdrop-filter:
+                blur(20px)
+                saturate(125%);
+
+            box-shadow:
+                var(--ideas-shadow);
+
+            transition:
+                transform 0.4s cubic-bezier(.22,.9,.28,1),
+                border-color 0.4s ease,
+                background 0.4s ease;
+
+        }
+
+
+        .vision-statement::before,
+        .genre-statement::before,
+        .future-ideas::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                240px;
+
+            height:
+                240px;
+
+            border-radius:
+                50%;
+
+            right:
+                -110px;
+
+            top:
+                -120px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.11),
+                    transparent 68%
+                );
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .vision-statement:hover,
+        .genre-statement:hover,
+        .future-ideas:hover {
+
+            transform:
+                translateY(-6px);
+
+            border-color:
+                var(--ideas-border-hover);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.11),
+                    rgba(255,255,255,0.035)
+                );
+
+        }
+
+
+        .vision-content,
+        .genre-statement,
+        .future-ideas {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+        }
+
+
+        .vision-content h3,
+        .genre-statement h3,
+        .future-ideas h3 {
+
+            margin:
+                0 0 18px;
+
+            font-size:
+                clamp(1.45rem, 3vw, 2rem);
+
+            line-height:
+                1.25;
+
+            letter-spacing:
+                -0.025em;
+
+        }
+
+
+        .vision-content p,
+        .genre-statement p,
+        .future-ideas p {
+
+            margin:
+                0 0 16px;
+
+            line-height:
+                1.82;
+
+            color:
+                var(--ideas-text-soft);
+
+        }
+
+
+        .future-ideas p:last-child,
+        .genre-statement p:last-child {
+
+            margin-bottom:
+                0;
+
+        }
+
+
+        /* =====================================================
            CREATIVE FORMS
-        ============================================================ */
+        ===================================================== */
 
         .creative-forms {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
-                repeat(
-                    2,
-                    1fr
-                );
+                repeat(3, 1fr);
 
-            gap: 20px;
+            gap:
+                18px;
 
-            margin-top: 50px;
+            margin-top:
+                42px;
 
         }
 
 
         .creative-form {
 
-            padding: 34px;
+            position:
+                relative;
 
-            border-radius: 15px;
+            overflow:
+                hidden;
+
+            min-height:
+                250px;
+
+            padding:
+                32px;
 
             border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+                1px solid var(--ideas-border);
+
+            border-radius:
+                24px;
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
-                );
+                rgba(255,255,255,0.04);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
 
             transition:
-                transform .3s ease,
-                border-color .3s ease,
-                background .3s ease;
+                transform 0.35s cubic-bezier(.22,.9,.28,1),
+                border-color 0.35s ease,
+                background 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+
+        .creative-form::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                auto -40px -80px auto;
+
+            width:
+                160px;
+
+            height:
+                160px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            filter:
+                blur(8px);
+
+            transition:
+                transform 0.5s ease;
 
         }
 
@@ -585,40 +937,47 @@
         .creative-form:hover {
 
             transform:
-                translateY(-4px);
+                translateY(-9px)
+                scale(1.01);
 
             border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .15
-                );
+                var(--ideas-border-hover);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
+                rgba(255,255,255,0.075);
+
+            box-shadow:
+                0 24px 55px
+                rgba(0,0,0,0.16);
 
         }
 
 
-        .creative-form-index {
+        .creative-form:hover::after {
 
-            display: block;
+            transform:
+                scale(1.4)
+                translate(-15px,-15px);
 
-            margin-bottom: 42px;
+        }
 
-            font-size: .72rem;
 
-            font-weight: 600;
+        .creative-form span {
 
-            letter-spacing: .14em;
+            display:
+                block;
 
-            color: #64748b;
+            margin-bottom:
+                42px;
+
+            font-size:
+                0.8rem;
+
+            letter-spacing:
+                0.12em;
+
+            opacity:
+                0.55;
 
         }
 
@@ -626,88 +985,113 @@
         .creative-form h3 {
 
             margin:
-                0
-                0
-                14px;
+                0 0 14px;
 
-            font-size: 1.45rem;
-
-            color: #f8fafc;
+            font-size:
+                1.35rem;
 
         }
 
 
         .creative-form p {
 
-            margin: 0;
+            margin:
+                0;
 
-            font-size: .94rem;
+            line-height:
+                1.7;
 
-            line-height: 1.78;
+            color:
+                var(--ideas-text-soft);
 
         }
 
 
-        /* ============================================================
-           WORLDBUILDING
-        ============================================================ */
+        /* =====================================================
+           WORLD BUILDING
+        ===================================================== */
 
         .worldbuilding-grid {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
+                repeat(3, 1fr);
 
-            gap: 18px;
+            gap:
+                18px;
 
-            margin-top: 48px;
+            margin-top:
+                42px;
 
         }
 
 
         .worldbuilding-card {
 
-            min-height: 210px;
+            position:
+                relative;
 
-            padding: 28px;
+            padding:
+                30px;
 
-            border-radius: 13px;
+            min-height:
+                225px;
 
             border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+                1px solid var(--ideas-border);
+
+            border-radius:
+                22px;
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .015
-                );
+                rgba(255,255,255,0.035);
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
 
         }
 
 
-        .worldbuilding-card span {
+        .worldbuilding-card:hover {
 
-            display: block;
+            transform:
+                translateY(-7px);
 
-            margin-bottom: 30px;
+            background:
+                rgba(255,255,255,0.07);
 
-            font-size: .72rem;
+            border-color:
+                var(--ideas-border-hover);
 
-            letter-spacing: .14em;
+        }
 
-            color: #64748b;
+
+        .worldbuilding-card > span {
+
+            display:
+                block;
+
+            margin-bottom:
+                36px;
+
+            font-size:
+                0.75rem;
+
+            opacity:
+                0.52;
+
+            letter-spacing:
+                0.12em;
 
         }
 
@@ -715,171 +1099,104 @@
         .worldbuilding-card h3 {
 
             margin:
-                0
-                0
-                10px;
+                0 0 12px;
 
-            font-size: 1.25rem;
-
-            color: #f8fafc;
+            font-size:
+                1.28rem;
 
         }
 
 
         .worldbuilding-card p {
 
-            margin: 0;
-
-            font-size: .9rem;
-
-            line-height: 1.7;
-
-        }
-
-
-        /* ============================================================
-           FANTASY AND FICTION
-        ============================================================ */
-
-        .genre-statement {
-
-            position: relative;
-
-            margin-top: 45px;
-
-            padding:
-                58px
-                50px;
-
-            border-radius: 16px;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
-
-            background:
-
-                linear-gradient(
-                    135deg,
-
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .035
-                    ),
-
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .01
-                    )
-                );
-
-        }
-
-
-        .genre-statement h3 {
-
-            max-width: 800px;
-
             margin:
-                0
-                0
-                22px;
+                0;
 
-            font-size:
-                clamp(
-                    1.9rem,
-                    3.2vw,
-                    3.2rem
-                );
+            color:
+                var(--ideas-text-soft);
 
-            line-height: 1.12;
-
-            letter-spacing: -.035em;
-
-            color: #f8fafc;
+            line-height:
+                1.7;
 
         }
 
 
-        .genre-statement p {
-
-            max-width: 760px;
-
-        }
-
-
-        .genre-statement p:last-child {
-
-            margin-bottom: 0;
-
-        }
-
-
-        /* ============================================================
+        /* =====================================================
            PHILOSOPHY
-        ============================================================ */
+        ===================================================== */
 
         .philosophy-list {
 
-            margin-top: 48px;
+            display:
+                grid;
 
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+            gap:
+                14px;
+
+            margin-top:
+                42px;
 
         }
 
 
         .philosophy-row {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
-                110px
-                minmax(
-                    0,
-                    1fr
-                );
+                90px 1fr;
 
-            gap: 35px;
+            gap:
+                26px;
+
+            align-items:
+                start;
 
             padding:
-                30px
-                0;
+                30px;
 
-            border-bottom:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+            border:
+                1px solid transparent;
+
+            border-radius:
+                22px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                border-color 0.3s ease;
+
+        }
+
+
+        .philosophy-row:hover {
+
+            transform:
+                translateX(8px);
+
+            background:
+                rgba(255,255,255,0.055);
+
+            border-color:
+                var(--ideas-border);
 
         }
 
 
         .philosophy-number {
 
-            font-size: .78rem;
+            font-size:
+                0.8rem;
 
-            font-weight: 600;
+            letter-spacing:
+                0.12em;
 
-            color: #64748b;
+            opacity:
+                0.48;
 
         }
 
@@ -887,100 +1204,120 @@
         .philosophy-row h3 {
 
             margin:
-                0
-                0
-                10px;
+                0 0 10px;
 
-            font-size: 1.3rem;
-
-            color: #f8fafc;
+            font-size:
+                1.35rem;
 
         }
 
 
         .philosophy-row p {
 
-            margin: 0;
+            margin:
+                0;
+
+            color:
+                var(--ideas-text-soft);
+
+            line-height:
+                1.72;
 
         }
 
 
-        /* ============================================================
-           LONG TERM VISION
-        ============================================================ */
+        /* =====================================================
+           TIMELINE
+           NO SCROLL-DRAWING LINE
+        ===================================================== */
 
         .timeline {
 
-            margin-top: 50px;
+            display:
+                grid;
 
-            border-left:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .1
-                );
+            gap:
+                16px;
+
+            margin-top:
+                42px;
 
         }
 
 
         .timeline-item {
 
-            position: relative;
+            position:
+                relative;
 
             padding:
-                0
-                0
-                48px
-                42px;
+                34px;
+
+            border:
+                1px solid var(--ideas-border);
+
+            border-radius:
+                24px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                background 0.35s ease;
 
         }
 
 
-        .timeline-item:last-child {
+        .timeline-item:hover {
 
-            padding-bottom: 0;
+            transform:
+                translateY(-5px);
 
-        }
+            border-color:
+                var(--ideas-border-hover);
 
-
-        .timeline-item::before {
-
-            content: "";
-
-            position: absolute;
-
-            left: -5px;
-
-            top: 5px;
-
-            width: 9px;
-
-            height: 9px;
-
-            border-radius: 50%;
-
-            background: #f8fafc;
+            background:
+                rgba(255,255,255,0.065);
 
         }
 
 
         .timeline-stage {
 
-            display: block;
+            display:
+                inline-flex;
 
-            margin-bottom: 12px;
+            padding:
+                7px 12px;
 
-            font-size: .72rem;
+            margin-bottom:
+                20px;
 
-            font-weight: 600;
+            border:
+                1px solid var(--ideas-border);
 
-            letter-spacing: .15em;
+            border-radius:
+                999px;
 
-            text-transform: uppercase;
+            background:
+                rgba(255,255,255,0.04);
 
-            color: #64748b;
+            font-size:
+                0.75rem;
+
+            letter-spacing:
+                0.08em;
+
+            text-transform:
+                uppercase;
 
         }
 
@@ -988,41 +1325,51 @@
         .timeline-item h3 {
 
             margin:
-                0
-                0
-                12px;
+                0 0 12px;
 
-            font-size: 1.5rem;
-
-            color: #f8fafc;
+            font-size:
+                1.4rem;
 
         }
 
 
         .timeline-item p {
 
-            margin: 0;
+            margin:
+                0;
+
+            color:
+                var(--ideas-text-soft);
+
+            line-height:
+                1.75;
 
         }
 
 
-        /* ============================================================
+        /* =====================================================
            ECOSYSTEM
-        ============================================================ */
+        ===================================================== */
 
         .ecosystem-flow {
 
-            display: flex;
+            display:
+                flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            flex-wrap: wrap;
+            flex-wrap:
+                wrap;
 
-            gap: 14px;
+            gap:
+                14px;
 
-            margin-top: 50px;
+            margin-top:
+                46px;
 
         }
 
@@ -1030,223 +1377,253 @@
         .ecosystem-item {
 
             padding:
-                15px
-                22px;
-
-            border-radius: 100px;
+                15px 20px;
 
             border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .09
-                );
+                1px solid var(--ideas-border);
+
+            border-radius:
+                999px;
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .02
-                );
+                rgba(255,255,255,0.045);
 
-            font-size: .9rem;
+            backdrop-filter:
+                blur(12px);
 
-            color: #f8fafc;
+            -webkit-backdrop-filter:
+                blur(12px);
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease;
+
+        }
+
+
+        .ecosystem-item:hover {
+
+            transform:
+                translateY(-4px)
+                scale(1.04);
+
+            background:
+                rgba(255,255,255,0.09);
 
         }
 
 
         .ecosystem-arrow {
 
-            color: #64748b;
-
-            font-size: 1.1rem;
-
-        }
-
-
-        /* ============================================================
-           FUTURE IDEAS
-        ============================================================ */
-
-        .future-ideas {
-
-            position: relative;
-
-            overflow: hidden;
-
-            margin-top: 42px;
-
-            padding:
-                55px
-                48px;
-
-            border-radius: 16px;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
-                );
-
-        }
-
-
-        .future-ideas h3 {
-
-            max-width: 780px;
-
-            margin:
-                0
-                0
-                22px;
-
             font-size:
-                clamp(
-                    1.8rem,
-                    3vw,
-                    3rem
-                );
+                1.2rem;
 
-            line-height: 1.15;
+            opacity:
+                0.5;
 
-            color: #f8fafc;
+            transition:
+                transform 0.3s ease;
 
         }
 
 
-        .future-ideas p {
+        .ecosystem-flow:hover .ecosystem-arrow {
 
-            max-width: 760px;
-
-        }
-
-
-        .future-ideas p:last-child {
-
-            margin-bottom: 0;
+            transform:
+                translateX(3px);
 
         }
 
 
-        /* ============================================================
-           FINAL SECTION
-        ============================================================ */
+        /* =====================================================
+           FINAL
+        ===================================================== */
 
         .ideas-final {
 
-            padding:
-                115px 0
-                125px;
+            position:
+                relative;
 
-            text-align: center;
+            overflow:
+                hidden;
+
+            margin-top:
+                20px;
+
+            padding:
+                clamp(45px, 7vw, 80px);
+
+            border:
+                1px solid var(--ideas-border);
+
+            border-radius:
+                32px;
+
+            text-align:
+                center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.025)
+                );
+
+            backdrop-filter:
+                blur(24px)
+                saturate(130%);
+
+            -webkit-backdrop-filter:
+                blur(24px)
+                saturate(130%);
+
+            box-shadow:
+                var(--ideas-shadow);
+
+        }
+
+
+        .ideas-final::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                420px;
+
+            height:
+                420px;
+
+            border-radius:
+                50%;
+
+            left:
+                50%;
+
+            top:
+                -270px;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.13),
+                    transparent 68%
+                );
+
+            pointer-events:
+                none;
 
         }
 
 
         .ideas-final h2 {
 
-            max-width: 900px;
+            position:
+                relative;
+
+            max-width:
+                760px;
 
             margin:
-                0 auto
-                22px;
+                0 auto 24px;
 
             font-size:
-                clamp(
-                    2.6rem,
-                    5vw,
-                    5rem
-                );
+                clamp(2rem, 4.5vw, 3.8rem);
 
-            line-height: 1;
+            line-height:
+                1.08;
 
-            letter-spacing: -.05em;
-
-            color: #f8fafc;
+            letter-spacing:
+                -0.045em;
 
         }
 
 
         .ideas-final p {
 
-            max-width: 680px;
+            position:
+                relative;
+
+            max-width:
+                680px;
 
             margin:
-                0 auto
-                34px;
+                0 auto;
 
-            line-height: 1.85;
+            color:
+                var(--ideas-text-soft);
 
-            color: #94a3b8;
+            line-height:
+                1.8;
 
         }
 
 
-        /* ============================================================
-           BLENDED ACTIONS
-        ============================================================ */
-
         .ideas-final-actions {
 
-            display: flex;
+            position:
+                relative;
 
-            justify-content: center;
+            display:
+                flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 28px;
+            justify-content:
+                center;
 
-            flex-wrap: wrap;
+            flex-wrap:
+                wrap;
+
+            gap:
+                18px;
+
+            margin-top:
+                38px;
 
         }
 
 
         .idea-text-link {
 
-            display: inline-flex;
+            display:
+                inline-flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 9px;
+            gap:
+                12px;
 
-            padding: 8px 0;
+            padding:
+                15px 20px;
 
-            text-decoration: none;
+            border:
+                1px solid var(--ideas-border);
 
-            font-size: .92rem;
+            border-radius:
+                999px;
 
-            font-weight: 500;
+            background:
+                rgba(255,255,255,0.05);
 
-            color: #f8fafc;
+            color:
+                inherit;
 
-            border-bottom:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .22
-                );
+            text-decoration:
+                none;
 
             transition:
-                transform .25s ease,
-                color .25s ease,
-                border-color .25s ease;
+                transform 0.3s ease,
+                background 0.3s ease,
+                border-color 0.3s ease;
 
         }
 
@@ -1254,45 +1631,13 @@
         .idea-text-link:hover {
 
             transform:
-                translateY(-2px);
+                translateY(-4px);
+
+            background:
+                rgba(255,255,255,0.10);
 
             border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .65
-                );
-
-        }
-
-
-        .idea-text-link.secondary {
-
-            color: #94a3b8;
-
-            border-color:
-                rgba(
-                    148,
-                    163,
-                    184,
-                    .22
-                );
-
-        }
-
-
-        .idea-text-link.secondary:hover {
-
-            color: #f8fafc;
-
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .4
-                );
+                var(--ideas-border-hover);
 
         }
 
@@ -1300,7 +1645,7 @@
         .idea-text-link span {
 
             transition:
-                transform .25s ease;
+                transform 0.3s ease;
 
         }
 
@@ -1308,112 +1653,245 @@
         .idea-text-link:hover span {
 
             transform:
-                translateX(4px);
+                translateX(5px);
 
         }
 
 
-        /* ============================================================
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            padding:
+                35px 20px;
+
+            text-align:
+                center;
+
+        }
+
+
+        .footer-content {
+
+            width:
+                min(1000px, 100%);
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .footer-content p {
+
+            margin:
+                0;
+
+            font-size:
+                0.88rem;
+
+            opacity:
+                0.52;
+
+        }
+
+
+        /* =====================================================
+           MOOD ENHANCEMENTS
+        ===================================================== */
+
+        html[data-dheere-mood="forest"]
+        .ideas-hero::before {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(70,190,105,0.18),
+                    transparent 68%
+                );
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        .section-kicker {
+
+            color:
+                #78d69a;
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .ideas-hero::before {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(85,155,235,0.20),
+                    transparent 68%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .section-kicker {
+
+            color:
+                #7db8f2;
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .ideas-hero::before {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(235,105,80,0.20),
+                    transparent 68%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .section-kicker {
+
+            color:
+                #ef9182;
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .ideas-hero::before {
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(150,130,245,0.20),
+                    transparent 68%
+                );
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .section-kicker {
+
+            color:
+                #b5a9ff;
+
+        }
+
+
+        /* =====================================================
            MOBILE
-        ============================================================ */
+        ===================================================== */
 
-        @media (
-            max-width: 950px
-        ) {
+        @media (max-width: 800px) {
 
-            .idea-flow {
-
-                grid-template-columns:
-                    repeat(
-                        2,
-                        1fr
-                    );
-
-            }
-
-
+            .creative-forms,
             .worldbuilding-grid {
 
                 grid-template-columns:
-                    repeat(
-                        2,
-                        1fr
-                    );
+                    repeat(2, 1fr);
 
             }
 
         }
 
 
-        @media (
-            max-width: 850px
-        ) {
+        @media (max-width: 640px) {
+
+            .navbar {
+
+                width:
+                    min(100% - 28px, 1180px);
+
+                padding:
+                    18px 0;
+
+            }
+
+
+            .back-home-link {
+
+                padding:
+                    0 13px;
+
+                min-height:
+                    38px;
+
+                font-size:
+                    0.78rem;
+
+            }
+
 
             .ideas-hero {
 
-                min-height: 60vh;
+                min-height:
+                    480px;
 
                 padding:
-                    120px 6%
-                    75px;
+                    65px 14px 80px;
+
+            }
+
+
+            .ideas-hero h1 {
+
+                font-size:
+                    clamp(4rem, 22vw, 6.5rem);
 
             }
 
 
             .ideas-container {
 
-                width: 88%;
+                width:
+                    min(100% - 28px, 1000px);
+
+                padding-bottom:
+                    80px;
 
             }
 
 
             .ideas-section {
 
-                padding:
-                    78px 0;
+                margin-bottom:
+                    90px;
 
             }
 
 
-            .creative-forms {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .ideas-final {
+            .vision-statement,
+            .genre-statement,
+            .future-ideas {
 
                 padding:
-                    85px 0
-                    95px;
+                    30px 24px;
 
-            }
-
-        }
-
-
-        @media (
-            max-width: 600px
-        ) {
-
-            .ideas-hero {
-
-                padding-top:
-                    105px;
+                border-radius:
+                    23px;
 
             }
 
 
-            .idea-flow {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
+            .creative-forms,
             .worldbuilding-grid {
 
                 grid-template-columns:
@@ -1422,22 +1900,10 @@
             }
 
 
-            .vision-statement,
-
-            .genre-statement,
-
-            .future-ideas {
-
-                padding:
-                    38px
-                    25px;
-
-            }
-
-
             .creative-form {
 
-                padding: 28px;
+                min-height:
+                    auto;
 
             }
 
@@ -1447,21 +1913,35 @@
                 grid-template-columns:
                     1fr;
 
-                gap: 14px;
+                gap:
+                    12px;
+
+                padding:
+                    24px;
+
+            }
+
+
+            .philosophy-row:hover {
+
+                transform:
+                    translateY(-4px);
 
             }
 
 
             .timeline-item {
 
-                padding-left: 30px;
+                padding:
+                    26px;
 
             }
 
 
             .ecosystem-flow {
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
             }
 
@@ -1474,11 +1954,68 @@
             }
 
 
+            .ecosystem-flow:hover .ecosystem-arrow {
+
+                transform:
+                    rotate(90deg)
+                    translateX(3px);
+
+            }
+
+
             .ideas-final-actions {
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 18px;
+                align-items:
+                    stretch;
+
+            }
+
+
+            .idea-text-link {
+
+                justify-content:
+                    center;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                scroll-behavior:
+                    auto !important;
+
+                transition-duration:
+                    0.01ms !important;
+
+            }
+
+
+            .ideas-section {
+
+                opacity:
+                    1;
+
+                transform:
+                    none;
 
             }
 
@@ -1666,164 +2203,19 @@
                     <span
                         class="section-kicker"
                     >
-                        How ideas grow
+                        From idea to experience
                     </span>
 
 
                     <h2>
-                        One idea can take more than one path.
+                        One idea can eventually take different forms.
                     </h2>
 
 
                     <p>
-                        Not every idea needs to become a massive
-                        universe. But some ideas develop naturally.
-                        They create questions, characters, places,
-                        histories, and possibilities that extend
-                        beyond the original starting point.
-                    </p>
-
-
-                    <div
-                        class="idea-flow"
-                    >
-
-
-                        <article
-                            class="idea-flow-item"
-                        >
-
-                            <span
-                                class="idea-flow-number"
-                            >
-                                01
-                            </span>
-
-
-                            <h3>
-                                Idea
-                            </h3>
-
-
-                            <p>
-                                A question, image, concept,
-                                character, conflict, or fragment
-                                worth exploring.
-                            </p>
-
-                        </article>
-
-
-
-                        <article
-                            class="idea-flow-item"
-                        >
-
-                            <span
-                                class="idea-flow-number"
-                            >
-                                02
-                            </span>
-
-
-                            <h3>
-                                Story
-                            </h3>
-
-
-                            <p>
-                                The idea gains narrative,
-                                characters, structure,
-                                emotion, and meaning.
-                            </p>
-
-                        </article>
-
-
-
-                        <article
-                            class="idea-flow-item"
-                        >
-
-                            <span
-                                class="idea-flow-number"
-                            >
-                                03
-                            </span>
-
-
-                            <h3>
-                                World
-                            </h3>
-
-
-                            <p>
-                                The story develops history,
-                                places, cultures, mythology,
-                                systems, and depth.
-                            </p>
-
-                        </article>
-
-
-
-                        <article
-                            class="idea-flow-item"
-                        >
-
-                            <span
-                                class="idea-flow-number"
-                            >
-                                04
-                            </span>
-
-
-                            <h3>
-                                Experience
-                            </h3>
-
-
-                            <p>
-                                When it makes sense, the
-                                world may eventually be
-                                explored in new forms.
-                            </p>
-
-                        </article>
-
-
-                    </div>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     CREATIVE FORMS
-                ================================================== -->
-
-                <section
-                    class="ideas-section"
-                >
-
-                    <span
-                        class="section-kicker"
-                    >
-                        Different forms
-                    </span>
-
-
-                    <h2>
-                        The same imagination does not need to stay in one medium.
-                    </h2>
-
-
-                    <p>
-                        Dheere Studio's long-term vision includes
-                        exploring different forms of storytelling
-                        and creative expression. These are
-                        possibilities—not promises that everything
-                        will be built immediately.
+                        A strong creative idea does not always
+                        have to remain limited to the form where
+                        it first appeared.
                     </p>
 
 
@@ -1831,173 +2223,73 @@
                         class="creative-forms"
                     >
 
-
                         <article
                             class="creative-form"
                         >
 
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 01
+                            <span>
+                                01
                             </span>
 
 
                             <h3>
-                                Novels
+                                Stories
                             </h3>
 
 
                             <p>
-                                Long-form storytelling allows a
-                                world to breathe. Characters can
-                                develop over time, histories can
-                                unfold gradually, and complex ideas
-                                can be explored without needing to
-                                rush toward the next scene.
+                                Narratives can become the first
+                                foundation for characters, ideas,
+                                conflict, and larger worlds.
                             </p>
 
                         </article>
-
 
 
                         <article
                             class="creative-form"
                         >
 
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 02
+                            <span>
+                                02
                             </span>
 
 
                             <h3>
-                                Comics
+                                Visual Worlds
                             </h3>
 
 
                             <p>
-                                Visual storytelling creates another
-                                language for characters and worlds.
-                                Illustration, composition, pacing,
-                                and visual atmosphere can reveal
-                                parts of a story differently.
+                                Art, design, and visual storytelling
+                                can reveal parts of a world that
+                                words alone cannot show.
                             </p>
 
                         </article>
-
 
 
                         <article
                             class="creative-form"
                         >
 
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 03
+                            <span>
+                                03
                             </span>
 
 
                             <h3>
-                                Animation
+                                Experiences
                             </h3>
 
 
                             <p>
-                                Movement, voice, environment,
-                                sound, and visual direction can
-                                eventually give a fictional world
-                                another way to exist beyond the page.
+                                Some ideas may eventually become
+                                interactive experiences when the
+                                world genuinely calls for them.
                             </p>
 
                         </article>
-
-
-
-                        <article
-                            class="creative-form"
-                        >
-
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 04
-                            </span>
-
-
-                            <h3>
-                                Games
-                            </h3>
-
-
-                            <p>
-                                Some worlds may eventually become
-                                more interesting when people can
-                                explore them, interact with their
-                                systems, make choices, and discover
-                                things directly.
-                            </p>
-
-                        </article>
-
-
-
-                        <article
-                            class="creative-form"
-                        >
-
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 05
-                            </span>
-
-
-                            <h3>
-                                Merchandise
-                            </h3>
-
-
-                            <p>
-                                Objects connected to a world can
-                                become meaningful when they carry
-                                identity, symbolism, characters,
-                                places, or ideas people genuinely
-                                care about.
-                            </p>
-
-                        </article>
-
-
-
-                        <article
-                            class="creative-form"
-                        >
-
-                            <span
-                                class="creative-form-index"
-                            >
-                                FORM 06
-                            </span>
-
-
-                            <h3>
-                                New forms
-                            </h3>
-
-
-                            <p>
-                                Not every future idea needs to fit
-                                into a category that already exists.
-                                Dheere Studio should remain open
-                                to experimentation when an idea
-                                creates a reason for something new.
-                            </p>
-
-                        </article>
-
 
                     </div>
 
@@ -2021,30 +2313,20 @@
 
 
                     <h2>
-                        A world is not simply the background behind a story.
+                        A world becomes stronger when its parts belong together.
                     </h2>
 
 
                     <p>
-                        The world changes what a story means.
-                        Its history shapes its people. Its beliefs
-                        shape its conflicts. Its geography changes
-                        how civilizations grow.
-                    </p>
-
-
-                    <p>
-                        Worldbuilding is one of the central ideas
-                        behind Dheere Studio because original worlds
-                        can create foundations for stories that
-                        continue to develop over time.
+                        Worldbuilding is more than creating names,
+                        maps, or large amounts of information.
+                        A fictional world needs internal structure.
                     </p>
 
 
                     <div
                         class="worldbuilding-grid"
                     >
-
 
                         <article
                             class="worldbuilding-card"
@@ -2061,12 +2343,12 @@
 
 
                             <p>
-                                The past creates the conditions
-                                that shape the present.
+                                The past creates consequences
+                                that continue shaping the world
+                                long after the original events.
                             </p>
 
                         </article>
-
 
 
                         <article
@@ -2084,13 +2366,12 @@
 
 
                             <p>
-                                Myths, beliefs, legends, and
-                                unanswered questions give
-                                worlds deeper layers.
+                                Beliefs, legends, and unanswered
+                                questions can give a world a deeper
+                                sense of time.
                             </p>
 
                         </article>
-
 
 
                         <article
@@ -2103,18 +2384,17 @@
 
 
                             <h3>
-                                Civilizations
+                                Characters
                             </h3>
 
 
                             <p>
-                                Different cultures, societies,
-                                values, and ways of living
-                                create real contrast.
+                                Different people reveal different
+                                parts of the same world through
+                                their choices and perspectives.
                             </p>
 
                         </article>
-
 
 
                         <article
@@ -2127,18 +2407,17 @@
 
 
                             <h3>
-                                Geography
+                                Places
                             </h3>
 
 
                             <p>
-                                Landscapes and environments
-                                influence how people survive,
-                                travel, and build.
+                                Locations can carry history,
+                                culture, conflict, and identity
+                                beyond their physical appearance.
                             </p>
 
                         </article>
-
 
 
                         <article
@@ -2164,7 +2443,6 @@
                         </article>
 
 
-
                         <article
                             class="worldbuilding-card"
                         >
@@ -2186,7 +2464,6 @@
                             </p>
 
                         </article>
-
 
                     </div>
 
@@ -2284,7 +2561,6 @@
                         class="philosophy-list"
                     >
 
-
                         <article
                             class="philosophy-row"
                         >
@@ -2313,7 +2589,6 @@
                             </div>
 
                         </article>
-
 
 
                         <article
@@ -2346,7 +2621,6 @@
                         </article>
 
 
-
                         <article
                             class="philosophy-row"
                         >
@@ -2375,7 +2649,6 @@
                             </div>
 
                         </article>
-
 
 
                         <article
@@ -2407,7 +2680,6 @@
                         </article>
 
 
-
                         <article
                             class="philosophy-row"
                         >
@@ -2436,7 +2708,6 @@
                             </div>
 
                         </article>
-
 
                     </div>
 
@@ -2475,7 +2746,6 @@
                         class="timeline"
                     >
 
-
                         <article
                             class="timeline-item"
                         >
@@ -2500,7 +2770,6 @@
                             </p>
 
                         </article>
-
 
 
                         <article
@@ -2529,7 +2798,6 @@
                         </article>
 
 
-
                         <article
                             class="timeline-item"
                         >
@@ -2556,7 +2824,6 @@
                         </article>
 
 
-
                         <article
                             class="timeline-item"
                         >
@@ -2581,7 +2848,6 @@
                             </p>
 
                         </article>
-
 
                     </div>
 
@@ -2887,7 +3153,6 @@
 
             </div>
 
-
         </main>
 
 
@@ -2916,13 +3181,107 @@
 
 
 
-    <!-- ========================================================
+    <!-- ============================================================
          MOOD ENGINE
-    ========================================================= -->
+    ============================================================ -->
 
     <script
         src="mood-engine.js"
     ></script>
+
+
+
+    <!-- ============================================================
+         SCROLL REVEAL
+         NO DRAWING LINE EFFECT
+    ============================================================ -->
+
+    <script>
+
+        "use strict";
+
+
+        const revealSections =
+            document.querySelectorAll(
+                ".ideas-section"
+            );
+
+
+        if (
+            "IntersectionObserver"
+            in window
+        ) {
+
+            const revealObserver =
+                new IntersectionObserver(
+
+                    (
+                        entries,
+                        observer
+                    ) => {
+
+                        entries.forEach(
+                            entry => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    entry.target.classList.add(
+                                        "is-visible"
+                                    );
+
+
+                                    observer.unobserve(
+                                        entry.target
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    },
+
+                    {
+
+                        threshold:
+                            0.10,
+
+                        rootMargin:
+                            "0px 0px -40px 0px"
+
+                    }
+
+                );
+
+
+            revealSections.forEach(
+                section => {
+
+                    revealObserver.observe(
+                        section
+                    );
+
+                }
+            );
+
+
+        } else {
+
+            revealSections.forEach(
+                section => {
+
+                    section.classList.add(
+                        "is-visible"
+                    );
+
+                }
+            );
+
+        }
+
+    </script>
 
 
 </body>

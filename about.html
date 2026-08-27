@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,103 +12,666 @@
 
     <title>About — Dheere Studio</title>
 
+    <meta
+        name="description"
+        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences."
+    >
+
+
+    <!-- MAIN STYLES -->
+
     <link
         rel="stylesheet"
         href="homepage.css"
     >
+
+
+    <!-- MOOD SYSTEM -->
 
     <link
         rel="stylesheet"
         href="mood.css"
     >
 
-    <meta
-        name="description"
-        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences."
-    >
 
     <style>
 
+
+        /* =====================================================
+           ABOUT PAGE FOUNDATION
+           ===================================================== */
+
         .about-page {
-            position: relative;
-            isolation: isolate;
+
+            position:
+                relative;
+
+            isolation:
+                isolate;
+
+            overflow:
+                hidden;
+
         }
 
+
         .about-page::before {
-            content: "";
 
-            position: fixed;
+            content:
+                "";
 
-            inset: 0;
+            position:
+                fixed;
 
-            pointer-events: none;
+            inset:
+                0;
 
-            z-index: -1;
+            pointer-events:
+                none;
+
+            z-index:
+                -3;
 
             background:
+
                 radial-gradient(
-                    circle at 12% 18%,
-                    rgba(255,255,255,.035),
+                    circle at 10% 15%,
+                    rgba(255,255,255,.07),
                     transparent 28%
                 ),
 
                 radial-gradient(
-                    circle at 88% 72%,
-                    rgba(255,255,255,.025),
-                    transparent 30%
+                    circle at 90% 75%,
+                    rgba(255,255,255,.045),
+                    transparent 32%
+                ),
+
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(255,255,255,.018),
+                    transparent 45%
                 );
 
-            opacity: .8;
+            animation:
+                aboutAmbient 18s ease-in-out infinite alternate;
+
+        }
+
+
+        .about-page::after {
+
+            content:
+                "";
+
+            position:
+                fixed;
+
+            width:
+                500px;
+
+            height:
+                500px;
+
+            left:
+                -200px;
+
+            top:
+                25%;
+
+            border-radius:
+                50%;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -2;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.035),
+                    transparent 68%
+                );
+
+            filter:
+                blur(25px);
+
+            animation:
+                aboutOrb 14s ease-in-out infinite alternate;
+
+        }
+
+
+        @keyframes aboutAmbient {
+
+            0% {
+
+                transform:
+                    scale(1);
+
+                opacity:
+                    .7;
+
+            }
+
+
+            100% {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    1;
+
+            }
+
+        }
+
+
+        @keyframes aboutOrb {
+
+            0% {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    );
+
+            }
+
+
+            100% {
+
+                transform:
+                    translate3d(
+                        180px,
+                        -80px,
+                        0
+                    );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           READING PROGRESS
+           ===================================================== */
+
+        .about-progress {
+
+            position:
+                fixed;
+
+            left:
+                0;
+
+            top:
+                0;
+
+            width:
+                0%;
+
+            height:
+                2px;
+
+            z-index:
+                9999;
+
+            background:
+                rgba(255,255,255,.85);
+
+            box-shadow:
+                0 0 16px rgba(255,255,255,.45);
+
+            transition:
+                width .1s linear;
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+           ===================================================== */
+
+        .about-page .navbar {
+
+            position:
+                relative;
+
+            z-index:
+                20;
+
         }
 
 
         .nav-actions {
-            display: flex;
 
-            gap: 12px;
+            display:
+                flex;
 
-            align-items: center;
+            gap:
+                12px;
+
+            align-items:
+                center;
+
         }
 
 
+        .back-home-link {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            background:
+                rgba(255,255,255,.025);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            transition:
+                transform .3s ease,
+                background .3s ease,
+                border-color .3s ease,
+                box-shadow .3s ease;
+
+        }
+
+
+        .back-home-link::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+                linear-gradient(
+                    115deg,
+                    transparent,
+                    rgba(255,255,255,.08),
+                    transparent
+                );
+
+            transform:
+                translateX(-120%);
+
+            transition:
+                transform .65s ease;
+
+        }
+
+
+        .back-home-link:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                rgba(255,255,255,.055);
+
+            border-color:
+                rgba(255,255,255,.2);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,.14);
+
+        }
+
+
+        .back-home-link:hover::before {
+
+            transform:
+                translateX(120%);
+
+        }
+
+
+        /* =====================================================
+           HERO
+           ===================================================== */
+
+        .about-hero {
+
+            position:
+                relative;
+
+            padding-top:
+                76px;
+
+            padding-bottom:
+                58px;
+
+        }
+
+
+        .about-hero .hero-content {
+
+            position:
+                relative;
+
+            max-width:
+                820px;
+
+            padding:
+                42px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            border-radius:
+                24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.07),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+
+                0 30px 90px
+                rgba(0,0,0,.2),
+
+                inset 0 1px 0
+                rgba(255,255,255,.08);
+
+            backdrop-filter:
+                blur(22px);
+
+            -webkit-backdrop-filter:
+                blur(22px);
+
+            overflow:
+                hidden;
+
+            animation:
+                heroReveal .9s cubic-bezier(.2,.8,.2,1)
+                both;
+
+        }
+
+
+        .about-hero .hero-content::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                260px;
+
+            height:
+                260px;
+
+            right:
+                -110px;
+
+            top:
+                -140px;
+
+            border-radius:
+                50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.1),
+                    transparent 68%
+                );
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .about-hero .hero-content::after {
+
+            content:
+                "ABOUT";
+
+            position:
+                absolute;
+
+            right:
+                28px;
+
+            bottom:
+                20px;
+
+            font-size:
+                clamp(2.5rem, 7vw, 6rem);
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .18em;
+
+            color:
+                rgba(255,255,255,.025);
+
+            pointer-events:
+                none;
+
+            user-select:
+                none;
+
+        }
+
+
+        @keyframes heroReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(28px);
+
+            }
+
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .about-kicker {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                18px;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .about-kicker::before {
+
+            content:
+                "";
+
+            width:
+                28px;
+
+            height:
+                1px;
+
+            background:
+                currentColor;
+
+            opacity:
+                .65;
+
+        }
+
+
+        .about-hero h1 {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                700px;
+
+            margin-bottom:
+                18px;
+
+            line-height:
+                .98;
+
+            letter-spacing:
+                -.035em;
+
+        }
+
+
+        .about-hero .hero-content > p {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                650px;
+
+            font-size:
+                1.05rem;
+
+            line-height:
+                1.8;
+
+        }
+
+
+        /* =====================================================
+           LANGUAGE SWITCH
+           ===================================================== */
+
         .lang-switch {
-            display: inline-flex;
 
-            gap: 4px;
+            position:
+                relative;
 
-            margin-top: 20px;
+            z-index:
+                5;
 
-            padding: 4px;
+            display:
+                inline-flex;
 
-            width: fit-content;
+            gap:
+                5px;
 
-            border-radius: 9px;
+            margin-top:
+                28px;
+
+            padding:
+                5px;
+
+            border-radius:
+                14px;
 
             background:
                 rgba(255,255,255,.035);
 
             border:
-                1px solid rgba(255,255,255,.08);
+                1px solid rgba(255,255,255,.1);
 
             backdrop-filter:
-                blur(10px);
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.05);
+
         }
 
 
         .lang-btn {
-            border: 0;
+
+            position:
+                relative;
+
+            border:
+                0;
 
             background:
                 transparent;
 
             color:
-                #64748b;
+                #7c8798;
 
             padding:
-                7px 14px;
+                9px 17px;
 
             border-radius:
-                6px;
+                10px;
 
             font:
                 inherit;
@@ -115,106 +680,366 @@
                 .82rem;
 
             font-weight:
-                500;
+                600;
 
             cursor:
                 pointer;
 
             transition:
-                color .25s ease,
-                background-color .25s ease,
-                box-shadow .25s ease;
+                color .3s ease,
+                background .3s ease,
+                transform .3s ease,
+                box-shadow .3s ease;
+
         }
 
 
         .lang-btn:hover {
+
             color:
                 #f8fafc;
+
+            transform:
+                translateY(-1px);
+
         }
 
 
         .lang-btn.active {
+
             background:
-                #f8fafc;
+                rgba(255,255,255,.92);
 
             color:
                 #0b0c0e;
 
             box-shadow:
-                0 3px 14px rgba(0,0,0,.16);
+
+                0 5px 18px
+                rgba(0,0,0,.18),
+
+                inset 0 1px 0
+                rgba(255,255,255,.5);
+
         }
 
 
         .hidden-about {
+
             display:
                 none !important;
+
         }
 
 
-        .about-hero {
+        /* =====================================================
+           CONTENT WRAPPER
+           ===================================================== */
+
+        #englishAbout,
+        #hinglishAbout {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                18px;
+
             padding-bottom:
-                36px;
+                20px;
 
-            border-bottom:
-                none;
         }
 
 
-        .about-hero .hero-content {
-            max-width:
-                720px;
-        }
+        /* =====================================================
+           ABOUT SECTIONS
+           ===================================================== */
 
+        .about-section {
 
-        .about-hero h1 {
-            max-width:
-                700px;
-        }
-
-
-        .about-section > h2 {
-            margin-bottom:
-                22px;
-        }
-
-
-        .about-section > p {
-            max-width:
-                720px;
-        }
-
-
-        .quote-box {
             position:
                 relative;
 
             max-width:
-                720px;
+                900px;
 
             margin:
-                28px 0 26px;
+                0 auto;
+
+            width:
+                calc(100% - 40px);
 
             padding:
-                22px 24px;
-
-            border-radius:
-                10px;
-
-            background:
-                rgba(255,255,255,.035);
+                38px 42px;
 
             border:
-                1px solid rgba(255,255,255,.09);
+                1px solid rgba(255,255,255,.07);
+
+            border-radius:
+                20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.032),
+                    rgba(255,255,255,.012)
+                );
 
             box-shadow:
-                0 14px 45px rgba(0,0,0,.12);
+
+                0 18px 60px
+                rgba(0,0,0,.08),
+
+                inset 0 1px 0
+                rgba(255,255,255,.035);
 
             backdrop-filter:
-                blur(10px);
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            overflow:
+                hidden;
+
+            transition:
+                transform .45s cubic-bezier(.2,.8,.2,1),
+                border-color .45s ease,
+                background .45s ease,
+                box-shadow .45s ease;
+
+        }
+
+
+        .about-section::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            pointer-events:
+                none;
+
+            background:
+                linear-gradient(
+                    115deg,
+                    transparent 30%,
+                    rgba(255,255,255,.025),
+                    transparent 70%
+                );
+
+            opacity:
+                0;
+
+            transition:
+                opacity .4s ease;
+
+        }
+
+
+        .about-section:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,255,255,.13);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.016)
+                );
+
+            box-shadow:
+
+                0 28px 75px
+                rgba(0,0,0,.14),
+
+                inset 0 1px 0
+                rgba(255,255,255,.06);
+
+        }
+
+
+        .about-section:hover::before {
+
+            opacity:
+                1;
+
+        }
+
+
+        .about-section > * {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+        }
+
+
+        .about-section h2 {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                14px;
+
+            margin:
+                0 0 22px;
+
+            font-size:
+                clamp(1.4rem, 3vw, 2rem);
+
+            letter-spacing:
+                -.025em;
+
+        }
+
+
+        .about-section h2::before {
+
+            content:
+                "";
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            flex:
+                0 0 auto;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,.7);
+
+            box-shadow:
+                0 0 14px rgba(255,255,255,.35);
+
+        }
+
+
+        .about-section p {
+
+            max-width:
+                740px;
+
+            line-height:
+                1.85;
+
+        }
+
+
+        .about-section strong {
+
+            color:
+                #f8fafc;
+
+            font-weight:
+                600;
+
+        }
+
+
+        /* =====================================================
+           QUOTE BOX
+           ===================================================== */
+
+        .quote-box {
+
+            position:
+                relative;
+
+            max-width:
+                760px;
+
+            margin:
+                30px 0;
+
+            padding:
+                26px 28px;
+
+            border-radius:
+                16px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            background:
+                rgba(255,255,255,.045);
+
+            box-shadow:
+
+                0 16px 45px
+                rgba(0,0,0,.1),
+
+                inset 0 1px 0
+                rgba(255,255,255,.06);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            overflow:
+                hidden;
+
         }
 
 
         .quote-box::before {
+
+            content:
+                "“";
+
+            position:
+                absolute;
+
+            left:
+                16px;
+
+            top:
+                -15px;
+
+            font-size:
+                7rem;
+
+            line-height:
+                1;
+
+            color:
+                rgba(255,255,255,.055);
+
+            font-family:
+                Georgia,
+                serif;
+
+        }
+
+
+        .quote-box::after {
+
             content:
                 "";
 
@@ -225,46 +1050,54 @@
                 0;
 
             top:
-                14px;
+                18px;
 
             bottom:
-                14px;
+                18px;
 
             width:
                 2px;
 
-            border-radius:
-                2px;
-
             background:
-                currentColor;
+                rgba(255,255,255,.5);
 
-            opacity:
-                .45;
+            box-shadow:
+                0 0 12px rgba(255,255,255,.2);
+
         }
 
 
         .quote-box p {
+
             margin:
                 0;
 
             padding-left:
-                12px;
+                10px;
 
             color:
                 #f8fafc;
 
             font-size:
-                .98rem;
+                1rem;
 
             font-weight:
                 500;
+
+            line-height:
+                1.7;
+
         }
 
 
+        /* =====================================================
+           ROADMAP
+           ===================================================== */
+
         .roadmap-list {
+
             max-width:
-                720px;
+                760px;
 
             margin:
                 0;
@@ -276,102 +1109,16 @@
                 none;
 
             display:
-                flex;
-
-            flex-direction:
-                column;
+                grid;
 
             gap:
                 12px;
+
         }
 
-
-        .roadmap-list li {
-            position:
-                relative;
-
-            padding:
-                14px 16px 14px 20px;
-
-            border:
-                1px solid rgba(255,255,255,.055);
-
-            border-radius:
-                8px;
-
-            background:
-                rgba(255,255,255,.018);
-
-            color:
-                #94a3b8;
-
-            font-size:
-                .96rem;
-
-            font-weight:
-                300;
-
-            transition:
-                background-color .3s ease,
-                border-color .3s ease,
-                transform .3s ease;
-        }
-
-
-        .roadmap-list li::before {
-            content:
-                "";
-
-            position:
-                absolute;
-
-            left:
-                8px;
-
-            top:
-                21px;
-
-            width:
-                4px;
-
-            height:
-                4px;
-
-            border-radius:
-                50%;
-
-            background:
-                currentColor;
-
-            opacity:
-                .55;
-        }
-
-
-        .roadmap-list li:hover {
-            transform:
-                translateX(3px);
-
-            background:
-                rgba(255,255,255,.03);
-
-            border-color:
-                rgba(255,255,255,.12);
-        }
-
-
-        .roadmap-list strong {
-            color:
-                #f8fafc;
-
-            font-weight:
-                500;
-        }
-
-
-        /* CLICKABLE CREATION LINKS */
 
         .roadmap-link {
+
             display:
                 block;
 
@@ -380,34 +1127,167 @@
 
             text-decoration:
                 none;
+
         }
 
 
-        .roadmap-link:hover {
+        .roadmap-list li {
+
+            position:
+                relative;
+
+            padding:
+                18px 52px 18px 22px;
+
+            border:
+                1px solid rgba(255,255,255,.065);
+
+            border-radius:
+                14px;
+
+            background:
+                rgba(255,255,255,.02);
+
             color:
-                inherit;
-        }
+                #94a3b8;
 
+            font-size:
+                .96rem;
 
-        .roadmap-link li {
-            cursor:
-                pointer;
-        }
+            line-height:
+                1.65;
 
+            overflow:
+                hidden;
 
-        .roadmap-link li strong {
             transition:
-                opacity .25s ease;
+                transform .35s cubic-bezier(.2,.8,.2,1),
+                background .35s ease,
+                border-color .35s ease,
+                box-shadow .35s ease;
+
         }
 
 
-        .roadmap-link:hover li strong {
+        .roadmap-list li::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                0;
+
+            top:
+                18px;
+
+            bottom:
+                18px;
+
+            width:
+                2px;
+
+            background:
+                rgba(255,255,255,.35);
+
             opacity:
-                .85;
+                .45;
+
+            transition:
+                opacity .3s ease,
+                height .3s ease;
+
         }
 
+
+        .roadmap-link li::after {
+
+            content:
+                "↗";
+
+            position:
+                absolute;
+
+            right:
+                20px;
+
+            top:
+                50%;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                rgba(255,255,255,.4);
+
+            font-size:
+                1.05rem;
+
+            transition:
+                transform .3s ease,
+                color .3s ease;
+
+        }
+
+
+        .roadmap-list li:hover {
+
+            transform:
+                translateX(6px);
+
+            background:
+                rgba(255,255,255,.045);
+
+            border-color:
+                rgba(255,255,255,.14);
+
+            box-shadow:
+                0 12px 32px rgba(0,0,0,.1);
+
+        }
+
+
+        .roadmap-list li:hover::before {
+
+            opacity:
+                1;
+
+        }
+
+
+        .roadmap-link:hover li::after {
+
+            transform:
+                translate(
+                    3px,
+                    -50%
+                );
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .roadmap-list strong {
+
+            color:
+                #f8fafc;
+
+            font-weight:
+                600;
+
+        }
+
+
+        /* =====================================================
+           ACTIONS
+           ===================================================== */
 
         .about-actions {
+
             display:
                 flex;
 
@@ -418,97 +1298,303 @@
                 wrap;
 
             margin-top:
-                24px;
+                28px;
+
+        }
+
+
+        .about-actions .button {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                background .3s ease;
+
+        }
+
+
+        .about-actions .button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 14px 32px rgba(0,0,0,.18);
+
         }
 
 
         .about-actions .button.secondary {
+
             background:
-                transparent;
+                rgba(255,255,255,.025);
 
             color:
                 #f8fafc;
 
-            border-color:
-                rgba(255,255,255,.18);
+            border:
+                1px solid rgba(255,255,255,.16);
+
+            backdrop-filter:
+                blur(12px);
+
         }
 
 
         .about-actions .button.secondary:hover {
+
             background:
-                rgba(255,255,255,.05);
+                rgba(255,255,255,.065);
 
             border-color:
                 rgba(255,255,255,.28);
+
         }
 
 
-        @media (max-width: 640px) {
+        /* =====================================================
+           SCROLL REVEAL
+           ===================================================== */
 
-            .nav-actions {
-                gap:
-                    8px;
-            }
+        .about-section.reveal {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(28px);
+
+        }
+
+
+        .about-section.reveal.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+            transition:
+
+                opacity .7s ease,
+                transform .7s cubic-bezier(.2,.8,.2,1),
+                border-color .45s ease,
+                background .45s ease,
+                box-shadow .45s ease;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .about-page footer {
+
+            position:
+                relative;
+
+            margin-top:
+                40px;
+
+            border-top:
+                1px solid rgba(255,255,255,.06);
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 720px) {
 
 
             .about-hero {
+
+                padding-top:
+                    42px;
+
                 padding-bottom:
-                    28px;
+                    36px;
+
+            }
+
+
+            .about-hero .hero-content {
+
+                padding:
+                    28px 22px;
+
+                border-radius:
+                    19px;
+
+            }
+
+
+            .about-section {
+
+                width:
+                    calc(100% - 28px);
+
+                padding:
+                    28px 22px;
+
+                border-radius:
+                    17px;
+
+            }
+
+
+            .about-section:hover {
+
+                transform:
+                    none;
+
+            }
+
+
+            .roadmap-list li:hover {
+
+                transform:
+                    none;
+
             }
 
 
             .lang-switch {
+
                 width:
                     100%;
+
             }
 
 
             .lang-btn {
+
                 flex:
                     1;
-            }
 
-
-            .quote-box {
                 padding:
-                    18px;
+                    10px;
+
             }
 
 
             .about-actions {
+
                 flex-direction:
                     column;
+
             }
 
 
             .about-actions .button {
+
                 width:
                     100%;
 
                 text-align:
                     center;
+
+            }
+
+
+            .nav-actions {
+
+                gap:
+                    7px;
+
+            }
+
+
+            .back-home-link {
+
+                padding:
+                    8px 10px;
+
+                font-size:
+                    .78rem;
+
+            }
+
+
+            .quote-box {
+
+                padding:
+                    22px 20px;
+
             }
 
         }
 
+
+        @media (prefers-reduced-motion: reduce) {
+
+
+            *,
+            *::before,
+            *::after {
+
+                animation:
+                    none !important;
+
+                transition:
+                    none !important;
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
+        }
+
+
     </style>
+
+
+    <!-- DHEERE MOOD ENGINE -->
 
     <script src="mood-engine.js"></script>
 
+
 </head>
 
+
 <body>
+
+
+    <!-- READING PROGRESS -->
+
+    <div
+        id="aboutProgress"
+        class="about-progress"
+    ></div>
+
+
 
     <div
         id="aboutPage"
         class="page-view about-page"
     >
 
-        <!-- HEADER / NAVIGATION BACK -->
+
+        <!-- ==================================================
+             HEADER
+             ================================================== -->
 
         <header>
 
+
             <nav class="navbar">
+
 
                 <div class="nav-logo">
 
@@ -517,6 +1603,7 @@
                     </a>
 
                 </div>
+
 
 
                 <div class="nav-actions">
@@ -530,21 +1617,36 @@
 
                 </div>
 
+
             </nav>
+
 
         </header>
 
 
-        <!-- MAIN ABOUT CONTENT -->
+
+        <!-- ==================================================
+             MAIN
+             ================================================== -->
 
         <main>
 
 
-            <!-- HERO SECTION & LANGUAGE TOGGLE -->
+
+            <!-- HERO -->
 
             <section class="hero-section about-hero">
 
+
                 <div class="hero-content">
+
+
+                    <div class="about-kicker">
+
+                        The Studio
+
+                    </div>
+
 
                     <h1>
                         ABOUT DHEERE STUDIO
@@ -556,13 +1658,20 @@
                     </p>
 
 
-                    <!-- LANGUAGE TOGGLE BUTTONS -->
 
-                    <div class="lang-switch">
+                    <!-- LANGUAGE SWITCH -->
+
+                    <div
+                        class="lang-switch"
+                        role="group"
+                        aria-label="Language selection"
+                    >
+
 
                         <button
                             id="btnEnglish"
                             class="lang-btn active"
+                            type="button"
                         >
                             English
                         </button>
@@ -571,22 +1680,28 @@
                         <button
                             id="btnHinglish"
                             class="lang-btn"
+                            type="button"
                         >
                             In Hinglish
                         </button>
 
+
                     </div>
 
+
                 </div>
+
 
             </section>
 
 
-            <!-- ====================================================
-                 1. ENGLISH VERSION
-                 ==================================================== -->
+
+            <!-- ==============================================
+                 ENGLISH VERSION
+                 ============================================== -->
 
             <div id="englishAbout">
+
 
 
                 <!-- WHAT IS DHEERE STUDIO -->
@@ -595,6 +1710,7 @@
                     id="what-is-studio"
                     class="about-section"
                 >
+
 
                     <h2>
                         What is Dheere Studio?
@@ -605,13 +1721,17 @@
                         Dheere Studio is an independent studio focused on building original stories, fantasy worlds, and creative experiences across different forms of media.
                     </p>
 
+
                     <br>
+
 
                     <p>
                         We aren't just a blog or a writing account. The goal is to take a single story and let it grow over time into books, artwork, animation, games, and other creative formats when the time is right.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHY DHEERE -->
@@ -620,6 +1740,7 @@
                     id="why-dheere"
                     class="about-section"
                 >
+
 
                     <h2>
                         Why "Dheere"?
@@ -630,11 +1751,14 @@
                         Dheere means slowly, but the idea isn't to move without ambition. It is about giving an idea enough time to become what it is supposed to become.
                     </p>
 
+
                     <br>
+
 
                     <p>
                         Not everything needs to be rushed out for quick attention.
                     </p>
+
 
 
                     <div class="quote-box">
@@ -646,11 +1770,14 @@
                     </div>
 
 
+
                     <p>
                         It means taking time to think through a story, rebuild its world, and make sure the foundation is solid before sharing it with the world.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHAT WE CREATE -->
@@ -659,6 +1786,7 @@
                     id="what-we-create"
                     class="about-section"
                 >
+
 
                     <h2>
                         What We Create
@@ -669,52 +1797,79 @@
                         Over time, our work takes shape in a few different forms:
                     </p>
 
+
                     <br>
 
 
+
                     <ul class="roadmap-list">
+
 
                         <a
                             href="stories.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Stories</strong>
+
                                 — Original novels and narratives.
+
                             </li>
+
                         </a>
 
 
+
                         <li>
+
                             <strong>Worlds</strong>
+
                             — Characters, mythology, lore, and world rules.
+
                         </li>
+
 
 
                         <a
                             href="experiences.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Experiences</strong>
+
                                 — Animation, games, and interactive projects.
+
                             </li>
+
                         </a>
+
 
 
                         <a
                             href="ideas.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Ideas</strong>
+
                                 — Studio updates, essays, and creative experiments.
+
                             </li>
+
                         </a>
+
 
                     </ul>
 
+
                 </section>
+
 
 
                 <!-- ABOUT THE FOUNDER -->
@@ -723,6 +1878,7 @@
                     id="about-founder"
                     class="about-section"
                 >
+
 
                     <h2>
                         About the Founder
@@ -733,6 +1889,7 @@
                         Dheere Studio was founded by Harsh Kushwah with the goal of building original creative projects over time rather than chasing short-term attention.
                     </p>
 
+
                     <br>
 
 
@@ -741,7 +1898,9 @@
                     </p>
 
 
+
                     <div class="about-actions">
+
 
                         <a
                             href="founder.html"
@@ -750,9 +1909,12 @@
                             Meet the Founder &rarr;
                         </a>
 
+
                     </div>
 
+
                 </section>
+
 
 
                 <!-- WHERE WE ARE STARTING -->
@@ -761,6 +1923,7 @@
                     id="where-we-start"
                     class="about-section"
                 >
+
 
                     <h2>
                         Where We're Starting
@@ -771,6 +1934,7 @@
                         Our first major project is <strong>Shunyavas</strong>—an original fantasy universe currently in development.
                     </p>
 
+
                     <br>
 
 
@@ -778,7 +1942,9 @@
                         We are starting with a story foundation because written words build the strongest base. Before a world can turn into visuals or games, its characters, history, and rules need to be clear first.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHAT'S NEXT -->
@@ -786,8 +1952,8 @@
                 <section
                     id="whats-next"
                     class="about-section"
-                    style="border-bottom: none;"
                 >
+
 
                     <h2>
                         What's Next
@@ -798,10 +1964,13 @@
                         Dheere Studio is still right at the beginning. The focus right now is simple: build Shunyavas, set up the studio foundations, and bring together a community of people who want to make things of their own.
                     </p>
 
+
                     <br>
 
 
+
                     <div class="about-actions">
+
 
                         <a
                             href="shunyavas.html"
@@ -811,6 +1980,7 @@
                         </a>
 
 
+
                         <a
                             href="community.html"
                             class="button secondary"
@@ -818,21 +1988,26 @@
                             Join The Community &rarr;
                         </a>
 
+
                     </div>
 
+
                 </section>
+
 
             </div>
 
 
-            <!-- ====================================================
-                 2. HINGLISH VERSION
-                 ==================================================== -->
+
+            <!-- ==============================================
+                 HINGLISH VERSION
+                 ============================================== -->
 
             <div
                 id="hinglishAbout"
                 class="hidden-about"
             >
+
 
 
                 <!-- WHAT IS DHEERE STUDIO -->
@@ -841,6 +2016,7 @@
                     id="what-is-studio-hi"
                     class="about-section"
                 >
+
 
                     <h2>
                         Dheere Studio Kya Hai?
@@ -851,6 +2027,7 @@
                         Dheere Studio ek independent creative studio hai jo original stories, fantasy worlds aur alag-alag tarah ke creative experiences banane par focus karta hai.
                     </p>
 
+
                     <br>
 
 
@@ -858,7 +2035,9 @@
                         Yeh sirf koi writing account ya simple blog nahi hai. Maqsad ek kahani se shuru karke use waqt ke sath books, artwork, animation, games aur dusre formats tak le jana hai jab sahi time aaye.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHY DHEERE -->
@@ -867,6 +2046,7 @@
                     id="why-dheere-hi"
                     class="about-section"
                 >
+
 
                     <h2>
                         "Dheere" Hi Kyun?
@@ -877,12 +2057,14 @@
                         Dheere ka matlab slow hota hai, lekin iska matlab bina kisi ambition ke chalna nahi hai. Iska matlab hai kisi idea ko utna waqt dena jitna use sach mein accha banne ke liye chahiye.
                     </p>
 
+
                     <br>
 
 
                     <p>
                         Har cheez ko jaldbazi mein bahar lana zaroori nahi hota.
                     </p>
+
 
 
                     <div class="quote-box">
@@ -894,11 +2076,14 @@
                     </div>
 
 
+
                     <p>
                         Iska matlab hai kahani ko waqt dena, uski duniya ko ache se samajhna, aur ek mazboot foundation taiyar karna pehle se bina kisi ghabrahat ke.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHAT WE CREATE -->
@@ -907,6 +2092,7 @@
                     id="what-we-create-hi"
                     class="about-section"
                 >
+
 
                     <h2>
                         Hum Kya Banate Hain
@@ -917,52 +2103,79 @@
                         Waqt ke sath hamara kaam in alag-alag roop mein samne aayega:
                     </p>
 
+
                     <br>
 
 
+
                     <ul class="roadmap-list">
+
 
                         <a
                             href="stories.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Stories</strong>
+
                                 — Original novels aur main stories.
+
                             </li>
+
                         </a>
 
 
+
                         <li>
+
                             <strong>Worlds</strong>
+
                             — Characters, mythology, lore aur universe ke rules.
+
                         </li>
+
 
 
                         <a
                             href="experiences.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Experiences</strong>
+
                                 — Animation, games aur interactive projects.
+
                             </li>
+
                         </a>
+
 
 
                         <a
                             href="ideas.html"
                             class="roadmap-link"
                         >
+
                             <li>
+
                                 <strong>Ideas</strong>
+
                                 — Studio updates, essays aur creative experiments.
+
                             </li>
+
                         </a>
+
 
                     </ul>
 
+
                 </section>
+
 
 
                 <!-- ABOUT THE FOUNDER -->
@@ -971,6 +2184,7 @@
                     id="about-founder-hi"
                     class="about-section"
                 >
+
 
                     <h2>
                         Founder Ke Baare Mein
@@ -981,6 +2195,7 @@
                         Dheere Studio ki shuruwaat Harsh Kushwah ne ek long-term vision ke sath ki hai—original creative projects ko jaldbazi ke bina waqt ke sath build karna.
                     </p>
 
+
                     <br>
 
 
@@ -989,7 +2204,9 @@
                     </p>
 
 
+
                     <div class="about-actions">
+
 
                         <a
                             href="founder.html"
@@ -998,9 +2215,12 @@
                             Founder Se Milen &rarr;
                         </a>
 
+
                     </div>
 
+
                 </section>
+
 
 
                 <!-- WHERE WE ARE STARTING -->
@@ -1009,6 +2229,7 @@
                     id="where-we-start-hi"
                     class="about-section"
                 >
+
 
                     <h2>
                         Hum Kahan Se Shuru Kar Rahe Hain
@@ -1019,6 +2240,7 @@
                         Hamara pehla major project hai <strong>Shunyavas</strong>—ek original fantasy universe jo abhi development mein hai.
                     </p>
 
+
                     <br>
 
 
@@ -1026,7 +2248,9 @@
                         Hum ek story foundation se shuru kar rahe hain kyunki likhi hui baatein sabse mazboot base banati hain. Kisi duniya ko animation ya game mein badalne se pehle uske characters, history aur rules ka pehle se clear hona zaroori hai.
                     </p>
 
+
                 </section>
+
 
 
                 <!-- WHAT'S NEXT -->
@@ -1034,8 +2258,8 @@
                 <section
                     id="whats-next-hi"
                     class="about-section"
-                    style="border-bottom: none;"
                 >
+
 
                     <h2>
                         Aage Kya Aane Wala Hai
@@ -1046,10 +2270,13 @@
                         Dheere Studio abhi ekdum shuruwaat mein hai. Abhi ka focus ekdum simple hai: Shunyavas ko build karna, studio ki buniyaad rakhna, aur aise logo ko sath lana jo khud ka kuch original banana chahte hain.
                     </p>
 
+
                     <br>
 
 
+
                     <div class="about-actions">
+
 
                         <a
                             href="shunyavas.html"
@@ -1059,6 +2286,7 @@
                         </a>
 
 
+
                         <a
                             href="community.html"
                             class="button secondary"
@@ -1066,18 +2294,26 @@
                             Community Join Karein &rarr;
                         </a>
 
+
                     </div>
+
 
                 </section>
 
+
             </div>
+
 
         </main>
 
 
-        <!-- FOOTER -->
+
+        <!-- ==================================================
+             FOOTER
+             ================================================== -->
 
         <footer>
+
 
             <div class="footer-content">
 
@@ -1087,99 +2323,358 @@
 
             </div>
 
+
         </footer>
+
 
     </div>
 
 
-    <!-- SCRIPT FOR LANGUAGE TOGGLE -->
+
+    <!-- ======================================================
+         PAGE SCRIPT
+         ====================================================== -->
 
     <script>
 
+
+        "use strict";
+
+
+
+        /* ====================================================
+           ELEMENTS
+           ==================================================== */
+
         const btnEnglish =
             document.getElementById(
-                'btnEnglish'
+                "btnEnglish"
             );
 
 
         const btnHinglish =
             document.getElementById(
-                'btnHinglish'
+                "btnHinglish"
             );
 
 
         const englishAbout =
             document.getElementById(
-                'englishAbout'
+                "englishAbout"
             );
 
 
         const hinglishAbout =
             document.getElementById(
-                'hinglishAbout'
+                "hinglishAbout"
             );
+
+
+        const aboutProgress =
+            document.getElementById(
+                "aboutProgress"
+            );
+
+
+
+        /* ====================================================
+           LANGUAGE
+           ==================================================== */
+
+        function showEnglish() {
+
+
+            btnEnglish.classList.add(
+                "active"
+            );
+
+
+            btnHinglish.classList.remove(
+                "active"
+            );
+
+
+            englishAbout.classList.remove(
+                "hidden-about"
+            );
+
+
+            hinglishAbout.classList.add(
+                "hidden-about"
+            );
+
+
+            initializeReveal(
+                englishAbout
+            );
+
+
+        }
+
+
+
+        function showHinglish() {
+
+
+            btnHinglish.classList.add(
+                "active"
+            );
+
+
+            btnEnglish.classList.remove(
+                "active"
+            );
+
+
+            hinglishAbout.classList.remove(
+                "hidden-about"
+            );
+
+
+            englishAbout.classList.add(
+                "hidden-about"
+            );
+
+
+            initializeReveal(
+                hinglishAbout
+            );
+
+
+        }
+
 
 
         btnEnglish.addEventListener(
 
-            'click',
+            "click",
 
-            () => {
-
-                btnEnglish.classList.add(
-                    'active'
-                );
-
-
-                btnHinglish.classList.remove(
-                    'active'
-                );
-
-
-                englishAbout.classList.remove(
-                    'hidden-about'
-                );
-
-
-                hinglishAbout.classList.add(
-                    'hidden-about'
-                );
-
-            }
+            showEnglish
 
         );
 
 
         btnHinglish.addEventListener(
 
-            'click',
+            "click",
 
-            () => {
+            showHinglish
 
-                btnHinglish.classList.add(
-                    'active'
+        );
+
+
+
+        /* ====================================================
+           READING PROGRESS
+           ==================================================== */
+
+        function updateProgress() {
+
+
+            const scrollTop =
+                window.scrollY ||
+                document.documentElement.scrollTop;
+
+
+            const documentHeight =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+
+            if (
+                documentHeight <= 0
+            ) {
+
+                aboutProgress.style.width =
+                    "0%";
+
+
+                return;
+
+            }
+
+
+            const progress =
+                Math.min(
+                    100,
+                    Math.max(
+                        0,
+                        (
+                            scrollTop /
+                            documentHeight
+                        ) *
+                        100
+                    )
                 );
 
 
-                btnEnglish.classList.remove(
-                    'active'
-                );
+            aboutProgress.style.width =
+                `${progress}%`;
 
 
-                hinglishAbout.classList.remove(
-                    'hidden-about'
-                );
+        }
 
 
-                englishAbout.classList.add(
-                    'hidden-about'
-                );
 
+        window.addEventListener(
+
+            "scroll",
+
+            updateProgress,
+
+            {
+                passive:
+                    true
             }
 
         );
 
+
+        updateProgress();
+
+
+
+        /* ====================================================
+           SCROLL REVEAL
+           ==================================================== */
+
+        let revealObserver =
+            null;
+
+
+
+        function initializeReveal(
+            container
+        ) {
+
+
+            const sections =
+                container.querySelectorAll(
+                    ".about-section"
+                );
+
+
+            if (
+                !("IntersectionObserver" in window)
+            ) {
+
+
+                sections.forEach(
+
+                    section => {
+
+                        section.classList.add(
+                            "visible"
+                        );
+
+                    }
+
+                );
+
+
+                return;
+
+            }
+
+
+
+            sections.forEach(
+
+                section => {
+
+                    section.classList.remove(
+                        "visible"
+                    );
+
+
+                    section.classList.add(
+                        "reveal"
+                    );
+
+                }
+
+            );
+
+
+
+            revealObserver =
+                new IntersectionObserver(
+
+                    entries => {
+
+
+                        entries.forEach(
+
+                            entry => {
+
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+
+                                    entry.target.classList.add(
+                                        "visible"
+                                    );
+
+
+                                    revealObserver.unobserve(
+                                        entry.target
+                                    );
+
+                                }
+
+
+                            }
+
+                        );
+
+
+                    },
+
+                    {
+
+                        threshold:
+                            0.08,
+
+                        rootMargin:
+                            "0px 0px -30px 0px"
+
+                    }
+
+                );
+
+
+
+            sections.forEach(
+
+                section => {
+
+                    revealObserver.observe(
+                        section
+                    );
+
+                }
+
+            );
+
+
+        }
+
+
+
+        /* ====================================================
+           INITIALIZE
+           ==================================================== */
+
+        initializeReveal(
+            englishAbout
+        );
+
+
     </script>
 
+
 </body>
+
 </html>

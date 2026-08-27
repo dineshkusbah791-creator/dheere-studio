@@ -1,33 +1,40 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
 
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
+
+    <title>Experiences — Dheere Studio</title>
+
+
     <meta
         name="description"
-        content="Explore how Dheere Studio thinks about creative experiences, original worlds, and the different ways stories may evolve over time."
+        content="Exploring how original stories and worlds can eventually become experiences across different forms of media."
     >
 
-    <title>
-        Experiences — Dheere Studio
-    </title>
 
-
-    <!-- ============================================================
-         EXISTING STYLES
-    ============================================================ -->
+    <!-- ========================================================
+         MAIN STYLES
+    ========================================================= -->
 
     <link
         rel="stylesheet"
         href="homepage.css"
     >
+
+
+    <!-- ========================================================
+         DHEERE MOOD
+    ========================================================= -->
 
     <link
         rel="stylesheet"
@@ -35,338 +42,806 @@
     >
 
 
+
     <style>
 
-        /* ============================================================
-           EXPERIENCES PAGE
-        ============================================================ */
+
+        /* ========================================================
+           PAGE
+        ========================================================= */
 
         .experiences-page {
 
-            min-height: 100vh;
+            position:
+                relative;
 
-            position: relative;
+            isolation:
+                isolate;
 
-            isolation: isolate;
+            overflow:
+                hidden;
 
         }
 
 
         .experiences-page::before {
 
-            content: "";
+            content:
+                "";
 
-            position: fixed;
+            position:
+                fixed;
 
-            inset: 0;
+            inset:
+                0;
 
-            z-index: -1;
+            pointer-events:
+                none;
 
-            pointer-events: none;
+            z-index:
+                -2;
 
             background:
 
                 radial-gradient(
-                    circle at 12% 18%,
-                    rgba(255,255,255,.035),
-                    transparent 28%
+                    circle at 8% 15%,
+                    rgba(255,255,255,.055),
+                    transparent 24%
                 ),
 
                 radial-gradient(
-                    circle at 88% 72%,
-                    rgba(255,255,255,.022),
-                    transparent 32%
+                    circle at 92% 28%,
+                    rgba(255,255,255,.035),
+                    transparent 27%
+                ),
+
+                radial-gradient(
+                    circle at 50% 90%,
+                    rgba(255,255,255,.025),
+                    transparent 35%
                 );
 
         }
 
 
-        /* ============================================================
+
+        /* ========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .nav-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+        }
+
+
+        .back-home-link {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            padding:
+                10px 16px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            transition:
+
+                transform .3s ease,
+
+                border-color .3s ease,
+
+                background .3s ease,
+
+                box-shadow .3s ease;
+
+        }
+
+
+        .back-home-link::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+
+                linear-gradient(
+                    110deg,
+                    transparent,
+                    rgba(255,255,255,.09),
+                    transparent
+                );
+
+            transform:
+                translateX(-120%);
+
+            transition:
+                transform .6s ease;
+
+        }
+
+
+        .back-home-link:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                rgba(255,255,255,.20);
+
+            background:
+                rgba(255,255,255,.05);
+
+            box-shadow:
+                0 12px 35px
+                rgba(0,0,0,.18);
+
+        }
+
+
+        .back-home-link:hover::before {
+
+            transform:
+                translateX(120%);
+
+        }
+
+
+
+        /* ========================================================
            HERO
-        ============================================================ */
+        ========================================================= */
 
         .experiences-hero {
 
-            min-height: 70vh;
+            position:
+                relative;
 
-            display: flex;
+            min-height:
+                82vh;
 
-            align-items: center;
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            overflow:
+                hidden;
 
             padding:
-                140px 8%
-                90px;
+                150px 8%
+                115px;
+
+        }
+
+
+        .experiences-hero::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                650px;
+
+            height:
+                650px;
+
+            top:
+                -260px;
+
+            right:
+                -180px;
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.075),
+                    transparent 68%
+                );
+
+            filter:
+                blur(4px);
+
+            animation:
+                heroOrbFloat
+                12s
+                ease-in-out
+                infinite
+                alternate;
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .experiences-hero::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                520px;
+
+            height:
+                520px;
+
+            left:
+                -240px;
+
+            bottom:
+                -260px;
+
+            border-radius:
+                50%;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            box-shadow:
+
+                0 0 100px
+                rgba(255,255,255,.025),
+
+                inset 0 0 80px
+                rgba(255,255,255,.018);
+
+            animation:
+                heroRingFloat
+                16s
+                ease-in-out
+                infinite
+                alternate;
+
+            pointer-events:
+                none;
+
+        }
+
+
+        @keyframes heroOrbFloat {
+
+            0% {
+
+                transform:
+                    translate3d(0,0,0)
+                    scale(1);
+
+            }
+
+
+            100% {
+
+                transform:
+                    translate3d(-55px,70px,0)
+                    scale(1.08);
+
+            }
+
+        }
+
+
+        @keyframes heroRingFloat {
+
+            0% {
+
+                transform:
+                    rotate(0deg)
+                    translate3d(0,0,0);
+
+            }
+
+
+            100% {
+
+                transform:
+                    rotate(12deg)
+                    translate3d(55px,-35px,0);
+
+            }
 
         }
 
 
         .experiences-hero-content {
 
-            max-width: 900px;
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            max-width:
+                900px;
+
+            animation:
+                heroContentReveal
+                1s
+                cubic-bezier(.2,.8,.2,1)
+                both;
+
+        }
+
+
+        @keyframes heroContentReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(28px);
+
+            }
+
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
 
         }
 
 
         .experiences-label {
 
-            display: inline-flex;
+            display:
+                inline-flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 8px;
+            gap:
+                10px;
 
-            margin-bottom: 20px;
+            margin-bottom:
+                24px;
 
-            font-size: .78rem;
+            padding:
+                9px 14px;
 
-            font-weight: 600;
+            border:
+                1px solid
+                rgba(255,255,255,.10);
 
-            letter-spacing: .18em;
+            border-radius:
+                999px;
 
-            text-transform: uppercase;
+            background:
+                rgba(255,255,255,.025);
 
-            color: #94a3b8;
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+            color:
+                #94a3b8;
 
         }
 
 
         .experiences-label::before {
 
-            content: "";
+            content:
+                "";
 
-            width: 28px;
+            width:
+                7px;
 
-            height: 1px;
+            height:
+                7px;
 
-            background: currentColor;
+            border-radius:
+                50%;
 
-            opacity: .6;
+            background:
+                currentColor;
+
+            box-shadow:
+                0 0 14px
+                currentColor;
+
+            opacity:
+                .75;
 
         }
 
 
         .experiences-hero h1 {
 
-            margin: 0;
+            margin:
+                0;
 
-            max-width: 850px;
+            max-width:
+                900px;
 
             font-size:
                 clamp(
-                    3.5rem,
-                    8vw,
-                    7rem
+                    4rem,
+                    10vw,
+                    9rem
                 );
 
-            line-height: .95;
+            line-height:
+                .88;
 
-            letter-spacing: -.05em;
+            letter-spacing:
+                -.075em;
 
-            color: #f8fafc;
+            font-weight:
+                650;
+
+            color:
+                #f8fafc;
+
+            text-wrap:
+                balance;
 
         }
 
 
         .experiences-hero-text {
 
-            max-width: 690px;
+            max-width:
+                680px;
 
-            margin-top: 30px;
+            margin:
+                34px 0
+                0;
 
             font-size:
                 clamp(
                     1rem,
                     1.5vw,
-                    1.2rem
+                    1.15rem
                 );
 
-            line-height: 1.85;
+            line-height:
+                1.9;
 
-            color: #94a3b8;
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
-           MAIN CONTAINER
-        ============================================================ */
+
+        /* ========================================================
+           CONTAINER
+        ========================================================= */
 
         .experiences-container {
 
+            position:
+                relative;
+
             width:
                 min(
-                    1100px,
-                    88%
+                    1120px,
+                    86%
                 );
 
-            margin: 0 auto;
+            margin:
+                0
+                auto;
 
         }
 
 
         .experiences-section {
 
+            position:
+                relative;
+
             padding:
-                105px 0;
+                115px
+                0;
 
             border-top:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.055);
 
         }
 
 
         .section-kicker {
 
-            display: block;
+            display:
+                inline-block;
 
-            margin-bottom: 14px;
+            margin-bottom:
+                18px;
 
-            font-size: .75rem;
+            font-size:
+                .72rem;
 
-            font-weight: 600;
+            font-weight:
+                600;
 
-            letter-spacing: .16em;
+            letter-spacing:
+                .17em;
 
-            text-transform: uppercase;
+            text-transform:
+                uppercase;
 
-            color: #64748b;
+            color:
+                #64748b;
 
         }
 
 
         .experiences-section h2 {
 
-            max-width: 820px;
+            max-width:
+                850px;
 
             margin:
                 0
                 0
-                26px;
+                28px;
 
             font-size:
                 clamp(
-                    2.2rem,
-                    4vw,
-                    4rem
+                    2.3rem,
+                    5vw,
+                    4.6rem
                 );
 
-            line-height: 1.05;
+            line-height:
+                1.02;
 
-            letter-spacing: -.04em;
+            letter-spacing:
+                -.055em;
 
-            color: #f8fafc;
+            color:
+                #f8fafc;
+
+            text-wrap:
+                balance;
 
         }
 
 
-        .experiences-section p {
+        .experiences-section > p {
 
-            max-width: 780px;
+            max-width:
+                780px;
 
             margin:
                 0
                 0
                 18px;
 
-            font-size: 1rem;
+            font-size:
+                1rem;
 
-            line-height: 1.85;
+            line-height:
+                1.9;
 
-            color: #94a3b8;
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
+
+        /* ========================================================
            INTRO STATEMENT
-        ============================================================ */
+        ========================================================= */
 
         .experience-statement {
 
-            position: relative;
+            position:
+                relative;
 
-            overflow: hidden;
+            overflow:
+                hidden;
 
-            margin-top: 48px;
+            margin-top:
+                52px;
 
             padding:
-                50px
-                48px;
+                58px
+                52px;
 
-            border-radius: 16px;
+            border-radius:
+                24px;
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.10);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
+
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.012)
                 );
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+
+            box-shadow:
+
+                0 25px 80px
+                rgba(0,0,0,.12),
+
+                inset 0 1px 0
+                rgba(255,255,255,.04);
+
+            transition:
+
+                transform .45s ease,
+
+                border-color .45s ease,
+
+                box-shadow .45s ease;
+
+        }
+
+
+        .experience-statement:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,255,255,.17);
+
+            box-shadow:
+
+                0 35px 100px
+                rgba(0,0,0,.18),
+
+                inset 0 1px 0
+                rgba(255,255,255,.06);
 
         }
 
 
         .experience-statement::before {
 
-            content: "";
+            content:
+                "";
 
-            position: absolute;
+            position:
+                absolute;
 
-            width: 360px;
+            width:
+                420px;
 
-            height: 360px;
+            height:
+                420px;
 
-            top: -230px;
+            top:
+                -260px;
 
-            right: -140px;
+            right:
+                -160px;
 
-            border-radius: 50%;
+            border-radius:
+                50%;
 
             background:
 
                 radial-gradient(
                     circle,
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .065
-                    ),
-                    transparent 70%
+                    rgba(255,255,255,.11),
+                    transparent 68%
                 );
 
-            pointer-events: none;
+            animation:
+                statementGlow
+                10s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes statementGlow {
+
+            from {
+
+                transform:
+                    translate3d(0,0,0);
+
+            }
+
+
+            to {
+
+                transform:
+                    translate3d(-40px,50px,0);
+
+            }
 
         }
 
 
         .experience-statement-content {
 
-            position: relative;
+            position:
+                relative;
 
-            z-index: 1;
+            z-index:
+                1;
 
         }
 
 
         .experience-statement h3 {
 
-            max-width: 760px;
+            max-width:
+                790px;
 
             margin:
                 0
@@ -377,34 +852,47 @@
                 clamp(
                     1.8rem,
                     3vw,
-                    3rem
+                    3.2rem
                 );
 
-            line-height: 1.15;
+            line-height:
+                1.12;
 
-            letter-spacing: -.03em;
+            letter-spacing:
+                -.04em;
 
-            color: #f8fafc;
+            color:
+                #f8fafc;
 
         }
 
 
         .experience-statement p {
 
-            max-width: 720px;
+            max-width:
+                720px;
 
-            margin-bottom: 0;
+            margin:
+                0;
+
+            line-height:
+                1.85;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
+
+        /* ========================================================
            EXPERIENCE JOURNEY
-        ============================================================ */
+        ========================================================= */
 
         .experience-path {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
                 repeat(
@@ -412,52 +900,105 @@
                     1fr
                 );
 
-            gap: 20px;
+            gap:
+                18px;
 
-            margin-top: 50px;
+            margin-top:
+                52px;
 
         }
 
 
         .experience-step {
 
-            position: relative;
+            position:
+                relative;
 
-            min-height: 330px;
+            min-height:
+                350px;
 
-            display: flex;
+            display:
+                flex;
 
-            flex-direction: column;
+            flex-direction:
+                column;
 
-            justify-content: flex-end;
+            justify-content:
+                flex-end;
 
-            padding: 32px;
+            overflow:
+                hidden;
 
-            overflow: hidden;
+            padding:
+                34px;
 
-            border-radius: 14px;
+            border-radius:
+                22px;
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+                rgba(255,255,255,.085);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.012)
+                );
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            transition:
+
+                transform .45s cubic-bezier(.2,.8,.2,1),
+
+                border-color .4s ease,
+
+                background .4s ease,
+
+                box-shadow .4s ease;
+
+        }
+
+
+        .experience-step::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                260px;
+
+            height:
+                260px;
+
+            top:
+                -150px;
+
+            right:
+                -130px;
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.10),
+                    transparent 70%
                 );
 
             transition:
-                transform .3s ease,
-                border-color .3s ease,
-                background .3s ease;
+                transform .6s ease;
 
         }
 
@@ -465,212 +1006,383 @@
         .experience-step:hover {
 
             transform:
-                translateY(-5px);
+                translateY(-8px);
 
             border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .15
-                );
+                rgba(255,255,255,.17);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
+                rgba(255,255,255,.055);
+
+            box-shadow:
+                0 24px 65px
+                rgba(0,0,0,.18);
+
+        }
+
+
+        .experience-step:hover::before {
+
+            transform:
+                scale(1.25)
+                translate(-25px,35px);
 
         }
 
 
         .experience-step-number {
 
-            position: absolute;
+            position:
+                absolute;
 
-            top: 28px;
+            top:
+                32px;
 
-            left: 32px;
+            left:
+                34px;
 
-            font-size: .75rem;
+            font-size:
+                .72rem;
 
-            font-weight: 600;
+            letter-spacing:
+                .16em;
 
-            letter-spacing: .12em;
-
-            color: #64748b;
+            color:
+                #64748b;
 
         }
 
 
         .experience-step h3 {
 
+            position:
+                relative;
+
             margin:
                 0
                 0
                 14px;
 
-            font-size: 1.5rem;
+            font-size:
+                clamp(
+                    1.6rem,
+                    2vw,
+                    2.1rem
+                );
 
-            color: #f8fafc;
+            letter-spacing:
+                -.035em;
+
+            color:
+                #f8fafc;
 
         }
 
 
         .experience-step p {
 
-            margin: 0;
+            position:
+                relative;
 
-            font-size: .93rem;
+            margin:
+                0;
 
-            line-height: 1.75;
+            line-height:
+                1.8;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
-           WORLD INGREDIENTS
-        ============================================================ */
+
+        /* ========================================================
+           WORLD GRID
+        ========================================================= */
 
         .world-grid {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
                 repeat(
                     2,
-                    1fr
+                    minmax(0,1fr)
                 );
 
-            gap: 18px;
+            gap:
+                18px;
 
-            margin-top: 48px;
+            margin-top:
+                50px;
 
         }
 
 
         .world-item {
 
-            padding:
-                30px;
+            position:
+                relative;
 
-            border-radius: 13px;
+            min-height:
+                260px;
+
+            padding:
+                34px;
+
+            overflow:
+                hidden;
+
+            border-radius:
+                22px;
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+                rgba(255,255,255,.08);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .015
-                );
+                rgba(255,255,255,.022);
+
+            transition:
+
+                transform .4s ease,
+
+                background .4s ease,
+
+                border-color .4s ease;
 
         }
 
 
-        .world-item span {
+        .world-item::after {
 
-            display: block;
+            content:
+                "";
 
-            margin-bottom: 28px;
+            position:
+                absolute;
 
-            font-size: .72rem;
+            inset:
+                0;
 
-            font-weight: 600;
+            background:
 
-            letter-spacing: .14em;
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.05),
+                    transparent 45%
+                );
 
-            color: #64748b;
+            opacity:
+                0;
+
+            transition:
+                opacity .4s ease;
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .world-item:hover {
+
+            transform:
+                translateY(-6px);
+
+            background:
+                rgba(255,255,255,.045);
+
+            border-color:
+                rgba(255,255,255,.16);
+
+        }
+
+
+        .world-item:hover::after {
+
+            opacity:
+                1;
+
+        }
+
+
+        .world-item > span {
+
+            display:
+                block;
+
+            margin-bottom:
+                48px;
+
+            font-size:
+                .72rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .16em;
+
+            color:
+                #64748b;
 
         }
 
 
         .world-item h3 {
 
+            position:
+                relative;
+
+            z-index:
+                1;
+
             margin:
                 0
                 0
                 12px;
 
-            font-size: 1.3rem;
+            font-size:
+                1.55rem;
 
-            color: #f8fafc;
+            letter-spacing:
+                -.03em;
+
+            color:
+                #f8fafc;
 
         }
 
 
         .world-item p {
 
-            margin: 0;
+            position:
+                relative;
 
-            font-size: .93rem;
+            z-index:
+                1;
 
-            line-height: 1.75;
+            margin:
+                0;
+
+            line-height:
+                1.8;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
+
+        /* ========================================================
            POSSIBILITIES
-        ============================================================ */
+        ========================================================= */
 
         .possibilities-grid {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
                 repeat(
                     2,
-                    minmax(
-                        0,
-                        1fr
-                    )
+                    minmax(0,1fr)
                 );
 
-            gap: 20px;
+            gap:
+                18px;
 
-            margin-top: 48px;
+            margin-top:
+                52px;
 
         }
 
 
         .possibility-card {
 
-            padding: 34px;
+            position:
+                relative;
 
-            border-radius: 14px;
+            overflow:
+                hidden;
+
+            min-height:
+                285px;
+
+            padding:
+                36px;
+
+            border-radius:
+                22px;
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .07
-                );
+                rgba(255,255,255,.08);
 
             background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .018
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.035),
+                    rgba(255,255,255,.012)
                 );
 
             transition:
-                transform .3s ease,
-                border-color .3s ease,
-                background .3s ease;
+
+                transform .4s cubic-bezier(.2,.8,.2,1),
+
+                border-color .4s ease,
+
+                box-shadow .4s ease;
+
+        }
+
+
+        .possibility-card:nth-child(3n) {
+
+            grid-column:
+                span 2;
+
+        }
+
+
+        .possibility-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                250px;
+
+            height:
+                250px;
+
+            right:
+                -140px;
+
+            bottom:
+                -150px;
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.08),
+                    transparent 70%
+                );
+
+            transition:
+                transform .6s ease;
 
         }
 
@@ -678,125 +1390,169 @@
         .possibility-card:hover {
 
             transform:
-                translateY(-4px);
+                translateY(-7px);
 
             border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .14
-                );
+                rgba(255,255,255,.17);
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .03
-                );
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,.17);
+
+        }
+
+
+        .possibility-card:hover::before {
+
+            transform:
+                scale(1.35)
+                translate(-35px,-25px);
 
         }
 
 
         .possibility-index {
 
-            display: block;
+            position:
+                relative;
 
-            margin-bottom: 42px;
+            z-index:
+                1;
 
-            font-size: .72rem;
+            display:
+                block;
 
-            font-weight: 600;
+            margin-bottom:
+                58px;
 
-            letter-spacing: .13em;
+            font-size:
+                .7rem;
 
-            color: #64748b;
+            font-weight:
+                600;
+
+            letter-spacing:
+                .15em;
+
+            color:
+                #64748b;
 
         }
 
 
         .possibility-card h3 {
 
+            position:
+                relative;
+
+            z-index:
+                1;
+
             margin:
                 0
                 0
                 14px;
 
-            font-size: 1.4rem;
+            font-size:
+                clamp(
+                    1.45rem,
+                    2vw,
+                    2rem
+                );
 
-            color: #f8fafc;
+            letter-spacing:
+                -.035em;
+
+            color:
+                #f8fafc;
 
         }
 
 
         .possibility-card p {
 
-            margin: 0;
+            position:
+                relative;
 
-            font-size: .94rem;
+            z-index:
+                1;
 
-            line-height: 1.78;
+            margin:
+                0;
+
+            line-height:
+                1.8;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
-           EXPERIENCE PRINCIPLES
-        ============================================================ */
+
+        /* ========================================================
+           PRINCIPLES
+        ========================================================= */
 
         .principles-list {
 
-            margin-top: 48px;
+            margin-top:
+                48px;
 
             border-top:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.08);
 
         }
 
 
         .principle-row {
 
-            display: grid;
+            display:
+                grid;
 
             grid-template-columns:
-                100px
-                minmax(
-                    0,
-                    1fr
-                );
+                110px
+                minmax(0,1fr);
 
-            gap: 35px;
+            gap:
+                35px;
 
             padding:
-                30px
+                34px
                 0;
 
             border-bottom:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.08);
+
+            transition:
+                padding .35s ease;
+
+        }
+
+
+        .principle-row:hover {
+
+            padding-left:
+                14px;
 
         }
 
 
         .principle-row-number {
 
-            font-size: .78rem;
+            padding-top:
+                6px;
 
-            font-weight: 600;
+            font-size:
+                .72rem;
 
-            color: #64748b;
+            letter-spacing:
+                .15em;
+
+            color:
+                #64748b;
 
         }
 
@@ -808,71 +1564,189 @@
                 0
                 10px;
 
-            font-size: 1.3rem;
+            font-size:
+                1.4rem;
 
-            color: #f8fafc;
+            font-weight:
+                500;
+
+            color:
+                #f8fafc;
 
         }
 
 
         .principle-row p {
 
-            margin: 0;
+            margin:
+                0;
+
+            line-height:
+                1.8;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
-           IMPORTANT NOTE
-        ============================================================ */
+
+        /* ========================================================
+           EXPERIENCE NOTE
+        ========================================================= */
 
         .experience-note {
 
-            position: relative;
+            position:
+                relative;
 
-            margin-top: 42px;
+            overflow:
+                hidden;
+
+            margin-top:
+                55px;
 
             padding:
-                55px
-                48px;
+                54px;
 
-            border-radius: 16px;
+            border-radius:
+                24px;
 
             border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.09);
 
             background:
+                rgba(255,255,255,.022);
 
-                linear-gradient(
-                    135deg,
+            backdrop-filter:
+                blur(18px);
 
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .035
-                    ),
+            -webkit-backdrop-filter:
+                blur(18px);
 
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .01
-                    )
-                );
+        }
+
+
+        .experience-note::before {
+
+            content:
+                "01";
+
+            position:
+                absolute;
+
+            top:
+                -25px;
+
+            right:
+                35px;
+
+            font-size:
+                11rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                -.08em;
+
+            color:
+                rgba(255,255,255,.025);
+
+            pointer-events:
+                none;
 
         }
 
 
         .experience-note h3 {
 
-            max-width: 760px;
+            position:
+                relative;
+
+            margin:
+                0
+                0
+                18px;
+
+            font-size:
+                clamp(
+                    1.6rem,
+                    3vw,
+                    2.5rem
+                );
+
+            line-height:
+                1.15;
+
+            letter-spacing:
+                -.04em;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        .experience-note p {
+
+            position:
+                relative;
+
+            max-width:
+                760px;
+
+            margin:
+                0;
+
+            line-height:
+                1.9;
+
+            color:
+                #94a3b8;
+
+        }
+
+
+
+        /* ========================================================
+           REALITY
+        ========================================================= */
+
+        .reality-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(0,1fr)
+                minmax(0,1fr);
+
+            gap:
+                70px;
+
+            align-items:
+                start;
+
+            margin-top:
+                48px;
+
+        }
+
+
+        .reality-copy {
+
+            position:
+                sticky;
+
+            top:
+                120px;
+
+        }
+
+
+        .reality-copy h3 {
 
             margin:
                 0
@@ -886,87 +1760,41 @@
                     3rem
                 );
 
-            line-height: 1.15;
+            line-height:
+                1.12;
 
-            letter-spacing: -.03em;
+            letter-spacing:
+                -.04em;
 
-            color: #f8fafc;
-
-        }
-
-
-        .experience-note p {
-
-            max-width: 760px;
+            color:
+                #f8fafc;
 
         }
 
 
-        .experience-note p:last-child {
-
-            margin-bottom: 0;
-
-        }
-
-
-        /* ============================================================
-           FUTURE / CURRENT REALITY
-        ============================================================ */
-
-        .reality-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(
-                    0,
-                    .9fr
-                )
-                minmax(
-                    0,
-                    1.1fr
-                );
-
-            gap: 70px;
-
-            align-items: start;
-
-            margin-top: 48px;
-
-        }
-
-
-        .reality-side h3 {
+        .reality-copy p {
 
             margin:
                 0
                 0
-                18px;
+                16px;
 
-            font-size:
-                clamp(
-                    1.8rem,
-                    3vw,
-                    2.8rem
-                );
+            line-height:
+                1.9;
 
-            line-height: 1.15;
-
-            color: #f8fafc;
+            color:
+                #94a3b8;
 
         }
 
 
         .reality-list {
 
-            border-top:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+            display:
+                grid;
+
+            gap:
+                14px;
 
         }
 
@@ -974,17 +1802,39 @@
         .reality-item {
 
             padding:
-                24px
-                0;
+                28px;
 
-            border-bottom:
+            border-radius:
+                18px;
+
+            border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .08
-                );
+                rgba(255,255,255,.07);
+
+            background:
+                rgba(255,255,255,.018);
+
+            transition:
+
+                transform .35s ease,
+
+                background .35s ease,
+
+                border-color .35s ease;
+
+        }
+
+
+        .reality-item:hover {
+
+            transform:
+                translateX(7px);
+
+            background:
+                rgba(255,255,255,.045);
+
+            border-color:
+                rgba(255,255,255,.14);
 
         }
 
@@ -996,127 +1846,221 @@
                 0
                 9px;
 
-            font-size: 1rem;
+            font-size:
+                1.05rem;
 
-            color: #f8fafc;
+            font-weight:
+                500;
+
+            color:
+                #f8fafc;
 
         }
 
 
         .reality-item p {
 
-            margin: 0;
+            margin:
+                0;
 
-            font-size: .93rem;
+            line-height:
+                1.75;
+
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
+
+        /* ========================================================
            FINAL
-        ============================================================ */
+        ========================================================= */
 
         .experiences-final {
 
-            padding:
-                110px 0
-                125px;
+            position:
+                relative;
 
-            text-align: center;
+            overflow:
+                hidden;
+
+            padding:
+                130px
+                0
+                145px;
+
+            text-align:
+                center;
+
+        }
+
+
+        .experiences-final::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                600px;
+
+            height:
+                600px;
+
+            left:
+                50%;
+
+            top:
+                50%;
+
+            transform:
+                translate(-50%,-50%);
+
+            border-radius:
+                50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.055),
+                    transparent 68%
+                );
+
+            pointer-events:
+                none;
 
         }
 
 
         .experiences-final h2 {
 
-            max-width: 850px;
+            position:
+                relative;
+
+            max-width:
+                900px;
 
             margin:
-                0 auto
-                22px;
+                0
+                auto
+                24px;
 
             font-size:
                 clamp(
-                    2.5rem,
-                    5vw,
-                    5rem
+                    2.6rem,
+                    6vw,
+                    5.5rem
                 );
 
-            line-height: 1;
+            line-height:
+                1;
 
-            letter-spacing: -.05em;
+            letter-spacing:
+                -.06em;
 
-            color: #f8fafc;
+            color:
+                #f8fafc;
+
+            text-wrap:
+                balance;
 
         }
 
 
         .experiences-final p {
 
-            max-width: 680px;
+            position:
+                relative;
+
+            max-width:
+                690px;
 
             margin:
-                0 auto
-                32px;
+                0
+                auto;
 
-            line-height: 1.85;
+            line-height:
+                1.9;
 
-            color: #94a3b8;
+            color:
+                #94a3b8;
 
         }
 
 
-        /* ============================================================
-           BLENDED ACTIONS
-           ABOUT PAGE STYLE
-        ============================================================ */
-
         .experiences-final-actions {
 
-            display: flex;
+            position:
+                relative;
 
-            justify-content: center;
+            display:
+                flex;
 
-            align-items: center;
+            justify-content:
+                center;
 
-            gap: 28px;
+            flex-wrap:
+                wrap;
 
-            flex-wrap: wrap;
+            gap:
+                14px;
+
+            margin-top:
+                42px;
 
         }
 
 
         .experience-text-link {
 
-            display: inline-flex;
+            display:
+                inline-flex;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 9px;
+            gap:
+                14px;
 
-            padding: 8px 0;
+            padding:
+                14px
+                20px;
 
-            text-decoration: none;
+            border-radius:
+                999px;
 
-            font-size: .92rem;
-
-            font-weight: 500;
-
-            color: #f8fafc;
-
-            border-bottom:
+            border:
                 1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .22
-                );
+                rgba(255,255,255,.12);
+
+            background:
+                rgba(255,255,255,.035);
+
+            color:
+                #f8fafc;
+
+            text-decoration:
+                none;
+
+            backdrop-filter:
+                blur(15px);
+
+            -webkit-backdrop-filter:
+                blur(15px);
 
             transition:
-                color .25s ease,
-                border-color .25s ease,
-                transform .25s ease;
+
+                transform .3s ease,
+
+                background .3s ease,
+
+                border-color .3s ease,
+
+                box-shadow .3s ease;
 
         }
 
@@ -1124,46 +2068,25 @@
         .experience-text-link:hover {
 
             transform:
-                translateY(-2px);
+                translateY(-3px);
+
+            background:
+                rgba(255,255,255,.08);
 
             border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .65
-                );
+                rgba(255,255,255,.22);
+
+            box-shadow:
+                0 14px 35px
+                rgba(0,0,0,.16);
 
         }
 
 
         .experience-text-link.secondary {
 
-            color: #94a3b8;
-
-            border-bottom:
-                1px solid
-                rgba(
-                    148,
-                    163,
-                    184,
-                    .2
-                );
-
-        }
-
-
-        .experience-text-link.secondary:hover {
-
-            color: #f8fafc;
-
-            border-color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    .4
-                );
+            color:
+                #94a3b8;
 
         }
 
@@ -1179,33 +2102,185 @@
         .experience-text-link:hover span {
 
             transform:
-                translateX(4px);
+                translateX(5px);
 
         }
 
 
-        /* ============================================================
-           MOBILE
-        ============================================================ */
+
+        /* ========================================================
+           SCROLL REVEAL
+        ========================================================= */
+
+        .reveal {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(28px);
+
+            transition:
+
+                opacity .75s ease,
+
+                transform .75s
+                cubic-bezier(.2,.8,.2,1);
+
+        }
+
+
+        .reveal.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+
+        /* ========================================================
+           MOOD ENHANCEMENTS
+        ========================================================= */
+
+        html[data-dheere-mood="forest"]
+        .experiences-hero {
+
+            background:
+
+                radial-gradient(
+                    ellipse at 80% 15%,
+                    rgba(70,160,88,.12),
+                    transparent 40%
+                );
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        .section-kicker {
+
+            color:
+                #70c987;
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .experiences-hero {
+
+            background:
+
+                radial-gradient(
+                    ellipse at 80% 15%,
+                    rgba(70,140,220,.13),
+                    transparent 42%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        .section-kicker {
+
+            color:
+                #70a9e8;
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .experiences-hero {
+
+            background:
+
+                radial-gradient(
+                    ellipse at 75% 80%,
+                    rgba(220,75,50,.13),
+                    transparent 42%
+                );
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        .section-kicker {
+
+            color:
+                #e4786d;
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .experiences-hero {
+
+            background:
+
+                radial-gradient(
+                    ellipse at 75% 10%,
+                    rgba(130,110,220,.14),
+                    transparent 42%
+                );
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        .section-kicker {
+
+            color:
+                #aa9df5;
+
+        }
+
+
+
+        /* ========================================================
+           ACCESSIBILITY
+        ========================================================= */
+
+        a:focus-visible {
+
+            outline:
+                2px solid
+                rgba(255,255,255,.45);
+
+            outline-offset:
+                4px;
+
+        }
+
+
+
+        /* ========================================================
+           TABLET
+        ========================================================= */
 
         @media (
-            max-width: 850px
+            max-width: 900px
         ) {
+
 
             .experiences-hero {
 
-                min-height: 60vh;
+                min-height:
+                    68vh;
 
                 padding:
-                    120px 6%
-                    75px;
+                    130px 7%
+                    90px;
 
             }
 
 
             .experiences-container {
 
-                width: 88%;
+                width:
+                    88%;
 
             }
 
@@ -1213,7 +2288,7 @@
             .experiences-section {
 
                 padding:
-                    78px 0;
+                    90px 0;
 
             }
 
@@ -1228,7 +2303,82 @@
 
             .experience-step {
 
-                min-height: 250px;
+                min-height:
+                    270px;
+
+            }
+
+
+            .possibility-card:nth-child(3n) {
+
+                grid-column:
+                    auto;
+
+            }
+
+
+            .reality-grid {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    45px;
+
+            }
+
+
+            .reality-copy {
+
+                position:
+                    static;
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (
+            max-width: 650px
+        ) {
+
+
+            .experiences-hero {
+
+                min-height:
+                    64vh;
+
+                padding:
+                    115px 7%
+                    75px;
+
+            }
+
+
+            .experiences-hero h1 {
+
+                font-size:
+                    clamp(
+                        3.7rem,
+                        18vw,
+                        5.5rem
+                    );
+
+            }
+
+
+            .experiences-hero-text {
+
+                margin-top:
+                    26px;
+
+                line-height:
+                    1.8;
 
             }
 
@@ -1249,44 +2399,14 @@
             }
 
 
-            .reality-grid {
-
-                grid-template-columns:
-                    1fr;
-
-                gap: 38px;
-
-            }
-
-
-            .experiences-final {
-
-                padding:
-                    85px 0
-                    95px;
-
-            }
-
-        }
-
-
-        @media (
-            max-width: 600px
-        ) {
-
-            .experiences-hero {
-
-                padding-top:
-                    105px;
-
-            }
-
-
             .experience-statement {
 
                 padding:
-                    35px
+                    38px
                     25px;
+
+                border-radius:
+                    20px;
 
             }
 
@@ -1294,7 +2414,7 @@
             .experience-note {
 
                 padding:
-                    38px
+                    40px
                     25px;
 
             }
@@ -1302,28 +2422,35 @@
 
             .experience-step {
 
-                padding: 26px;
+                padding:
+                    28px;
 
             }
 
 
             .experience-step-number {
 
-                left: 26px;
+                top:
+                    28px;
+
+                left:
+                    28px;
 
             }
 
 
             .world-item {
 
-                padding: 26px;
+                padding:
+                    28px;
 
             }
 
 
             .possibility-card {
 
-                padding: 28px;
+                padding:
+                    30px;
 
             }
 
@@ -1333,24 +2460,122 @@
                 grid-template-columns:
                     1fr;
 
-                gap: 14px;
+                gap:
+                    14px;
+
+            }
+
+
+            .principle-row:hover {
+
+                padding-left:
+                    0;
+
+            }
+
+
+            .experiences-final {
+
+                padding:
+                    90px 0
+                    105px;
 
             }
 
 
             .experiences-final-actions {
 
-                flex-direction: column;
+                flex-direction:
+                    column;
 
-                gap: 18px;
+                align-items:
+                    stretch;
+
+            }
+
+
+            .experience-text-link {
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .back-home-link {
+
+                padding:
+                    8px 13px;
+
+                font-size:
+                    .82rem;
 
             }
 
         }
 
+
+
+        /* ========================================================
+           REDUCED MOTION
+        ========================================================= */
+
+        @media (
+            prefers-reduced-motion: reduce
+        ) {
+
+
+            * {
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
+
+            .experiences-hero::before,
+            .experiences-hero::after,
+            .experience-statement::before {
+
+                animation:
+                    none !important;
+
+            }
+
+
+            .reveal {
+
+                opacity:
+                    1;
+
+                transform:
+                    none;
+
+                transition:
+                    none;
+
+            }
+
+
+            .experience-step,
+            .world-item,
+            .possibility-card,
+            .experience-statement,
+            .reality-item,
+            .experience-text-link {
+
+                transition:
+                    none;
+
+            }
+
+        }
+
+
     </style>
 
 </head>
+
 
 
 <body>
@@ -1367,9 +2592,11 @@
 
         <header>
 
+
             <nav
                 class="navbar"
             >
+
 
                 <div
                     class="nav-logo"
@@ -1382,6 +2609,7 @@
                     </a>
 
                 </div>
+
 
 
                 <div
@@ -1397,7 +2625,9 @@
 
                 </div>
 
+
             </nav>
+
 
         </header>
 
@@ -1414,9 +2644,11 @@
                 class="experiences-hero"
             >
 
+
                 <div
                     class="experiences-hero-content"
                 >
+
 
                     <span
                         class="experiences-label"
@@ -1441,7 +2673,9 @@
                         for it to grow.
                     </p>
 
+
                 </div>
+
 
             </section>
 
@@ -1452,13 +2686,15 @@
             >
 
 
+
                 <!-- =================================================
                      WHAT EXPERIENCES MEANS
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1498,13 +2734,16 @@
                     </p>
 
 
+
                     <div
                         class="experience-statement"
                     >
 
+
                         <div
                             class="experience-statement-content"
                         >
+
 
                             <h3>
                                 The format should follow the world—
@@ -1513,86 +2752,37 @@
 
 
                             <p>
-                                Dheere Studio is not interested in
-                                deciding that every project must become
-                                a game, animation, film, or product
-                                before the story itself even exists.
-                                First comes the foundation. If the
-                                world eventually creates a meaningful
-                                reason to go further, the next form
-                                can grow from what is already there.
+                                An experience should exist because
+                                it reveals something meaningful,
+                                creates a new perspective, or gives
+                                people a way to encounter a world
+                                that the original format could not.
                             </p>
+
 
                         </div>
 
+
                     </div>
 
-                </section>
-
-
-
-                <!-- =================================================
-                     WHY STORIES CAN GROW
-                ================================================== -->
-
-                <section
-                    class="experiences-section"
-                >
-
-                    <span
-                        class="section-kicker"
-                    >
-                        Why worlds can grow
-                    </span>
-
-
-                    <h2>
-                        Some stories naturally leave more to discover.
-                    </h2>
-
-
-                    <p>
-                        A strong fictional world is rarely made from
-                        one idea alone. It contains people, places,
-                        histories, conflicts, unanswered questions,
-                        and parts of the world that may exist outside
-                        the immediate story.
-                    </p>
-
-
-                    <p>
-                        Not every detail needs to become another project.
-                        But depth creates possibilities. A place can
-                        eventually be explored. A historical event can
-                        become another narrative. A system can become
-                        interactive. An atmosphere can be expressed
-                        through visuals or sound.
-                    </p>
-
-
-                    <p>
-                        The important question is not
-                        <em>"How many things can this become?"</em>
-                        The better question is:
-                        <em>"What does this world genuinely need next?"</em>
-                    </p>
 
                 </section>
 
 
 
                 <!-- =================================================
-                     THE JOURNEY
+                     EXPERIENCE JOURNEY
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
                     >
-                        How it develops
+                        How things grow
                     </span>
 
 
@@ -1609,6 +2799,7 @@
                     </p>
 
 
+
                     <div
                         class="experience-path"
                     >
@@ -1617,6 +2808,7 @@
                         <article
                             class="experience-step"
                         >
+
 
                             <span
                                 class="experience-step-number"
@@ -1636,6 +2828,7 @@
                                 strong enough to stand on its own.
                             </p>
 
+
                         </article>
 
 
@@ -1643,6 +2836,7 @@
                         <article
                             class="experience-step"
                         >
+
 
                             <span
                                 class="experience-step-number"
@@ -1663,6 +2857,7 @@
                                 the project more depth.
                             </p>
 
+
                         </article>
 
 
@@ -1670,6 +2865,7 @@
                         <article
                             class="experience-step"
                         >
+
 
                             <span
                                 class="experience-step-number"
@@ -1690,10 +2886,12 @@
                                 its original medium.
                             </p>
 
+
                         </article>
 
 
                     </div>
+
 
                 </section>
 
@@ -1704,8 +2902,9 @@
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1726,6 +2925,7 @@
                         usually have something deeper holding them
                         together.
                     </p>
+
 
 
                     <div
@@ -1755,6 +2955,7 @@
                                 the same world.
                             </p>
 
+
                         </article>
 
 
@@ -1781,6 +2982,7 @@
                                 people want to explore.
                             </p>
 
+
                         </article>
 
 
@@ -1805,6 +3007,7 @@
                                 before can create new narratives,
                                 perspectives, and experiences.
                             </p>
+
 
                         </article>
 
@@ -1831,10 +3034,12 @@
                                 for a world to become interactive.
                             </p>
 
+
                         </article>
 
 
                     </div>
+
 
                 </section>
 
@@ -1845,8 +3050,9 @@
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -1869,6 +3075,7 @@
                     </p>
 
 
+
                     <div
                         class="possibilities-grid"
                     >
@@ -1877,6 +3084,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -1898,6 +3106,7 @@
                                 than only observing them.
                             </p>
 
+
                         </article>
 
 
@@ -1905,6 +3114,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -1926,6 +3136,7 @@
                                 different parts of a world.
                             </p>
 
+
                         </article>
 
 
@@ -1933,6 +3144,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -1954,6 +3166,7 @@
                                 a game may eventually become relevant.
                             </p>
 
+
                         </article>
 
 
@@ -1961,6 +3174,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -1982,6 +3196,7 @@
                                 powerful creative spaces of their own.
                             </p>
 
+
                         </article>
 
 
@@ -1989,6 +3204,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -2010,6 +3226,7 @@
                                 being developed.
                             </p>
 
+
                         </article>
 
 
@@ -2017,6 +3234,7 @@
                         <article
                             class="possibility-card"
                         >
+
 
                             <span
                                 class="possibility-index"
@@ -2038,10 +3256,12 @@
                                 is actually worth exploring.
                             </p>
 
+
                         </article>
 
 
                     </div>
+
 
                 </section>
 
@@ -2052,8 +3272,9 @@
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
@@ -2074,6 +3295,7 @@
                     </p>
 
 
+
                     <div
                         class="principles-list"
                     >
@@ -2083,6 +3305,7 @@
                             class="principle-row"
                         >
 
+
                             <span
                                 class="principle-row-number"
                             >
@@ -2091,6 +3314,7 @@
 
 
                             <div>
+
 
                                 <h3>
                                     Start with substance.
@@ -2104,7 +3328,9 @@
                                     carrying forward.
                                 </p>
 
+
                             </div>
+
 
                         </article>
 
@@ -2114,6 +3340,7 @@
                             class="principle-row"
                         >
 
+
                             <span
                                 class="principle-row-number"
                             >
@@ -2122,6 +3349,7 @@
 
 
                             <div>
+
 
                                 <h3>
                                     Respect the medium.
@@ -2135,7 +3363,9 @@
                                     limitations, and creative language.
                                 </p>
 
+
                             </div>
+
 
                         </article>
 
@@ -2144,6 +3374,7 @@
                         <article
                             class="principle-row"
                         >
+
 
                             <span
                                 class="principle-row-number"
@@ -2154,19 +3385,23 @@
 
                             <div>
 
+
                                 <h3>
-                                    Do not force expansion.
+                                    Give the audience something new.
                                 </h3>
 
 
                                 <p>
-                                    Not every project needs to become
-                                    an entire franchise. Sometimes
-                                    the strongest version of an idea
-                                    is the version it already is.
+                                    Repeating the same idea in a
+                                    different format is not always
+                                    enough. A new experience should
+                                    reveal, explore, or allow something
+                                    that was not possible before.
                                 </p>
 
+
                             </div>
+
 
                         </article>
 
@@ -2175,6 +3410,7 @@
                         <article
                             class="principle-row"
                         >
+
 
                             <span
                                 class="principle-row-number"
@@ -2185,139 +3421,112 @@
 
                             <div>
 
+
                                 <h3>
-                                    Build at the right time.
+                                    Let growth happen naturally.
                                 </h3>
 
 
                                 <p>
-                                    A future possibility can be worth
-                                    thinking about without being ready
-                                    to build today. Timing matters as
-                                    much as ambition.
+                                    Not every world needs to expand
+                                    immediately. The next step should
+                                    come from genuine creative need,
+                                    not pressure to create more.
                                 </p>
 
+
                             </div>
+
 
                         </article>
 
 
                     </div>
 
-                </section>
-
-
-
-                <!-- =================================================
-                     NOT EVERYTHING MUST EXPAND
-                ================================================== -->
-
-                <section
-                    class="experiences-section"
-                >
-
-                    <span
-                        class="section-kicker"
-                    >
-                        An important limit
-                    </span>
-
-
-                    <h2>
-                        Bigger does not automatically mean better.
-                    </h2>
 
 
                     <div
                         class="experience-note"
                     >
 
+
                         <h3>
-                            We are not interested in expanding something simply because expansion is possible.
+                            Bigger is not automatically better.
                         </h3>
 
 
                         <p>
-                            It is easy to imagine every successful
-                            idea becoming a collection of games,
-                            films, products, spin-offs, and endless
-                            additions. But more formats do not
-                            automatically create more meaning.
+                            A world does not need every possible
+                            format to become meaningful. Sometimes
+                            the strongest decision is to focus on
+                            what already works and allow future
+                            possibilities to remain possibilities
+                            until they have a real reason to exist.
                         </p>
 
-
-                        <p>
-                            An experience should exist because it
-                            reveals something new, allows people to
-                            engage differently, or genuinely expands
-                            what the original work can become.
-                        </p>
-
-
-                        <p>
-                            If it adds nothing, there is no reason
-                            to force it.
-                        </p>
 
                     </div>
+
 
                 </section>
 
 
 
                 <!-- =================================================
-                     CURRENT REALITY
+                     REALITY
                 ================================================== -->
 
                 <section
-                    class="experiences-section"
+                    class="experiences-section reveal"
                 >
+
 
                     <span
                         class="section-kicker"
                     >
-                        Where we are now
+                        The reality
                     </span>
 
 
                     <h2>
-                        The future is interesting. The present work still comes first.
+                        The possibilities are larger than what exists today.
                     </h2>
+
 
 
                     <div
                         class="reality-grid"
                     >
 
+
                         <div
-                            class="reality-side"
+                            class="reality-copy"
                         >
 
+
                             <h3>
-                                Dheere Studio is still being built.
+                                We are interested in the future without pretending it already exists.
                             </h3>
 
 
                             <p>
-                                Right now, the focus is not on
-                                pretending that every future format
-                                already exists.
+                                Dheere Studio is still developing
+                                its stories, worlds, systems, and
+                                creative identity. Many of the
+                                possibilities described here are
+                                directions to explore—not finished
+                                projects waiting behind a curtain.
                             </p>
 
 
                             <p>
-                                The work begins with building strong
-                                foundations, developing original
-                                projects, and understanding what
-                                each idea actually needs.
+                                The work should determine what
+                                comes next. If a world becomes
+                                strong enough to expand, we can
+                                explore that step when there is
+                                something real to build from.
                             </p>
 
-
-                            <p>
-                                Future possibilities can remain
-                                possibilities until there is enough
-                                substance to make the next step real.
-                            </p>
 
                         </div>
 
@@ -2332,17 +3541,19 @@
                                 class="reality-item"
                             >
 
+
                                 <h4>
-                                    We will not announce everything early.
+                                    We will build before we announce.
                                 </h4>
 
 
                                 <p>
-                                    An idea is not automatically a
-                                    project. Development needs to
-                                    happen before a possibility
-                                    becomes a public promise.
+                                    An idea becomes meaningful
+                                    through development and actual
+                                    work—not simply because it has
+                                    been given a name.
                                 </p>
+
 
                             </div>
 
@@ -2352,25 +3563,6 @@
                                 class="reality-item"
                             >
 
-                                <h4>
-                                    We will not build everything at once.
-                                </h4>
-
-
-                                <p>
-                                    Trying to become a studio,
-                                    game company, animation company,
-                                    and everything else immediately
-                                    would weaken the actual work.
-                                </p>
-
-                            </div>
-
-
-
-                            <div
-                                class="reality-item"
-                            >
 
                                 <h4>
                                     We will let projects guide the next step.
@@ -2384,6 +3576,7 @@
                                     than we currently are.
                                 </p>
 
+
                             </div>
 
 
@@ -2391,6 +3584,7 @@
                             <div
                                 class="reality-item"
                             >
+
 
                                 <h4>
                                     We are building for the long term.
@@ -2404,12 +3598,15 @@
                                     at a time.
                                 </p>
 
+
                             </div>
 
 
                         </div>
 
+
                     </div>
+
 
                 </section>
 
@@ -2420,8 +3617,9 @@
                 ================================================== -->
 
                 <section
-                    class="experiences-final"
+                    class="experiences-final reveal"
                 >
+
 
                     <h2>
                         The experience should grow from the story.
@@ -2436,9 +3634,11 @@
                     </p>
 
 
+
                     <div
                         class="experiences-final-actions"
                     >
+
 
                         <a
                             href="stories.html"
@@ -2454,6 +3654,7 @@
                         </a>
 
 
+
                         <a
                             href="about.html"
                             class="experience-text-link secondary"
@@ -2467,7 +3668,9 @@
 
                         </a>
 
+
                     </div>
+
 
                 </section>
 
@@ -2485,16 +3688,20 @@
 
         <footer>
 
+
             <div
                 class="footer-content"
             >
+
 
                 <p>
                     © 2026 Dheere Studio.
                     All rights reserved.
                 </p>
 
+
             </div>
+
 
         </footer>
 
@@ -2510,6 +3717,127 @@
     <script
         src="mood-engine.js"
     ></script>
+
+
+
+    <!-- ========================================================
+         SCROLL REVEAL
+    ========================================================= -->
+
+    <script>
+
+
+        "use strict";
+
+
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal"
+            );
+
+
+
+        if (
+            "IntersectionObserver"
+            in window
+        ) {
+
+
+            const revealObserver =
+                new IntersectionObserver(
+
+                    (
+                        entries
+                    ) => {
+
+
+                        entries.forEach(
+
+                            (
+                                entry
+                            ) => {
+
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+
+                                    entry.target.classList.add(
+                                        "visible"
+                                    );
+
+
+                                    revealObserver.unobserve(
+                                        entry.target
+                                    );
+
+
+                                }
+
+
+                            }
+
+                        );
+
+
+                    },
+
+                    {
+
+                        threshold:
+                            0.08,
+
+                        rootMargin:
+                            "0px 0px -40px 0px"
+
+                    }
+
+                );
+
+
+
+            revealElements.forEach(
+
+                (
+                    element
+                ) => {
+
+
+                    revealObserver.observe(
+                        element
+                    );
+
+
+                }
+
+            );
+
+
+        } else {
+
+
+            revealElements.forEach(
+
+                (
+                    element
+                ) => {
+
+
+                    element.classList.add(
+                        "visible"
+                    );
+
+
+                }
+
+            );
+
+
+        }
+
+
+    </script>
 
 
 </body>
