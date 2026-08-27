@@ -1,11 +1,36 @@
+# ==================================================
+# DHEERE STUDIO — ROBOTS.TXT
+# https://dheerestudio.com/
+# ==================================================
+
+# Default rule: allow compliant crawlers to access
+# the public pages of Dheere Studio.
 User-agent: *
 Allow: /
+
+# ==================================================
+# OPENAI
+# ==================================================
 
 User-agent: OAI-SearchBot
 Allow: /
 
+# ==================================================
+# GOOGLE SEARCH
+# ==================================================
+
 User-agent: Googlebot
 Allow: /
 
+# ==================================================
+# GOOGLE AI / EXTENDED USE
+# ==================================================
+
 User-agent: Google-Extended
 Allow: /
+
+# ==================================================
+# SITEMAP
+# ==================================================
+
+Sitemap: https://dheerestudio.com/sitemap.xml
