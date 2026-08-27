@@ -159,14 +159,6 @@ const app =
 // TRUST PROXY
 // ============================================================
 
-/*
- * Production deployments such as Render
- * usually run behind a reverse proxy.
- *
- * This helps Express correctly determine
- * the client IP for rate limiting.
- */
-
 if (
 
     NODE_ENV ===
@@ -211,34 +203,253 @@ app.use(
 // ALLOWED CORS ORIGINS
 // ============================================================
 
-const ALLOWED_ORIGINS = [
+const ALLOWED_ORIGINS =
+    new Set(
 
-    "https://dheerestudio.com",
+        [
 
-    "https://www.dheerestudio.com"
+            // ------------------------------------------------
+            // PRODUCTION DOMAIN
+            // ------------------------------------------------
 
-];
+            "https://dheerestudio.com",
+
+            "https://www.dheerestudio.com",
 
 
+            // ------------------------------------------------
+            // RENDER DOMAIN
+            // ------------------------------------------------
+
+            "https://dheere-studio.onrender.com"
+
+        ]
+
+    );
+
+
+
+// ============================================================
+// OPTIONAL FRONTEND URL FROM ENVIRONMENT
+// ============================================================
 
 if (
 
-    NODE_ENV !==
-    "production"
+    process.env.FRONTEND_URL
 
 ) {
 
-    ALLOWED_ORIGINS.push(
+    const frontendUrl =
+        process.env.FRONTEND_URL
+            .trim()
+            .replace(
+                /\/$/,
+                ""
+            );
 
-        "http://localhost:3000",
 
-        "http://localhost:5173",
+    if (
 
-        "http://127.0.0.1:3000",
+        frontendUrl
 
-        "http://127.0.0.1:5173"
+    ) {
 
-    );
+        ALLOWED_ORIGINS.add(
+
+            frontendUrl
+
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// ADDITIONAL CORS ORIGINS FROM ENVIRONMENT
+// ============================================================
+
+if (
+
+    process.env.ALLOWED_ORIGINS
+
+) {
+
+    const additionalOrigins =
+        process.env.ALLOWED_ORIGINS
+            .split(
+                ","
+            )
+            .map(
+
+                origin =>
+                    origin
+                        .trim()
+                        .replace(
+                            /\/$/,
+                            ""
+                        )
+
+            )
+            .filter(
+                Boolean
+            );
+
+
+
+    for (
+
+        const origin
+        of additionalOrigins
+
+    ) {
+
+        ALLOWED_ORIGINS.add(
+            origin
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// LOCAL DEVELOPMENT ORIGINS
+// ============================================================
+
+const LOCAL_ORIGIN_REGEX =
+    /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
+
+
+// ============================================================
+// RENDER ORIGIN REGEX
+// ============================================================
+
+const RENDER_ORIGIN_REGEX =
+    /^https:\/\/[a-z0-9-]+\.onrender\.com$/i;
+
+
+
+// ============================================================
+// NORMALIZE ORIGIN
+// ============================================================
+
+function normalizeOrigin(
+    origin
+) {
+
+    if (
+
+        typeof origin !==
+        "string"
+
+    ) {
+
+        return "";
+
+    }
+
+
+
+    return origin
+        .trim()
+        .replace(
+            /\/$/,
+            ""
+        );
+
+}
+
+
+
+// ============================================================
+// CHECK ALLOWED ORIGIN
+// ============================================================
+
+function isAllowedOrigin(
+    origin
+) {
+
+    const normalizedOrigin =
+        normalizeOrigin(
+            origin
+        );
+
+
+
+    if (
+
+        !normalizedOrigin
+
+    ) {
+
+        return true;
+
+    }
+
+
+
+    // --------------------------------------------------------
+    // EXACT ALLOWED ORIGINS
+    // --------------------------------------------------------
+
+    if (
+
+        ALLOWED_ORIGINS.has(
+            normalizedOrigin
+        )
+
+    ) {
+
+        return true;
+
+    }
+
+
+
+    // --------------------------------------------------------
+    // LOCAL DEVELOPMENT
+    // --------------------------------------------------------
+
+    if (
+
+        NODE_ENV !==
+        "production" &&
+
+        LOCAL_ORIGIN_REGEX.test(
+            normalizedOrigin
+        )
+
+    ) {
+
+        return true;
+
+    }
+
+
+
+    // --------------------------------------------------------
+    // RENDER FRONTEND / PREVIEW
+    // --------------------------------------------------------
+
+    if (
+
+        RENDER_ORIGIN_REGEX.test(
+            normalizedOrigin
+        )
+
+    ) {
+
+        return true;
+
+    }
+
+
+
+    return false;
 
 }
 
@@ -260,14 +471,16 @@ const corsOptions = {
 
         ) {
 
-            /*
-             * Requests without an Origin header
-             * can come from:
-             *
-             * - server-to-server requests
-             * - health checks
-             * - command-line tools
-             */
+            // ------------------------------------------------
+            // REQUEST WITHOUT ORIGIN
+            // ------------------------------------------------
+            //
+            // Examples:
+            //
+            // - Render health checks
+            // - curl
+            // - server-to-server requests
+            //
 
             if (
 
@@ -287,9 +500,13 @@ const corsOptions = {
 
 
 
+            // ------------------------------------------------
+            // ALLOWED ORIGIN
+            // ------------------------------------------------
+
             if (
 
-                ALLOWED_ORIGINS.includes(
+                isAllowedOrigin(
                     origin
                 )
 
@@ -304,6 +521,36 @@ const corsOptions = {
                 );
 
             }
+
+
+
+            // ------------------------------------------------
+            // REJECTED ORIGIN LOG
+            // ------------------------------------------------
+
+            console.error(
+
+                "CORS blocked origin:",
+
+                {
+
+                    origin,
+
+                    normalizedOrigin:
+                        normalizeOrigin(
+                            origin
+                        ),
+
+
+                    allowedOrigins:
+
+                        Array.from(
+                            ALLOWED_ORIGINS
+                        )
+
+                }
+
+            );
 
 
 
@@ -339,7 +586,16 @@ const corsOptions = {
 
         "Content-Type",
 
-        "Authorization"
+        "Authorization",
+
+        "Accept"
+
+    ],
+
+
+    exposedHeaders: [
+
+        "Content-Type"
 
     ],
 
@@ -348,12 +604,20 @@ const corsOptions = {
         false,
 
 
+    maxAge:
+        86400,
+
+
     optionsSuccessStatus:
         204
 
 };
 
 
+
+// ============================================================
+// ENABLE CORS
+// ============================================================
 
 app.use(
 
@@ -368,13 +632,6 @@ app.use(
 // ============================================================
 // JSON BODY PARSER
 // ============================================================
-
-/*
- * Profile photos are sent as base64 Data URIs.
- *
- * 6 MB JSON limit gives enough room for
- * image data after base64 expansion.
- */
 
 app.use(
 
@@ -661,7 +918,12 @@ async function startServer() {
 
 
                         method:
-                            req.method
+                            req.method,
+
+
+                        origin:
+                            req.headers.origin ||
+                            null
 
                     }
 
@@ -750,10 +1012,10 @@ async function startServer() {
                             false,
 
 
-                        error:
-                            "Request body is too large"
+                            error:
+                                "Request body is too large"
 
-                    });
+                        });
 
                 }
 
@@ -873,6 +1135,22 @@ async function startServer() {
             );
 
         }
+
+
+
+        // ====================================================
+        // CORS CONFIG LOG
+        // ====================================================
+
+        console.log(
+
+            "CORS allowed origins:",
+
+            Array.from(
+                ALLOWED_ORIGINS
+            )
+
+        );
 
 
 
