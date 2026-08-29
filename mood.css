@@ -1,958 +1,8077 @@
 /* ============================================================
-   DHEERE STUDIO — MOOD VISUAL SYSTEM
-   GLASS + ATMOSPHERE + READABILITY
-   ============================================================ */
+   DHEERE STUDIO — MOOD VISUAL SYSTEM V5
+   ------------------------------------------------------------
+   FULL ATMOSPHERIC THEME ENGINE
 
-html,
-body {
-    transition:
-        background-color 0.8s ease,
-        color 0.8s ease;
-}
+   01 Original
+   02 Forest
+   03 Ocean
+   04 Ember
+   05 Midnight
+   06 Prism
+   07 Universe
+
+   Responsibilities:
+   - Website-wide theme variables
+   - Header / navigation
+   - Cards / founder / articles / projects
+   - Buttons / forms / authentication
+   - Mood page preview cards
+   - Dynamic full-screen environment
+   - Premium glass treatment
+   - Environment transitions
+   ============================================================ */
 
 
 /* ============================================================
-   SHARED GLASS BEHAVIOUR
+   01 — GLOBAL SYSTEM
    ============================================================ */
 
-html[data-dheere-mood] .project-card,
-html[data-dheere-mood] .article-card,
-html[data-dheere-mood] .auth-card {
+:root {
 
-    position: relative;
+    --mood-bg:
+        #090a0d;
 
-    overflow: hidden;
+    --mood-bg-deep:
+        #06070a;
 
-    backdrop-filter:
-        blur(14px)
-        saturate(115%);
+    --mood-bg-soft:
+        #101216;
 
-    -webkit-backdrop-filter:
-        blur(14px)
-        saturate(115%);
-
-    transition:
-        background 0.5s ease,
-        border-color 0.4s ease,
-        box-shadow 0.4s ease,
-        transform 0.3s ease;
-}
-
-
-/* subtle glass highlight */
-
-html[data-dheere-mood] .project-card::before,
-html[data-dheere-mood] .article-card::before,
-html[data-dheere-mood] .auth-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.055),
-            transparent 38%,
-            transparent 72%,
-            rgba(255,255,255,0.018)
+    --mood-surface:
+        rgba(
+            255,
+            255,
+            255,
+            .028
         );
 
-    opacity: 0.8;
+    --mood-surface-strong:
+        rgba(
+            255,
+            255,
+            255,
+            .052
+        );
 
-}
+    --mood-surface-dark:
+        rgba(
+            0,
+            0,
+            0,
+            .15
+        );
 
+    --mood-border:
+        rgba(
+            255,
+            255,
+            255,
+            .078
+        );
 
-/* keep content above glass layer */
+    --mood-border-soft:
+        rgba(
+            255,
+            255,
+            255,
+            .042
+        );
 
-html[data-dheere-mood] .project-card > *,
-html[data-dheere-mood] .article-card > *,
-html[data-dheere-mood] .auth-card > * {
+    --mood-border-strong:
+        rgba(
+            255,
+            255,
+            255,
+            .14
+        );
 
-    position: relative;
+    --mood-text:
+        #f8fafc;
 
-    z-index: 1;
+    --mood-text-soft:
+        #cbd3dd;
+
+    --mood-copy:
+        #a3acb8;
+
+    --mood-muted:
+        #8892a0;
+
+    --mood-muted-dark:
+        #66707e;
+
+    --mood-accent:
+        #edf0f4;
+
+    --mood-accent-soft:
+        rgba(
+            237,
+            240,
+            244,
+            .08
+        );
+
+    --mood-accent-faint:
+        rgba(
+            237,
+            240,
+            244,
+            .026
+        );
+
+    --mood-shadow:
+        rgba(
+            0,
+            0,
+            0,
+            .20
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            0,
+            0,
+            0,
+            .34
+        );
+
+    --mood-glow:
+        rgba(
+            255,
+            255,
+            255,
+            .035
+        );
+
+    --mood-glass-blur:
+        24px;
+
+    --mood-glass-saturation:
+        132%;
+
+    --mood-transition:
+        1.15s;
 
 }
 
 
 /* ============================================================
-   ORIGINAL
+   02 — GLOBAL THEME TRANSITION
    ============================================================ */
+
+html[data-dheere-mood] body,
+html[data-dheere-mood] header,
+html[data-dheere-mood] main,
+html[data-dheere-mood] section,
+html[data-dheere-mood] footer,
+html[data-dheere-mood] .project-card,
+html[data-dheere-mood] .article-card,
+html[data-dheere-mood] .founder-card,
+html[data-dheere-mood] .feedback-form,
+html[data-dheere-mood] .auth-card,
+html[data-dheere-mood] .nav-profile-link,
+html[data-dheere-mood] .nav-profile-avatar,
+html[data-dheere-mood] .button,
+html[data-dheere-mood] input,
+html[data-dheere-mood] textarea,
+html[data-dheere-mood] .category,
+html[data-dheere-mood] .tab-btn,
+html[data-dheere-mood] .mood-card {
+
+    transition:
+
+        background
+        var(--mood-transition)
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        ),
+
+        background-color
+        var(--mood-transition)
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        ),
+
+        border-color
+        1s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        ),
+
+        box-shadow
+        1s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        ),
+
+        color
+        .72s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        );
+
+}
+
+
+/* ============================================================
+   03 — BODY
+   ============================================================ */
+
+html[data-dheere-mood] body {
+
+    position:
+        relative;
+
+    min-height:
+        100vh;
+
+    isolation:
+        isolate;
+
+    color:
+        var(--mood-text);
+
+    background:
+        var(--mood-bg);
+
+}
+
+
+/*
+ * Subtle atmospheric field behind content.
+ */
+
+html[data-dheere-mood] body::before {
+
+    content:
+        "";
+
+    position:
+        fixed;
+
+    inset:
+        -20%;
+
+    z-index:
+        -3;
+
+    pointer-events:
+        none;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            color-mix(
+                in srgb,
+                var(--mood-accent)
+                4%,
+                transparent
+            ),
+            transparent
+            38%
+        );
+
+    opacity:
+        .90;
+
+    transition:
+        background
+        1.45s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        );
+
+}
+
+
+/*
+ * Outer vignette.
+ */
+
+html[data-dheere-mood] body::after {
+
+    content:
+        "";
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        -4;
+
+    pointer-events:
+        none;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            transparent
+            28%,
+            rgba(
+                0,
+                0,
+                0,
+                .15
+            )
+            100%
+        );
+
+    opacity:
+        .78;
+
+}
+
+
+/* ============================================================
+   04 — HEADER
+   ============================================================ */
+
+html[data-dheere-mood] header {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            color-mix(
+                in srgb,
+                var(--mood-bg)
+                88%,
+                transparent
+            ),
+            color-mix(
+                in srgb,
+                var(--mood-bg-deep)
+                80%,
+                transparent
+            )
+        );
+
+    border-bottom:
+        1px solid
+        var(--mood-border-soft);
+
+    backdrop-filter:
+        blur(
+            22px
+        )
+        saturate(
+            var(--mood-glass-saturation)
+        );
+
+    -webkit-backdrop-filter:
+        blur(
+            22px
+        )
+        saturate(
+            var(--mood-glass-saturation)
+        );
+
+    box-shadow:
+
+        0 14px 52px
+        var(--mood-shadow);
+
+}
+
+
+/* ============================================================
+   05 — NAVIGATION
+   ============================================================ */
+
+html[data-dheere-mood] .nav-logo a {
+
+    color:
+        var(--mood-text);
+
+}
+
+
+html[data-dheere-mood] .nav-links a {
+
+    color:
+        var(--mood-muted);
+
+}
+
+
+html[data-dheere-mood] .nav-links a:hover {
+
+    color:
+        var(--mood-text);
+
+}
+
+
+html[data-dheere-mood] .nav-profile-link {
+
+    background:
+        var(--mood-surface);
+
+    border-color:
+        var(--mood-border-soft);
+
+    color:
+        var(--mood-text-soft);
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .032
+        );
+
+}
+
+
+html[data-dheere-mood] .nav-profile-link:hover {
+
+    background:
+        var(--mood-surface-strong);
+
+    border-color:
+        var(--mood-border);
+
+}
+
+
+html[data-dheere-mood] .nav-profile-avatar {
+
+    color:
+        var(--mood-text);
+
+    background:
+
+        radial-gradient(
+            circle at
+            30% 27%,
+            color-mix(
+                in srgb,
+                var(--mood-accent)
+                18%,
+                transparent
+            ),
+            var(--mood-surface)
+            57%,
+            var(--mood-bg-deep)
+        );
+
+    border-color:
+        var(--mood-border);
+
+}
+
+
+/* ============================================================
+   06 — BUTTON
+   ============================================================ */
+
+html[data-dheere-mood] .button {
+
+    color:
+        var(--mood-bg-deep);
+
+    background:
+        var(--mood-accent);
+
+    border-color:
+        var(--mood-accent);
+
+    box-shadow:
+
+        0 12px 34px
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            8%,
+            transparent
+        );
+
+}
+
+
+html[data-dheere-mood] .button:hover {
+
+    color:
+        var(--mood-bg-deep);
+
+    background:
+
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            93%,
+            white
+        );
+
+    border-color:
+
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            93%,
+            white
+        );
+
+    box-shadow:
+
+        0 18px 42px
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            13%,
+            transparent
+        );
+
+}
+
+
+/* ============================================================
+   07 — GLASS SURFACE
+   ============================================================ */
+
+html[data-dheere-mood]
+.project-card,
+html[data-dheere-mood]
+.article-card,
+html[data-dheere-mood]
+.founder-card,
+html[data-dheere-mood]
+.feedback-form,
+html[data-dheere-mood]
+.auth-card {
+
+    position:
+        relative;
+
+    isolation:
+        isolate;
+
+    overflow:
+        hidden;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            var(--mood-surface-strong),
+            var(--mood-surface)
+            48%,
+            var(--mood-surface-dark)
+        );
+
+    border:
+        1px solid
+        var(--mood-border);
+
+    backdrop-filter:
+        blur(
+            var(--mood-glass-blur)
+        )
+        saturate(
+            var(--mood-glass-saturation)
+        );
+
+    -webkit-backdrop-filter:
+        blur(
+            var(--mood-glass-blur)
+        )
+        saturate(
+            var(--mood-glass-saturation)
+        );
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .046
+        ),
+
+        inset
+        0 -1px 0
+        rgba(
+            0,
+            0,
+            0,
+            .08
+        ),
+
+        0 25px 70px
+        var(--mood-shadow);
+
+}
+
+
+/* ============================================================
+   08 — GLASS REFLECTION
+   ============================================================ */
+
+html[data-dheere-mood]
+.project-card::before,
+html[data-dheere-mood]
+.article-card::before,
+html[data-dheere-mood]
+.founder-card::before,
+html[data-dheere-mood]
+.feedback-form::before,
+html[data-dheere-mood]
+.auth-card::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        linear-gradient(
+            127deg,
+            rgba(
+                255,
+                255,
+                255,
+                .055
+            ),
+            transparent
+            21%,
+            transparent
+            77%,
+            rgba(
+                255,
+                255,
+                255,
+                .009
+            )
+        );
+
+    pointer-events:
+        none;
+
+    opacity:
+        .82;
+
+    z-index:
+        -2;
+
+}
+
+
+/* ============================================================
+   09 — ACCENT ATMOSPHERE ON SURFACES
+   ============================================================ */
+
+html[data-dheere-mood]
+.project-card::after,
+html[data-dheere-mood]
+.article-card::after,
+html[data-dheere-mood]
+.founder-card::after,
+html[data-dheere-mood]
+.auth-card::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        330px;
+
+    height:
+        230px;
+
+    top:
+        -155px;
+
+    right:
+        -120px;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            color-mix(
+                in srgb,
+                var(--mood-accent)
+                5.5%,
+                transparent
+            ),
+            transparent
+            70%
+        );
+
+    filter:
+        blur(30px);
+
+    pointer-events:
+        none;
+
+    opacity:
+        .72;
+
+    z-index:
+        -1;
+
+}
+
+
+/* ============================================================
+   10 — CONTENT LAYER
+   ============================================================ */
+
+html[data-dheere-mood]
+.project-card > *,
+html[data-dheere-mood]
+.article-card > *,
+html[data-dheere-mood]
+.founder-card > *,
+html[data-dheere-mood]
+.feedback-form > *,
+html[data-dheere-mood]
+.auth-card > * {
+
+    position:
+        relative;
+
+    z-index:
+        5;
+
+}
+
+
+/* ============================================================
+   11 — SURFACE HOVER
+   ============================================================ */
+
+html[data-dheere-mood]
+.project-card:hover,
+html[data-dheere-mood]
+.article-card:hover,
+html[data-dheere-mood]
+.founder-card:hover,
+html[data-dheere-mood]
+.feedback-form:hover {
+
+    transform:
+        translateY(
+            -4px
+        );
+
+    border-color:
+
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            19%,
+            var(--mood-border)
+        );
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .066
+        ),
+
+        0 34px 84px
+        var(--mood-shadow-deep);
+
+}
+
+
+/* ============================================================
+   12 — FORM CONTROLS
+   ============================================================ */
+
+html[data-dheere-mood]
+.input-group input,
+html[data-dheere-mood]
+.feedback-form input,
+html[data-dheere-mood]
+.feedback-form textarea {
+
+    background:
+        var(--mood-surface-dark);
+
+    border-color:
+        var(--mood-border-soft);
+
+    color:
+        var(--mood-text);
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .018
+        );
+
+}
+
+
+html[data-dheere-mood]
+.input-group input::placeholder,
+html[data-dheere-mood]
+.feedback-form input::placeholder,
+html[data-dheere-mood]
+.feedback-form textarea::placeholder {
+
+    color:
+        var(--mood-muted-dark);
+
+}
+
+
+html[data-dheere-mood]
+.input-group input:focus,
+html[data-dheere-mood]
+.feedback-form input:focus,
+html[data-dheere-mood]
+.feedback-form textarea:focus {
+
+    border-color:
+
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            45%,
+            var(--mood-border)
+        );
+
+    background:
+
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            3%,
+            var(--mood-surface-dark)
+        );
+
+    box-shadow:
+
+        0 0 0 3px
+        color-mix(
+            in srgb,
+            var(--mood-accent)
+            5%,
+            transparent
+        ),
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .025
+        );
+
+}
+
+
+/* ============================================================
+   13 — AUTH
+   ============================================================ */
+
+html[data-dheere-mood] .auth-subtext {
+
+    color:
+        var(--mood-muted);
+
+}
+
+
+html[data-dheere-mood] .input-group label {
+
+    color:
+        var(--mood-muted);
+
+}
+
+
+html[data-dheere-mood] .forgot-pass {
+
+    color:
+        var(--mood-muted);
+
+}
+
+
+html[data-dheere-mood] .forgot-pass:hover {
+
+    color:
+        var(--mood-text-soft);
+
+}
+
+
+html[data-dheere-mood] .tab-btn {
+
+    color:
+        var(--mood-muted-dark);
+
+}
+
+
+html[data-dheere-mood] .tab-btn.active {
+
+    color:
+        var(--mood-text);
+
+}
+
+
+html[data-dheere-mood] .tab-btn.active::after {
+
+    background:
+        var(--mood-accent);
+
+}
+
+
+/* ============================================================
+   14 — CATEGORIES
+   ============================================================ */
+
+html[data-dheere-mood]
+.article-card .category,
+html[data-dheere-mood]
+.founder-card .category {
+
+    background:
+        var(--mood-accent-soft);
+
+    border:
+        1px solid
+        var(--mood-border-soft);
+
+    color:
+        var(--mood-muted);
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .022
+        );
+
+}
+
+
+/* ============================================================
+   15 — PASSWORD TOGGLE
+   ============================================================ */
+
+html[data-dheere-mood]
+.password-toggle {
+
+    color:
+        var(--mood-muted);
+
+}
+
+
+html[data-dheere-mood]
+.password-toggle:hover {
+
+    color:
+        var(--mood-text);
+
+    background:
+        var(--mood-accent-soft);
+
+}
+
+
+/* ============================================================
+   16 — ORIGINAL
+   ============================================================ */
+
+html[data-dheere-mood="original"] {
+
+    --mood-bg:
+        #0b0c0e;
+
+    --mood-bg-deep:
+        #07080a;
+
+    --mood-bg-soft:
+        #101216;
+
+    --mood-surface:
+        rgba(
+            255,
+            255,
+            255,
+            .025
+        );
+
+    --mood-surface-strong:
+        rgba(
+            255,
+            255,
+            255,
+            .042
+        );
+
+    --mood-surface-dark:
+        rgba(
+            0,
+            0,
+            0,
+            .14
+        );
+
+    --mood-border:
+        rgba(
+            255,
+            255,
+            255,
+            .073
+        );
+
+    --mood-border-soft:
+        rgba(
+            255,
+            255,
+            255,
+            .042
+        );
+
+    --mood-text:
+        #f8fafc;
+
+    --mood-text-soft:
+        #cad2dc;
+
+    --mood-copy:
+        #a6afbb;
+
+    --mood-muted:
+        #8e98a6;
+
+    --mood-muted-dark:
+        #647080;
+
+    --mood-accent:
+        #eef1f4;
+
+    --mood-accent-soft:
+        rgba(
+            238,
+            241,
+            244,
+            .075
+        );
+
+    --mood-shadow:
+        rgba(
+            0,
+            0,
+            0,
+            .18
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            0,
+            0,
+            0,
+            .29
+        );
+
+}
+
 
 html[data-dheere-mood="original"] body {
 
     background:
 
         radial-gradient(
-            circle at 78% 10%,
-            rgba(255,255,255,0.065),
-            transparent 28%
+            ellipse
+            at
+            78% 6%,
+            rgba(
+                255,
+                255,
+                255,
+                .045
+            ),
+            transparent
+            28%
         ),
 
         radial-gradient(
-            circle at 15% 88%,
-            rgba(255,255,255,0.028),
-            transparent 34%
+            ellipse
+            at
+            12% 92%,
+            rgba(
+                255,
+                255,
+                255,
+                .017
+            ),
+            transparent
+            29%
         ),
 
         linear-gradient(
             180deg,
             #0b0c0e,
-            #101214 55%,
+            #101216
+            52%,
             #0b0c0e
         );
-
-    color: #e2e8f0;
-}
-
-
-html[data-dheere-mood="original"] header {
-
-    background:
-        rgba(11,12,14,0.88);
-
-    border-bottom-color:
-        rgba(255,255,255,0.07);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-}
-
-
-html[data-dheere-mood="original"] section {
-
-    border-bottom-color:
-        rgba(255,255,255,0.065);
-
-}
-
-
-html[data-dheere-mood="original"] h1,
-html[data-dheere-mood="original"] h2,
-html[data-dheere-mood="original"] h3 {
-
-    color: #f8fafc;
-
-}
-
-
-html[data-dheere-mood="original"] p {
-
-    color: #aeb8c5;
-
-}
-
-
-html[data-dheere-mood="original"] .project-card,
-html[data-dheere-mood="original"] .article-card,
-html[data-dheere-mood="original"] .auth-card {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.045),
-            rgba(255,255,255,0.018)
-        );
-
-    border-color:
-        rgba(255,255,255,0.09);
-
-    box-shadow:
-        0 16px 45px rgba(0,0,0,0.14);
-
-}
-
-
-html[data-dheere-mood="original"] .button {
-
-    background: #f8fafc;
-
-    border-color: #f8fafc;
-
-    color: #0b0c0e;
 
 }
 
 
 /* ============================================================
-   FOREST
+   17 — FOREST
    ============================================================ */
+
+html[data-dheere-mood="forest"] {
+
+    --mood-bg:
+        #071009;
+
+    --mood-bg-deep:
+        #040a06;
+
+    --mood-bg-soft:
+        #0b180d;
+
+    --mood-surface:
+        rgba(
+            31,
+            75,
+            44,
+            .20
+        );
+
+    --mood-surface-strong:
+        rgba(
+            42,
+            93,
+            56,
+            .29
+        );
+
+    --mood-surface-dark:
+        rgba(
+            0,
+            10,
+            4,
+            .28
+        );
+
+    --mood-border:
+        rgba(
+            95,
+            192,
+            119,
+            .14
+        );
+
+    --mood-border-soft:
+        rgba(
+            95,
+            192,
+            119,
+            .065
+        );
+
+    --mood-text:
+        #eef9f1;
+
+    --mood-text-soft:
+        #c7d9cb;
+
+    --mood-copy:
+        #a0b5a7;
+
+    --mood-muted:
+        #829988;
+
+    --mood-muted-dark:
+        #5c7362;
+
+    --mood-accent:
+        #66d183;
+
+    --mood-accent-soft:
+        rgba(
+            102,
+            209,
+            131,
+            .085
+        );
+
+    --mood-shadow:
+        rgba(
+            0,
+            47,
+            15,
+            .24
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            0,
+            40,
+            13,
+            .36
+        );
+
+}
+
 
 html[data-dheere-mood="forest"] body {
 
     background:
 
         radial-gradient(
-            ellipse at 8% 18%,
-            rgba(48,120,67,0.30),
-            transparent 28%
+            ellipse
+            at
+            6% 5%,
+            rgba(
+                44,
+                129,
+                68,
+                .25
+            ),
+            transparent
+            28%
         ),
 
         radial-gradient(
-            ellipse at 92% 78%,
-            rgba(30,92,49,0.27),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 55% 38%,
-            rgba(85,200,120,0.065),
-            transparent 32%
+            ellipse
+            at
+            94% 87%,
+            rgba(
+                27,
+                96,
+                49,
+                .20
+            ),
+            transparent
+            31%
         ),
 
         linear-gradient(
             180deg,
             #071009,
-            #0b160e 55%,
-            #08110b
+            #0a170d
+            52%,
+            #071009
         );
-
-    color: #e4eee7;
-
-}
-
-
-html[data-dheere-mood="forest"] header {
-
-    background:
-        rgba(7,16,10,0.86);
-
-    border-bottom-color:
-        rgba(85,200,120,0.17);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-
-}
-
-
-html[data-dheere-mood="forest"] section {
-
-    border-bottom-color:
-        rgba(85,200,120,0.11);
-
-}
-
-
-html[data-dheere-mood="forest"] h1,
-html[data-dheere-mood="forest"] h2,
-html[data-dheere-mood="forest"] h3 {
-
-    color: #f2fbf4;
-
-    text-shadow:
-        0 1px 18px rgba(85,200,120,0.08);
-
-}
-
-
-html[data-dheere-mood="forest"] p {
-
-    color: #a9bdb0;
-
-}
-
-
-html[data-dheere-mood="forest"] a {
-
-    color: #7ee39a;
-
-}
-
-
-html[data-dheere-mood="forest"] .project-card,
-html[data-dheere-mood="forest"] .article-card,
-html[data-dheere-mood="forest"] .auth-card {
-
-    background:
-
-        radial-gradient(
-            circle at 85% 15%,
-            rgba(85,200,120,0.10),
-            transparent 30%
-        ),
-
-        rgba(10,28,17,0.68);
-
-    border-color:
-        rgba(85,200,120,0.18);
-
-    box-shadow:
-        0 16px 48px rgba(0,45,15,0.20);
-
-}
-
-
-html[data-dheere-mood="forest"] .button {
-
-    background: #55c878;
-
-    border-color: #55c878;
-
-    color: #07100a;
-
-    box-shadow:
-        0 6px 22px rgba(85,200,120,0.14);
-
-}
-
-
-html[data-dheere-mood="forest"] .button:hover {
-
-    background: #76da90;
-
-    border-color: #76da90;
-
-}
-
-
-html[data-dheere-mood="forest"] .input-group input {
-
-    background:
-        rgba(0,0,0,0.26);
-
-    color: #edf8f0;
-
-    border-color:
-        rgba(85,200,120,0.14);
-
-}
-
-
-html[data-dheere-mood="forest"] .input-group input::placeholder {
-
-    color:
-        #6f8778;
-
-}
-
-
-html[data-dheere-mood="forest"] .input-group input:focus {
-
-    border-color: #55c878;
-
-    box-shadow:
-        0 0 0 3px rgba(85,200,120,0.08);
 
 }
 
 
 /* ============================================================
-   OCEAN
+   18 — OCEAN
    ============================================================ */
+
+html[data-dheere-mood="ocean"] {
+
+    --mood-bg:
+        #06111c;
+
+    --mood-bg-deep:
+        #030a12;
+
+    --mood-bg-soft:
+        #091a2a;
+
+    --mood-surface:
+        rgba(
+            17,
+            61,
+            93,
+            .21
+        );
+
+    --mood-surface-strong:
+        rgba(
+            24,
+            78,
+            117,
+            .30
+        );
+
+    --mood-surface-dark:
+        rgba(
+            0,
+            9,
+            17,
+            .29
+        );
+
+    --mood-border:
+        rgba(
+            101,
+            178,
+            234,
+            .145
+        );
+
+    --mood-border-soft:
+        rgba(
+            101,
+            178,
+            234,
+            .065
+        );
+
+    --mood-text:
+        #eef7ff;
+
+    --mood-text-soft:
+        #c6d8e8;
+
+    --mood-copy:
+        #a0b5c9;
+
+    --mood-muted:
+        #8199ae;
+
+    --mood-muted-dark:
+        #5d758c;
+
+    --mood-accent:
+        #6baaf0;
+
+    --mood-accent-soft:
+        rgba(
+            107,
+            170,
+            240,
+            .085
+        );
+
+    --mood-shadow:
+        rgba(
+            0,
+            39,
+            86,
+            .25
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            0,
+            34,
+            78,
+            .36
+        );
+
+}
+
 
 html[data-dheere-mood="ocean"] body {
 
     background:
 
         radial-gradient(
-            ellipse at 18% 10%,
-            rgba(54,120,194,0.30),
-            transparent 30%
+            ellipse
+            at
+            12% 5%,
+            rgba(
+                48,
+                120,
+                195,
+                .26
+            ),
+            transparent
+            31%
         ),
 
         radial-gradient(
-            ellipse at 86% 82%,
-            rgba(32,82,151,0.28),
-            transparent 32%
-        ),
-
-        repeating-linear-gradient(
-            165deg,
-            transparent 0,
-            transparent 120px,
-            rgba(94,155,234,0.028) 123px,
-            transparent 127px
+            ellipse
+            at
+            91% 87%,
+            rgba(
+                30,
+                82,
+                158,
+                .21
+            ),
+            transparent
+            32%
         ),
 
         linear-gradient(
             180deg,
-            #07101b,
-            #091827 55%,
-            #07111d
+            #06111c,
+            #0a1b2d
+            52%,
+            #06111c
         );
-
-    color: #e5edf7;
-
-}
-
-
-html[data-dheere-mood="ocean"] header {
-
-    background:
-        rgba(7,16,27,0.88);
-
-    border-bottom-color:
-        rgba(94,155,234,0.17);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-
-}
-
-
-html[data-dheere-mood="ocean"] section {
-
-    border-bottom-color:
-        rgba(94,155,234,0.11);
-
-}
-
-
-html[data-dheere-mood="ocean"] h1,
-html[data-dheere-mood="ocean"] h2,
-html[data-dheere-mood="ocean"] h3 {
-
-    color: #f1f7ff;
-
-    text-shadow:
-        0 1px 18px rgba(94,155,234,0.10);
-
-}
-
-
-html[data-dheere-mood="ocean"] p {
-
-    color: #a5b5c8;
-
-}
-
-
-html[data-dheere-mood="ocean"] a {
-
-    color: #82b5f4;
-
-}
-
-
-html[data-dheere-mood="ocean"] .project-card,
-html[data-dheere-mood="ocean"] .article-card,
-html[data-dheere-mood="ocean"] .auth-card {
-
-    background:
-
-        radial-gradient(
-            circle at 80% 10%,
-            rgba(94,155,234,0.10),
-            transparent 30%
-        ),
-
-        rgba(10,28,47,0.68);
-
-    border-color:
-        rgba(94,155,234,0.18);
-
-    box-shadow:
-        0 16px 48px rgba(0,35,80,0.22);
-
-}
-
-
-html[data-dheere-mood="ocean"] .button {
-
-    background: #5e9bea;
-
-    border-color: #5e9bea;
-
-    color: #08111f;
-
-    box-shadow:
-        0 6px 22px rgba(94,155,234,0.14);
-
-}
-
-
-html[data-dheere-mood="ocean"] .button:hover {
-
-    background: #78adf0;
-
-    border-color: #78adf0;
-
-}
-
-
-html[data-dheere-mood="ocean"] .input-group input {
-
-    background:
-        rgba(0,0,0,0.27);
-
-    color: #eef6ff;
-
-    border-color:
-        rgba(94,155,234,0.15);
-
-}
-
-
-html[data-dheere-mood="ocean"] .input-group input::placeholder {
-
-    color:
-        #71869e;
-
-}
-
-
-html[data-dheere-mood="ocean"] .input-group input:focus {
-
-    border-color: #5e9bea;
-
-    box-shadow:
-        0 0 0 3px rgba(94,155,234,0.08);
 
 }
 
 
 /* ============================================================
-   EMBER
+   19 — EMBER
    ============================================================ */
+
+html[data-dheere-mood="ember"] {
+
+    --mood-bg:
+        #100807;
+
+    --mood-bg-deep:
+        #0b0504;
+
+    --mood-bg-soft:
+        #180b08;
+
+    --mood-surface:
+        rgba(
+            81,
+            29,
+            22,
+            .21
+        );
+
+    --mood-surface-strong:
+        rgba(
+            96,
+            36,
+            28,
+            .30
+        );
+
+    --mood-surface-dark:
+        rgba(
+            11,
+            3,
+            2,
+            .29
+        );
+
+    --mood-border:
+        rgba(
+            232,
+            117,
+            100,
+            .145
+        );
+
+    --mood-border-soft:
+        rgba(
+            232,
+            117,
+            100,
+            .068
+        );
+
+    --mood-text:
+        #fff1ed;
+
+    --mood-text-soft:
+        #dfc7c0;
+
+    --mood-copy:
+        #bba39d;
+
+    --mood-muted:
+        #9b7e77;
+
+    --mood-muted-dark:
+        #735851;
+
+    --mood-accent:
+        #e97968;
+
+    --mood-accent-soft:
+        rgba(
+            233,
+            121,
+            104,
+            .09
+        );
+
+    --mood-shadow:
+        rgba(
+            74,
+            7,
+            3,
+            .26
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            68,
+            6,
+            3,
+            .38
+        );
+
+}
+
 
 html[data-dheere-mood="ember"] body {
 
     background:
 
         radial-gradient(
-            ellipse at 18% 92%,
-            rgba(220,74,48,0.28),
-            transparent 25%
+            ellipse
+            at
+            16% 97%,
+            rgba(
+                223,
+                75,
+                46,
+                .29
+            ),
+            transparent
+            27%
         ),
 
         radial-gradient(
-            ellipse at 55% 105%,
-            rgba(236,89,45,0.25),
-            transparent 30%
+            ellipse
+            at
+            52% 106%,
+            rgba(
+                242,
+                88,
+                43,
+                .22
+            ),
+            transparent
+            31%
         ),
 
         radial-gradient(
-            ellipse at 90% 88%,
-            rgba(188,48,39,0.22),
-            transparent 25%
+            ellipse
+            at
+            91% 89%,
+            rgba(
+                195,
+                48,
+                37,
+                .17
+            ),
+            transparent
+            25%
         ),
 
         linear-gradient(
             180deg,
-            #100a0a,
-            #170d0c 55%,
-            #120908
+            #100807,
+            #1a0c09
+            52%,
+            #100807
         );
-
-    color: #f1e8e6;
-
-}
-
-
-html[data-dheere-mood="ember"] header {
-
-    background:
-        rgba(18,10,10,0.90);
-
-    border-bottom-color:
-        rgba(228,107,97,0.18);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-
-}
-
-
-html[data-dheere-mood="ember"] section {
-
-    border-bottom-color:
-        rgba(228,107,97,0.11);
-
-}
-
-
-html[data-dheere-mood="ember"] h1,
-html[data-dheere-mood="ember"] h2,
-html[data-dheere-mood="ember"] h3 {
-
-    color: #fff4f1;
-
-    text-shadow:
-        0 1px 18px rgba(228,107,97,0.09);
-
-}
-
-
-html[data-dheere-mood="ember"] p {
-
-    color: #b9a29d;
-
-}
-
-
-html[data-dheere-mood="ember"] a {
-
-    color: #ed8177;
-
-}
-
-
-html[data-dheere-mood="ember"] .project-card,
-html[data-dheere-mood="ember"] .article-card,
-html[data-dheere-mood="ember"] .auth-card {
-
-    background:
-
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(228,107,97,0.11),
-            transparent 34%
-        ),
-
-        rgba(28,14,13,0.70);
-
-    border-color:
-        rgba(228,107,97,0.18);
-
-    box-shadow:
-        0 16px 48px rgba(70,10,5,0.22);
-
-}
-
-
-html[data-dheere-mood="ember"] .button {
-
-    background: #e46b61;
-
-    border-color: #e46b61;
-
-    color: #1a0808;
-
-    box-shadow:
-        0 6px 22px rgba(228,107,97,0.15);
-
-}
-
-
-html[data-dheere-mood="ember"] .button:hover {
-
-    background: #ef8178;
-
-    border-color: #ef8178;
-
-}
-
-
-html[data-dheere-mood="ember"] .input-group input {
-
-    background:
-        rgba(0,0,0,0.28);
-
-    color: #fff3f0;
-
-    border-color:
-        rgba(228,107,97,0.15);
-
-}
-
-
-html[data-dheere-mood="ember"] .input-group input::placeholder {
-
-    color:
-        #806d69;
-
-}
-
-
-html[data-dheere-mood="ember"] .input-group input:focus {
-
-    border-color: #e46b61;
-
-    box-shadow:
-        0 0 0 3px rgba(228,107,97,0.08);
 
 }
 
 
 /* ============================================================
-   MIDNIGHT
+   20 — MIDNIGHT
    ============================================================ */
+
+html[data-dheere-mood="midnight"] {
+
+    --mood-bg:
+        #080711;
+
+    --mood-bg-deep:
+        #050409;
+
+    --mood-bg-soft:
+        #0f0b19;
+
+    --mood-surface:
+        rgba(
+            45,
+            36,
+            72,
+            .21
+        );
+
+    --mood-surface-strong:
+        rgba(
+            57,
+            46,
+            92,
+            .30
+        );
+
+    --mood-surface-dark:
+        rgba(
+            2,
+            1,
+            8,
+            .30
+        );
+
+    --mood-border:
+        rgba(
+            160,
+            146,
+            242,
+            .155
+        );
+
+    --mood-border-soft:
+        rgba(
+            160,
+            146,
+            242,
+            .068
+        );
+
+    --mood-text:
+        #f5f1ff;
+
+    --mood-text-soft:
+        #d0c9e2;
+
+    --mood-copy:
+        #ada7b9;
+
+    --mood-muted:
+        #91899f;
+
+    --mood-muted-dark:
+        #6c6579;
+
+    --mood-accent:
+        #a397f0;
+
+    --mood-accent-soft:
+        rgba(
+            163,
+            151,
+            240,
+            .085
+        );
+
+    --mood-shadow:
+        rgba(
+            25,
+            8,
+            70,
+            .29
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            22,
+            7,
+            64,
+            .40
+        );
+
+}
+
 
 html[data-dheere-mood="midnight"] body {
 
     background:
 
         radial-gradient(
-            ellipse at 50% 0%,
-            rgba(88,72,164,0.30),
-            transparent 38%
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                88,
+                73,
+                170,
+                .31
+            ),
+            transparent
+            41%
         ),
 
         radial-gradient(
-            ellipse at 85% 78%,
-            rgba(74,58,145,0.20),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 12% 18%,
-            rgba(255,255,255,0.10) 0 1px,
-            transparent 2px
-        ),
-
-        radial-gradient(
-            circle at 36% 30%,
-            rgba(255,255,255,0.12) 0 1px,
-            transparent 2px
-        ),
-
-        radial-gradient(
-            circle at 68% 16%,
-            rgba(255,255,255,0.10) 0 1px,
-            transparent 2px
-        ),
-
-        radial-gradient(
-            circle at 88% 42%,
-            rgba(255,255,255,0.09) 0 1px,
-            transparent 2px
+            ellipse
+            at
+            88% 84%,
+            rgba(
+                75,
+                59,
+                147,
+                .18
+            ),
+            transparent
+            33%
         ),
 
         linear-gradient(
             180deg,
-            #090711,
-            #0d0b18 55%,
-            #090712
+            #080711,
+            #0d0a18
+            52%,
+            #080711
         );
 
-    color: #ece9f7;
+}
+
+
+/* ============================================================
+   21 — PRISM
+   ============================================================ */
+
+html[data-dheere-mood="prism"] {
+
+    --mood-bg:
+        #0a0a10;
+
+    --mood-bg-deep:
+        #06060b;
+
+    --mood-bg-soft:
+        #111018;
+
+    --mood-surface:
+        rgba(
+            255,
+            255,
+            255,
+            .027
+        );
+
+    --mood-surface-strong:
+        rgba(
+            255,
+            255,
+            255,
+            .047
+        );
+
+    --mood-surface-dark:
+        rgba(
+            0,
+            0,
+            6,
+            .22
+        );
+
+    --mood-border:
+        rgba(
+            195,
+            171,
+            255,
+            .145
+        );
+
+    --mood-border-soft:
+        rgba(
+            195,
+            171,
+            255,
+            .062
+        );
+
+    --mood-text:
+        #fbf9ff;
+
+    --mood-text-soft:
+        #d2cbdd;
+
+    --mood-copy:
+        #b0a8ba;
+
+    --mood-muted:
+        #938b9f;
+
+    --mood-muted-dark:
+        #6d6678;
+
+    --mood-accent:
+        #d0bdff;
+
+    --mood-accent-soft:
+        rgba(
+            208,
+            189,
+            255,
+            .08
+        );
+
+    --mood-shadow:
+        rgba(
+            79,
+            35,
+            142,
+            .24
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            70,
+            31,
+            133,
+            .34
+        );
 
 }
 
 
-html[data-dheere-mood="midnight"] header {
-
-    background:
-        rgba(10,8,18,0.90);
-
-    border-bottom-color:
-        rgba(155,140,242,0.18);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-
-}
-
-
-html[data-dheere-mood="midnight"] section {
-
-    border-bottom-color:
-        rgba(155,140,242,0.11);
-
-}
-
-
-html[data-dheere-mood="midnight"] h1,
-html[data-dheere-mood="midnight"] h2,
-html[data-dheere-mood="midnight"] h3 {
-
-    color: #f5f2ff;
-
-    text-shadow:
-        0 1px 20px rgba(155,140,242,0.12);
-
-}
-
-
-html[data-dheere-mood="midnight"] p {
-
-    color: #aaa5b9;
-
-}
-
-
-html[data-dheere-mood="midnight"] a {
-
-    color: #b3a7fa;
-
-}
-
-
-html[data-dheere-mood="midnight"] .project-card,
-html[data-dheere-mood="midnight"] .article-card,
-html[data-dheere-mood="midnight"] .auth-card {
+html[data-dheere-mood="prism"] body {
 
     background:
 
         radial-gradient(
-            circle at 50% 0%,
-            rgba(155,140,242,0.10),
-            transparent 34%
+            circle
+            at
+            9% 17%,
+            rgba(
+                48,
+                214,
+                255,
+                .13
+            ),
+            transparent
+            25%
         ),
 
-        rgba(21,18,31,0.70);
+        radial-gradient(
+            circle
+            at
+            85% 11%,
+            rgba(
+                178,
+                92,
+                255,
+                .14
+            ),
+            transparent
+            27%
+        ),
 
-    border-color:
-        rgba(155,140,242,0.18);
+        radial-gradient(
+            circle
+            at
+            89% 88%,
+            rgba(
+                255,
+                104,
+                158,
+                .095
+            ),
+            transparent
+            25%
+        ),
 
-    box-shadow:
-        0 16px 50px rgba(25,10,70,0.25);
+        radial-gradient(
+            circle
+            at
+            13% 91%,
+            rgba(
+                104,
+                221,
+                157,
+                .075
+            ),
+            transparent
+            25%
+        ),
+
+        linear-gradient(
+            180deg,
+            #0a0a10,
+            #101018
+            50%,
+            #0a0a10
+        );
 
 }
 
 
-html[data-dheere-mood="midnight"] .button {
+/*
+ * Prism CTA becomes spectral.
+ */
 
-    background: #9b8cf2;
+html[data-dheere-mood="prism"] .button {
 
-    border-color: #9b8cf2;
+    position:
+        relative;
 
-    color: #0e0a18;
-
-    box-shadow:
-        0 6px 22px rgba(155,140,242,0.15);
-
-}
-
-
-html[data-dheere-mood="midnight"] .button:hover {
-
-    background: #afa3f6;
-
-    border-color: #afa3f6;
-
-}
-
-
-html[data-dheere-mood="midnight"] .input-group input {
-
-    background:
-        rgba(0,0,0,0.28);
-
-    color: #f6f2ff;
-
-    border-color:
-        rgba(155,140,242,0.16);
-
-}
-
-
-html[data-dheere-mood="midnight"] .input-group input::placeholder {
+    overflow:
+        hidden;
 
     color:
-        #706b80;
+        #111018;
+
+    background:
+
+        linear-gradient(
+            105deg,
+            #73dcff,
+            #9e8dff
+            30%,
+            #d08dff
+            48%,
+            #ff92b5
+            66%,
+            #ffc47b
+            83%,
+            #8fdda9
+        );
+
+    border:
+        none;
 
 }
 
 
-html[data-dheere-mood="midnight"] .input-group input:focus {
+html[data-dheere-mood="prism"] .button::before {
 
-    border-color: #9b8cf2;
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -2px;
+
+    background:
+
+        linear-gradient(
+            110deg,
+            transparent,
+            rgba(
+                255,
+                255,
+                255,
+                .33
+            ),
+            transparent
+        );
+
+    transform:
+        translateX(
+            -115%
+        );
+
+    transition:
+        transform
+        .9s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        );
+
+    pointer-events:
+        none;
+
+}
+
+
+html[data-dheere-mood="prism"] .button:hover::before {
+
+    transform:
+        translateX(
+            115%
+        );
+
+}
+
+
+/* ============================================================
+   22 — UNIVERSE
+   ------------------------------------------------------------
+   Deep-space website chrome.
+   Actual full-screen moving environment is generated
+   by mood-engine.js.
+   ============================================================ */
+
+html[data-dheere-mood="universe"] {
+
+    --mood-bg:
+        #03040a;
+
+    --mood-bg-deep:
+        #010207;
+
+    --mood-bg-soft:
+        #070913;
+
+    --mood-surface:
+        rgba(
+            64,
+            59,
+            108,
+            .105
+        );
+
+    --mood-surface-strong:
+        rgba(
+            83,
+            76,
+            142,
+            .17
+        );
+
+    --mood-surface-dark:
+        rgba(
+            0,
+            0,
+            6,
+            .34
+        );
+
+    --mood-border:
+        rgba(
+            144,
+            132,
+            224,
+            .145
+        );
+
+    --mood-border-soft:
+        rgba(
+            144,
+            132,
+            224,
+            .060
+        );
+
+    --mood-border-strong:
+        rgba(
+            163,
+            151,
+            240,
+            .22
+        );
+
+    --mood-text:
+        #f6f3ff;
+
+    --mood-text-soft:
+        #d0cadf;
+
+    --mood-copy:
+        #a7a3b5;
+
+    --mood-muted:
+        #888399;
+
+    --mood-muted-dark:
+        #625e72;
+
+    --mood-accent:
+        #b8adff;
+
+    --mood-accent-soft:
+        rgba(
+            184,
+            173,
+            255,
+            .075
+        );
+
+    --mood-accent-faint:
+        rgba(
+            184,
+            173,
+            255,
+            .022
+        );
+
+    --mood-shadow:
+        rgba(
+            3,
+            3,
+            19,
+            .35
+        );
+
+    --mood-shadow-deep:
+        rgba(
+            2,
+            2,
+            15,
+            .48
+        );
+
+    --mood-glass-blur:
+        27px;
+
+    --mood-glass-saturation:
+        125%;
+
+}
+
+
+/* ============================================================
+   23 — UNIVERSE BODY
+   ============================================================ */
+
+html[data-dheere-mood="universe"] body {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            10% 12%,
+            rgba(
+                73,
+                56,
+                180,
+                .16
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            85% 18%,
+            rgba(
+                40,
+                87,
+                177,
+                .105
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            73% 87%,
+            rgba(
+                127,
+                54,
+                154,
+                .085
+            ),
+            transparent
+            30%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            22% 88%,
+            rgba(
+                43,
+                68,
+                140,
+                .055
+            ),
+            transparent
+            28%
+        ),
+
+        linear-gradient(
+            180deg,
+            #03040a,
+            #070913
+            52%,
+            #03040a
+        );
+
+}
+
+
+/* ============================================================
+   24 — UNIVERSE GLOBAL LIGHT FIELD
+   ============================================================ */
+
+html[data-dheere-mood="universe"] body::before {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            14% 22%,
+            rgba(
+                102,
+                82,
+                225,
+                .050
+            ),
+            transparent
+            24%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            78% 32%,
+            rgba(
+                55,
+                116,
+                224,
+                .038
+            ),
+            transparent
+            25%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            59% 84%,
+            rgba(
+                161,
+                75,
+                185,
+                .032
+            ),
+            transparent
+            24%
+        );
+
+}
+
+
+/* ============================================================
+   25 — UNIVERSE HEADER
+   ============================================================ */
+
+html[data-dheere-mood="universe"] header {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                2,
+                3,
+                8,
+                .92
+            ),
+            rgba(
+                3,
+                4,
+                9,
+                .72
+            )
+        );
+
+    border-bottom-color:
+        rgba(
+            139,
+            128,
+            222,
+            .115
+        );
 
     box-shadow:
-        0 0 0 3px rgba(155,140,242,0.08);
+
+        0 18px 60px
+        rgba(
+            2,
+            2,
+            13,
+            .32
+        );
 
 }
 
 
 /* ============================================================
-   CARD HOVER
+   26 — UNIVERSE TYPOGRAPHY
    ============================================================ */
 
-html[data-dheere-mood="forest"] .project-card:hover,
-html[data-dheere-mood="forest"] .article-card:hover,
-html[data-dheere-mood="forest"] .auth-card:hover {
+html[data-dheere-mood="universe"]
+h1,
+html[data-dheere-mood="universe"]
+h2,
+html[data-dheere-mood="universe"]
+h3 {
 
-    border-color:
-        rgba(85,200,120,0.28);
+    color:
+        #f7f4ff;
 
-}
+    text-shadow:
 
-
-html[data-dheere-mood="ocean"] .project-card:hover,
-html[data-dheere-mood="ocean"] .article-card:hover,
-html[data-dheere-mood="ocean"] .auth-card:hover {
-
-    border-color:
-        rgba(94,155,234,0.28);
-
-}
-
-
-html[data-dheere-mood="ember"] .project-card:hover,
-html[data-dheere-mood="ember"] .article-card:hover,
-html[data-dheere-mood="ember"] .auth-card:hover {
-
-    border-color:
-        rgba(228,107,97,0.28);
+        0 2px 30px
+        rgba(
+            126,
+            108,
+            226,
+            .072
+        );
 
 }
 
 
-html[data-dheere-mood="midnight"] .project-card:hover,
-html[data-dheere-mood="midnight"] .article-card:hover,
-html[data-dheere-mood="midnight"] .auth-card:hover {
+html[data-dheere-mood="universe"] p {
 
-    border-color:
-        rgba(155,140,242,0.30);
+    color:
+        #a9a5b8;
+
+}
+
+
+html[data-dheere-mood="universe"]
+.nav-links a {
+
+    color:
+        #858097;
+
+}
+
+
+html[data-dheere-mood="universe"]
+.nav-links a:hover {
+
+    color:
+        #eeeaff;
 
 }
 
 
 /* ============================================================
-   FORM LABELS / SMALL TEXT
+   27 — UNIVERSE GLASS
    ============================================================ */
 
-html[data-dheere-mood="forest"] label,
-html[data-dheere-mood="ocean"] label,
-html[data-dheere-mood="ember"] label,
-html[data-dheere-mood="midnight"] label {
+html[data-dheere-mood="universe"]
+.project-card,
+html[data-dheere-mood="universe"]
+.article-card,
+html[data-dheere-mood="universe"]
+.founder-card,
+html[data-dheere-mood="universe"]
+.feedback-form,
+html[data-dheere-mood="universe"]
+.auth-card {
 
-    color: #d7e0dc;
+    background:
 
-}
+        radial-gradient(
+            ellipse
+            at
+            15% 11%,
+            rgba(
+                112,
+                91,
+                226,
+                .040
+            ),
+            transparent
+            28%
+        ),
 
+        radial-gradient(
+            ellipse
+            at
+            82% 78%,
+            rgba(
+                56,
+                94,
+                188,
+                .030
+            ),
+            transparent
+            28%
+        ),
 
-html[data-dheere-mood="forest"] small,
-html[data-dheere-mood="ocean"] small,
-html[data-dheere-mood="ember"] small,
-html[data-dheere-mood="midnight"] small {
+        linear-gradient(
+            145deg,
+            rgba(
+                59,
+                54,
+                98,
+                .19
+            ),
+            rgba(
+                3,
+                4,
+                12,
+                .69
+            )
+        );
 
-    color: #9caab0;
+    border-color:
+        rgba(
+            143,
+            131,
+            220,
+            .13
+        );
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .045
+        ),
+
+        inset
+        0 -1px 0
+        rgba(
+            0,
+            0,
+            0,
+            .16
+        ),
+
+        0 28px 80px
+        rgba(
+            0,
+            0,
+            0,
+            .32
+        );
 
 }
 
 
 /* ============================================================
-   REDUCED MOTION
+   28 — UNIVERSE FOUNDER
    ============================================================ */
 
-@media (prefers-reduced-motion: reduce) {
+html[data-dheere-mood="universe"]
+.founder-card {
 
-    html,
-    body,
-    header,
-    section,
-    .project-card,
-    .article-card,
-    .auth-card,
-    .button,
-    input,
-    textarea,
-    a {
+    background:
 
-        transition: none !important;
+        radial-gradient(
+            ellipse
+            at
+            78% 17%,
+            rgba(
+                112,
+                91,
+                231,
+                .052
+            ),
+            transparent
+            31%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            15% 80%,
+            rgba(
+                55,
+                92,
+                181,
+                .038
+            ),
+            transparent
+            28%
+        ),
+
+        linear-gradient(
+            145deg,
+            rgba(
+                53,
+                49,
+                91,
+                .23
+            ),
+            rgba(
+                4,
+                5,
+                13,
+                .73
+            )
+        );
+
+}
+
+
+/* ============================================================
+   29 — UNIVERSE HOVER
+   ============================================================ */
+
+html[data-dheere-mood="universe"]
+.project-card:hover,
+html[data-dheere-mood="universe"]
+.article-card:hover,
+html[data-dheere-mood="universe"]
+.founder-card:hover,
+html[data-dheere-mood="universe"]
+.feedback-form:hover {
+
+    border-color:
+        rgba(
+            165,
+            151,
+            241,
+            .22
+        );
+
+    box-shadow:
+
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            .065
+        ),
+
+        0 38px 96px
+        rgba(
+            0,
+            0,
+            0,
+            .40
+        ),
+
+        0 0 50px
+        rgba(
+            83,
+            65,
+            180,
+            .040
+        );
+
+}
+
+
+/* ============================================================
+   30 — UNIVERSE BUTTON
+   ============================================================ */
+
+html[data-dheere-mood="universe"] .button {
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #c8c1ff,
+            #9e94eb
+        );
+
+    color:
+        #090812;
+
+    border-color:
+        #c8c1ff;
+
+    box-shadow:
+
+        0 14px 38px
+        rgba(
+            132,
+            114,
+            229,
+            .13
+        ),
+
+        0 0 28px
+        rgba(
+            100,
+            80,
+            194,
+            .04
+        );
+
+}
+
+
+html[data-dheere-mood="universe"] .button:hover {
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ddd8ff,
+            #aea5f2
+        );
+
+    border-color:
+        #ddd8ff;
+
+    box-shadow:
+
+        0 18px 46px
+        rgba(
+            132,
+            114,
+            229,
+            .19
+        ),
+
+        0 0 38px
+        rgba(
+            100,
+            80,
+            194,
+            .065
+        );
+
+}
+
+
+/* ============================================================
+   31 — UNIVERSE INPUT
+   ============================================================ */
+
+html[data-dheere-mood="universe"]
+.input-group input,
+html[data-dheere-mood="universe"]
+.feedback-form input,
+html[data-dheere-mood="universe"]
+.feedback-form textarea {
+
+    background:
+        rgba(
+            0,
+            1,
+            7,
+            .38
+        );
+
+    border-color:
+        rgba(
+            142,
+            130,
+            216,
+            .105
+        );
+
+    color:
+        #f5f1ff;
+
+}
+
+
+html[data-dheere-mood="universe"]
+.input-group input:focus,
+html[data-dheere-mood="universe"]
+.feedback-form input:focus,
+html[data-dheere-mood="universe"]
+.feedback-form textarea:focus {
+
+    border-color:
+        rgba(
+            174,
+            159,
+            245,
+            .57
+        );
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(
+            143,
+            123,
+            229,
+            .046
+        ),
+
+        0 0 30px
+        rgba(
+            77,
+            62,
+            165,
+            .035
+        );
+
+}
+
+
+/* ============================================================
+   32 — UNIVERSE PROFILE
+   ============================================================ */
+
+html[data-dheere-mood="universe"]
+.nav-profile-link {
+
+    background:
+        rgba(
+            63,
+            57,
+            106,
+            .12
+        );
+
+    border-color:
+        rgba(
+            143,
+            130,
+            219,
+            .10
+        );
+
+}
+
+
+html[data-dheere-mood="universe"]
+.nav-profile-link:hover {
+
+    background:
+        rgba(
+            80,
+            70,
+            132,
+            .18
+        );
+
+    border-color:
+        rgba(
+            158,
+            145,
+            231,
+            .17
+        );
+
+}
+
+
+/* ============================================================
+   33 — ENVIRONMENT ROOT
+   ============================================================ */
+
+html[data-dheere-mood]
+#dheereEnvironment {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        0;
+
+    pointer-events:
+        none;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+}
+
+
+/* ============================================================
+   34 — ENVIRONMENT LAYER
+   ============================================================ */
+
+html[data-dheere-mood]
+.mood-environment-layer {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    will-change:
+        opacity;
+
+}
+
+
+/* ============================================================
+   35 — COMMON ENVIRONMENT LAYER RESET
+   ============================================================ */
+
+html[data-dheere-mood]
+.mood-environment-layer > * {
+
+    pointer-events:
+        none;
+
+}
+
+
+/* ============================================================
+   36 — FOREST ENVIRONMENT
+   ============================================================ */
+
+html[data-dheere-mood]
+.forest-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+}
+
+
+/*
+ * Canopy.
+ */
+
+html[data-dheere-mood]
+.forest-canopy {
+
+    position:
+        absolute;
+
+    width:
+        420px;
+
+    height:
+        250px;
+
+    border-radius:
+        50%;
+
+    opacity:
+        .78;
+
+    filter:
+        blur(
+            .55px
+        );
+
+    animation:
+        moodForestCanopy
+        18s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.forest-canopy.left {
+
+    left:
+        -130px;
+
+    top:
+        -82px;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            29% 49%,
+            #214b2b
+            0 25%,
+            transparent
+            26%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            56% 36%,
+            #2d6940
+            0 27%,
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            76% 63%,
+            #1b4328
+            0 30%,
+            transparent
+            31%
+        );
+
+    transform:
+        rotate(
+            -12deg
+        );
+
+}
+
+
+html[data-dheere-mood]
+.forest-canopy.right {
+
+    right:
+        -140px;
+
+    top:
+        -90px;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            26% 55%,
+            #2b6540
+            0 28%,
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            54% 34%,
+            #214e30
+            0 30%,
+            transparent
+            31%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            80% 61%,
+            #306c43
+            0 25%,
+            transparent
+            26%
+        );
+
+    transform:
+        rotate(
+            15deg
+        );
+
+}
+
+
+/*
+ * Branch.
+ */
+
+html[data-dheere-mood]
+.forest-branch {
+
+    position:
+        absolute;
+
+    width:
+        230px;
+
+    height:
+        8px;
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            #302819
+            14%,
+            #4a3822
+            70%,
+            transparent
+        );
+
+    opacity:
+        .56;
+
+}
+
+
+/*
+ * Leaves.
+ */
+
+html[data-dheere-mood]
+.forest-leaf {
+
+    position:
+        absolute;
+
+    width:
+        17px;
+
+    height:
+        9px;
+
+    border-radius:
+        100% 0 100% 0;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #4e9b5b,
+            #1d5a31
+        );
+
+    opacity:
+        .65;
+
+    animation:
+        moodForestLeaf
+        var(--leaf-speed,9s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Mist.
+ */
+
+html[data-dheere-mood]
+.forest-mist {
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        4%;
+
+    height:
+        190px;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            rgba(
+                132,
+                177,
+                142,
+                .11
+            ),
+            transparent
+            68%
+        );
+
+    filter:
+        blur(
+            19px
+        );
+
+    animation:
+        moodForestMist
+        17s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes moodForestCanopy {
+
+    from {
+
+        transform:
+            rotate(
+                -12deg
+            )
+            translateX(
+                -10px
+            );
+
+    }
+
+    to {
+
+        transform:
+            rotate(
+                -11deg
+            )
+            translateX(
+                12px
+            );
+
+    }
+
+}
+
+
+@keyframes moodForestLeaf {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(
+                20deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(--leaf-x,14px),
+                var(--leaf-y,10px),
+                0
+            )
+            rotate(
+                55deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodForestMist {
+
+    from {
+
+        transform:
+            translateX(
+                -4%
+            );
+
+        opacity:
+            .42;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                5%
+            );
+
+        opacity:
+            .78;
+
+    }
+
+}
+
+
+/* ============================================================
+   37 — OCEAN ENVIRONMENT
+   ============================================================ */
+
+html[data-dheere-mood]
+.ocean-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+}
+
+
+/*
+ * Wave body.
+ */
+
+html[data-dheere-mood]
+.ocean-wave {
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    width:
+        120%;
+
+    height:
+        95px;
+
+    border-top:
+        1px solid
+        rgba(
+            113,
+            181,
+            239,
+            .18
+        );
+
+    border-radius:
+        50%;
+
+    opacity:
+        .42;
+
+    animation:
+        moodOceanWave
+        var(--wave-speed,9s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Light rays.
+ */
+
+html[data-dheere-mood]
+.ocean-ray {
+
+    position:
+        absolute;
+
+    top:
+        -18%;
+
+    width:
+        120px;
+
+    height:
+        90%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                107,
+                181,
+                241,
+                .13
+            ),
+            transparent
+            82%
+        );
+
+    filter:
+        blur(
+            14px
+        );
+
+    transform:
+        rotate(
+            18deg
+        );
+
+    animation:
+        moodOceanRay
+        var(--ray-speed,14s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Water particles.
+ */
+
+html[data-dheere-mood]
+.ocean-particle {
+
+    position:
+        absolute;
+
+    width:
+        4px;
+
+    height:
+        4px;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            150,
+            215,
+            255,
+            .55
+        );
+
+    animation:
+        moodOceanParticle
+        var(--particle-speed,9s)
+        linear
+        infinite;
+
+}
+
+
+@keyframes moodOceanWave {
+
+    from {
+
+        transform:
+            translateX(
+                -4%
+            )
+            scaleY(
+                .76
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                4%
+            )
+            scaleY(
+                1.18
+            );
+
+    }
+
+}
+
+
+@keyframes moodOceanRay {
+
+    from {
+
+        opacity:
+            .18;
+
+        transform:
+            rotate(
+                17deg
+            )
+            translateX(
+                -25px
+            );
+
+    }
+
+    to {
+
+        opacity:
+            .62;
+
+        transform:
+            rotate(
+                23deg
+            )
+            translateX(
+                35px
+            );
+
+    }
+
+}
+
+
+@keyframes moodOceanParticle {
+
+    0% {
+
+        transform:
+            translate3d(
+                0,
+                30px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    20% {
+
+        opacity:
+            .65;
+
+    }
+
+    80% {
+
+        opacity:
+            .35;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(--particle-x,15px),
+                -120px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* ============================================================
+   38 — EMBER ENVIRONMENT
+   ============================================================ */
+
+html[data-dheere-mood]
+.ember-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+}
+
+
+/*
+ * Main heat.
+ */
+
+html[data-dheere-mood]
+.ember-glow {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        -190px;
+
+    width:
+        760px;
+
+    height:
+        480px;
+
+    transform:
+        translateX(
+            -50%
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                239,
+                81,
+                48,
+                .24
+            ),
+            rgba(
+                147,
+                33,
+                22,
+                .07
+            )
+            45%,
+            transparent
+            71%
+        );
+
+    filter:
+        blur(
+            17px
+        );
+
+    animation:
+        moodEmberPulse
+        4.2s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Sparks.
+ */
+
+html[data-dheere-mood]
+.ember-spark {
+
+    position:
+        absolute;
+
+    width:
+        var(--spark-size,3px);
+
+    height:
+        var(--spark-size,3px);
+
+    border-radius:
+        50%;
+
+    background:
+        #f17855;
+
+    box-shadow:
+
+        0 0 8px
+        rgba(
+            244,
+            95,
+            60,
+            .72
+        );
+
+    animation:
+        moodEmberRise
+        var(--spark-speed,5s)
+        linear
+        infinite;
+
+}
+
+
+@keyframes moodEmberPulse {
+
+    from {
+
+        transform:
+            translateX(
+                -50%
+            )
+            scale(
+                .94
+            );
+
+        opacity:
+            .50;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                -50%
+            )
+            scale(
+                1.08
+            );
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+@keyframes moodEmberRise {
+
+    0% {
+
+        transform:
+            translate3d(
+                0,
+                42px,
+                0
+            )
+            scale(
+                .60
+            );
+
+        opacity:
+            0;
+
+    }
+
+    15% {
+
+        opacity:
+            1;
+
+    }
+
+    70% {
+
+        opacity:
+            .70;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(--spark-x,30px),
+                -330px,
+                0
+            )
+            scale(
+                .18
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* ============================================================
+   39 — MIDNIGHT ENVIRONMENT
+   ============================================================ */
+
+html[data-dheere-mood]
+.midnight-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+}
+
+
+html[data-dheere-mood]
+.midnight-moon {
+
+    position:
+        absolute;
+
+    top:
+        12%;
+
+    right:
+        12%;
+
+    width:
+        96px;
+
+    height:
+        96px;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle at
+            35% 34%,
+            #ffffff,
+            #d8d4f4
+            55%,
+            #9c95cd
+            100%
+        );
+
+    box-shadow:
+
+        0 0 46px
+        rgba(
+            169,
+            159,
+            243,
+            .22
+        ),
+
+        0 0 105px
+        rgba(
+            128,
+            112,
+            220,
+            .10
+        );
+
+    animation:
+        moodMidnightMoon
+        11s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.midnight-star {
+
+    position:
+        absolute;
+
+    width:
+        var(--star-size,2px);
+
+    height:
+        var(--star-size,2px);
+
+    border-radius:
+        50%;
+
+    background:
+        #ffffff;
+
+    opacity:
+        var(--star-opacity,.6);
+
+    animation:
+        moodMidnightStar
+        var(--star-speed,4s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.midnight-particle {
+
+    position:
+        absolute;
+
+    width:
+        3px;
+
+    height:
+        3px;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            171,
+            158,
+            246,
+            .55
+        );
+
+    filter:
+        blur(
+            .5px
+        );
+
+    animation:
+        moodMidnightParticle
+        var(--particle-speed,12s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes moodMidnightMoon {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            scale(
+                .97
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                -4px,
+                6px,
+                0
+            )
+            scale(
+                1.025
+            );
+
+    }
+
+}
+
+
+@keyframes moodMidnightStar {
+
+    from {
+
+        opacity:
+            var(--star-min,.25);
+
+        transform:
+            scale(
+                .78
+            );
+
+    }
+
+    to {
+
+        opacity:
+            var(--star-opacity,.8);
+
+        transform:
+            scale(
+                1.28
+            );
+
+    }
+
+}
+
+
+@keyframes moodMidnightParticle {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(--float-x,20px),
+                var(--float-y,-25px),
+                0
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   40 — PRISM ENVIRONMENT
+   ============================================================ */
+
+html[data-dheere-mood]
+.prism-environment-v2 {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+}
+
+
+html[data-dheere-mood]
+.prism-environment-v2::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -15%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            15% 15%,
+            rgba(
+                54,
+                218,
+                255,
+                .075
+            ),
+            transparent
+            27%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            78% 18%,
+            rgba(
+                177,
+                94,
+                255,
+                .08
+            ),
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            84% 82%,
+            rgba(
+                255,
+                105,
+                158,
+                .065
+            ),
+            transparent
+            27%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            18% 84%,
+            rgba(
+                102,
+                223,
+                156,
+                .055
+            ),
+            transparent
+            27%
+        );
+
+    filter:
+        blur(
+            22px
+        );
+
+    animation:
+        moodPrismWorld
+        22s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.prism-spectrum-field {
+
+    position:
+        absolute;
+
+    inset:
+        -25%;
+
+    background:
+
+        conic-gradient(
+            from
+            170deg
+            at
+            44%
+            50%,
+
+            rgba(
+                50,
+                218,
+                255,
+                0
+            ),
+
+            rgba(
+                50,
+                218,
+                255,
+                .08
+            ),
+
+            rgba(
+                113,
+                107,
+                255,
+                .10
+            ),
+
+            rgba(
+                194,
+                100,
+                255,
+                .10
+            ),
+
+            rgba(
+                255,
+                105,
+                157,
+                .075
+            ),
+
+            rgba(
+                255,
+                187,
+                93,
+                .065
+            ),
+
+            rgba(
+                105,
+                221,
+                156,
+                .055
+            ),
+
+            rgba(
+                50,
+                218,
+                255,
+                0
+            )
+        );
+
+    filter:
+        blur(
+            54px
+        );
+
+    opacity:
+        .72;
+
+    animation:
+        moodPrismSpectrum
+        25s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.prism-light-band {
+
+    position:
+        absolute;
+
+    height:
+        18vh;
+
+    min-height:
+        110px;
+
+    border-radius:
+        999px;
+
+    filter:
+        blur(
+            30px
+        );
+
+    opacity:
+        .18;
+
+    transform-origin:
+        center;
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        moodPrismBand
+        var(--prism-speed,18s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.prism-light-band.one {
+
+    width:
+        78vw;
+
+    left:
+        -18vw;
+
+    top:
+        23vh;
+
+    transform:
+        rotate(
+            -12deg
+        );
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                62,
+                220,
+                255,
+                .30
+            ),
+            rgba(
+                137,
+                105,
+                255,
+                .30
+            ),
+            transparent
+        );
+
+}
+
+
+html[data-dheere-mood]
+.prism-light-band.two {
+
+    width:
+        72vw;
+
+    right:
+        -22vw;
+
+    top:
+        48vh;
+
+    transform:
+        rotate(
+            9deg
+        );
+
+    opacity:
+        .13;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                241,
+                105,
+                191,
+                .28
+            ),
+            rgba(
+                255,
+                191,
+                91,
+                .25
+            ),
+            transparent
+        );
+
+    --prism-speed:
+        21s;
+
+}
+
+
+html[data-dheere-mood]
+.prism-light-band.three {
+
+    width:
+        60vw;
+
+    left:
+        14vw;
+
+    bottom:
+        -2vh;
+
+    transform:
+        rotate(
+            -5deg
+        );
+
+    opacity:
+        .10;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                105,
+                221,
+                156,
+                .25
+            ),
+            rgba(
+                69,
+                208,
+                255,
+                .20
+            ),
+            transparent
+        );
+
+    --prism-speed:
+        24s;
+
+}
+
+
+html[data-dheere-mood]
+.prism-refraction {
+
+    position:
+        absolute;
+
+    width:
+        18px;
+
+    height:
+        45vh;
+
+    top:
+        24vh;
+
+    border-radius:
+        999px;
+
+    filter:
+        blur(
+            16px
+        );
+
+    opacity:
+        .13;
+
+    transform:
+        rotate(
+            var(
+                --prism-angle,
+                18deg
+            )
+        );
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                61,
+                218,
+                255,
+                0
+            ),
+            rgba(
+                61,
+                218,
+                255,
+                .26
+            ),
+            rgba(
+                170,
+                105,
+                255,
+                .22
+            ),
+            rgba(
+                255,
+                106,
+                160,
+                .20
+            ),
+            rgba(
+                255,
+                193,
+                95,
+                .14
+            ),
+            rgba(
+                103,
+                221,
+                157,
+                0
+            )
+        );
+
+    animation:
+        moodPrismRefraction
+        var(--prism-speed,19s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.prism-atmosphere-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(--size,3px);
+
+    height:
+        var(--size,3px);
+
+    border-radius:
+        50%;
+
+    background:
+        var(
+            --particle-color,
+            rgba(
+                205,
+                193,
+                255,
+                .55
+            )
+        );
+
+    box-shadow:
+        0 0 13px
+        var(
+            --particle-color,
+            rgba(
+                205,
+                193,
+                255,
+                .25
+            )
+        );
+
+    opacity:
+        var(--opacity,.35);
+
+    animation:
+        moodPrismParticle
+        var(--speed,12s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes moodPrismWorld {
+
+    from {
+
+        transform:
+            translate3d(
+                -12px,
+                8px,
+                0
+            )
+            scale(
+                .98
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                22px,
+                -16px,
+                0
+            )
+            scale(
+                1.06
+            );
+
+    }
+
+}
+
+
+@keyframes moodPrismSpectrum {
+
+    from {
+
+        transform:
+            translate3d(
+                -3%,
+                -2%,
+                0
+            )
+            rotate(
+                -3deg
+            )
+            scale(
+                .98
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                4%,
+                3%,
+                0
+            )
+            rotate(
+                5deg
+            )
+            scale(
+                1.06
+            );
+
+    }
+
+}
+
+
+@keyframes moodPrismBand {
+
+    from {
+
+        margin-left:
+            -18px;
+
+        opacity:
+            .42;
+
+    }
+
+    to {
+
+        margin-left:
+            28px;
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+@keyframes moodPrismRefraction {
+
+    from {
+
+        margin-left:
+            -14px;
+
+        opacity:
+            .28;
+
+    }
+
+    to {
+
+        margin-left:
+            21px;
+
+        opacity:
+            .83;
+
+    }
+
+}
+
+
+@keyframes moodPrismParticle {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            scale(
+                .75
+            );
+
+        opacity:
+            .09;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(
+                    --drift-x,
+                    18px
+                ),
+                var(
+                    --drift-y,
+                    -28px
+                ),
+                0
+            )
+            scale(
+                1.15
+            );
+
+        opacity:
+            var(
+                --opacity,
+                .45
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   41 — UNIVERSE ENVIRONMENT
+   ------------------------------------------------------------
+   The actual cinematic scene.
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-environment-v4 {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            18% 14%,
+            rgba(
+                75,
+                58,
+                185,
+                .11
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            82% 19%,
+            rgba(
+                40,
+                88,
+                178,
+                .085
+            ),
+            transparent
+            30%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            73% 83%,
+            rgba(
+                124,
+                53,
+                151,
+                .075
+            ),
+            transparent
+            31%
+        ),
+
+        linear-gradient(
+            180deg,
+            #020309,
+            #040611
+            52%,
+            #02030a
+        );
+
+}
+
+
+/*
+ * Final environment vignette.
+ */
+
+html[data-dheere-mood]
+.universe-environment-v4::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -10%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            transparent
+            25%,
+            rgba(
+                0,
+                0,
+                0,
+                .18
+            )
+            63%,
+            rgba(
+                0,
+                0,
+                0,
+                .64
+            )
+            100%
+        );
+
+    pointer-events:
+        none;
+
+    z-index:
+        900;
+
+}
+
+
+/* ============================================================
+   42 — COSMIC NEBULA FIELD
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-cosmic-nebula-field {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            9% 24%,
+            rgba(
+                73,
+                62,
+                180,
+                .085
+            ),
+            transparent
+            26%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            87% 37%,
+            rgba(
+                42,
+                91,
+                185,
+                .075
+            ),
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            59% 87%,
+            rgba(
+                152,
+                70,
+                174,
+                .055
+            ),
+            transparent
+            26%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            31% 72%,
+            rgba(
+                52,
+                75,
+                154,
+                .045
+            ),
+            transparent
+            27%
+        );
+
+    filter:
+        blur(
+            42px
+        );
+
+    animation:
+        moodUniverseNebulaField
+        42s
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        1;
+
+}
+
+
+/* ============================================================
+   43 — LARGE SPACE BANDS
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-space-band {
+
+    position:
+        absolute;
+
+    border-radius:
+        50%;
+
+    filter:
+        blur(
+            var(
+                --blur,
+                16px
+            )
+        );
+
+    opacity:
+        var(
+            --opacity,
+            .12
+        );
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        moodUniverseBand
+        var(--speed,34s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        2;
+
+}
+
+
+html[data-dheere-mood]
+.universe-space-band.one {
+
+    width:
+        85vw;
+
+    height:
+        8vw;
+
+    left:
+        -22vw;
+
+    top:
+        20vh;
+
+    transform:
+        rotate(
+            -18deg
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                100,
+                80,
+                218,
+                .24
+            ),
+            rgba(
+                58,
+                72,
+                157,
+                .06
+            )
+            42%,
+            transparent
+            74%
+        );
+
+    --blur:
+        18px;
+
+    --opacity:
+        .16;
+
+    --speed:
+        33s;
+
+}
+
+
+html[data-dheere-mood]
+.universe-space-band.two {
+
+    width:
+        76vw;
+
+    height:
+        7vw;
+
+    right:
+        -19vw;
+
+    top:
+        58vh;
+
+    transform:
+        rotate(
+            14deg
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                60,
+                128,
+                220,
+                .19
+            ),
+            rgba(
+                67,
+                68,
+                145,
+                .05
+            )
+            42%,
+            transparent
+            74%
+        );
+
+    --blur:
+        18px;
+
+    --opacity:
+        .13;
+
+    --speed:
+        39s;
+
+}
+
+
+html[data-dheere-mood]
+.universe-space-band.three {
+
+    width:
+        58vw;
+
+    height:
+        5vw;
+
+    left:
+        24vw;
+
+    bottom:
+        0;
+
+    transform:
+        rotate(
+            -7deg
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                190,
+                82,
+                204,
+                .13
+            ),
+            rgba(
+                89,
+                58,
+                143,
+                .04
+            )
+            45%,
+            transparent
+            75%
+        );
+
+    --blur:
+        17px;
+
+    --opacity:
+        .09;
+
+    --speed:
+        45s;
+
+}
+
+
+/* ============================================================
+   44 — STAR PLANES
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-star-plane {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background-repeat:
+        no-repeat;
+
+    pointer-events:
+        none;
+
+}
+
+
+html[data-dheere-mood]
+.universe-star-plane.far {
+
+    opacity:
+        .40;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            7% 13%,
+            rgba(
+                255,
+                255,
+                255,
+                .55
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            17% 57%,
+            rgba(
+                255,
+                255,
+                255,
+                .30
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            28% 29%,
+            rgba(
+                255,
+                255,
+                255,
+                .41
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            39% 83%,
+            rgba(
+                255,
+                255,
+                255,
+                .28
+            )
+            0 1px,
+            transparent
+            1.6px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            51% 10%,
+            rgba(
+                255,
+                255,
+                255,
+                .34
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            62% 69%,
+            rgba(
+                255,
+                255,
+                255,
+                .27
+            )
+            0 1px,
+            transparent
+            1.6px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            76% 21%,
+            rgba(
+                255,
+                255,
+                255,
+                .35
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            91% 78%,
+            rgba(
+                255,
+                255,
+                255,
+                .26
+            )
+            0 1px,
+            transparent
+            1.6px
+        );
+
+    animation:
+        moodUniverseFarStars
+        55s
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        8;
+
+}
+
+
+html[data-dheere-mood]
+.universe-star-plane.mid {
+
+    opacity:
+        .62;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            13% 38%,
+            rgba(
+                255,
+                255,
+                255,
+                .72
+            )
+            0 1px,
+            transparent
+            2px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            33% 18%,
+            rgba(
+                255,
+                255,
+                255,
+                .46
+            )
+            0 1px,
+            transparent
+            1.8px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            48% 61%,
+            rgba(
+                255,
+                255,
+                255,
+                .50
+            )
+            0 1px,
+            transparent
+            1.9px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            68% 27%,
+            rgba(
+                255,
+                255,
+                255,
+                .56
+            )
+            0 1px,
+            transparent
+            1.9px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            83% 57%,
+            rgba(
+                255,
+                255,
+                255,
+                .44
+            )
+            0 1px,
+            transparent
+            1.8px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            94% 14%,
+            rgba(
+                255,
+                255,
+                255,
+                .48
+            )
+            0 1px,
+            transparent
+            1.8px
+        );
+
+    animation:
+        moodUniverseMidStars
+        32s
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        9;
+
+}
+
+
+/* ============================================================
+   45 — COSMIC DUST
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-dust-field {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    opacity:
+        .40;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            20% 41%,
+            rgba(
+                135,
+                114,
+                228,
+                .045
+            ),
+            transparent
+            23%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            74% 67%,
+            rgba(
+                71,
+                121,
+                215,
+                .040
+            ),
+            transparent
+            25%
+        );
+
+    filter:
+        blur(
+            7px
+        );
+
+    animation:
+        moodUniverseDustField
+        36s
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        11;
+
+}
+
+
+/* ============================================================
+   46 — DISTANT GALAXIES
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-distant-galaxy {
+
+    position:
+        absolute;
+
+    width:
+        var(--width,90px);
+
+    height:
+        var(--height,20px);
+
+    border-radius:
+        50%;
+
+    opacity:
+        var(--opacity,.24);
+
+    filter:
+        blur(
+            var(
+                --blur,
+                1.8px
+            )
+        );
+
+    transform:
+        rotate(
+            var(
+                --angle,
+                0deg
+            )
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            var(
+                --core,
+                rgba(
+                    177,
+                    156,
+                    255,
+                    .25
+                )
+            ),
+            var(
+                --mid,
+                rgba(
+                    94,
+                    78,
+                    171,
+                    .09
+                )
+            )
+            45%,
+            transparent
+            74%
+        );
+
+    animation:
+        moodDistantGalaxy
+        var(--speed,38s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        20;
+
+}
+
+
+/* ============================================================
+   47 — MAIN GALAXY
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-main-galaxy {
+
+    position:
+        absolute;
+
+    left:
+        49%;
+
+    top:
+        49%;
+
+    width:
+        184px;
+
+    height:
+        61px;
+
+    transform:
+
+        translate(
+            -50%,
+            -50%
+        )
+
+        rotate(
+            -13deg
+        );
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+
+            rgba(
+                255,
+                249,
+                255,
+                .92
+            )
+            0 3%,
+
+            rgba(
+                217,
+                197,
+                255,
+                .52
+            )
+            7%,
+
+            rgba(
+                160,
+                129,
+                240,
+                .29
+            )
+            20%,
+
+            rgba(
+                99,
+                74,
+                182,
+                .14
+            )
+            42%,
+
+            rgba(
+                65,
+                55,
+                139,
+                .06
+            )
+            58%,
+
+            transparent
+            78%
+        );
+
+    filter:
+        blur(
+            1.25px
+        );
+
+    box-shadow:
+
+        0 0 28px
+        rgba(
+            140,
+            110,
+            242,
+            .13
+        ),
+
+        0 0 75px
+        rgba(
+            100,
+            77,
+            192,
+            .065
+        );
+
+    z-index:
+        60;
+
+    animation:
+        moodMainGalaxy
+        42s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Galaxy rings.
+ */
+
+html[data-dheere-mood]
+.universe-main-galaxy::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        6px 15px;
+
+    border:
+        1px solid
+        rgba(
+            204,
+            184,
+            255,
+            .19
+        );
+
+    border-left-color:
+        rgba(
+            152,
+            125,
+            220,
+            .07
+        );
+
+    border-right-color:
+        rgba(
+            152,
+            125,
+            220,
+            .07
+        );
+
+    border-radius:
+        50%;
+
+    transform:
+        rotate(
+            8deg
+        );
+
+}
+
+
+html[data-dheere-mood]
+.universe-main-galaxy::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        12px 33px;
+
+    border:
+        1px solid
+        rgba(
+            245,
+            236,
+            255,
+            .14
+        );
+
+    border-radius:
+        50%;
+
+}
+
+
+/* ============================================================
+   48 — GALAXY CORE
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-galaxy-core {
+
+    position:
+        absolute;
+
+    left:
+        49%;
+
+    top:
+        49%;
+
+    width:
+        20px;
+
+    height:
+        20px;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            #ffffff
+            0 12%,
+            #eee4ff
+            30%,
+            #c4a9ff
+            57%,
+            rgba(
+                132,
+                101,
+                223,
+                .06
+            )
+            75%,
+            transparent
+            100%
+        );
+
+    box-shadow:
+
+        0 0 15px
+        rgba(
+            249,
+            243,
+            255,
+            .70
+        ),
+
+        0 0 38px
+        rgba(
+            170,
+            135,
+            255,
+            .24
+        );
+
+    z-index:
+        75;
+
+}
+
+
+/* ============================================================
+   49 — GALAXY DUST ARMS
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-galaxy-dust {
+
+    position:
+        absolute;
+
+    left:
+        49%;
+
+    top:
+        49%;
+
+    width:
+        228px;
+
+    height:
+        5px;
+
+    transform:
+
+        translate(
+            -50%,
+            -50%
+        )
+
+        rotate(
+            var(
+                --angle,
+                -18deg
+            )
+        );
+
+    border-radius:
+        50%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                83,
+                65,
+                172,
+                .04
+            ),
+            rgba(
+                196,
+                169,
+                255,
+                .15
+            ),
+            rgba(
+                106,
+                82,
+                193,
+                .04
+            ),
+            transparent
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+    opacity:
+        .72;
+
+    z-index:
+        64;
+
+    animation:
+        moodGalaxyDust
+        var(--speed,24s)
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/* ============================================================
+   50 — BLACK HOLE
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-black-hole {
+
+    position:
+        absolute;
+
+    right:
+        13%;
+
+    top:
+        22%;
+
+    width:
+        54px;
+
+    height:
+        54px;
+
+    border-radius:
+        50%;
+
+    background:
+        #000106;
+
+    z-index:
+        80;
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(
+            196,
+            167,
+            255,
+            .035
+        ),
+
+        0 0 0 8px
+        rgba(
+            119,
+            91,
+            218,
+            .06
+        ),
+
+        0 0 36px
+        rgba(
+            86,
+            65,
+            179,
+            .11
+        );
+
+    animation:
+        moodBlackHole
+        21s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Accretion disk.
+ */
+
+html[data-dheere-mood]
+.universe-black-hole::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -13px;
+
+    border:
+        2px solid
+        rgba(
+            198,
+            172,
+            255,
+            .18
+        );
+
+    border-left-color:
+        rgba(
+            108,
+            82,
+            198,
+            .07
+        );
+
+    border-right-color:
+        rgba(
+            241,
+            214,
+            255,
+            .13
+        );
+
+    border-radius:
+        50%;
+
+    transform:
+        rotate(
+            -17deg
+        )
+        scaleX(
+            1.82
+        );
+
+    filter:
+        blur(
+            .2px
+        );
+
+}
+
+
+/*
+ * Lensing line.
+ */
+
+html[data-dheere-mood]
+.universe-black-hole::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -34px;
+
+    right:
+        -34px;
+
+    top:
+        50%;
+
+    height:
+        2px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                204,
+                182,
+                255,
+                .19
+            ),
+            transparent
+        );
+
+    filter:
+        blur(
+            1.5px
+        );
+
+}
+
+
+/* ============================================================
+   51 — PLANETS
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-planet {
+
+    position:
+        absolute;
+
+    border-radius:
+        50%;
+
+    animation:
+        moodUniversePlanet
+        var(--speed,18s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        72;
+
+}
+
+
+html[data-dheere-mood]
+.universe-ringed-world {
+
+    position:
+        absolute;
+
+    right:
+        38%;
+
+    bottom:
+        25%;
+
+    width:
+        27px;
+
+    height:
+        27px;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            31% 27%,
+            #e4dabf,
+            #84775a
+            54%,
+            #252218
+            100%
+        );
+
+    box-shadow:
+
+        inset
+        -7px -7px 11px
+        rgba(
+            0,
+            0,
+            0,
+            .50
+        );
+
+    animation:
+        moodRingWorld
+        29s
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        74;
+
+}
+
+
+html[data-dheere-mood]
+.universe-ringed-world::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -23px;
+
+    top:
+        11px;
+
+    width:
+        72px;
+
+    height:
+        9px;
+
+    border:
+        1px solid
+        rgba(
+            219,
+            207,
+            168,
+            .17
+        );
+
+    border-left-color:
+        rgba(
+            219,
+            207,
+            168,
+            .05
+        );
+
+    border-right-color:
+        rgba(
+            219,
+            207,
+            168,
+            .05
+        );
+
+    border-radius:
+        50%;
+
+    transform:
+        rotate(
+            -15deg
+        );
+
+}
+
+
+/* ============================================================
+   52 — COSMIC PARTICLES
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-cosmic-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --size,
+            2px
+        );
+
+    height:
+        var(
+            --size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        var(
+            --particle-color,
+            rgba(
+                213,
+                205,
+                255,
+                .44
+            )
+        );
+
+    box-shadow:
+        0 0 8px
+        var(
+            --particle-color,
+            rgba(
+                213,
+                205,
+                255,
+                .15
+            )
+        );
+
+    opacity:
+        var(
+            --opacity,
+            .25
+        );
+
+    animation:
+        moodUniverseParticle
+        var(--speed,18s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        40;
+
+}
+
+
+/* ============================================================
+   53 — UNIVERSE STAR HIGHLIGHTS
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-star {
+
+    position:
+        absolute;
+
+    width:
+        var(--size,2px);
+
+    height:
+        var(--size,2px);
+
+    border-radius:
+        50%;
+
+    background:
+        #ffffff;
+
+    opacity:
+        var(--opacity,.45);
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            233,
+            227,
+            255,
+            .19
+        );
+
+    animation:
+        moodUniverseStar
+        var(--speed,5s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        78;
+
+}
+
+
+/* ============================================================
+   54 — MICRO LIGHT
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-micro-light {
+
+    position:
+        absolute;
+
+    width:
+        140px;
+
+    height:
+        80px;
+
+    border-radius:
+        50%;
+
+    filter:
+        blur(
+            24px
+        );
+
+    opacity:
+        .09;
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                160,
+                132,
+                248,
+                .25
+            ),
+            transparent
+            70%
+        );
+
+    animation:
+        moodUniverseMicroLight
+        var(--speed,25s)
+        ease-in-out
+        infinite
+        alternate;
+
+    z-index:
+        10;
+
+}
+
+
+/* ============================================================
+   55 — UNIVERSE MOTION
+   ============================================================ */
+
+@keyframes moodUniverseNebulaField {
+
+    from {
+
+        transform:
+            translate3d(
+                -18px,
+                7px,
+                0
+            )
+            scale(
+                .985
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                25px,
+                -14px,
+                0
+            )
+            scale(
+                1.045
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseBand {
+
+    from {
+
+        margin-left:
+            -20px;
+
+        opacity:
+            calc(
+                var(
+                    --opacity,
+                    .12
+                )
+                * .62
+            );
+
+    }
+
+    to {
+
+        margin-left:
+            27px;
+
+        opacity:
+            var(
+                --opacity,
+                .12
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseFarStars {
+
+    from {
+
+        transform:
+            translate3d(
+                -2px,
+                1px,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                5px,
+                -3px,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseMidStars {
+
+    from {
+
+        transform:
+            translate3d(
+                -3px,
+                2px,
+                0
+            )
+            scale(
+                1
+            );
+
+        opacity:
+            .50;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                5px,
+                -4px,
+                0
+            )
+            scale(
+                1.012
+            );
+
+        opacity:
+            .82;
+
+    }
+
+}
+
+
+@keyframes moodUniverseDustField {
+
+    from {
+
+        transform:
+            translate3d(
+                -12px,
+                3px,
+                0
+            );
+
+        opacity:
+            .25;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                16px,
+                -7px,
+                0
+            );
+
+        opacity:
+            .60;
+
+    }
+
+}
+
+
+@keyframes moodDistantGalaxy {
+
+    from {
+
+        margin-left:
+            -14px;
+
+    }
+
+    to {
+
+        margin-left:
+            18px;
+
+    }
+
+}
+
+
+@keyframes moodMainGalaxy {
+
+    from {
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            rotate(
+                -13deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            rotate(
+                347deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodGalaxyDust {
+
+    from {
+
+        margin-left:
+            -15px;
+
+        opacity:
+            .28;
+
+    }
+
+    to {
+
+        margin-left:
+            22px;
+
+        opacity:
+            .78;
+
+    }
+
+}
+
+
+@keyframes moodBlackHole {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            scale(
+                .975
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                -6px,
+                5px,
+                0
+            )
+            scale(
+                1.04
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniversePlanet {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8px,
+                -7px,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodRingWorld {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            rotate(
+                -2deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                7px,
+                -5px,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseStar {
+
+    from {
+
+        opacity:
+            .06;
+
+        transform:
+            scale(
+                .72
+            );
+
+    }
+
+    to {
+
+        opacity:
+            var(
+                --opacity,
+                .48
+            );
+
+        transform:
+            scale(
+                1.18
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseParticle {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            scale(
+                .72
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                var(
+                    --drift-x,
+                    22px
+                ),
+                var(
+                    --drift-y,
+                    -22px
+                ),
+                0
+            )
+            scale(
+                1.12
+            );
+
+    }
+
+}
+
+
+@keyframes moodUniverseMicroLight {
+
+    from {
+
+        transform:
+            translate3d(
+                -15px,
+                5px,
+                0
+            )
+            scale(
+                .94
+            );
+
+        opacity:
+            .10;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                20px,
+                -9px,
+                0
+            )
+            scale(
+                1.08
+            );
+
+        opacity:
+            .75;
+
+    }
+
+}
+
+
+/* ============================================================
+   56 — MOOD CARD PREVIEW FOUNDATION
+   ============================================================ */
+
+.mood-card {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    transform:
+        translateZ(0);
+
+}
+
+
+.mood-card::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        linear-gradient(
+            125deg,
+            rgba(
+                255,
+                255,
+                255,
+                .052
+            ),
+            transparent
+            22%,
+            transparent
+            76%,
+            rgba(
+                255,
+                255,
+                255,
+                .008
+            )
+        );
+
+    pointer-events:
+        none;
+
+    z-index:
+        -3;
+
+}
+
+
+.mood-card::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        370px;
+
+    height:
+        240px;
+
+    top:
+        -175px;
+
+    right:
+        -140px;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            color-mix(
+                in srgb,
+                var(--accent)
+                7%,
+                transparent
+            ),
+            transparent
+            69%
+        );
+
+    filter:
+        blur(
+            32px
+        );
+
+    opacity:
+        .46;
+
+    pointer-events:
+        none;
+
+    z-index:
+        -2;
+
+    transition:
+
+        transform
+        1.1s
+        cubic-bezier(
+            .22,
+            1,
+            .36,
+            1
+        ),
+
+        opacity
+        .75s
+        ease;
+
+}
+
+
+.mood-card:hover {
+
+    transform:
+        translate3d(
+            0,
+            -5px,
+            0
+        );
+
+}
+
+
+.mood-card:hover::after {
+
+    transform:
+        translate3d(
+            -26px,
+            25px,
+            0
+        );
+
+    opacity:
+        .75;
+
+}
+
+
+.mood-card.active {
+
+    box-shadow:
+
+        inset
+        0 0 0 1px
+        color-mix(
+            in srgb,
+            var(--accent)
+            31%,
+            transparent
+        ),
+
+        0 30px 85px
+        var(
+            --card-shadow,
+            rgba(
+                0,
+                0,
+                0,
+                .24
+            )
+        );
+
+}
+
+
+/* ============================================================
+   57 — PREVIEW WINDOW
+   ============================================================ */
+
+.mood-preview {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .12
+        );
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .034
+        );
+
+}
+
+
+.mood-preview::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                255,
+                255,
+                255,
+                .018
+            ),
+            transparent
+            32%,
+            transparent
+            72%,
+            rgba(
+                0,
+                0,
+                0,
+                .14
+            )
+        );
+
+    pointer-events:
+        none;
+
+    z-index:
+        800;
+
+}
+
+
+.mood-preview::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            transparent
+            35%,
+            rgba(
+                0,
+                0,
+                0,
+                .17
+            )
+            100%
+        );
+
+    pointer-events:
+        none;
+
+    z-index:
+        801;
+
+}
+
+
+/* ============================================================
+   58 — UNIVERSE CARD PREVIEW
+   ============================================================ */
+
+.mood-universe {
+
+    --accent:
+        #b8adff;
+
+    --title:
+        #f7f4ff;
+
+    --copy:
+        #a5a2b4;
+
+    --number:
+        #726d82;
+
+    --card-shadow:
+        rgba(
+            4,
+            5,
+            25,
+            .36
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            8% 10%,
+            rgba(
+                83,
+                63,
+                193,
+                .13
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            89% 20%,
+            rgba(
+                43,
+                91,
+                179,
+                .10
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            74% 90%,
+            rgba(
+                127,
+                54,
+                153,
+                .085
+            ),
+            transparent
+            29%
+        ),
+
+        linear-gradient(
+            145deg,
+            #080911,
+            #04060c
+            54%,
+            #08070e
+        );
+
+}
+
+
+html[data-dheere-mood]
+.mood-universe
+.mood-preview {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            16% 28%,
+            rgba(
+                71,
+                63,
+                160,
+                .11
+            ),
+            transparent
+            27%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            78% 67%,
+            rgba(
+                46,
+                84,
+                168,
+                .08
+            ),
+            transparent
+            27%
+        ),
+
+        #04050b;
+
+}
+
+
+/*
+ * Preview star field.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-stars {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            8% 15%,
+            rgba(
+                255,
+                255,
+                255,
+                .66
+            )
+            0 1px,
+            transparent
+            1.8px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            24% 68%,
+            rgba(
+                255,
+                255,
+                255,
+                .34
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            42% 23%,
+            rgba(
+                255,
+                255,
+                255,
+                .48
+            )
+            0 1px,
+            transparent
+            1.8px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            64% 72%,
+            rgba(
+                255,
+                255,
+                255,
+                .32
+            )
+            0 1px,
+            transparent
+            1.7px
+        ),
+
+        radial-gradient(
+            circle
+            at
+            84% 30%,
+            rgba(
+                255,
+                255,
+                255,
+                .42
+            )
+            0 1px,
+            transparent
+            1.8px
+        );
+
+    opacity:
+        .76;
+
+    animation:
+        moodPreviewStars
+        26s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Preview nebula.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-nebula {
+
+    position:
+        absolute;
+
+    width:
+        180px;
+
+    height:
+        80px;
+
+    left:
+        5%;
+
+    bottom:
+        2%;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            ellipse,
+            rgba(
+                98,
+                74,
+                207,
+                .20
+            ),
+            rgba(
+                62,
+                54,
+                139,
+                .06
+            )
+            45%,
+            transparent
+            74%
+        );
+
+    filter:
+        blur(
+            17px
+        );
+
+    transform:
+        rotate(
+            -13deg
+        );
+
+    animation:
+        moodPreviewNebula
+        21s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Preview galaxy.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-galaxy {
+
+    position:
+        absolute;
+
+    left:
+        46%;
+
+    top:
+        55%;
+
+    width:
+        118px;
+
+    height:
+        31px;
+
+    transform:
+
+        translate(
+            -50%,
+            -50%
+        )
+
+        rotate(
+            -12deg
+        );
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+
+            rgba(
+                255,
+                248,
+                255,
+                .88
+            )
+            0 4%,
+
+            rgba(
+                187,
+                159,
+                255,
+                .42
+            )
+            12%,
+
+            rgba(
+                106,
+                80,
+                190,
+                .18
+            )
+            35%,
+
+            transparent
+            76%
+        );
+
+    filter:
+        blur(
+            1.4px
+        );
+
+    box-shadow:
+        0 0 28px
+        rgba(
+            130,
+            102,
+            229,
+            .10
+        );
+
+    animation:
+        moodPreviewGalaxy
+        24s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Preview black hole.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-blackhole {
+
+    position:
+        absolute;
+
+    right:
+        12%;
+
+    top:
+        19%;
+
+    width:
+        30px;
+
+    height:
+        30px;
+
+    border-radius:
+        50%;
+
+    background:
+        #000106;
+
+    box-shadow:
+
+        0 0 0 4px
+        rgba(
+            118,
+            95,
+            211,
+            .055
+        ),
+
+        0 0 0 8px
+        rgba(
+            83,
+            63,
+            160,
+            .032
+        ),
+
+        0 0 26px
+        rgba(
+            76,
+            58,
+            166,
+            .10
+        );
+
+    animation:
+        moodPreviewBlackHole
+        16s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-blackhole::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -7px;
+
+    border:
+        1px solid
+        rgba(
+            182,
+            157,
+            255,
+            .18
+        );
+
+    border-left-color:
+        transparent;
+
+    border-radius:
+        50%;
+
+    transform:
+        rotate(
+            -15deg
+        )
+        scaleX(
+            1.7
+        );
+
+}
+
+
+/*
+ * Preview planets.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-planet {
+
+    position:
+        absolute;
+
+    border-radius:
+        50%;
+
+}
+
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-planet.one {
+
+    left:
+        17%;
+
+    bottom:
+        17%;
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            30% 28%,
+            #9cbcff,
+            #52669e
+            55%,
+            #161b30
+            100%
+        );
+
+    box-shadow:
+        inset
+        -5px -5px 8px
+        rgba(
+            0,
+            0,
+            0,
+            .46
+        );
+
+    animation:
+        moodPreviewPlanet
+        13s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-planet.two {
+
+    right:
+        31%;
+
+    bottom:
+        22%;
+
+    width:
+        11px;
+
+    height:
+        11px;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            30% 28%,
+            #dfb5e9,
+            #68446f
+            57%,
+            #18111c
+            100%
+        );
+
+    animation:
+        moodPreviewPlanet
+        10s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Preview dust.
+ */
+
+html[data-dheere-mood]
+.mood-universe
+.universe-preview-dust {
+
+    position:
+        absolute;
+
+    left:
+        -5%;
+
+    width:
+        115%;
+
+    height:
+        28px;
+
+    top:
+        58%;
+
+    border-radius:
+        50%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                106,
+                83,
+                191,
+                .05
+            ),
+            rgba(
+                190,
+                164,
+                253,
+                .11
+            ),
+            rgba(
+                106,
+                83,
+                191,
+                .05
+            ),
+            transparent
+        );
+
+    filter:
+        blur(
+            9px
+        );
+
+    transform:
+        rotate(
+            -8deg
+        );
+
+    animation:
+        moodPreviewDust
+        18s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/* ============================================================
+   59 — PREVIEW UNIVERSE ANIMATION
+   ============================================================ */
+
+@keyframes moodPreviewStars {
+
+    from {
+
+        transform:
+            translate3d(
+                -3px,
+                1px,
+                0
+            );
+
+        opacity:
+            .52;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                5px,
+                -4px,
+                0
+            );
+
+        opacity:
+            .84;
+
+    }
+
+}
+
+
+@keyframes moodPreviewNebula {
+
+    from {
+
+        transform:
+            translate3d(
+                -14px,
+                3px,
+                0
+            )
+            rotate(
+                -13deg
+            )
+            scale(
+                .95
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                17px,
+                -7px,
+                0
+            )
+            rotate(
+                -8deg
+            )
+            scale(
+                1.06
+            );
+
+    }
+
+}
+
+
+@keyframes moodPreviewGalaxy {
+
+    from {
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            rotate(
+                -12deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            rotate(
+                348deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodPreviewBlackHole {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            )
+            scale(
+                .96
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                -3px,
+                4px,
+                0
+            )
+            scale(
+                1.04
+            );
+
+    }
+
+}
+
+
+@keyframes moodPreviewPlanet {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                7px,
+                -5px,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodPreviewDust {
+
+    from {
+
+        margin-left:
+            -18px;
+
+        opacity:
+            .26;
+
+    }
+
+    to {
+
+        margin-left:
+            22px;
+
+        opacity:
+            .75;
+
+    }
+
+}
+
+
+/* ============================================================
+   60 — MOOD SELECTION
+   ============================================================ */
+
+.mood-card.active
+.mood-selected {
+
+    color:
+        var(--accent);
+
+}
+
+
+.mood-card.active {
+
+    border-color:
+
+        color-mix(
+            in srgb,
+            var(--accent)
+            68%,
+            transparent
+        );
+
+}
+
+
+/* ============================================================
+   61 — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood]
+    .mood-card:hover {
+
+        transform:
+            translateY(
+                -2px
+            );
+
+    }
+
+
+    html[data-dheere-mood]
+    .project-card:hover,
+    html[data-dheere-mood]
+    .article-card:hover,
+    html[data-dheere-mood]
+    .founder-card:hover,
+    html[data-dheere-mood]
+    .feedback-form:hover {
+
+        transform:
+            translateY(
+                -2px
+            );
+
+    }
+
+
+    html[data-dheere-mood]
+    .mood-universe
+    .universe-preview-galaxy {
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            rotate(
+                -12deg
+            )
+            scale(
+                .78
+            );
+
+    }
+
+
+    html[data-dheere-mood]
+    .mood-universe
+    .universe-preview-blackhole {
+
+        right:
+            7%;
+
+        top:
+            16%;
+
+        transform:
+            scale(
+                .84
+            );
+
+    }
+
+
+    html[data-dheere-mood]
+    .universe-preview-nebula {
+
+        opacity:
+            .72;
+
+    }
+
+
+    html[data-dheere-mood]
+    .universe-black-hole {
+
+        transform:
+            scale(
+                .84
+            );
+
+    }
+
+
+    html[data-dheere-mood]
+    .universe-ringed-world {
+
+        transform:
+            scale(
+                .82
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   62 — PERFORMANCE
+   ============================================================ */
+
+html[data-dheere-mood]
+.universe-environment-v4,
+html[data-dheere-mood]
+.prism-environment-v2,
+html[data-dheere-mood]
+.forest-environment,
+html[data-dheere-mood]
+.ocean-environment,
+html[data-dheere-mood]
+.ember-environment,
+html[data-dheere-mood]
+.midnight-environment {
+
+    contain:
+        paint;
+
+}
+
+
+/* ============================================================
+   63 — REDUCED MOTION
+   ============================================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    html[data-dheere-mood],
+    html[data-dheere-mood] *,
+    html[data-dheere-mood] *::before,
+    html[data-dheere-mood] *::after {
+
+        animation:
+            none !important;
+
+        transition:
+            none !important;
+
+        scroll-behavior:
+            auto !important;
 
     }
 
