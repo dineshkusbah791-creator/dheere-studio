@@ -17,15 +17,23 @@
         content="Your personal profile on Dheere Studio."
     >
 
+    <!-- =========================================================
+         GLOBAL STYLES
+         ========================================================= -->
+
     <link
         rel="stylesheet"
-        href="homepage.css"
+        href="../homepage.css"
     >
 
     <link
         rel="stylesheet"
-        href="mood.css"
+        href="../mood.css"
     >
+
+    <!-- =========================================================
+         PROFILE STYLES
+         ========================================================= -->
 
     <link
         rel="stylesheet"
@@ -48,7 +56,7 @@
 
             <div class="nav-logo">
 
-                <a href="index.html">
+                <a href="../index.html">
                     Dheere Studio
                 </a>
 
@@ -60,31 +68,35 @@
                 <ul>
 
                     <li>
-                        <a href="index.html#projects">
+                        <a href="../index.html#projects">
                             Projects
                         </a>
                     </li>
 
+
                     <li>
-                        <a href="index.html#articles">
+                        <a href="../index.html#articles">
                             Articles
                         </a>
                     </li>
 
+
                     <li>
-                        <a href="community.html">
+                        <a href="../community.html">
                             Community
                         </a>
                     </li>
 
+
                     <li>
-                        <a href="about.html">
+                        <a href="../about.html">
                             About
                         </a>
                     </li>
 
+
                     <li>
-                        <a href="index.html#feedback">
+                        <a href="../index.html#feedback">
                             Feedback
                         </a>
                     </li>
@@ -108,7 +120,7 @@
         <div class="profile-back-row">
 
             <a
-                href="index.html"
+                href="../index.html"
                 class="profile-back"
             >
                 ← Back to Dheere Studio
@@ -128,6 +140,10 @@
         <div id="authenticatedContent">
 
 
+            <!-- =================================================
+                 PROFILE CARD
+                 ================================================= -->
+
             <section class="profile-card">
 
                 <div class="profile-card-inner">
@@ -135,6 +151,10 @@
 
                     <div class="profile-identity-row">
 
+
+                        <!-- =================================================
+                             AVATAR
+                             ================================================= -->
 
                         <div class="avatar-wrapper">
 
@@ -157,6 +177,10 @@
 
                         </div>
 
+
+                        <!-- =================================================
+                             IDENTITY
+                             ================================================= -->
 
                         <div class="profile-identity">
 
@@ -190,6 +214,10 @@
                             </p>
 
 
+                            <!-- =================================================
+                                 PROFILE ACTIONS
+                                 ================================================= -->
+
                             <div class="profile-actions">
 
                                 <button
@@ -202,7 +230,7 @@
 
 
                                 <a
-                                    href="community.html"
+                                    href="../community.html"
                                     class="profile-button profile-button-secondary"
                                 >
                                     Community
@@ -223,6 +251,10 @@
 
                     </div>
 
+
+                    <!-- =================================================
+                         ACCOUNT INFORMATION
+                         ================================================= -->
 
                     <div class="profile-account-strip">
 
@@ -292,10 +324,6 @@
                     Posts
                 </a>
 
-                <a href="#dheereAiSection">
-                    Dheere AI
-                </a>
-
             </nav>
 
 
@@ -330,6 +358,10 @@
 
                 </div>
 
+
+                <!-- =================================================
+                     POST COMPOSER
+                     ================================================= -->
 
                 <div class="post-composer">
 
@@ -373,144 +405,14 @@
                 </div>
 
 
+                <!-- =================================================
+                     POSTS FEED
+                     ================================================= -->
+
                 <div id="postsFeed">
 
                     <div class="empty-state">
                         Loading your posts...
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 DHEERE AI
-                 ================================================= -->
-
-            <section
-                id="dheereAiSection"
-                class="profile-section"
-            >
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <h2>
-                            Dheere AI
-                        </h2>
-
-                        <p>
-                            Your private assistant for questions,
-                            ideas and exploration.
-                        </p>
-
-                    </div>
-
-
-                    <span class="section-tag">
-                        Assistant
-                    </span>
-
-                </div>
-
-
-                <div class="ai-card">
-
-
-                    <div class="ai-header">
-
-                        <div class="ai-title">
-
-                            <div class="ai-icon">
-                                ✦
-                            </div>
-
-
-                            <div>
-
-                                <strong>
-                                    Dheere AI
-                                </strong>
-
-                                <span>
-                                    Your Studio assistant
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div
-                            id="dheereAiStatus"
-                            class="ai-status"
-                        >
-
-                            <span class="ai-status-dot"></span>
-
-                            <span id="dheereAiStatusText">
-                                Ready
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div id="dheereAiMessages">
-
-                        <div class="ai-welcome">
-
-                            <strong>
-                                Welcome to Dheere AI.
-                            </strong>
-
-                            <br>
-
-                            Ask a question, explore an idea,
-                            or use me while working inside
-                            Dheere Studio.
-
-                        </div>
-
-
-                        <div id="dheereAiTyping">
-                            Thinking...
-                        </div>
-
-                    </div>
-
-
-                    <div class="ai-input-area">
-
-                        <form id="dheereAiForm">
-
-                            <textarea
-                                id="dheereAiInput"
-                                rows="1"
-                                maxlength="4000"
-                                placeholder="Ask Dheere AI..."
-                                autocomplete="off"
-                            ></textarea>
-
-
-                            <button
-                                id="dheereAiSend"
-                                type="submit"
-                                aria-label="Send"
-                            >
-                                ↑
-                            </button>
-
-                        </form>
-
-
-                        <div class="ai-hint">
-                            Enter to send · Shift + Enter for a new line
-                        </div>
-
                     </div>
 
                 </div>
@@ -532,20 +434,25 @@
             </h1>
 
             <p>
-                Log in to access your profile, publish posts
-                and use Dheere AI.
+                Log in to access your profile and publish posts.
             </p>
 
 
-            <a href="index.html">
+            <a href="../index.html">
                 Go to Dheere Studio
             </a>
 
         </section>
 
 
+        <!-- =========================================================
+             FOOTER
+             ========================================================= -->
+
         <footer class="profile-footer">
+
             Dheere Studio · Personal Profile
+
         </footer>
 
 
@@ -570,6 +477,10 @@
         >
 
 
+            <!-- =================================================
+                 MODAL HEADER
+                 ================================================= -->
+
             <div class="edit-modal-header">
 
                 <h2 id="editProfileTitle">
@@ -588,6 +499,10 @@
 
             </div>
 
+
+            <!-- =================================================
+                 MODAL BODY
+                 ================================================= -->
 
             <div class="edit-modal-body">
 
@@ -632,9 +547,12 @@
 
 
                         <div class="photo-note">
+
                             JPG, PNG or WebP · maximum 3 MB.
+
                             Your photo is uploaded securely to
                             Cloudinary and linked to your profile.
+
                         </div>
 
                     </div>
@@ -660,6 +578,7 @@
                         Display name
                     </label>
 
+
                     <input
                         id="editName"
                         type="text"
@@ -681,6 +600,7 @@
                         Username
                     </label>
 
+
                     <input
                         id="editUsername"
                         type="text"
@@ -699,8 +619,12 @@
 
 
                     <div class="form-note">
-                        3–20 characters. Lowercase letters,
+
+                        3–20 characters.
+
+                        Lowercase letters,
                         numbers and underscores only.
+
                     </div>
 
                 </div>
@@ -750,15 +674,19 @@
                         Date of birth
                     </label>
 
+
                     <input
                         id="editDateOfBirth"
                         type="date"
                         autocomplete="bday"
                     >
 
+
                     <div class="private-field-note">
-                        Private · This information is never shown on
-                        your public profile or in search results.
+
+                        Private · This information is never shown
+                        on your public profile or in search results.
+
                     </div>
 
                 </div>
@@ -774,6 +702,7 @@
                         Gender
                     </label>
 
+
                     <select
                         id="editGender"
                         autocomplete="sex"
@@ -783,13 +712,16 @@
                             Prefer not to say
                         </option>
 
+
                         <option value="male">
                             Male
                         </option>
 
+
                         <option value="female">
                             Female
                         </option>
+
 
                         <option value="other">
                             Other
@@ -797,9 +729,12 @@
 
                     </select>
 
+
                     <div class="private-field-note">
-                        Private · This information is never shown on
-                        your public profile or in search results.
+
+                        Private · This information is never shown
+                        on your public profile or in search results.
+
                     </div>
 
                 </div>
@@ -815,6 +750,7 @@
                         Email
                     </label>
 
+
                     <input
                         id="editEmail"
                         type="email"
@@ -822,9 +758,12 @@
                         disabled
                     >
 
+
                     <div class="form-note">
+
                         Email changes are not available from
                         the profile page.
+
                     </div>
 
                 </div>
@@ -832,6 +771,10 @@
 
             </div>
 
+
+            <!-- =================================================
+                 MODAL FOOTER
+                 ================================================= -->
 
             <div class="edit-modal-footer">
 
@@ -848,7 +791,6 @@
                     id="saveProfileBtn"
                     class="profile-button profile-button-primary"
                     type="button"
-                    disabled
                 >
                     Save Changes
                 </button>
@@ -861,12 +803,16 @@
 
 
     <!-- =========================================================
-         EXTERNAL JAVASCRIPT
+         SCRIPTS
          ========================================================= -->
 
-    <script src="mood-engine.js"></script>
+    <script src="../mood-engine.js"></script>
 
-    <script src="profile.js"></script>
+
+    <script
+        type="module"
+        src="profile.js"
+    ></script>
 
 
 </body>
