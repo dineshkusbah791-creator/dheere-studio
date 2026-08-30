@@ -46,8 +46,10 @@ const MAX_COMMENT_LENGTH =
 const commentsLoadingState =
     new Set();
 
+
 const commentsEditingState =
     new Set();
+
 
 const commentsDeletingState =
     new Set();
@@ -208,10 +210,13 @@ function isOwnComment(
 
 
     return (
+
         commentUserId ===
+
         String(
             currentUserId
-        )
+        ).trim()
+
     );
 
 }
@@ -241,15 +246,18 @@ function updateCommentCount(
 
 
     countElement.textContent =
+
         String(
 
             Number.isFinite(
                 count
             )
+
                 ? Math.max(
                     0,
                     count
                 )
+
                 : 0
 
         );
@@ -337,11 +345,13 @@ function renderComment(
 
     const username =
         comment?.username ||
+
         "Dheere User";
 
 
     const content =
         comment?.content ||
+
         "";
 
 
@@ -361,8 +371,11 @@ function renderComment(
 
     const ownComment =
         isOwnComment(
+
             comment,
+
             currentUserId
+
         );
 
 
@@ -395,9 +408,12 @@ function renderComment(
 
                 ${
                     createdAt
+
                         ? `
 
-                            <span>
+                            <span
+                                class="post-comment-time"
+                            >
 
                                 ${escapeHTML(
                                     createdAt
@@ -406,27 +422,33 @@ function renderComment(
                             </span>
 
                         `
+
                         : ""
                 }
 
 
                 ${
                     updatedAt
+
                         ? `
 
                             <span
                                 class="post-comment-edited"
                             >
+
                                 edited
+
                             </span>
 
                         `
+
                         : ""
                 }
 
 
                 ${
                     ownComment
+
                         ? `
 
                             <div
@@ -438,9 +460,16 @@ function renderComment(
                                     class="post-comment-menu-button"
                                     data-comment-action="menu"
                                     aria-label="Comment options"
+                                    aria-haspopup="true"
                                     aria-expanded="false"
                                 >
-                                    ⋯
+
+                                    <span
+                                        aria-hidden="true"
+                                    >
+                                        ⋯
+                                    </span>
+
                                 </button>
 
 
@@ -453,7 +482,9 @@ function renderComment(
                                         type="button"
                                         data-comment-action="edit"
                                     >
+
                                         Edit
+
                                     </button>
 
 
@@ -462,7 +493,9 @@ function renderComment(
                                         data-comment-action="delete"
                                         class="danger"
                                     >
+
                                         Delete
+
                                     </button>
 
                                 </div>
@@ -470,7 +503,9 @@ function renderComment(
                             </div>
 
                         `
+
                         : ""
+
                 }
 
             </div>
@@ -478,7 +513,6 @@ function renderComment(
 
             <div
                 class="post-comment-body"
-                data-comment-body
             >
 
                 <div
@@ -520,15 +554,23 @@ function renderComments(
 
 
     if (
+
         !Array.isArray(
             comments
-        ) ||
-        comments.length === 0
+        )
+
+        ||
+
+        comments.length ===
+        0
+
     ) {
 
         container.innerHTML = `
 
-            <div class="post-comments-empty">
+            <div
+                class="post-comments-empty"
+            >
 
                 No comments yet.
 
@@ -543,15 +585,34 @@ function renderComments(
 
 
     container.innerHTML =
+
         comments
+
             .map(
+
                 comment =>
+
                     renderComment(
+
                         comment,
+
                         currentUserId
+
                     )
+
             )
+
             .join("");
+
+
+    initializeCommentEvents(
+        container
+    );
+
+
+    bindCommentInputs(
+        container
+    );
 
 }
 
@@ -602,7 +663,9 @@ async function loadComments(
 
     commentsContainer.innerHTML = `
 
-        <div class="post-comments-loading">
+        <div
+            class="post-comments-loading"
+        >
 
             Loading comments...
 
@@ -618,7 +681,24 @@ async function loadComments(
 
                 `${API_BASE_URL}/posts/${encodeURIComponent(
                     cleanPostId
-                )}/comments`
+                )}/comments`,
+
+                {
+
+                    method:
+                        "GET",
+
+                    headers: {
+
+                        Accept:
+                            "application/json"
+
+                    },
+
+                    cache:
+                        "no-store"
+
+                }
 
             );
 
@@ -660,20 +740,29 @@ async function loadComments(
             Array.isArray(
                 result?.comments
             )
+
                 ? result.comments
+
                 : [];
 
 
         renderComments(
+
             commentsContainer,
+
             comments,
+
             getUserId()
+
         );
 
 
         updateCommentCount(
+
             countElement,
+
             comments.length
+
         );
 
 
@@ -685,20 +774,28 @@ async function loadComments(
     ) {
 
         console.error(
+
             "Load comments error:",
+
             error
+
         );
 
 
         commentsContainer.innerHTML = `
 
-            <div class="post-comments-error">
+            <div
+                class="post-comments-error"
+            >
 
                 ${
                     error?.code ===
                     "AUTH_REQUIRED"
+
                         ? "Please login again."
+
                         : "Unable to load comments right now."
+
                 }
 
             </div>
@@ -741,7 +838,9 @@ async function createComment(
     const cleanContent =
         typeof content ===
         "string"
+
             ? content.trim()
+
             : "";
 
 
@@ -851,6 +950,7 @@ async function createComment(
 
     const comment =
         result?.comment ||
+
         null;
 
 
@@ -889,9 +989,26 @@ async function createComment(
                 "beforeend",
 
                 renderComment(
+
                     comment,
+
                     getUserId()
+
                 )
+
+            );
+
+
+            initializeCommentEvents(
+
+                options.commentsContainer
+
+            );
+
+
+            bindCommentInputs(
+
+                options.commentsContainer
 
             );
 
@@ -970,7 +1087,9 @@ async function updateComment(
     const cleanContent =
         typeof content ===
         "string"
+
             ? content.trim()
+
             : "";
 
 
@@ -1355,7 +1474,13 @@ function beginCommentEdit(
 
 
     const commentId =
-        commentElement.dataset.commentId;
+        String(
+
+            commentElement.dataset.commentId ||
+
+            ""
+
+        ).trim();
 
 
     const postCard =
@@ -1365,8 +1490,13 @@ function beginCommentEdit(
 
 
     const postId =
-        postCard?.dataset.postId ||
-        "";
+        String(
+
+            postCard?.dataset.postId ||
+
+            ""
+
+        ).trim();
 
 
     const contentElement =
@@ -1391,17 +1521,20 @@ function beginCommentEdit(
 
 
     const commentUserId =
-        commentElement.dataset.commentUserId ||
-        "";
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
 
 
     if (
         String(
             currentUserId
-        ) !==
-        String(
-            commentUserId
-        )
+        ).trim() !==
+        commentUserId
     ) {
 
         return false;
@@ -1410,18 +1543,40 @@ function beginCommentEdit(
 
 
     const currentText =
-        contentElement.textContent || "";
+        contentElement.textContent ||
+        "";
+
+
+    commentElement.dataset.originalContent =
+        currentText;
 
 
     commentElement.dataset.editing =
         "true";
 
 
+    /*
+     * Close the tiny owner menu before entering
+     * inline edit mode.
+     */
+
+    closeAllCommentMenus(
+        commentElement
+    );
+
+
+    /*
+     * Replace only the text content area.
+     *
+     * No large secondary editor card.
+     */
+
     contentElement.innerHTML = `
 
         <textarea
             class="post-comment-edit-input"
             maxlength="${MAX_COMMENT_LENGTH}"
+            aria-label="Edit comment"
         ></textarea>
 
 
@@ -1433,7 +1588,9 @@ function beginCommentEdit(
                 type="button"
                 data-comment-action="cancel-edit"
             >
+
                 Cancel
+
             </button>
 
 
@@ -1441,7 +1598,9 @@ function beginCommentEdit(
                 type="button"
                 data-comment-action="save-edit"
             >
+
                 Save
+
             </button>
 
         </div>
@@ -1513,17 +1672,18 @@ function cancelCommentEdit(
         commentElement.dataset.originalContent;
 
 
-    if (
-        typeof originalContent ===
-        "string"
-    ) {
+    contentElement.innerHTML =
 
-        contentElement.innerHTML =
-            escapeHTML(
-                originalContent
-            );
+        escapeHTML(
 
-    }
+            typeof originalContent ===
+            "string"
+
+                ? originalContent
+
+                : ""
+
+        );
 
 
     commentElement.dataset.editing =
@@ -1558,24 +1718,69 @@ async function saveCommentEdit(
 
 
     const postId =
-        postCard?.dataset.postId ||
-        "";
+        String(
+
+            postCard?.dataset.postId ||
+
+            ""
+
+        ).trim();
 
 
     const commentId =
-        commentElement.dataset.commentId ||
-        "";
+        String(
+
+            commentElement.dataset.commentId ||
+
+            ""
+
+        ).trim();
 
 
-    const input =
-        commentElement.querySelector(
-            ".post-comment-edit-input"
-        );
+    const currentUserId =
+        String(
+            getUserId() ||
+            ""
+        ).trim();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
 
 
     if (
         !postId ||
         !commentId ||
+        !currentUserId ||
+        currentUserId !==
+        commentUserId
+    ) {
+
+        return null;
+
+    }
+
+
+    const contentElement =
+        commentElement.querySelector(
+            "[data-comment-content]"
+        );
+
+
+    const input =
+        contentElement?.querySelector(
+            ".post-comment-edit-input"
+        );
+
+
+    if (
+        !contentElement ||
         !input
     ) {
 
@@ -1629,6 +1834,12 @@ async function saveCommentEdit(
         );
 
 
+    const cancelButton =
+        commentElement.querySelector(
+            '[data-comment-action="cancel-edit"]'
+        );
+
+
     if (saveButton) {
 
         saveButton.disabled =
@@ -1636,6 +1847,14 @@ async function saveCommentEdit(
 
         saveButton.textContent =
             "Saving...";
+
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.disabled =
+            true;
 
     }
 
@@ -1654,21 +1873,15 @@ async function saveCommentEdit(
             );
 
 
-        const contentElement =
-            commentElement.querySelector(
-                "[data-comment-content]"
+        contentElement.innerHTML =
+
+            escapeHTML(
+
+                updatedComment?.content ||
+
+                content
+
             );
-
-
-        if (contentElement) {
-
-            contentElement.innerHTML =
-                escapeHTML(
-                    updatedComment?.content ||
-                    content
-                );
-
-        }
 
 
         commentElement.dataset.editing =
@@ -1678,6 +1891,11 @@ async function saveCommentEdit(
         delete commentElement.dataset.originalContent;
 
 
+        /*
+         * Mark as edited without making the
+         * comment layout larger.
+         */
+
         const header =
             commentElement.querySelector(
                 ".post-comment-header"
@@ -1686,9 +1904,11 @@ async function saveCommentEdit(
 
         if (
             header &&
+
             !header.querySelector(
                 ".post-comment-edited"
             )
+
         ) {
 
             const editedLabel =
@@ -1720,8 +1940,11 @@ async function saveCommentEdit(
     ) {
 
         console.error(
+
             "Save comment edit error:",
+
             error
+
         );
 
 
@@ -1749,6 +1972,14 @@ async function saveCommentEdit(
 
         }
 
+
+        if (cancelButton) {
+
+            cancelButton.disabled =
+                false;
+
+        }
+
     }
 
 }
@@ -1756,7 +1987,7 @@ async function saveCommentEdit(
 
 
 // ============================================================
-// DELETE FROM DOM
+// REMOVE COMMENT FROM DOM
 // ============================================================
 
 function removeCommentElement(
@@ -1771,61 +2002,94 @@ function removeCommentElement(
     }
 
 
-    commentElement.remove();
+    commentElement.classList.add(
+        "comment-deleting"
+    );
 
 
-    if (countElement) {
+    window.setTimeout(
 
-        const currentCount =
-            Number(
-                countElement.textContent
-            ) || 0;
+        () => {
 
+            if (
+                commentElement.isConnected
+            ) {
 
-        updateCommentCount(
+                commentElement.remove();
 
-            countElement,
-
-            Math.max(
-                0,
-                currentCount - 1
-            )
-
-        );
+            }
 
 
-        const postCard =
-            countElement.closest(
-                ".post-card"
-            );
+            if (
+                countElement
+            ) {
+
+                const currentCount =
+                    Number(
+
+                        countElement.textContent
+
+                    ) || 0;
 
 
-        const commentsList =
-            postCard?.querySelector(
-                ".post-comments-list"
-            );
+                updateCommentCount(
+
+                    countElement,
+
+                    Math.max(
+
+                        0,
+
+                        currentCount - 1
+
+                    )
+
+                );
 
 
-        if (
-            commentsList &&
-            !commentsList.querySelector(
-                ".post-comment"
-            )
-        ) {
+                const postCard =
+                    countElement.closest(
+                        ".post-card"
+                    );
 
-            commentsList.innerHTML = `
 
-                <div class="post-comments-empty">
+                const commentsList =
+                    postCard?.querySelector(
+                        ".post-comments-list"
+                    );
 
-                    No comments yet.
 
-                </div>
+                if (
 
-            `;
+                    commentsList &&
 
-        }
+                    !commentsList.querySelector(
+                        ".post-comment"
+                    )
 
-    }
+                ) {
+
+                    commentsList.innerHTML = `
+
+                        <div
+                            class="post-comments-empty"
+                        >
+
+                            No comments yet.
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+        },
+
+        220
+
+    );
 
 }
 
@@ -1850,6 +2114,39 @@ function toggleCommentMenu(
     }
 
 
+    const currentUserId =
+        String(
+            getUserId() ||
+            ""
+        ).trim();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
+    /*
+     * Never open the menu for another user's
+     * comment.
+     */
+
+    if (
+        !currentUserId ||
+        currentUserId !==
+        commentUserId
+    ) {
+
+        return;
+
+    }
+
+
     const menu =
         commentElement.querySelector(
             ".post-comment-menu"
@@ -1867,11 +2164,6 @@ function toggleCommentMenu(
         menu.hidden;
 
 
-    /*
-     * Close all other visible menus in the same
-     * comments section.
-     */
-
     const list =
         commentElement.closest(
             ".post-comments-list"
@@ -1882,23 +2174,39 @@ function toggleCommentMenu(
 
         list
             .querySelectorAll(
-                ".post-comment-menu:not([hidden])"
+                ".post-comment-menu"
             )
             .forEach(
+
                 otherMenu => {
+
+                    if (
+                        otherMenu ===
+                        menu
+                    ) {
+
+                        return;
+
+                    }
+
 
                     otherMenu.hidden =
                         true;
 
 
                     const otherButton =
-                        otherMenu.parentElement
+                        otherMenu
+                            .closest(
+                                ".post-comment-owner-actions"
+                            )
                             ?.querySelector(
                                 ".post-comment-menu-button"
                             );
 
 
-                    if (otherButton) {
+                    if (
+                        otherButton
+                    ) {
 
                         otherButton.setAttribute(
                             "aria-expanded",
@@ -1908,6 +2216,7 @@ function toggleCommentMenu(
                     }
 
                 }
+
             );
 
     }
@@ -1918,10 +2227,13 @@ function toggleCommentMenu(
 
 
     button.setAttribute(
+
         "aria-expanded",
+
         willOpen
             ? "true"
             : "false"
+
     );
 
 }
@@ -1929,7 +2241,7 @@ function toggleCommentMenu(
 
 
 // ============================================================
-// MENU CLEANUP
+// CLOSE ALL COMMENT MENUS
 // ============================================================
 
 function closeAllCommentMenus(
@@ -1943,25 +2255,42 @@ function closeAllCommentMenus(
     }
 
 
-    root
+    const scope =
+        root.querySelectorAll
+            ? root
+
+            : root.parentElement;
+
+
+    if (!scope) {
+
+        return;
+
+    }
+
+
+    scope
         .querySelectorAll(
             ".post-comment-menu"
         )
         .forEach(
+
             menu => {
 
                 menu.hidden =
                     true;
 
             }
+
         );
 
 
-    root
+    scope
         .querySelectorAll(
             ".post-comment-menu-button"
         )
         .forEach(
+
             button => {
 
                 button.setAttribute(
@@ -1970,6 +2299,7 @@ function closeAllCommentMenus(
                 );
 
             }
+
         );
 
 }
@@ -1977,7 +2307,7 @@ function closeAllCommentMenus(
 
 
 // ============================================================
-// HANDLE COMMENT ACTION
+// COMMENT ACTION HANDLER
 // ============================================================
 
 async function handleCommentAction(
@@ -2014,13 +2344,69 @@ async function handleCommentAction(
     }
 
 
+    const currentUserId =
+        String(
+            getUserId() ||
+            ""
+        ).trim();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
+    /*
+     * Every owner action has a second ownership
+     * check here. Rendering alone is not enough.
+     */
+
+    if (
+
+        (
+            action ===
+            "edit"
+
+            ||
+
+            action ===
+            "delete"
+
+        )
+
+        &&
+
+        (
+            !currentUserId
+
+            ||
+
+            currentUserId !==
+            commentUserId
+        )
+
+    ) {
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // MENU
+    // ========================================================
+
     if (
         action ===
         "menu"
     ) {
 
         event.preventDefault();
-
 
         event.stopPropagation();
 
@@ -2039,6 +2425,10 @@ async function handleCommentAction(
     }
 
 
+    // ========================================================
+    // EDIT
+    // ========================================================
+
     if (
         action ===
         "edit"
@@ -2046,56 +2436,11 @@ async function handleCommentAction(
 
         event.preventDefault();
 
-
         event.stopPropagation();
 
 
-        const currentUserId =
-            getUserId();
-
-
-        const commentUserId =
-            commentElement.dataset.commentUserId;
-
-
-        if (
-            String(
-                currentUserId
-            ) !==
-            String(
-                commentUserId
-            )
-        ) {
-
-            alert(
-                "You can only edit your own comments."
-            );
-
-
-            return;
-
-        }
-
-
-        const contentElement =
-            commentElement.querySelector(
-                "[data-comment-content]"
-            );
-
-
-        if (
-            contentElement &&
-            !commentElement.dataset.originalContent
-        ) {
-
-            commentElement.dataset.originalContent =
-                contentElement.textContent || "";
-
-        }
-
-
         closeAllCommentMenus(
-            commentElement.parentElement
+            commentElement
         );
 
 
@@ -2109,13 +2454,16 @@ async function handleCommentAction(
     }
 
 
+    // ========================================================
+    // CANCEL EDIT
+    // ========================================================
+
     if (
         action ===
         "cancel-edit"
     ) {
 
         event.preventDefault();
-
 
         event.stopPropagation();
 
@@ -2130,13 +2478,16 @@ async function handleCommentAction(
     }
 
 
+    // ========================================================
+    // SAVE EDIT
+    // ========================================================
+
     if (
         action ===
         "save-edit"
     ) {
 
         event.preventDefault();
-
 
         event.stopPropagation();
 
@@ -2151,6 +2502,10 @@ async function handleCommentAction(
     }
 
 
+    // ========================================================
+    // DELETE
+    // ========================================================
+
     if (
         action ===
         "delete"
@@ -2158,40 +2513,69 @@ async function handleCommentAction(
 
         event.preventDefault();
 
-
         event.stopPropagation();
 
 
-        const currentUserId =
-            getUserId();
+        const postCard =
+            commentElement.closest(
+                ".post-card"
+            );
 
 
-        const commentUserId =
-            commentElement.dataset.commentUserId;
+        const postId =
+            String(
+
+                postCard?.dataset.postId ||
+
+                ""
+
+            ).trim();
+
+
+        const commentId =
+            String(
+
+                commentElement.dataset.commentId ||
+
+                ""
+
+            ).trim();
+
+
+        const countElement =
+            postCard?.querySelector(
+                ".post-comment-count"
+            );
 
 
         if (
-            String(
-                currentUserId
-            ) !==
-            String(
-                commentUserId
-            )
+            !postId ||
+            !commentId
         ) {
-
-            alert(
-                "You can only delete your own comments."
-            );
-
 
             return;
 
         }
 
 
+        closeAllCommentMenus(
+            commentElement
+        );
+
+
+        /*
+         * Browser confirmation.
+         *
+         * The wording makes the permanent nature explicit.
+         */
+
         const confirmed =
             window.confirm(
-                "Delete this comment?"
+
+                "Delete this comment?\n\n" +
+
+                "This will permanently delete your comment."
+
             );
 
 
@@ -2202,37 +2586,11 @@ async function handleCommentAction(
         }
 
 
-        const postCard =
-            commentElement.closest(
-                ".post-card"
-            );
-
-
-        const postId =
-            postCard?.dataset.postId ||
-            "";
-
-
-        const commentId =
-            commentElement.dataset.commentId ||
-            "";
-
-
-        const countElement =
-            postCard?.querySelector(
-                ".post-comment-count"
-            );
-
-
-        const deleteButton =
-            actionElement;
-
-
-        deleteButton.disabled =
+        actionElement.disabled =
             true;
 
 
-        deleteButton.textContent =
+        actionElement.textContent =
             "Deleting...";
 
 
@@ -2261,8 +2619,11 @@ async function handleCommentAction(
         ) {
 
             console.error(
+
                 "Delete comment error:",
+
                 error
+
             );
 
 
@@ -2274,14 +2635,13 @@ async function handleCommentAction(
 
             );
 
-
         } finally {
 
-            deleteButton.disabled =
+            actionElement.disabled =
                 false;
 
 
-            deleteButton.textContent =
+            actionElement.textContent =
                 "Delete";
 
         }
@@ -2355,18 +2715,25 @@ function initializeCommentEvents(
             }
 
 
+            const commentElement =
+                input.closest(
+                    ".post-comment"
+                );
+
+
+            if (!commentElement) {
+
+                return;
+
+            }
+
+
             if (
                 event.key ===
                 "Escape"
             ) {
 
                 event.preventDefault();
-
-
-                const commentElement =
-                    input.closest(
-                        ".post-comment"
-                    );
 
 
                 cancelCommentEdit(
@@ -2380,18 +2747,21 @@ function initializeCommentEvents(
 
 
             if (
+
                 event.key ===
-                "Enter" &&
-                event.ctrlKey
+                "Enter"
+
+                &&
+
+                (
+                    event.metaKey ||
+
+                    event.ctrlKey
+                )
+
             ) {
 
                 event.preventDefault();
-
-
-                const commentElement =
-                    input.closest(
-                        ".post-comment"
-                    );
 
 
                 saveCommentEdit(
@@ -2404,139 +2774,44 @@ function initializeCommentEvents(
 
     );
 
-}
 
-
-
-// ============================================================
-// CREATE COMMENT FORM HELPER
-// ============================================================
-
-async function submitCommentFromForm(
-    {
-        postCard,
-        input,
-        submitButton
-    }
-) {
+    /*
+     * Close comment menus when clicking outside
+     * the owner action area.
+     */
 
     if (
-        !postCard ||
-        !input ||
-        !submitButton
+        !commentsRoot.dataset.commentMenuDocumentReady
     ) {
 
-        return null;
-
-    }
-
-
-    const postId =
-        postCard.dataset.postId ||
-        "";
+        commentsRoot.dataset.commentMenuDocumentReady =
+            "true";
 
 
-    const commentsContainer =
-        postCard.querySelector(
-            ".post-comments-list"
-        );
+        document.addEventListener(
 
+            "click",
 
-    const countElement =
-        postCard.querySelector(
-            ".post-comment-count"
-        );
+            event => {
 
+                if (
+                    event.target.closest(
+                        ".post-comment-owner-actions"
+                    )
+                ) {
 
-    if (
-        !postId ||
-        !commentsContainer
-    ) {
-
-        return null;
-
-    }
-
-
-    const content =
-        input.value.trim();
-
-
-    if (!content) {
-
-        input.focus();
-
-        return null;
-
-    }
-
-
-    submitButton.disabled =
-        true;
-
-
-    submitButton.textContent =
-        "Posting...";
-
-
-    try {
-
-        const comment =
-            await createComment(
-
-                postId,
-
-                content,
-
-                {
-
-                    inputElement:
-                        input,
-
-                    commentsContainer:
-                        commentsContainer,
-
-                    countElement:
-                        countElement
+                    return;
 
                 }
 
-            );
 
+                closeAllCommentMenus(
+                    commentsRoot
+                );
 
-        return comment;
-
-
-    } catch (
-        error
-    ) {
-
-        console.error(
-            "Create comment error:",
-            error
-        );
-
-
-        alert(
-
-            error?.message ||
-
-            "Unable to add comment."
+            }
 
         );
-
-
-        return null;
-
-
-    } finally {
-
-        submitButton.disabled =
-            false;
-
-
-        submitButton.textContent =
-            "Comment";
 
     }
 
@@ -2545,7 +2820,7 @@ async function submitCommentFromForm(
 
 
 // ============================================================
-// ENTER TO SUBMIT COMMENT
+// COMMENT INPUT
 // ============================================================
 
 function bindCommentInput(
@@ -2586,6 +2861,7 @@ function bindCommentInput(
             if (
                 event.key !==
                 "Enter" ||
+
                 event.shiftKey
             ) {
 
@@ -2608,7 +2884,7 @@ function bindCommentInput(
 
 
 // ============================================================
-// BIND ALL COMMENT INPUTS
+// BIND COMMENT INPUTS
 // ============================================================
 
 function bindCommentInputs(
@@ -2653,6 +2929,147 @@ function bindCommentInputs(
             }
 
         );
+
+}
+
+
+
+// ============================================================
+// SUBMIT COMMENT FROM FORM
+// ============================================================
+
+async function submitCommentFromForm(
+    {
+        postCard,
+        input,
+        submitButton
+    }
+) {
+
+    if (
+        !postCard ||
+        !input ||
+        !submitButton
+    ) {
+
+        return null;
+
+    }
+
+
+    const postId =
+        String(
+
+            postCard.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const commentsContainer =
+        postCard.querySelector(
+            ".post-comments-list"
+        );
+
+
+    const countElement =
+        postCard.querySelector(
+            ".post-comment-count"
+        );
+
+
+    if (
+        !postId ||
+        !commentsContainer
+    ) {
+
+        return null;
+
+    }
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        input.focus();
+
+
+        return null;
+
+    }
+
+
+    submitButton.disabled =
+        true;
+
+
+    submitButton.textContent =
+        "Posting...";
+
+
+    try {
+
+        return await createComment(
+
+            postId,
+
+            content,
+
+            {
+
+                inputElement:
+                    input,
+
+                commentsContainer:
+                    commentsContainer,
+
+                countElement:
+                    countElement
+
+            }
+
+        );
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+
+            "Create comment error:",
+
+            error
+
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to add comment."
+
+        );
+
+
+        return null;
+
+
+    } finally {
+
+        submitButton.disabled =
+            false;
+
+
+        submitButton.textContent =
+            "Comment";
+
+    }
 
 }
 

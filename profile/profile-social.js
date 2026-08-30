@@ -446,8 +446,13 @@ function triggerLikeAnimation(
 
 
     /*
-     * Animation is explicitly transient.
-     * The persistent `.liked` state is separate.
+     * Persistent state and animation state are separate.
+     *
+     * `.liked`
+     * = remains after refresh
+     *
+     * `.like-just-toggled`
+     * = temporary click animation
      */
 
     button.classList.remove(
@@ -528,6 +533,10 @@ function renderComments(
     }
 
 
+    const currentUserId =
+        getCurrentUserId();
+
+
     container.innerHTML =
 
         comments
@@ -535,8 +544,33 @@ function renderComments(
             .map(
                 comment => {
 
+                    const commentId =
+                        String(
+
+                            comment?.id ||
+
+                            comment?._id ||
+
+                            ""
+
+                        ).trim();
+
+
+                    const commentUserId =
+                        String(
+
+                            comment?.userId ||
+
+                            comment?.authorId ||
+
+                            ""
+
+                        ).trim();
+
+
                     const username =
                         comment?.username ||
+
                         "Dheere User";
 
 
@@ -551,10 +585,29 @@ function renderComments(
                         );
 
 
+                    const ownComment =
+                        Boolean(
+
+                            currentUserId &&
+
+                            commentUserId &&
+
+                            currentUserId ===
+                            commentUserId
+
+                        );
+
+
                     return `
 
                         <div
                             class="post-comment"
+                            data-comment-id="${escapeHTML(
+                                commentId
+                            )}"
+                            data-comment-user-id="${escapeHTML(
+                                commentUserId
+                            )}"
                         >
 
                             <div
@@ -584,11 +637,70 @@ function renderComments(
                                         : ""
                                 }
 
+
+                                ${
+                                    ownComment
+
+                                        ? `
+
+                                            <div
+                                                class="post-comment-owner-actions"
+                                            >
+
+                                                <button
+                                                    type="button"
+                                                    class="post-comment-menu-button"
+                                                    data-profile-comment-action="menu"
+                                                    aria-label="Comment options"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                >
+
+                                                    <span
+                                                        aria-hidden="true"
+                                                    >
+                                                        ⋯
+                                                    </span>
+
+                                                </button>
+
+
+                                                <div
+                                                    class="post-comment-menu"
+                                                    hidden
+                                                >
+
+                                                    <button
+                                                        type="button"
+                                                        data-profile-comment-action="edit"
+                                                    >
+                                                        Edit
+                                                    </button>
+
+
+                                                    <button
+                                                        type="button"
+                                                        class="danger"
+                                                        data-profile-comment-action="delete"
+                                                    >
+                                                        Delete
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        `
+
+                                        : ""
+                                }
+
                             </div>
 
 
                             <div
                                 class="post-comment-content"
+                                data-profile-comment-content
                             >
 
                                 ${escapeHTML(
@@ -656,6 +768,9 @@ async function loadPostComments(
 
                     method:
                         "GET",
+
+                    headers:
+                        getAuthHeaders(),
 
                     cache:
                         "no-store"
@@ -910,130 +1025,22 @@ async function createPostComment(
         }
 
 
-        if (
-            result?.comment
-        ) {
+        /*
+         * Reload from server after creation.
+         *
+         * This keeps the displayed comment list authoritative
+         * and guarantees correct commenter information.
+         */
 
-            const comment =
-                result.comment;
+        await loadPostComments(
 
+            postId,
 
-            const emptyState =
-                commentsContainer?.querySelector(
-                    ".post-comments-empty"
-                );
+            commentsContainer,
 
+            commentCountElement
 
-            if (emptyState) {
-
-                commentsContainer.innerHTML =
-                    "";
-
-            }
-
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.className =
-                "post-comment";
-
-
-            element.innerHTML = `
-
-                <div
-                    class="post-comment-header"
-                >
-
-                    <strong>
-
-                        @${escapeHTML(
-
-                            comment.username ||
-
-                            getUsername() ||
-
-                            "user"
-
-                        )}
-
-                    </strong>
-
-
-                    ${
-                        comment.createdAt
-
-                            ? `
-                                <span>
-                                    ${escapeHTML(
-                                        formatPostDate(
-                                            comment.createdAt
-                                        )
-                                    )}
-                                </span>
-                            `
-
-                            : ""
-                    }
-
-                </div>
-
-
-                <div
-                    class="post-comment-content"
-                >
-
-                    ${escapeHTML(
-
-                        comment.content ||
-
-                        content
-
-                    )}
-
-                </div>
-
-            `;
-
-
-            commentsContainer.appendChild(
-                element
-            );
-
-
-            if (
-                commentCountElement
-            ) {
-
-                const count =
-                    Number(
-                        commentCountElement.textContent
-                    ) || 0;
-
-
-                commentCountElement.textContent =
-                    String(
-                        count + 1
-                    );
-
-            }
-
-        } else {
-
-            await loadPostComments(
-
-                postId,
-
-                commentsContainer,
-
-                commentCountElement
-
-            );
-
-        }
+        );
 
 
     } catch (
@@ -1077,14 +1084,254 @@ async function createPostComment(
 
 
 /* =========================================================
-   TOGGLE LIKE
+   UPDATE COMMENT
    ========================================================= */
 
-async function toggleLike(
+async function updatePostComment(
     postId,
-    button,
-    countElement
+    commentId,
+    content
 ) {
+
+    const cleanPostId =
+        String(
+            postId ||
+            ""
+        ).trim();
+
+
+    const cleanCommentId =
+        String(
+            commentId ||
+            ""
+        ).trim();
+
+
+    const cleanContent =
+        typeof content ===
+        "string"
+
+            ? content.trim()
+
+            : "";
+
+
+    if (
+        !cleanPostId ||
+        !cleanCommentId
+    ) {
+
+        throw new Error(
+            "Invalid comment information."
+        );
+
+    }
+
+
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        throw new Error(
+            "Please login first."
+        );
+
+    }
+
+
+    if (!cleanContent) {
+
+        throw new Error(
+            "Comment cannot be empty."
+        );
+
+    }
+
+
+    if (
+        cleanContent.length >
+        MAX_COMMENT_LENGTH
+    ) {
+
+        throw new Error(
+
+            `Comment cannot exceed ${MAX_COMMENT_LENGTH} characters.`
+
+        );
+
+    }
+
+
+    const stateKey =
+        `${cleanPostId}:${cleanCommentId}`;
+
+
+    if (
+        postEditingState.has(
+            stateKey
+        )
+    ) {
+
+        return null;
+
+    }
+
+
+    postEditingState.add(
+        stateKey
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE}/posts/${encodeURIComponent(
+                    cleanPostId
+                )}/comments/${encodeURIComponent(
+                    cleanCommentId
+                )}`,
+
+                {
+
+                    method:
+                        "PATCH",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            content:
+                                cleanContent
+
+                        })
+
+                }
+
+            );
+
+
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return null;
+
+        }
+
+
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only edit your own comment."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Comment not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not update comment."
+
+            );
+
+        }
+
+
+        return (
+            result?.comment ||
+            null
+        );
+
+
+    } finally {
+
+        postEditingState.delete(
+            stateKey
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   DELETE COMMENT
+   ========================================================= */
+
+async function deletePostComment(
+    postId,
+    commentId
+) {
+
+    const cleanPostId =
+        String(
+            postId ||
+            ""
+        ).trim();
+
+
+    const cleanCommentId =
+        String(
+            commentId ||
+            ""
+        ).trim();
+
+
+    if (
+        !cleanPostId ||
+        !cleanCommentId
+    ) {
+
+        return false;
+
+    }
+
 
     if (
         !hasValidLoginSession()
@@ -1095,39 +1342,29 @@ async function toggleLike(
         );
 
 
-        return;
+        return false;
 
     }
 
 
-    if (
-        !postId ||
-        !button
-    ) {
-
-        return;
-
-    }
+    const stateKey =
+        `${cleanPostId}:${cleanCommentId}`;
 
 
     if (
-        likeLoadingState.has(
-            postId
+        postDeletingState.has(
+            stateKey
         )
     ) {
 
-        return;
+        return false;
 
     }
 
 
-    likeLoadingState.add(
-        postId
+    postDeletingState.add(
+        stateKey
     );
-
-
-    button.disabled =
-        true;
 
 
     try {
@@ -1136,13 +1373,15 @@ async function toggleLike(
             await fetch(
 
                 `${API_BASE}/posts/${encodeURIComponent(
-                    postId
-                )}/like`,
+                    cleanPostId
+                )}/comments/${encodeURIComponent(
+                    cleanCommentId
+                )}`,
 
                 {
 
                     method:
-                        "POST",
+                        "DELETE",
 
                     headers:
                         getAuthHeaders()
@@ -1168,119 +1407,865 @@ async function toggleLike(
             );
 
 
-            return;
+            return false;
 
         }
 
 
-        if (!response.ok) {
+        if (
+            response.status ===
+            403
+        ) {
 
             throw new Error(
 
                 result?.error ||
 
-                "Could not update like."
+                "You can only delete your own comment."
 
             );
 
         }
-
-
-        const liked =
-            result?.liked ===
-            true;
-
-
-        const likes =
-            Math.max(
-
-                0,
-
-                Number(
-                    result?.likes
-                ) || 0
-
-            );
-
-
-        /*
-         * Persistent state:
-         * this stays until another actual like/unlike action.
-         */
-
-        button.classList.toggle(
-            "liked",
-            liked
-        );
-
-
-        button.dataset.liked =
-            liked
-                ? "true"
-                : "false";
-
-
-        button.setAttribute(
-            "aria-pressed",
-            liked
-                ? "true"
-                : "false"
-        );
 
 
         if (
-            countElement
+            response.status ===
+            404
         ) {
 
-            countElement.textContent =
-                String(
-                    likes
-                );
+            throw new Error(
+
+                result?.error ||
+
+                "Comment not found."
+
+            );
 
         }
 
 
-        const icon =
-            button.querySelector(
-                ".post-action-icon"
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not delete comment."
+
+            );
+
+        }
+
+
+        return true;
+
+
+    } finally {
+
+        postDeletingState.delete(
+            stateKey
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   BEGIN COMMENT EDIT
+   ========================================================= */
+
+function beginCommentEdit(
+    commentElement
+) {
+
+    if (!commentElement) {
+
+        return false;
+
+    }
+
+
+    if (
+        commentElement.dataset.editing ===
+        "true"
+    ) {
+
+        return false;
+
+    }
+
+
+    const commentId =
+        String(
+
+            commentElement.dataset.commentId ||
+
+            ""
+
+        ).trim();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !commentId ||
+        !commentUserId ||
+        !currentUserId ||
+        commentUserId !==
+        currentUserId
+    ) {
+
+        return false;
+
+    }
+
+
+    const contentElement =
+        commentElement.querySelector(
+            "[data-profile-comment-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return false;
+
+    }
+
+
+    const originalContent =
+        contentElement.textContent ||
+        "";
+
+
+    commentElement.dataset.originalContent =
+        originalContent;
+
+
+    commentElement.dataset.editing =
+        "true";
+
+
+    closeCommentMenus(
+        commentElement
+    );
+
+
+    contentElement.innerHTML = `
+
+        <textarea
+            class="post-comment-edit-input"
+            maxlength="${MAX_COMMENT_LENGTH}"
+            aria-label="Edit comment"
+        ></textarea>
+
+
+        <div
+            class="post-comment-edit-actions"
+        >
+
+            <button
+                type="button"
+                data-profile-comment-action="cancel-edit"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                data-profile-comment-action="save-edit"
+            >
+
+                Save
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    const input =
+        contentElement.querySelector(
+            ".post-comment-edit-input"
+        );
+
+
+    if (input) {
+
+        input.value =
+            originalContent;
+
+
+        autoResizeCommentEditor(
+            input
+        );
+
+
+        input.focus();
+
+
+        input.setSelectionRange(
+
+            input.value.length,
+
+            input.value.length
+
+        );
+
+    }
+
+
+    return true;
+
+}
+
+
+
+/* =========================================================
+   AUTO RESIZE COMMENT EDITOR
+   ========================================================= */
+
+function autoResizeCommentEditor(
+    input
+) {
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    input.style.height =
+        "auto";
+
+
+    const maxHeight =
+        220;
+
+
+    const nextHeight =
+        Math.min(
+
+            input.scrollHeight,
+
+            maxHeight
+
+        );
+
+
+    input.style.height =
+        `${Math.max(
+            42,
+            nextHeight
+        )}px`;
+
+}
+
+
+
+/* =========================================================
+   BEGIN POST EDIT
+   ========================================================= */
+
+function beginPostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return false;
+
+    }
+
+
+    if (
+        postElement.dataset.editing ===
+        "true"
+    ) {
+
+        return false;
+
+    }
+
+
+    const postId =
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    /*
+     * Only the post owner is allowed to enter edit mode.
+     */
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return false;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-profile-post-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return false;
+
+    }
+
+
+    const originalContent =
+        contentElement.textContent ||
+        "";
+
+
+    postElement.dataset.originalContent =
+        originalContent;
+
+
+    postElement.dataset.editing =
+        "true";
+
+
+    closePostMenus(
+        postElement
+    );
+
+
+    /*
+     * INLINE EDITOR
+     *
+     * The actual post content area is replaced.
+     * No overlay.
+     * No modal.
+     * No second giant card.
+     */
+
+    contentElement.innerHTML = `
+
+        <textarea
+            class="post-edit-input"
+            maxlength="${MAX_POST_LENGTH}"
+            aria-label="Edit post"
+            spellcheck="true"
+        ></textarea>
+
+
+        <div
+            class="post-edit-inline-footer"
+        >
+
+            <span
+                class="post-edit-character-count"
+            >
+
+                0 / ${MAX_POST_LENGTH}
+
+            </span>
+
+
+            <div
+                class="post-edit-actions"
+            >
+
+                <button
+                    type="button"
+                    data-profile-post-action="cancel-edit"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="button"
+                    data-profile-post-action="save-edit"
+                >
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const input =
+        contentElement.querySelector(
+            ".post-edit-input"
+        );
+
+
+    const counter =
+        contentElement.querySelector(
+            ".post-edit-character-count"
+        );
+
+
+    if (input) {
+
+        /*
+         * Start at the current content height instead of
+         * creating an oversized editor.
+         */
+
+        input.value =
+            originalContent;
+
+
+        const lineHeight =
+            1.7;
+
+
+        const fontSize =
+            15;
+
+
+        const calculatedMinHeight =
+            Math.min(
+
+                220,
+
+                Math.max(
+
+                    44,
+
+                    Math.ceil(
+
+                        (
+                            input.value
+                                .split(
+                                    "\n"
+                                )
+                                .length
+
+                        )
+
+                        *
+
+                        fontSize
+
+                        *
+
+                        lineHeight
+
+                        +
+
+                        8
+
+                    )
+
+                )
+
             );
 
 
-        const text =
-            button.querySelector(
-                ".post-action-text"
+        input.style.height =
+            `${calculatedMinHeight}px`;
+
+
+        updateProfileEditCounter(
+
+            input,
+
+            counter
+
+        );
+
+
+        input.focus();
+
+
+        input.setSelectionRange(
+
+            input.value.length,
+
+            input.value.length
+
+        );
+
+    }
+
+
+    return true;
+
+}
+
+
+
+/* =========================================================
+   PROFILE EDIT COUNTER
+   ========================================================= */
+
+function updateProfileEditCounter(
+    input,
+    counter
+) {
+
+    if (
+        !input ||
+        !counter
+    ) {
+
+        return;
+
+    }
+
+
+    counter.textContent =
+
+        `${input.value.length} / ${MAX_POST_LENGTH}`;
+
+
+    counter.classList.toggle(
+
+        "limit",
+
+        input.value.length >=
+        MAX_POST_LENGTH
+
+    );
+
+}
+
+
+
+/* =========================================================
+   CANCEL COMMENT EDIT
+   ========================================================= */
+
+function cancelCommentEdit(
+    commentElement
+) {
+
+    if (!commentElement) {
+
+        return;
+
+    }
+
+
+    const contentElement =
+        commentElement.querySelector(
+            "[data-profile-comment-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return;
+
+    }
+
+
+    const originalContent =
+        commentElement.dataset.originalContent ||
+        "";
+
+
+    contentElement.innerHTML =
+        escapeHTML(
+            originalContent
+        );
+
+
+    commentElement.dataset.editing =
+        "false";
+
+
+    delete commentElement.dataset.originalContent;
+
+}
+
+
+
+/* =========================================================
+   SAVE COMMENT EDIT
+   ========================================================= */
+
+async function saveCommentEdit(
+    commentElement
+) {
+
+    if (!commentElement) {
+
+        return null;
+
+    }
+
+
+    const postElement =
+        commentElement.closest(
+            ".post-card"
+        );
+
+
+    const postId =
+        String(
+
+            postElement?.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const commentId =
+        String(
+
+            commentElement.dataset.commentId ||
+
+            ""
+
+        ).trim();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !postId ||
+        !commentId ||
+        !commentUserId ||
+        !currentUserId ||
+        commentUserId !==
+        currentUserId
+    ) {
+
+        return null;
+
+    }
+
+
+    const contentElement =
+        commentElement.querySelector(
+            "[data-profile-comment-content]"
+        );
+
+
+    const input =
+        contentElement?.querySelector(
+            ".post-comment-edit-input"
+        );
+
+
+    if (
+        !contentElement ||
+        !input
+    ) {
+
+        return null;
+
+    }
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        alert(
+            "Comment cannot be empty."
+        );
+
+
+        input.focus();
+
+
+        return null;
+
+    }
+
+
+    if (
+        content.length >
+        MAX_COMMENT_LENGTH
+    ) {
+
+        alert(
+
+            `Comment cannot exceed ${MAX_COMMENT_LENGTH} characters.`
+
+        );
+
+
+        input.focus();
+
+
+        return null;
+
+    }
+
+
+    const saveButton =
+        commentElement.querySelector(
+            '[data-profile-comment-action="save-edit"]'
+        );
+
+
+    const cancelButton =
+        commentElement.querySelector(
+            '[data-profile-comment-action="cancel-edit"]'
+        );
+
+
+    if (saveButton) {
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Saving...";
+
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.disabled =
+            true;
+
+    }
+
+
+    try {
+
+        const updatedComment =
+            await updatePostComment(
+
+                postId,
+
+                commentId,
+
+                content
+
             );
 
 
-        if (icon) {
+        const updatedContent =
+            updatedComment?.content ||
 
-            icon.textContent =
-                liked
-                    ? "♥"
-                    : "♡";
-
-        }
+            content;
 
 
-        if (text) {
+        contentElement.innerHTML =
+            escapeHTML(
+                updatedContent
+            );
 
-            text.textContent =
-                liked
-                    ? "Liked"
-                    : "Like";
 
-        }
+        commentElement.dataset.editing =
+            "false";
+
+
+        delete commentElement.dataset.originalContent;
 
 
         /*
-         * IMPORTANT:
-         * Animation happens ONLY after a successful click.
-         * renderPosts() never calls this function.
+         * Add small edited label.
          */
 
-        triggerLikeAnimation(
-            button
-        );
+        const header =
+            commentElement.querySelector(
+                ".post-comment-header"
+            );
+
+
+        if (
+            header &&
+
+            !header.querySelector(
+                ".post-comment-edited"
+            )
+
+        ) {
+
+            const editedLabel =
+                document.createElement(
+                    "span"
+                );
+
+
+            editedLabel.className =
+                "post-comment-edited";
+
+
+            editedLabel.textContent =
+                "edited";
+
+
+            header.appendChild(
+                editedLabel
+            );
+
+        }
+
+
+        return updatedComment;
 
 
     } catch (
@@ -1289,7 +2274,7 @@ async function toggleLike(
 
         console.error(
 
-            "Like error:",
+            "Save comment edit error:",
 
             error
 
@@ -1300,112 +2285,583 @@ async function toggleLike(
 
             error?.message ||
 
-            "Unable to update like."
+            "Unable to update comment."
 
         );
 
+
+        return null;
 
     } finally {
 
-        likeLoadingState.delete(
-            postId
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save";
+
+        }
+
+
+        if (cancelButton) {
+
+            cancelButton.disabled =
+                false;
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CLOSE COMMENT MENUS
+   ========================================================= */
+
+function closeCommentMenus(
+    root = postsFeed
+) {
+
+    if (!root) {
+
+        return;
+
+    }
+
+
+    root
+        .querySelectorAll(
+            ".post-comment-menu"
+        )
+        .forEach(
+
+            menu => {
+
+                menu.hidden =
+                    true;
+
+            }
+
         );
 
 
-        button.disabled =
-            false;
+    root
+        .querySelectorAll(
+            ".post-comment-menu-button"
+        )
+        .forEach(
 
-    }
+            button => {
+
+                button.setAttribute(
+
+                    "aria-expanded",
+
+                    "false"
+
+                );
+
+            }
+
+        );
 
 }
 
 
 
 /* =========================================================
-   POST OWNER MENU
+   TOGGLE COMMENT MENU
    ========================================================= */
 
-function renderPostOwnerActions(
-    post
+function toggleCommentMenu(
+    commentElement,
+    button
 ) {
 
+    if (
+        !commentElement ||
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
+    if (
+        !currentUserId ||
+        currentUserId !==
+        commentUserId
+    ) {
+
+        return;
+
+    }
+
+
+    const menu =
+        commentElement.querySelector(
+            ".post-comment-menu"
+        );
+
+
+    if (!menu) {
+
+        return;
+
+    }
+
+
+    const shouldOpen =
+        menu.hidden;
+
+
+    closeCommentMenus(
+        postsFeed
+    );
+
+
+    menu.hidden =
+        !shouldOpen;
+
+
+    button.setAttribute(
+
+        "aria-expanded",
+
+        shouldOpen
+            ? "true"
+            : "false"
+
+    );
+
+}
+
+
+
+/* =========================================================
+   DELETE COMMENT ELEMENT
+   ========================================================= */
+
+function animateCommentRemoval(
+    commentElement,
+    countElement
+) {
+
+    if (!commentElement) {
+
+        return;
+
+    }
+
+
+    commentElement.classList.add(
+        "comment-deleting"
+    );
+
+
+    window.setTimeout(
+
+        () => {
+
+            if (
+                commentElement.isConnected
+            ) {
+
+                commentElement.remove();
+
+            }
+
+
+            if (
+                countElement
+            ) {
+
+                const currentCount =
+                    Number(
+
+                        countElement.textContent
+
+                    ) || 0;
+
+
+                countElement.textContent =
+                    String(
+
+                        Math.max(
+
+                            0,
+
+                            currentCount - 1
+
+                        )
+
+                    );
+
+            }
+
+        },
+
+        220
+
+    );
+
+}
+
+
+
+/* =========================================================
+   HANDLE COMMENT CLICK
+   ========================================================= */
+
+async function handleCommentClick(
+    event
+) {
+
+    const actionButton =
+        event.target.closest(
+            "[data-profile-comment-action]"
+        );
+
+
+    if (!actionButton) {
+
+        return;
+
+    }
+
+
+    const action =
+        actionButton.dataset.profileCommentAction;
+
+
+    const commentElement =
+        actionButton.closest(
+            ".post-comment"
+        );
+
+
+    if (!commentElement) {
+
+        return;
+
+    }
+
+
+    const postElement =
+        commentElement.closest(
+            ".post-card"
+        );
+
+
+    const postId =
+        String(
+
+            postElement?.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const commentId =
+        String(
+
+            commentElement.dataset.commentId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    const commentUserId =
+        String(
+
+            commentElement.dataset.commentUserId ||
+
+            ""
+
+        ).trim();
+
+
     /*
-     * No owner menu for another user's post.
+     * Every owner action has an explicit ownership check.
      */
 
     if (
-        !isOwnPost(
-            post
+
+        (
+            action ===
+            "edit"
+
+            ||
+
+            action ===
+            "delete"
+
         )
+
+        &&
+
+        (
+            !currentUserId ||
+
+            currentUserId !==
+            commentUserId
+
+        )
+
     ) {
 
-        return "";
+        return;
 
     }
 
 
-    return `
+    // ========================================================
+    // MENU
+    // ========================================================
 
-        <div
-            class="post-owner-actions"
-        >
+    if (
+        action ===
+        "menu"
+    ) {
 
-            <button
-                type="button"
-                class="post-menu-button"
-                data-profile-post-action="menu"
-                aria-label="Post options"
-                aria-haspopup="true"
-                aria-expanded="false"
-            >
+        event.preventDefault();
 
-                <span
-                    aria-hidden="true"
-                >
-                    ⋯
-                </span>
-
-            </button>
+        event.stopPropagation();
 
 
-            <div
-                class="post-menu"
-                data-post-menu
-                hidden
-            >
+        toggleCommentMenu(
 
-                <button
-                    type="button"
-                    data-profile-post-action="edit"
-                >
+            commentElement,
 
-                    Edit
+            actionButton
 
-                </button>
+        );
 
 
-                <button
-                    type="button"
-                    class="danger"
-                    data-profile-post-action="delete"
-                >
+        return;
 
-                    Delete
+    }
 
-                </button>
 
-            </div>
+    // ========================================================
+    // EDIT
+    // ========================================================
 
-        </div>
+    if (
+        action ===
+        "edit"
+    ) {
 
-    `;
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        closeCommentMenus(
+            postsFeed
+        );
+
+
+        beginCommentEdit(
+            commentElement
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // CANCEL EDIT
+    // ========================================================
+
+    if (
+        action ===
+        "cancel-edit"
+    ) {
+
+        event.preventDefault();
+
+
+        cancelCommentEdit(
+            commentElement
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // SAVE EDIT
+    // ========================================================
+
+    if (
+        action ===
+        "save-edit"
+    ) {
+
+        event.preventDefault();
+
+
+        await saveCommentEdit(
+            commentElement
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // DELETE
+    // ========================================================
+
+    if (
+        action ===
+        "delete"
+    ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        closeCommentMenus(
+            postsFeed
+        );
+
+
+        /*
+         * Explicit confirmation.
+         */
+
+        const confirmed =
+            window.confirm(
+
+                "Delete this comment?\n\n" +
+
+                "This will permanently delete your comment."
+
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        actionButton.disabled =
+            true;
+
+
+        actionButton.textContent =
+            "Deleting...";
+
+
+        try {
+
+            const deleted =
+                await deletePostComment(
+
+                    postId,
+
+                    commentId
+
+                );
+
+
+            if (
+                deleted
+            ) {
+
+                const countElement =
+                    postElement?.querySelector(
+                        ".post-comment-count"
+                    );
+
+
+                animateCommentRemoval(
+
+                    commentElement,
+
+                    countElement
+
+                );
+
+            }
+
+
+        } catch (
+            error
+        ) {
+
+            console.error(
+
+                "Delete comment error:",
+
+                error
+
+            );
+
+
+            alert(
+
+                error?.message ||
+
+                "Unable to delete comment."
+
+            );
+
+        } finally {
+
+            actionButton.disabled =
+                false;
+
+
+            actionButton.textContent =
+                "Delete";
+
+        }
+
+    }
 
 }
 
 
 
 /* =========================================================
-   RENDER POSTS
+   POST RENDERING
    ========================================================= */
 
 function renderPosts(
@@ -1494,8 +2950,6 @@ function renderPosts(
                     const username =
                         post?.username ||
 
-                        getUsername() ||
-
                         "user";
 
 
@@ -1528,17 +2982,75 @@ function renderPosts(
                         );
 
 
-                    const ownerActions =
-                        renderPostOwnerActions(
+                    const ownPost =
+                        isOwnPost(
                             post
                         );
 
 
+                    const ownerActions =
+                        ownPost
+
+                            ? `
+
+                                <div
+                                    class="post-owner-actions"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="post-menu-button"
+                                        data-profile-post-action="menu"
+                                        aria-label="Post options"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+
+                                        <span
+                                            aria-hidden="true"
+                                        >
+                                            ⋯
+                                        </span>
+
+                                    </button>
+
+
+                                    <div
+                                        class="post-menu"
+                                        data-post-menu
+                                        hidden
+                                    >
+
+                                        <button
+                                            type="button"
+                                            data-profile-post-action="edit"
+                                        >
+                                            Edit
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            class="danger"
+                                            data-profile-post-action="delete"
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            `
+
+                            : "";
+
+
                     /*
-                     * CRITICAL:
-                     * `liked` controls the persistent visual state.
+                     * Persistent like state:
+                     * `.liked` renders from backend state.
                      *
-                     * We DO NOT call triggerLikeAnimation() here.
+                     * No animation here.
                      */
 
                     return `
@@ -1760,480 +3272,10 @@ function renderPosts(
                     `;
 
                 }
+
             )
 
             .join("");
-
-}
-
-
-
-/* =========================================================
-   BEGIN POST EDIT
-   ========================================================= */
-
-function beginPostEdit(
-    postElement
-) {
-
-    if (!postElement) {
-
-        return false;
-
-    }
-
-
-    if (
-        postElement.dataset.editing ===
-        "true"
-    ) {
-
-        return false;
-
-    }
-
-
-    const postId =
-        String(
-
-            postElement.dataset.postId ||
-
-            ""
-
-        ).trim();
-
-
-    const ownerId =
-        String(
-
-            postElement.dataset.postOwnerId ||
-
-            ""
-
-        ).trim();
-
-
-    const currentUserId =
-        getCurrentUserId();
-
-
-    if (
-        !postId ||
-        !ownerId ||
-        ownerId !==
-        currentUserId
-    ) {
-
-        return false;
-
-    }
-
-
-    const contentElement =
-        postElement.querySelector(
-            "[data-profile-post-content]"
-        );
-
-
-    if (!contentElement) {
-
-        return false;
-
-    }
-
-
-    const originalContent =
-        contentElement.textContent ||
-        "";
-
-
-    postElement.dataset.originalContent =
-        originalContent;
-
-
-    postElement.dataset.editing =
-        "true";
-
-
-    closePostMenus(
-        postElement
-    );
-
-
-    /*
-     * SMALL INLINE EDITOR
-     *
-     * No wrapper/card-like visual treatment.
-     * The textarea takes the place of the original
-     * post content.
-     */
-
-    contentElement.innerHTML = `
-
-        <textarea
-            class="post-edit-input"
-            maxlength="${MAX_POST_LENGTH}"
-            aria-label="Edit post"
-        ></textarea>
-
-
-        <div
-            class="post-edit-inline-footer"
-        >
-
-            <span
-                class="post-edit-character-count"
-            >
-                0 / ${MAX_POST_LENGTH}
-            </span>
-
-
-            <div
-                class="post-edit-actions"
-            >
-
-                <button
-                    type="button"
-                    data-profile-post-action="cancel-edit"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="button"
-                    data-profile-post-action="save-edit"
-                >
-                    Save
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    const input =
-        contentElement.querySelector(
-            ".post-edit-input"
-        );
-
-
-    const counter =
-        contentElement.querySelector(
-            ".post-edit-character-count"
-        );
-
-
-    if (
-        input
-    ) {
-
-        input.value =
-            originalContent;
-
-
-        updateProfileEditCounter(
-
-            input,
-
-            counter
-
-        );
-
-
-        input.focus();
-
-
-        input.setSelectionRange(
-
-            input.value.length,
-
-            input.value.length
-
-        );
-
-    }
-
-
-    return true;
-
-}
-
-
-
-/* =========================================================
-   PROFILE EDIT COUNTER
-   ========================================================= */
-
-function updateProfileEditCounter(
-    input,
-    counter
-) {
-
-    if (
-        !input ||
-        !counter
-    ) {
-
-        return;
-
-    }
-
-
-    counter.textContent =
-
-        `${input.value.length} / ${MAX_POST_LENGTH}`;
-
-}
-
-
-
-/* =========================================================
-   CANCEL POST EDIT
-   ========================================================= */
-
-function cancelPostEdit(
-    postElement
-) {
-
-    if (!postElement) {
-
-        return;
-
-    }
-
-
-    const contentElement =
-        postElement.querySelector(
-            "[data-profile-post-content]"
-        );
-
-
-    if (!contentElement) {
-
-        return;
-
-    }
-
-
-    const originalContent =
-        postElement.dataset.originalContent ||
-        "";
-
-
-    contentElement.innerHTML =
-        escapeHTML(
-            originalContent
-        );
-
-
-    postElement.dataset.editing =
-        "false";
-
-
-    delete postElement.dataset.originalContent;
-
-}
-
-
-
-/* =========================================================
-   UPDATE POST
-   ========================================================= */
-
-async function updatePost(
-    postId,
-    content
-) {
-
-    const cleanPostId =
-        String(
-            postId ||
-            ""
-        ).trim();
-
-
-    const cleanContent =
-        typeof content ===
-        "string"
-
-            ? content.trim()
-
-            : "";
-
-
-    if (!cleanPostId) {
-
-        throw new Error(
-            "Invalid post ID."
-        );
-
-    }
-
-
-    if (
-        !hasValidLoginSession()
-    ) {
-
-        throw new Error(
-            "Please login first."
-        );
-
-    }
-
-
-    if (!cleanContent) {
-
-        throw new Error(
-            "Post cannot be empty."
-        );
-
-    }
-
-
-    if (
-        cleanContent.length >
-        MAX_POST_LENGTH
-    ) {
-
-        throw new Error(
-
-            `Post cannot exceed ${MAX_POST_LENGTH} characters.`
-
-        );
-
-    }
-
-
-    if (
-        postEditingState.has(
-            cleanPostId
-        )
-    ) {
-
-        return null;
-
-    }
-
-
-    postEditingState.add(
-        cleanPostId
-    );
-
-
-    try {
-
-        const response =
-            await fetch(
-
-                `${API_BASE}/posts/${encodeURIComponent(
-                    cleanPostId
-                )}`,
-
-                {
-
-                    method:
-                        "PATCH",
-
-                    headers:
-                        getAuthHeaders(),
-
-                    body:
-                        JSON.stringify({
-
-                            content:
-                                cleanContent
-
-                        })
-
-                }
-
-            );
-
-
-        const result =
-            await parseResponse(
-                response
-            );
-
-
-        if (
-            response.status ===
-            401
-        ) {
-
-            handleAuthError(
-                result?.error
-            );
-
-
-            return null;
-
-        }
-
-
-        if (
-            response.status ===
-            403
-        ) {
-
-            throw new Error(
-
-                result?.error ||
-
-                "You can only edit your own posts."
-
-            );
-
-        }
-
-
-        if (
-            response.status ===
-            404
-        ) {
-
-            throw new Error(
-
-                result?.error ||
-
-                "Post not found."
-
-            );
-
-        }
-
-
-        if (
-            !response.ok
-        ) {
-
-            throw new Error(
-
-                result?.error ||
-
-                "Could not update post."
-
-            );
-
-        }
-
-
-        return (
-            result?.post ||
-            null
-        );
-
-
-    } finally {
-
-        postEditingState.delete(
-            cleanPostId
-        );
-
-    }
 
 }
 
@@ -2302,23 +3344,14 @@ async function savePostEdit(
         );
 
 
-    if (!contentElement || !input) {
+    if (
+        !contentElement ||
+        !input
+    ) {
 
         return;
 
     }
-
-
-    const saveButton =
-        postElement.querySelector(
-            '[data-profile-post-action="save-edit"]'
-        );
-
-
-    const cancelButton =
-        postElement.querySelector(
-            '[data-profile-post-action="cancel-edit"]'
-        );
 
 
     const content =
@@ -2360,6 +3393,34 @@ async function savePostEdit(
     }
 
 
+    if (
+        postEditingState.has(
+            postId
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    postEditingState.add(
+        postId
+    );
+
+
+    const saveButton =
+        postElement.querySelector(
+            '[data-profile-post-action="save-edit"]'
+        );
+
+
+    const cancelButton =
+        postElement.querySelector(
+            '[data-profile-post-action="cancel-edit"]'
+        );
+
+
     if (saveButton) {
 
         saveButton.disabled =
@@ -2381,25 +3442,109 @@ async function savePostEdit(
 
     try {
 
-        const updatedPost =
-            await updatePost(
+        const response =
+            await fetch(
 
-                postId,
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}`,
 
-                content
+                {
+
+                    method:
+                        "PATCH",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            content
+
+                        })
+
+                }
 
             );
 
 
-        if (!updatedPost) {
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
 
             return;
 
         }
 
 
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only edit your own posts."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Post not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not update post."
+
+            );
+
+        }
+
+
+        const updatedPost =
+            result?.post ||
+            null;
+
+
         const updatedContent =
             updatedPost?.content ||
+
             content;
 
 
@@ -2417,7 +3562,7 @@ async function savePostEdit(
 
 
         /*
-         * Show subtle edited state.
+         * Small edited label.
          */
 
         const headerRight =
@@ -2427,58 +3572,51 @@ async function savePostEdit(
 
 
         if (
-            headerRight
+            headerRight &&
+
+            !headerRight.querySelector(
+                ".post-edited-label"
+            )
+
         ) {
 
-            const existingLabel =
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+
+            label.className =
+                "post-edited-label";
+
+
+            label.textContent =
+                "edited";
+
+
+            const ownerActions =
                 headerRight.querySelector(
-                    ".post-edited-label"
+                    ".post-owner-actions"
                 );
 
 
             if (
-                !existingLabel
+                ownerActions
             ) {
 
-                const editedLabel =
-                    document.createElement(
-                        "span"
-                    );
+                headerRight.insertBefore(
 
+                    label,
 
-                editedLabel.className =
-                    "post-edited-label";
-
-
-                editedLabel.textContent =
-                    "edited";
-
-
-                const ownerActions =
-                    headerRight.querySelector(
-                        ".post-owner-actions"
-                    );
-
-
-                if (
                     ownerActions
-                ) {
 
-                    headerRight.insertBefore(
+                );
 
-                        editedLabel,
+            } else {
 
-                        ownerActions
-
-                    );
-
-                } else {
-
-                    headerRight.appendChild(
-                        editedLabel
-                    );
-
-                }
+                headerRight.appendChild(
+                    label
+                );
 
             }
 
@@ -2506,8 +3644,12 @@ async function savePostEdit(
 
         );
 
-
     } finally {
+
+        postEditingState.delete(
+            postId
+        );
+
 
         if (saveButton) {
 
@@ -2534,68 +3676,80 @@ async function savePostEdit(
 
 
 /* =========================================================
-   CLOSE POST MENUS
+   CANCEL POST EDIT
    ========================================================= */
 
-function closePostMenus(
-    root = postsFeed
+function cancelPostEdit(
+    postElement
 ) {
 
-    if (!root) {
+    if (!postElement) {
 
         return;
 
     }
 
 
-    root
-        .querySelectorAll(
-            "[data-post-menu]"
-        )
-        .forEach(
-
-            menu => {
-
-                menu.hidden =
-                    true;
-
-            }
-
+    const contentElement =
+        postElement.querySelector(
+            "[data-profile-post-content]"
         );
 
 
-    root
-        .querySelectorAll(
-            ".post-menu-button"
-        )
-        .forEach(
+    if (!contentElement) {
 
-            button => {
+        return;
 
-                button.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+    }
 
-            }
 
+    const originalContent =
+        postElement.dataset.originalContent ||
+        "";
+
+
+    contentElement.innerHTML =
+        escapeHTML(
+            originalContent
         );
+
+
+    postElement.dataset.editing =
+        "false";
+
+
+    delete postElement.dataset.originalContent;
 
 }
 
 
 
 /* =========================================================
-   TOGGLE POST MENU
+   TOGGLE LIKE
    ========================================================= */
 
-function togglePostMenu(
-    postElement,
-    button
+async function toggleLike(
+    postId,
+    button,
+    countElement
 ) {
 
     if (
-        !postElement ||
+        !hasValidLoginSession()
+    ) {
+
+        alert(
+            "Please login first."
+        );
+
+
+        return;
+
+    }
+
+
+    if (
+        !postId ||
         !button
     ) {
 
@@ -2604,29 +3758,10 @@ function togglePostMenu(
     }
 
 
-    const ownerId =
-        String(
-
-            postElement.dataset.postOwnerId ||
-
-            ""
-
-        ).trim();
-
-
-    const currentUserId =
-        getCurrentUserId();
-
-
-    /*
-     * Extra safety:
-     * another user's menu cannot be opened.
-     */
-
     if (
-        !ownerId ||
-        ownerId !==
-        currentUserId
+        likeLoadingState.has(
+            postId
+        )
     ) {
 
         return;
@@ -2634,41 +3769,198 @@ function togglePostMenu(
     }
 
 
-    const menu =
-        postElement.querySelector(
-            "[data-post-menu]"
+    likeLoadingState.add(
+        postId
+    );
+
+
+    button.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/like`,
+
+                {
+
+                    method:
+                        "POST",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+
+            );
+
+
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not update like."
+
+            );
+
+        }
+
+
+        const liked =
+            result?.liked ===
+            true;
+
+
+        const likes =
+            Math.max(
+
+                0,
+
+                Number(
+                    result?.likes
+                ) || 0
+
+            );
+
+
+        button.classList.toggle(
+            "liked",
+            liked
         );
 
 
-    if (!menu) {
+        button.dataset.liked =
+            liked
+                ? "true"
+                : "false";
 
-        return;
+
+        button.setAttribute(
+
+            "aria-pressed",
+
+            liked
+                ? "true"
+                : "false"
+
+        );
+
+
+        if (
+            countElement
+        ) {
+
+            countElement.textContent =
+                String(
+                    likes
+                );
+
+        }
+
+
+        const icon =
+            button.querySelector(
+                ".post-action-icon"
+            );
+
+
+        const text =
+            button.querySelector(
+                ".post-action-text"
+            );
+
+
+        if (icon) {
+
+            icon.textContent =
+                liked
+                    ? "♥"
+                    : "♡";
+
+        }
+
+
+        if (text) {
+
+            text.textContent =
+                liked
+                    ? "Liked"
+                    : "Like";
+
+        }
+
+
+        /*
+         * ONLY actual click:
+         */
+
+        triggerLikeAnimation(
+            button
+        );
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+
+            "Like error:",
+
+            error
+
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to update like."
+
+        );
+
+    } finally {
+
+        likeLoadingState.delete(
+            postId
+        );
+
+
+        button.disabled =
+            false;
 
     }
-
-
-    const shouldOpen =
-        menu.hidden;
-
-
-    closePostMenus(
-        postsFeed
-    );
-
-
-    menu.hidden =
-        !shouldOpen;
-
-
-    button.setAttribute(
-
-        "aria-expanded",
-
-        shouldOpen
-            ? "true"
-            : "false"
-
-    );
 
 }
 
@@ -2750,9 +4042,17 @@ async function deletePost(
     }
 
 
+    /*
+     * Explicit permanent-delete confirmation.
+     */
+
     const confirmed =
         window.confirm(
-            "Delete this post?"
+
+            "Delete this post?\n\n" +
+
+            "This will permanently delete your post."
+
         );
 
 
@@ -2899,7 +4199,9 @@ async function deletePost(
 
                     const currentCount =
                         Number(
+
                             profilePostCount.textContent
+
                         );
 
 
@@ -2911,10 +4213,15 @@ async function deletePost(
 
                         profilePostCount.textContent =
                             String(
+
                                 Math.max(
+
                                     0,
+
                                     currentCount - 1
+
                                 )
+
                             );
 
                     }
@@ -2992,6 +4299,969 @@ async function deletePost(
         );
 
     }
+
+}
+
+
+
+/* =========================================================
+   POST CLICK HANDLER
+   ========================================================= */
+
+async function handlePostClick(
+    event
+) {
+
+    if (!postsFeed) {
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // POST MENU
+    // ========================================================
+
+    const menuButton =
+        event.target.closest(
+            '[data-profile-post-action="menu"]'
+        );
+
+
+    if (
+        menuButton
+    ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            menuButton.closest(
+                ".post-card"
+            );
+
+
+        if (!postElement) {
+
+            return;
+
+        }
+
+
+        togglePostMenu(
+
+            postElement,
+
+            menuButton
+
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // EDIT
+    // ========================================================
+
+    const editButton =
+        event.target.closest(
+            '[data-profile-post-action="edit"]'
+        );
+
+
+    if (
+        editButton
+    ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            editButton.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            beginPostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // DELETE
+    // ========================================================
+
+    const deleteButton =
+        event.target.closest(
+            '[data-profile-post-action="delete"]'
+        );
+
+
+    if (
+        deleteButton
+    ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            deleteButton.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            closePostMenus(
+                postElement
+            );
+
+
+            await deletePost(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // CANCEL EDIT
+    // ========================================================
+
+    const cancelEditButton =
+        event.target.closest(
+            '[data-profile-post-action="cancel-edit"]'
+        );
+
+
+    if (
+        cancelEditButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            cancelEditButton.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            cancelPostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // SAVE EDIT
+    // ========================================================
+
+    const saveEditButton =
+        event.target.closest(
+            '[data-profile-post-action="save-edit"]'
+        );
+
+
+    if (
+        saveEditButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            saveEditButton.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            await savePostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // LIKE
+    // ========================================================
+
+    const likeButton =
+        event.target.closest(
+            '[data-profile-post-action="like"]'
+        );
+
+
+    if (
+        likeButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            likeButton.closest(
+                ".post-card"
+            );
+
+
+        const postId =
+            postElement?.dataset.postId ||
+            "";
+
+
+        const countElement =
+            likeButton.querySelector(
+                ".post-like-count"
+            );
+
+
+        await toggleLike(
+
+            postId,
+
+            likeButton,
+
+            countElement
+
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // COMMENT TOGGLE
+    // ========================================================
+
+    const commentButton =
+        event.target.closest(
+            '[data-profile-post-action="comment"]'
+        );
+
+
+    if (
+        commentButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            commentButton.closest(
+                ".post-card"
+            );
+
+
+        if (!postElement) {
+
+            return;
+
+        }
+
+
+        const postId =
+            postElement.dataset.postId ||
+            "";
+
+
+        const commentsBox =
+            postElement.querySelector(
+                ".post-comments-panel"
+            );
+
+
+        const commentsList =
+            postElement.querySelector(
+                ".post-comments-list"
+            );
+
+
+        const commentCount =
+            postElement.querySelector(
+                ".post-comment-count"
+            );
+
+
+        if (!commentsBox) {
+
+            return;
+
+        }
+
+
+        const opening =
+            commentsBox.hidden;
+
+
+        commentsBox.hidden =
+            !opening;
+
+
+        commentButton.setAttribute(
+
+            "aria-expanded",
+
+            opening
+                ? "true"
+                : "false"
+
+        );
+
+
+        if (
+            opening &&
+
+            postId &&
+
+            commentsList
+
+        ) {
+
+            await loadPostComments(
+
+                postId,
+
+                commentsList,
+
+                commentCount
+
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // COMMENT SUBMIT
+    // ========================================================
+
+    const submitButton =
+        event.target.closest(
+            ".post-submit-comment"
+        );
+
+
+    if (
+        submitButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            submitButton.closest(
+                ".post-card"
+            );
+
+
+        if (!postElement) {
+
+            return;
+
+        }
+
+
+        const postId =
+            postElement.dataset.postId ||
+            "";
+
+
+        const input =
+            postElement.querySelector(
+                ".post-comment-input"
+            );
+
+
+        const commentsContainer =
+            postElement.querySelector(
+                ".post-comments-list"
+            );
+
+
+        const commentCountElement =
+            postElement.querySelector(
+                ".post-comment-count"
+            );
+
+
+        if (
+            postId &&
+            input &&
+            commentsContainer
+        ) {
+
+            await createPostComment(
+
+                postId,
+
+                input,
+
+                submitButton,
+
+                commentsContainer,
+
+                commentCountElement
+
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   POST KEYBOARD HANDLER
+   ========================================================= */
+
+function handlePostKeydown(
+    event
+) {
+
+    // ========================================================
+    // COMMENT ENTER
+    // ========================================================
+
+    if (
+
+        event.key ===
+        "Enter"
+
+        &&
+
+        !event.shiftKey
+
+        &&
+
+        event.target.closest(
+            ".post-comment-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
+
+
+        const submitButton =
+            postElement?.querySelector(
+                ".post-submit-comment"
+            );
+
+
+        if (
+            submitButton
+        ) {
+
+            submitButton.click();
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // POST EDIT CMD/CTRL + ENTER
+    // ========================================================
+
+    if (
+
+        event.key ===
+        "Enter"
+
+        &&
+
+        (
+            event.metaKey ||
+
+            event.ctrlKey
+        )
+
+        &&
+
+        event.target.closest(
+            ".post-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            savePostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // POST EDIT ESCAPE
+    // ========================================================
+
+    if (
+
+        event.key ===
+        "Escape"
+
+        &&
+
+        event.target.closest(
+            ".post-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            cancelPostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // COMMENT EDIT CMD/CTRL + ENTER
+    // ========================================================
+
+    if (
+
+        event.key ===
+        "Enter"
+
+        &&
+
+        (
+            event.metaKey ||
+
+            event.ctrlKey
+        )
+
+        &&
+
+        event.target.closest(
+            ".post-comment-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const commentElement =
+            event.target.closest(
+                ".post-comment"
+            );
+
+
+        if (
+            commentElement
+        ) {
+
+            saveCommentEdit(
+                commentElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // COMMENT EDIT ESCAPE
+    // ========================================================
+
+    if (
+
+        event.key ===
+        "Escape"
+
+        &&
+
+        event.target.closest(
+            ".post-comment-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const commentElement =
+            event.target.closest(
+                ".post-comment"
+            );
+
+
+        if (
+            commentElement
+        ) {
+
+            cancelCommentEdit(
+                commentElement
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   POST INPUT HANDLER
+   ========================================================= */
+
+function handlePostInput(
+    event
+) {
+
+    const editInput =
+        event.target.closest(
+            ".post-edit-input"
+        );
+
+
+    if (
+        editInput
+    ) {
+
+        const postElement =
+            editInput.closest(
+                ".post-card"
+            );
+
+
+        const counter =
+            postElement?.querySelector(
+                ".post-edit-character-count"
+            );
+
+
+        updateProfileEditCounter(
+
+            editInput,
+
+            counter
+
+        );
+
+
+        autoResizePostEditor(
+            editInput
+        );
+
+
+        return;
+
+    }
+
+
+    const commentEditInput =
+        event.target.closest(
+            ".post-comment-edit-input"
+        );
+
+
+    if (
+        commentEditInput
+    ) {
+
+        autoResizeCommentEditor(
+            commentEditInput
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   AUTO RESIZE POST EDITOR
+   ========================================================= */
+
+function autoResizePostEditor(
+    input
+) {
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    input.style.height =
+        "auto";
+
+
+    const nextHeight =
+        Math.min(
+
+            Math.max(
+
+                44,
+
+                input.scrollHeight
+
+            ),
+
+            220
+
+        );
+
+
+    input.style.height =
+        `${nextHeight}px`;
+
+}
+
+
+
+/* =========================================================
+   SETUP SOCIAL EVENTS
+   ========================================================= */
+
+function setupSocialEvents() {
+
+    if (
+        postsFeed
+    ) {
+
+        postsFeed.addEventListener(
+
+            "click",
+
+            handlePostClick
+
+        );
+
+
+        postsFeed.addEventListener(
+
+            "click",
+
+            handleCommentClick
+
+        );
+
+
+        postsFeed.addEventListener(
+
+            "keydown",
+
+            handlePostKeydown
+
+        );
+
+
+        postsFeed.addEventListener(
+
+            "input",
+
+            handlePostInput
+
+        );
+
+    }
+
+
+    if (
+        postContent
+    ) {
+
+        postContent.addEventListener(
+
+            "input",
+
+            updatePostCharacterCount
+
+        );
+
+    }
+
+
+    if (
+        createPostBtn
+    ) {
+
+        createPostBtn.addEventListener(
+
+            "click",
+
+            async event => {
+
+                event.preventDefault();
+
+
+                await createPost();
+
+            }
+
+        );
+
+    }
+
+
+    /*
+     * Close post/comment owner menus when clicking outside.
+     */
+
+    document.addEventListener(
+
+        "click",
+
+        event => {
+
+            if (
+                event.target.closest(
+                    ".post-owner-actions"
+                )
+
+                ||
+
+                event.target.closest(
+                    ".post-comment-owner-actions"
+                )
+
+            ) {
+
+                return;
+
+            }
+
+
+            closePostMenus();
+
+            closeCommentMenus();
+
+        }
+
+    );
+
+}
+
+
+
+/* =========================================================
+   PROFILE UPDATE REACTION
+   ========================================================= */
+
+function setupProfileUpdateListener() {
+
+    window.addEventListener(
+
+        "dheere:profile-updated",
+
+        async () => {
+
+            await loadUserPosts();
+
+        }
+
+    );
 
 }
 
@@ -3095,6 +5365,9 @@ async function loadUserPosts() {
 
                     method:
                         "GET",
+
+                    headers:
+                        getAuthHeaders(),
 
                     cache:
                         "no-store"
@@ -3396,781 +5669,6 @@ async function createPost() {
 
 
 /* =========================================================
-   POST CLICK HANDLER
-   ========================================================= */
-
-async function handlePostClick(
-    event
-) {
-
-    if (!postsFeed) {
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // MENU
-    // ========================================================
-
-    const menuButton =
-        event.target.closest(
-            '[data-profile-post-action="menu"]'
-        );
-
-
-    if (
-        menuButton
-    ) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        const postElement =
-            menuButton.closest(
-                ".post-card"
-            );
-
-
-        if (!postElement) {
-
-            return;
-
-        }
-
-
-        togglePostMenu(
-
-            postElement,
-
-            menuButton
-
-        );
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // EDIT
-    // ========================================================
-
-    const editButton =
-        event.target.closest(
-            '[data-profile-post-action="edit"]'
-        );
-
-
-    if (
-        editButton
-    ) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        const postElement =
-            editButton.closest(
-                ".post-card"
-            );
-
-
-        if (postElement) {
-
-            beginPostEdit(
-                postElement
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // DELETE
-    // ========================================================
-
-    const deleteButton =
-        event.target.closest(
-            '[data-profile-post-action="delete"]'
-        );
-
-
-    if (
-        deleteButton
-    ) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        const postElement =
-            deleteButton.closest(
-                ".post-card"
-            );
-
-
-        if (postElement) {
-
-            closePostMenus(
-                postElement
-            );
-
-
-            await deletePost(
-                postElement
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // CANCEL EDIT
-    // ========================================================
-
-    const cancelEditButton =
-        event.target.closest(
-            '[data-profile-post-action="cancel-edit"]'
-        );
-
-
-    if (
-        cancelEditButton
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            cancelEditButton.closest(
-                ".post-card"
-            );
-
-
-        if (postElement) {
-
-            cancelPostEdit(
-                postElement
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // SAVE EDIT
-    // ========================================================
-
-    const saveEditButton =
-        event.target.closest(
-            '[data-profile-post-action="save-edit"]'
-        );
-
-
-    if (
-        saveEditButton
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            saveEditButton.closest(
-                ".post-card"
-            );
-
-
-        if (postElement) {
-
-            await savePostEdit(
-                postElement
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // LIKE
-    // ========================================================
-
-    const likeButton =
-        event.target.closest(
-            '[data-profile-post-action="like"]'
-        );
-
-
-    if (
-        likeButton
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            likeButton.closest(
-                ".post-card"
-            );
-
-
-        const postId =
-            postElement?.dataset.postId ||
-            "";
-
-
-        const countElement =
-            likeButton.querySelector(
-                ".post-like-count"
-            );
-
-
-        await toggleLike(
-
-            postId,
-
-            likeButton,
-
-            countElement
-
-        );
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // COMMENT TOGGLE
-    // ========================================================
-
-    const commentButton =
-        event.target.closest(
-            '[data-profile-post-action="comment"]'
-        );
-
-
-    if (
-        commentButton
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            commentButton.closest(
-                ".post-card"
-            );
-
-
-        if (!postElement) {
-
-            return;
-
-        }
-
-
-        const postId =
-            postElement.dataset.postId ||
-            "";
-
-
-        const commentsBox =
-            postElement.querySelector(
-                ".post-comments-panel"
-            );
-
-
-        const commentsList =
-            postElement.querySelector(
-                ".post-comments-list"
-            );
-
-
-        const commentCount =
-            postElement.querySelector(
-                ".post-comment-count"
-            );
-
-
-        if (!commentsBox) {
-
-            return;
-
-        }
-
-
-        const opening =
-            commentsBox.hidden;
-
-
-        commentsBox.hidden =
-            !opening;
-
-
-        commentButton.setAttribute(
-
-            "aria-expanded",
-
-            opening
-                ? "true"
-                : "false"
-
-        );
-
-
-        if (
-            opening &&
-
-            postId &&
-
-            commentsList
-
-        ) {
-
-            await loadPostComments(
-
-                postId,
-
-                commentsList,
-
-                commentCount
-
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // COMMENT SUBMIT
-    // ========================================================
-
-    const submitButton =
-        event.target.closest(
-            ".post-submit-comment"
-        );
-
-
-    if (
-        submitButton
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            submitButton.closest(
-                ".post-card"
-            );
-
-
-        if (!postElement) {
-
-            return;
-
-        }
-
-
-        const postId =
-            postElement.dataset.postId ||
-            "";
-
-
-        const input =
-            postElement.querySelector(
-                ".post-comment-input"
-            );
-
-
-        const commentsContainer =
-            postElement.querySelector(
-                ".post-comments-list"
-            );
-
-
-        const commentCountElement =
-            postElement.querySelector(
-                ".post-comment-count"
-            );
-
-
-        if (
-            postId &&
-            input &&
-            commentsContainer
-        ) {
-
-            await createPostComment(
-
-                postId,
-
-                input,
-
-                submitButton,
-
-                commentsContainer,
-
-                commentCountElement
-
-            );
-
-        }
-
-    }
-
-}
-
-
-
-/* =========================================================
-   POST KEYBOARD HANDLER
-   ========================================================= */
-
-function handlePostKeydown(
-    event
-) {
-
-    // ========================================================
-    // COMMENT ENTER
-    // ========================================================
-
-    if (
-        event.key ===
-        "Enter"
-
-        &&
-
-        !event.shiftKey
-
-        &&
-
-        event.target.closest(
-            ".post-comment-input"
-        )
-
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            event.target.closest(
-                ".post-card"
-            );
-
-
-        const submitButton =
-            postElement?.querySelector(
-                ".post-submit-comment"
-            );
-
-
-        if (
-            submitButton
-        ) {
-
-            submitButton.click();
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // EDIT CMD/CTRL + ENTER
-    // ========================================================
-
-    if (
-        event.key ===
-        "Enter"
-
-        &&
-
-        (
-            event.metaKey ||
-            event.ctrlKey
-        )
-
-        &&
-
-        event.target.closest(
-            ".post-edit-input"
-        )
-
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            event.target.closest(
-                ".post-card"
-            );
-
-
-        if (
-            postElement
-        ) {
-
-            savePostEdit(
-                postElement
-            );
-
-        }
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // EDIT ESCAPE
-    // ========================================================
-
-    if (
-        event.key ===
-        "Escape"
-
-        &&
-
-        event.target.closest(
-            ".post-edit-input"
-        )
-
-    ) {
-
-        event.preventDefault();
-
-
-        const postElement =
-            event.target.closest(
-                ".post-card"
-            );
-
-
-        if (
-            postElement
-        ) {
-
-            cancelPostEdit(
-                postElement
-            );
-
-        }
-
-    }
-
-}
-
-
-
-/* =========================================================
-   POST EDIT INPUT HANDLER
-   ========================================================= */
-
-function handlePostInput(
-    event
-) {
-
-    const editInput =
-        event.target.closest(
-            ".post-edit-input"
-        );
-
-
-    if (!editInput) {
-
-        return;
-
-    }
-
-
-    const postElement =
-        editInput.closest(
-            ".post-card"
-        );
-
-
-    const counter =
-        postElement?.querySelector(
-            ".post-edit-character-count"
-        );
-
-
-    updateProfileEditCounter(
-
-        editInput,
-
-        counter
-
-    );
-
-}
-
-
-
-/* =========================================================
-   SETUP SOCIAL EVENTS
-   ========================================================= */
-
-function setupSocialEvents() {
-
-    if (
-        postsFeed
-    ) {
-
-        postsFeed.addEventListener(
-
-            "click",
-
-            handlePostClick
-
-        );
-
-
-        postsFeed.addEventListener(
-
-            "keydown",
-
-            handlePostKeydown
-
-        );
-
-
-        postsFeed.addEventListener(
-
-            "input",
-
-            handlePostInput
-
-        );
-
-    }
-
-
-    if (
-        postContent
-    ) {
-
-        postContent.addEventListener(
-
-            "input",
-
-            updatePostCharacterCount
-
-        );
-
-    }
-
-
-    if (
-        createPostBtn
-    ) {
-
-        createPostBtn.addEventListener(
-
-            "click",
-
-            async event => {
-
-                event.preventDefault();
-
-
-                await createPost();
-
-            }
-
-        );
-
-    }
-
-
-    /*
-     * Close owner menus when clicking outside them.
-     */
-
-    document.addEventListener(
-
-        "click",
-
-        event => {
-
-            if (
-                event.target.closest(
-                    ".post-owner-actions"
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            closePostMenus();
-
-        }
-
-    );
-
-}
-
-
-
-/* =========================================================
-   PROFILE UPDATE REACTION
-   ========================================================= */
-
-function setupProfileUpdateListener() {
-
-    window.addEventListener(
-
-        "dheere:profile-updated",
-
-        async () => {
-
-            await loadUserPosts();
-
-        }
-
-    );
-
-}
-
-
-
-/* =========================================================
    INITIALIZE
    ========================================================= */
 
@@ -4214,11 +5712,15 @@ export {
 
     cancelPostEdit,
 
-    updatePost,
+    updatePostComment,
 
     savePostEdit,
 
+    saveCommentEdit,
+
     deletePost,
+
+    deletePostComment,
 
     renderPostOwnerActions,
 

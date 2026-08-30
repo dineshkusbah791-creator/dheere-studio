@@ -806,8 +806,7 @@ html[data-dheere-mood="midnight"] {
         center;
 
     padding:
-        0
-        18px;
+        0 18px;
 
     border:
         1px solid
@@ -1598,11 +1597,11 @@ html[data-dheere-mood="midnight"] {
     justify-content:
         flex-end;
 
-    flex:
-        0 0 auto;
-
     gap:
         8px;
+
+    flex:
+        0 0 auto;
 
 }
 
@@ -1976,8 +1975,7 @@ html[data-dheere-mood="midnight"] {
         7px;
 
     padding:
-        0
-        11px;
+        0 11px;
 
     overflow:
         hidden;
@@ -2135,21 +2133,20 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   15. LIKE
+   15. LIKE STATE
    ========================================================= */
 
-.post-like-button {
-
-    --profile-like-glow:
-        rgba(
-            237,
-            133,
-            133,
-            .28
-        );
-
-}
-
+/*
+ * `.liked` is the persistent state.
+ *
+ * There is intentionally NO animation on this selector.
+ *
+ * That means:
+ *
+ * click -> red
+ * refresh -> remains red
+ * refresh -> does NOT replay animation
+ */
 
 .post-like-button.liked {
 
@@ -2185,20 +2182,23 @@ html[data-dheere-mood="midnight"] {
         0
         0
         11px
-        var(--profile-like-glow);
+        rgba(
+            237,
+            133,
+            133,
+            .28
+        );
 
 }
 
 
+/* =========================================================
+   16. LIKE CLICK ANIMATION
+   ========================================================= */
+
 /*
- * IMPORTANT:
- *
- * `.liked` is persistent state.
- * `.like-just-toggled` is temporary animation state.
- *
- * Rendered posts only receive `.liked`.
- * The animation class is added only after
- * an actual successful click.
+ * This class is temporary and is added by JS only after
+ * a successful user interaction.
  */
 
 .post-like-button.like-just-toggled {
@@ -2388,7 +2388,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   16. COMMENT BUTTON
+   17. COMMENT BUTTON
    ========================================================= */
 
 .post-comment-button {
@@ -2498,7 +2498,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   17. COMMENTS PANEL
+   18. COMMENTS
    ========================================================= */
 
 .post-comments-panel {
@@ -2580,6 +2580,9 @@ html[data-dheere-mood="midnight"] {
 
 .post-comment {
 
+    position:
+        relative;
+
     padding:
         10px
         12px;
@@ -2599,10 +2602,44 @@ html[data-dheere-mood="midnight"] {
         .20s
         ease-out;
 
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        max-height .22s ease,
+        padding .22s ease;
+
+}
+
+
+.post-comment.comment-deleting {
+
+    overflow:
+        hidden;
+
+    opacity:
+        0;
+
+    transform:
+        translateY(
+            -4px
+        );
+
+    max-height:
+        0;
+
+    padding-top:
+        0;
+
+    padding-bottom:
+        0;
+
 }
 
 
 .post-comment-header {
+
+    position:
+        relative;
 
     display:
         flex;
@@ -2615,6 +2652,12 @@ html[data-dheere-mood="midnight"] {
 
     margin-bottom:
         5px;
+
+    min-height:
+        20px;
+
+    padding-right:
+        34px;
 
 }
 
@@ -2637,6 +2680,20 @@ html[data-dheere-mood="midnight"] {
 
     font-size:
         10px;
+
+}
+
+
+.post-comment-edited {
+
+    color:
+        var(--profile-subtle);
+
+    font-size:
+        10px;
+
+    font-style:
+        italic;
 
 }
 
@@ -2720,7 +2777,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   18. COMMENT FORM
+   19. COMMENT FORM
    ========================================================= */
 
 .post-comment-form {
@@ -2802,8 +2859,7 @@ html[data-dheere-mood="midnight"] {
         38px;
 
     padding:
-        0
-        13px;
+        0 13px;
 
     border:
         1px solid
@@ -2884,8 +2940,427 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   19. INLINE POST EDIT
+   20. COMMENT OWNER MENU
    ========================================================= */
+
+.post-comment-owner-actions {
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    right:
+        0;
+
+}
+
+
+.post-comment-menu-button {
+
+    width:
+        26px;
+
+    height:
+        26px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        0;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--profile-subtle);
+
+    font-family:
+        inherit;
+
+    font-size:
+        17px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        transform .13s ease;
+
+}
+
+
+.post-comment-menu-button:hover {
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .055
+        );
+
+    border-color:
+        var(--profile-border-soft);
+
+    color:
+        var(--profile-heading);
+
+}
+
+
+.post-comment-menu-button:active {
+
+    transform:
+        scale(
+            .94
+        );
+
+}
+
+
+.post-comment-menu {
+
+    position:
+        absolute;
+
+    top:
+        30px;
+
+    right:
+        0;
+
+    z-index:
+        500;
+
+    min-width:
+        112px;
+
+    padding:
+        5px;
+
+    border:
+        1px solid
+        var(--profile-border);
+
+    border-radius:
+        9px;
+
+    background:
+        var(--profile-surface-strong);
+
+    box-shadow:
+        0
+        15px
+        35px
+        rgba(
+            0,
+            0,
+            0,
+            .40
+        );
+
+}
+
+
+.post-comment-menu[hidden] {
+
+    display:
+        none;
+
+}
+
+
+.post-comment-menu button {
+
+    width:
+        100%;
+
+    display:
+        block;
+
+    padding:
+        8px
+        9px;
+
+    border:
+        0;
+
+    border-radius:
+        6px;
+
+    background:
+        transparent;
+
+    color:
+        var(--profile-text);
+
+    font-family:
+        inherit;
+
+    font-size:
+        12px;
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+}
+
+
+.post-comment-menu button:hover {
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .055
+        );
+
+    color:
+        var(--profile-heading);
+
+}
+
+
+.post-comment-menu button.danger {
+
+    color:
+        var(--profile-danger);
+
+}
+
+
+.post-comment-menu button.danger:hover {
+
+    background:
+        rgba(
+            237,
+            133,
+            133,
+            .08
+        );
+
+}
+
+
+/* =========================================================
+   21. INLINE COMMENT EDIT
+   ========================================================= */
+
+.post-comment-edit-input {
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    min-height:
+        42px;
+
+    max-height:
+        220px;
+
+    box-sizing:
+        border-box;
+
+    padding:
+        7px
+        0;
+
+    resize:
+        none;
+
+    overflow-y:
+        auto;
+
+    border:
+        0;
+
+    outline:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        var(--profile-text);
+
+    font-family:
+        inherit;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.55;
+
+}
+
+
+.post-comment-edit-input:focus {
+
+    border:
+        0;
+
+    outline:
+        none;
+
+}
+
+
+.post-comment-edit-actions {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    margin-top:
+        4px;
+
+}
+
+
+.post-comment-edit-actions button {
+
+    min-height:
+        29px;
+
+    padding:
+        0 10px;
+
+    border:
+        1px solid
+        var(--profile-border-soft);
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--profile-muted);
+
+    font-family:
+        inherit;
+
+    font-size:
+        11px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .14s ease,
+        border-color .14s ease,
+        color .14s ease,
+        transform .13s ease;
+
+}
+
+
+.post-comment-edit-actions button:hover {
+
+    border-color:
+        var(--profile-accent);
+
+    color:
+        var(--profile-heading);
+
+    transform:
+        translateY(
+            -1px
+        );
+
+}
+
+
+.post-comment-edit-actions button:active {
+
+    transform:
+        scale(
+            .97
+        );
+
+}
+
+
+.post-comment-edit-actions button:last-child {
+
+    border-color:
+        var(--profile-accent);
+
+    background:
+        var(--profile-accent);
+
+    color:
+        var(--profile-accent-dark);
+
+}
+
+
+.post-comment-edit-actions button:disabled {
+
+    opacity:
+        .45;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+}
+
+
+/* =========================================================
+   22. INLINE POST EDIT
+   ========================================================= */
+
+/*
+ * The post itself becomes the editor.
+ *
+ * No modal.
+ * No overlay.
+ * No second card.
+ */
 
 .post-edit-input {
 
@@ -2896,13 +3371,16 @@ html[data-dheere-mood="midnight"] {
         100%;
 
     min-height:
-        78px;
+        44px;
+
+    max-height:
+        220px;
 
     box-sizing:
         border-box;
 
     padding:
-        8px
+        6px
         0;
 
     resize:
@@ -2937,8 +3415,23 @@ html[data-dheere-mood="midnight"] {
 
 .post-edit-input:focus {
 
+    border:
+        0;
+
     outline:
         none;
+
+}
+
+
+.post-edit-input::selection {
+
+    background:
+        color-mix(
+            in srgb,
+            var(--profile-accent) 28%,
+            transparent
+        );
 
 }
 
@@ -2958,7 +3451,7 @@ html[data-dheere-mood="midnight"] {
         10px;
 
     margin-top:
-        5px;
+        3px;
 
 }
 
@@ -2970,6 +3463,17 @@ html[data-dheere-mood="midnight"] {
 
     font-size:
         10px;
+
+    line-height:
+        1;
+
+}
+
+
+.post-edit-character-count.limit {
+
+    color:
+        var(--profile-danger);
 
 }
 
@@ -2997,8 +3501,7 @@ html[data-dheere-mood="midnight"] {
         30px;
 
     padding:
-        0
-        10px;
+        0 10px;
 
     border:
         1px solid
@@ -3029,7 +3532,8 @@ html[data-dheere-mood="midnight"] {
         background .14s ease,
         border-color .14s ease,
         color .14s ease,
-        transform .13s ease;
+        transform .13s ease,
+        opacity .14s ease;
 
 }
 
@@ -3097,7 +3601,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   20. DELETE ANIMATION
+   23. DELETE ANIMATION
    ========================================================= */
 
 .post-card.post-deleting {
@@ -3138,7 +3642,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   21. DHEERE AI
+   24. DHEERE AI
    ========================================================= */
 
 .ai-card {
@@ -3559,9 +4063,7 @@ html[data-dheere-mood="midnight"] {
         45px;
 
     flex:
-        0
-        0
-        45px;
+        0 0 45px;
 
     border:
         1px solid
@@ -3611,7 +4113,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   22. EDIT PROFILE MODAL
+   25. EDIT PROFILE MODAL
    ========================================================= */
 
 .edit-overlay {
@@ -3782,9 +4284,7 @@ html[data-dheere-mood="midnight"] {
         center;
 
     flex:
-        0
-        0
-        34px;
+        0 0 34px;
 
     padding:
         0;
@@ -3831,7 +4331,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   23. EDIT AVATAR
+   26. EDIT AVATAR
    ========================================================= */
 
 .edit-avatar-area {
@@ -3872,9 +4372,7 @@ html[data-dheere-mood="midnight"] {
         hidden;
 
     flex:
-        0
-        0
-        82px;
+        0 0 82px;
 
     border:
         1px solid
@@ -4005,7 +4503,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   24. EDIT FORM
+   27. EDIT FORM
    ========================================================= */
 
 .form-group {
@@ -4246,7 +4744,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   25. MODAL FOOTER
+   28. MODAL FOOTER
    ========================================================= */
 
 .edit-modal-footer {
@@ -4275,7 +4773,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   26. LOGGED OUT
+   29. LOGGED OUT
    ========================================================= */
 
 #loginMessage {
@@ -4326,9 +4824,7 @@ html[data-dheere-mood="midnight"] {
         430px;
 
     margin:
-        12px
-        auto
-        0;
+        12px auto 0;
 
     color:
         var(--profile-muted);
@@ -4360,8 +4856,7 @@ html[data-dheere-mood="midnight"] {
         20px;
 
     padding:
-        0
-        18px;
+        0 18px;
 
     border-radius:
         9px;
@@ -4385,7 +4880,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   27. FOOTER
+   30. FOOTER
    ========================================================= */
 
 .profile-footer {
@@ -4413,7 +4908,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   28. SCROLLBARS
+   31. SCROLLBARS
    ========================================================= */
 
 #dheereAiMessages,
@@ -4474,7 +4969,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   29. RESPONSIVE — TABLET
+   32. RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width:700px) {
@@ -4581,8 +5076,7 @@ html[data-dheere-mood="midnight"] {
             35px;
 
         padding:
-            0
-            10px;
+            0 10px;
 
     }
 
@@ -4598,7 +5092,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   30. RESPONSIVE — MOBILE
+   33. RESPONSIVE — MOBILE
    ========================================================= */
 
 @media (max-width:450px) {
@@ -4711,9 +5205,7 @@ html[data-dheere-mood="midnight"] {
     .post-action-button {
 
         flex:
-            0
-            1
-            auto;
+            0 1 auto;
 
     }
 
@@ -4730,6 +5222,14 @@ html[data-dheere-mood="midnight"] {
 
         width:
             100%;
+
+    }
+
+
+    .post-edit-input {
+
+        min-height:
+            42px;
 
     }
 
@@ -4756,8 +5256,7 @@ html[data-dheere-mood="midnight"] {
             29px;
 
         padding:
-            0
-            9px;
+            0 9px;
 
     }
 
@@ -4770,7 +5269,34 @@ html[data-dheere-mood="midnight"] {
     }
 
 
+    .post-comment-edit-actions {
+
+        gap:
+            5px;
+
+    }
+
+
+    .post-comment-edit-actions button {
+
+        min-height:
+            29px;
+
+        padding:
+            0 9px;
+
+    }
+
+
     .post-menu {
+
+        right:
+            0;
+
+    }
+
+
+    .post-comment-menu {
 
         right:
             0;
@@ -4849,7 +5375,7 @@ html[data-dheere-mood="midnight"] {
 
 
 /* =========================================================
-   31. REDUCED MOTION
+   34. REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion:reduce) {
@@ -4862,6 +5388,7 @@ html[data-dheere-mood="midnight"] {
     .post-comments-panel,
     .post-comment,
     .post-edit-actions button,
+    .post-comment-edit-actions button,
     #createPostBtn {
 
         animation:

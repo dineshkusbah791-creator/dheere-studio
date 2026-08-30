@@ -23,7 +23,6 @@
 }
 
 
-
 /* ============================================================
    COMMUNITY HERO
    ============================================================ */
@@ -182,7 +181,6 @@
 }
 
 
-
 /* ============================================================
    FEED
    ============================================================ */
@@ -285,6 +283,19 @@
 }
 
 
+.refresh-button:disabled {
+
+    opacity:
+        .5;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+}
+
 
 /* ============================================================
    CREATE POST
@@ -356,6 +367,14 @@
     transition:
         border-color .2s ease,
         box-shadow .2s ease;
+
+}
+
+
+.create-post-card textarea::placeholder {
+
+    color:
+        #656b76;
 
 }
 
@@ -453,6 +472,9 @@
     transform:
         translateY(
             0
+        )
+        scale(
+            .98
         );
 
 }
@@ -466,8 +488,10 @@
     cursor:
         not-allowed;
 
-}
+    transform:
+        none;
 
+}
 
 
 /* ============================================================
@@ -523,9 +547,8 @@
 }
 
 
-
 /* ============================================================
-   POSTS
+   POSTS FEED
    ============================================================ */
 
 .posts-feed {
@@ -538,6 +561,10 @@
 
 }
 
+
+/* ============================================================
+   POST CARD
+   ============================================================ */
 
 .post-card {
 
@@ -583,6 +610,10 @@
 
 }
 
+
+/* ============================================================
+   POST HEADER
+   ============================================================ */
 
 .post-header {
 
@@ -694,14 +725,10 @@
     font-style:
         italic;
 
-    opacity:
-        .9;
-
     white-space:
         nowrap;
 
 }
-
 
 
 /* ============================================================
@@ -728,9 +755,8 @@
 }
 
 
-
 /* ============================================================
-   POST OWNER MENU
+   OWNER MENU
    ============================================================ */
 
 .post-owner-actions {
@@ -858,7 +884,7 @@
             255,
             255,
             255,
-            .1
+            .10
         );
 
     border-radius:
@@ -1011,24 +1037,9 @@
 }
 
 
-
 /* ============================================================
    INLINE POST EDIT
    ============================================================ */
-
-/*
- * IMPORTANT:
- * The editor replaces .post-content itself.
- * There is no large secondary editor box.
- */
-
-.post-edit-editor {
-
-    width:
-        100%;
-
-}
-
 
 .post-edit-input {
 
@@ -1088,19 +1099,6 @@
 }
 
 
-.post-edit-input::selection {
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .18
-        );
-
-}
-
-
 .post-edit-inline-footer {
 
     display:
@@ -1121,20 +1119,6 @@
 }
 
 
-.post-edit-character-row {
-
-    display:
-        flex;
-
-    justify-content:
-        flex-end;
-
-    margin-top:
-        6px;
-
-}
-
-
 .post-edit-character-count {
 
     color:
@@ -1151,11 +1135,11 @@
     display:
         flex;
 
-    justify-content:
-        flex-end;
-
     align-items:
         center;
+
+    justify-content:
+        flex-end;
 
     gap:
         6px;
@@ -1177,7 +1161,7 @@
             255,
             255,
             255,
-            .1
+            .10
         );
 
     border-radius:
@@ -1276,9 +1260,8 @@
 }
 
 
-
 /* ============================================================
-   POST DELETE
+   DELETE ANIMATION
    ============================================================ */
 
 .post-card.post-deleting {
@@ -1318,9 +1301,8 @@
 }
 
 
-
 /* ============================================================
-   POST ACTIONS
+   POST FOOTER / ACTIONS
    ============================================================ */
 
 .post-footer {
@@ -1357,6 +1339,9 @@
     min-height:
         37px;
 
+    position:
+        relative;
+
     display:
         inline-flex;
 
@@ -1366,11 +1351,11 @@
     gap:
         7px;
 
-    position:
-        relative;
-
     padding:
         0 12px;
+
+    overflow:
+        hidden;
 
     border:
         1px solid
@@ -1407,9 +1392,6 @@
     cursor:
         pointer;
 
-    overflow:
-        hidden;
-
     transition:
         border-color .18s ease,
         color .18s ease,
@@ -1427,7 +1409,7 @@
             255,
             255,
             255,
-            .2
+            .20
         );
 
     color:
@@ -1476,29 +1458,6 @@
 }
 
 
-.post-action-text,
-.post-action-count {
-
-    line-height:
-        1;
-
-}
-
-
-.post-action-count {
-
-    color:
-        #717986;
-
-    min-width:
-        10px;
-
-    font-variant-numeric:
-        tabular-nums;
-
-}
-
-
 .post-action-icon {
 
     width:
@@ -1531,30 +1490,45 @@
 }
 
 
+.post-action-text {
 
-/* ============================================================
-   LIKE BUTTON
-   ============================================================ */
-
-.post-like-button {
-
-    --like-glow:
-        rgba(
-            237,
-            133,
-            133,
-            .24
-        );
+    line-height:
+        1;
 
 }
 
 
+.post-action-count {
+
+    min-width:
+        10px;
+
+    color:
+        #717986;
+
+    line-height:
+        1;
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+/* ============================================================
+   PERSISTENT LIKE STATE
+   ============================================================ */
+
 /*
- * `.liked` is persistent.
+ * `.liked` is ONLY the persistent state.
  *
- * IMPORTANT:
- * Do NOT place animation on `.liked`.
- * Otherwise every refresh will animate the heart.
+ * There is deliberately NO animation here.
+ *
+ * Therefore refresh:
+ *
+ *     ♥ Liked
+ *
+ * remains red without re-running animation.
  */
 
 .post-like-button.liked {
@@ -1581,29 +1555,40 @@
 }
 
 
-.post-like-button.liked .post-action-icon {
+.post-like-button.liked
+.post-action-icon {
 
     color:
         #ed8585;
 
     text-shadow:
-        0 0 12px
-        var(
-            --like-glow
+        0
+        0
+        12px
+        rgba(
+            237,
+            133,
+            133,
+            .24
         );
 
 }
 
 
+/* ============================================================
+   LIKE CLICK ANIMATION
+   ============================================================ */
+
 /*
- * Animation ONLY after a real click.
+ * `.like-just-toggled` is transient.
+ * community-posts.js adds it ONLY after a successful click.
  */
 
 .post-like-button.like-just-toggled {
 
     animation:
         communityLikeButton
-        .3s
+        .30s
         cubic-bezier(
             .2,
             .8,
@@ -1619,7 +1604,7 @@
 
     animation:
         communityLikePop
-        .38s
+        .40s
         cubic-bezier(
             .2,
             .85,
@@ -1641,12 +1626,12 @@
     inset:
         -5px;
 
-    border-radius:
-        inherit;
-
     border:
         1px solid
         currentColor;
+
+    border-radius:
+        inherit;
 
     opacity:
         0;
@@ -1656,52 +1641,7 @@
 
     animation:
         communityLikeRipple
-        .5s
-        ease-out;
-
-}
-
-
-.post-like-button.like-just-toggled::before {
-
-    content:
-        "♥";
-
-    position:
-        absolute;
-
-    left:
-        11px;
-
-    top:
-        50%;
-
-    pointer-events:
-        none;
-
-    font-size:
-        10px;
-
-    line-height:
-        1;
-
-    opacity:
-        0;
-
-    transform:
-        translateY(
-            -50%
-        )
-        scale(
-            .7
-        );
-
-    color:
-        currentColor;
-
-    animation:
-        communityLikeBurst
-        .52s
+        .50s
         ease-out;
 
 }
@@ -1718,7 +1658,7 @@
 
     }
 
-    40% {
+    42% {
 
         transform:
             scale(
@@ -1754,7 +1694,7 @@
 
         transform:
             scale(
-                .7
+                .72
             )
             rotate(
                 -8deg
@@ -1766,7 +1706,7 @@
 
         transform:
             scale(
-                1.24
+                1.23
             )
             rotate(
                 4deg
@@ -1778,7 +1718,7 @@
 
         transform:
             scale(
-                .95
+                .96
             )
             rotate(
                 -1deg
@@ -1806,7 +1746,7 @@
     0% {
 
         opacity:
-            .32;
+            .30;
 
         transform:
             scale(
@@ -1830,60 +1770,9 @@
 }
 
 
-@keyframes communityLikeBurst {
-
-    0% {
-
-        opacity:
-            0;
-
-        transform:
-            translate(
-                0,
-                -50%
-            )
-            scale(
-                .65
-            );
-
-    }
-
-    25% {
-
-        opacity:
-            .85;
-
-    }
-
-    100% {
-
-        opacity:
-            0;
-
-        transform:
-            translate(
-                4px,
-                -19px
-            )
-            scale(
-                1.2
-            );
-
-    }
-
-}
-
-
-
 /* ============================================================
    COMMENT BUTTON
    ============================================================ */
-
-/*
- * The actual 💬 icon is provided by community-posts.js.
- * No pseudo-element icon is used, so the button never
- * shows two chat icons.
- */
 
 .post-comment-button {
 
@@ -1952,7 +1841,7 @@
 
     animation:
         communityCommentPulse
-        .55s
+        .45s
         ease-out;
 
 }
@@ -1973,7 +1862,7 @@
 
         transform:
             scale(
-                1.14
+                1.15
             );
 
     }
@@ -1990,9 +1879,8 @@
 }
 
 
-
 /* ============================================================
-   COMMENTS
+   COMMENTS PANEL
    ============================================================ */
 
 .post-comments-panel {
@@ -2025,8 +1913,25 @@
 
     animation:
         communityCommentsOpen
-        .22s
+        .20s
         ease-out;
+
+}
+
+
+.post-comments-list {
+
+    display:
+        grid;
+
+    gap:
+        9px;
+
+    max-height:
+        320px;
+
+    overflow-y:
+        auto;
 
 }
 
@@ -2060,22 +1965,9 @@
 }
 
 
-.post-comments-list {
-
-    display:
-        grid;
-
-    gap:
-        9px;
-
-    max-height:
-        320px;
-
-    overflow-y:
-        auto;
-
-}
-
+/* ============================================================
+   COMMENT
+   ============================================================ */
 
 .post-comment {
 
@@ -2107,8 +1999,39 @@
 
     animation:
         communityCommentAppear
-        .22s
+        .20s
         ease-out;
+
+    transition:
+        opacity .20s ease,
+        transform .20s ease,
+        max-height .22s ease,
+        padding .22s ease;
+
+}
+
+
+.post-comment.comment-deleting {
+
+    opacity:
+        0;
+
+    transform:
+        translateY(
+            -4px
+        );
+
+    max-height:
+        0;
+
+    padding-top:
+        0;
+
+    padding-bottom:
+        0;
+
+    overflow:
+        hidden;
 
 }
 
@@ -2159,11 +2082,11 @@
     gap:
         8px;
 
-    margin-bottom:
-        5px;
-
     min-height:
         20px;
+
+    margin-bottom:
+        5px;
 
     padding-right:
         34px;
@@ -2195,8 +2118,11 @@
 
 .post-comment-edited {
 
-    opacity:
-        .8;
+    color:
+        #666e7c;
+
+    font-size:
+        10px;
 
     font-style:
         italic;
@@ -2257,7 +2183,6 @@
         12px;
 
 }
-
 
 
 /* ============================================================
@@ -2334,6 +2259,14 @@
 }
 
 
+.post-comment-input::placeholder {
+
+    color:
+        #626977;
+
+}
+
+
 .post-comment-input:focus {
 
     border-color:
@@ -2347,14 +2280,6 @@
             255,
             .025
         );
-
-}
-
-
-.post-comment-input::placeholder {
-
-    color:
-        #626977;
 
 }
 
@@ -2448,9 +2373,8 @@
 }
 
 
-
 /* ============================================================
-   COMMENT OWNER ACTIONS
+   COMMENT OWNER MENU
    ============================================================ */
 
 .post-comment-owner-actions {
@@ -2483,6 +2407,9 @@
 
     justify-content:
         center;
+
+    padding:
+        0;
 
     border:
         1px solid
@@ -2578,7 +2505,7 @@
             255,
             255,
             255,
-            .1
+            .10
         );
 
     border-radius:
@@ -2622,6 +2549,9 @@
     display:
         block;
 
+    padding:
+        8px 9px;
+
     border:
         0;
 
@@ -2634,17 +2564,14 @@
     color:
         #d5d9e0;
 
-    padding:
-        8px 9px;
-
-    text-align:
-        left;
-
     font-family:
         inherit;
 
     font-size:
         12px;
+
+    text-align:
+        left;
 
     cursor:
         pointer;
@@ -2693,9 +2620,8 @@
 }
 
 
-
 /* ============================================================
-   INLINE COMMENT EDITOR
+   INLINE COMMENT EDIT
    ============================================================ */
 
 .post-comment-edit-input {
@@ -2704,39 +2630,26 @@
         100%;
 
     min-height:
-        78px;
+        64px;
 
     box-sizing:
         border-box;
 
     padding:
-        10px 11px;
+        8px
+        0;
 
     resize:
-        vertical;
+        none;
+
+    border:
+        0;
 
     outline:
         none;
 
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .12
-        );
-
-    border-radius:
-        8px;
-
     background:
-        rgba(
-            0,
-            0,
-            0,
-            .18
-        );
+        transparent;
 
     color:
         #f5f7fa;
@@ -2755,8 +2668,11 @@
 
 .post-comment-edit-input:focus {
 
-    border-color:
-        #777;
+    border:
+        0;
+
+    outline:
+        none;
 
 }
 
@@ -2770,10 +2686,10 @@
         flex-end;
 
     gap:
-        7px;
+        6px;
 
     margin-top:
-        8px;
+        4px;
 
 }
 
@@ -2781,10 +2697,10 @@
 .post-comment-edit-actions button {
 
     min-height:
-        31px;
+        29px;
 
     padding:
-        0 11px;
+        0 10px;
 
     border:
         1px solid
@@ -2792,22 +2708,17 @@
             255,
             255,
             255,
-            .1
+            .10
         );
 
     border-radius:
         7px;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            .03
-        );
+        transparent;
 
     color:
-        #cbd0d8;
+        #aeb5c0;
 
     font-family:
         inherit;
@@ -2815,8 +2726,17 @@
     font-size:
         11px;
 
+    font-weight:
+        600;
+
     cursor:
         pointer;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        transform .13s ease;
 
 }
 
@@ -2828,6 +2748,11 @@
 
     color:
         #fff;
+
+    transform:
+        translateY(
+            -1px
+        );
 
 }
 
@@ -2854,8 +2779,10 @@
     cursor:
         not-allowed;
 
-}
+    transform:
+        none;
 
+}
 
 
 /* ============================================================
@@ -2884,7 +2811,6 @@
         #777;
 
 }
-
 
 
 /* ============================================================
@@ -2996,9 +2922,8 @@
 }
 
 
-
 /* ============================================================
-   LANGUAGE SWITCH
+   LANGUAGE
    ============================================================ */
 
 .lang-switch {
@@ -3012,19 +2937,11 @@
     margin-top:
         25px;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .03
-        );
+    width:
+        fit-content;
 
     padding:
         4px;
-
-    border-radius:
-        8px;
 
     border:
         1px solid
@@ -3035,31 +2952,39 @@
             .08
         );
 
-    width:
-        fit-content;
+    border-radius:
+        8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .03
+        );
 
 }
 
 
 .lang-btn {
 
-    background:
-        none;
+    padding:
+        6px 14px;
 
     border:
+        none;
+
+    border-radius:
+        6px;
+
+    background:
         none;
 
     color:
         #64748b;
 
-    padding:
-        6px 14px;
-
     font-size:
         .82rem;
-
-    border-radius:
-        6px;
 
     cursor:
         pointer;
@@ -3088,7 +3013,6 @@
         none !important;
 
 }
-
 
 
 /* ============================================================
@@ -3335,7 +3259,6 @@
 }
 
 
-
 /* ============================================================
    FOREST
    ============================================================ */
@@ -3383,7 +3306,6 @@ html[data-dheere-mood="forest"]
         #061009;
 
 }
-
 
 
 /* ============================================================
@@ -3435,7 +3357,6 @@ html[data-dheere-mood="ocean"]
 }
 
 
-
 /* ============================================================
    EMBER
    ============================================================ */
@@ -3485,7 +3406,6 @@ html[data-dheere-mood="ember"]
 }
 
 
-
 /* ============================================================
    MIDNIGHT
    ============================================================ */
@@ -3533,7 +3453,6 @@ html[data-dheere-mood="midnight"]
         #0d0918;
 
 }
-
 
 
 /* ============================================================
@@ -3701,7 +3620,6 @@ html[data-dheere-mood="midnight"]
 }
 
 
-
 /* ============================================================
    REDUCED MOTION
    ============================================================ */
@@ -3721,7 +3639,8 @@ html[data-dheere-mood="midnight"]
     .post-menu-button,
     .post-comment-menu,
     .post-comment-menu-button,
-    .post-edit-actions button {
+    .post-edit-actions button,
+    .post-comment-edit-actions button {
 
         transition:
             none;

@@ -177,7 +177,47 @@ function getPostId(
 
 
 // ============================================================
-// LIKES
+// POST AUTHOR ID
+// ============================================================
+
+function getPostAuthorId(
+    post
+) {
+
+    return String(
+
+        post?.authorId ||
+
+        post?.userId ||
+
+        ""
+
+    ).trim();
+
+}
+
+
+
+// ============================================================
+// CURRENT USER ID
+// ============================================================
+
+function getCurrentUserId() {
+
+    return String(
+
+        getUserId() ||
+
+        ""
+
+    ).trim();
+
+}
+
+
+
+// ============================================================
+// POST LIKES
 // ============================================================
 
 function getPostLikes(
@@ -207,7 +247,7 @@ function getPostLikes(
 
 
 // ============================================================
-// COMMENTS COUNT
+// COMMENT COUNT
 // ============================================================
 
 function getPostCommentsCount(
@@ -266,25 +306,7 @@ function isPostLiked(
 
 
 // ============================================================
-// CURRENT USER ID
-// ============================================================
-
-function getCurrentUserId() {
-
-    return String(
-
-        getUserId() ||
-
-        ""
-
-    ).trim();
-
-}
-
-
-
-// ============================================================
-// POST OWNERSHIP
+// OWN POST
 // ============================================================
 
 function isOwnPost(
@@ -296,15 +318,9 @@ function isOwnPost(
 
 
     const authorId =
-        String(
-
-            post?.authorId ||
-
-            post?.userId ||
-
-            ""
-
-        ).trim();
+        getPostAuthorId(
+            post
+        );
 
 
     if (
@@ -423,11 +439,16 @@ function triggerLikeAnimation(
 
 
     /*
-     * This class is deliberately transient.
+     * IMPORTANT:
      *
-     * The `.liked` class is the persistent state.
-     * The animation class is only added after a
-     * successful user interaction.
+     * `.liked`
+     * = persistent visual state
+     *
+     * `.like-just-toggled`
+     * = temporary animation state
+     *
+     * This function is ONLY called after an actual
+     * successful user click.
      */
 
     button.classList.remove(
@@ -462,7 +483,7 @@ function triggerLikeAnimation(
 
 
 // ============================================================
-// POST OWNER MENU
+// OWNER ACTIONS
 // ============================================================
 
 function renderPostOwnerActions(
@@ -470,9 +491,7 @@ function renderPostOwnerActions(
 ) {
 
     /*
-     * CRITICAL:
-     *
-     * No menu is generated for another user's post.
+     * Never render this menu for another user's post.
      */
 
     if (
@@ -505,7 +524,9 @@ function renderPostOwnerActions(
                 <span
                     aria-hidden="true"
                 >
+
                     ⋯
+
                 </span>
 
             </button>
@@ -521,7 +542,9 @@ function renderPostOwnerActions(
                     type="button"
                     data-post-action="edit"
                 >
+
                     Edit
+
                 </button>
 
 
@@ -530,7 +553,9 @@ function renderPostOwnerActions(
                     class="danger"
                     data-post-action="delete"
                 >
+
                     Delete
+
                 </button>
 
             </div>
@@ -544,7 +569,7 @@ function renderPostOwnerActions(
 
 
 // ============================================================
-// RENDER POST
+// RENDER SINGLE POST
 // ============================================================
 
 function renderPost(
@@ -565,15 +590,9 @@ function renderPost(
 
 
     const authorId =
-        String(
-
-            post?.authorId ||
-
-            post?.userId ||
-
-            ""
-
-        ).trim();
+        getPostAuthorId(
+            post
+        );
 
 
     const username =
@@ -603,6 +622,13 @@ function renderPost(
             post
         );
 
+
+    /*
+     * IMPORTANT:
+     *
+     * This is backend-derived persistent state.
+     * No animation is triggered here.
+     */
 
     const liked =
         isPostLiked(
@@ -891,20 +917,24 @@ function renderPosts(
     /*
      * IMPORTANT:
      *
-     * Render-time liked state is persistent state.
-     * We intentionally DO NOT trigger the like animation here.
+     * This render path intentionally does not trigger
+     * like animation.
      *
-     * Therefore:
+     * Therefore a refresh keeps:
      *
-     * refresh → ♥ Liked stays red
-     * refresh → NO animation
+     * ♥ Liked
+     *
+     * without replaying animation.
      */
 
     postsFeed.innerHTML =
+
         posts
+
             .map(
                 renderPost
             )
+
             .join("");
 
 
@@ -987,6 +1017,19 @@ async function loadPosts(
                 : "";
 
 
+        /*
+         * IMPORTANT BUG FIX:
+         *
+         * The GET request now sends the auth headers.
+         *
+         * This allows the backend to determine the
+         * authenticated user and correctly return:
+         *
+         * liked: true / false
+         *
+         * for every post.
+         */
+
         const response =
             await fetch(
 
@@ -996,6 +1039,9 @@ async function loadPosts(
 
                     method:
                         "GET",
+
+                    headers:
+                        getAuthHeaders(),
 
                     cache:
                         "no-store"
@@ -1065,8 +1111,11 @@ async function loadPosts(
     ) {
 
         console.error(
+
             "Community feed error:",
+
             error
+
         );
 
 
@@ -1240,9 +1289,7 @@ async function toggleLike(
 
 
         /*
-         * `.liked` is the persistent visual state.
-         * It stays after refresh because renderPost()
-         * derives it from the backend response.
+         * Persistent visual state.
          */
 
         button.classList.toggle(
@@ -1258,10 +1305,13 @@ async function toggleLike(
 
 
         button.setAttribute(
+
             "aria-pressed",
+
             liked
                 ? "true"
                 : "false"
+
         );
 
 
@@ -1310,8 +1360,9 @@ async function toggleLike(
 
 
         /*
-         * ONLY actual click gets animation.
-         * Initial render never calls this.
+         * Animation ONLY because the user just clicked.
+         *
+         * It is NOT called from renderPost() or loadPosts().
          */
 
         triggerLikeAnimation(
@@ -1327,8 +1378,11 @@ async function toggleLike(
     ) {
 
         console.error(
+
             "Like error:",
+
             error
+
         );
 
 
@@ -1394,7 +1448,10 @@ function togglePostMenu(
 
 
     /*
-     * Extra frontend ownership protection.
+     * Second ownership check.
+     *
+     * Even if a malicious DOM change adds a menu,
+     * another user's menu still cannot be opened.
      */
 
     if (
@@ -1470,10 +1527,13 @@ function togglePostMenu(
 
 
     button.setAttribute(
+
         "aria-expanded",
+
         willOpen
             ? "true"
             : "false"
+
     );
 
 }
@@ -1481,7 +1541,7 @@ function togglePostMenu(
 
 
 // ============================================================
-// CLOSE MENUS
+// CLOSE ALL POST MENUS
 // ============================================================
 
 function closeAllPostMenus(
@@ -1500,12 +1560,14 @@ function closeAllPostMenus(
             "[data-post-menu]"
         )
         .forEach(
+
             menu => {
 
                 menu.hidden =
                     true;
 
             }
+
         );
 
 
@@ -1514,14 +1576,19 @@ function closeAllPostMenus(
             ".post-menu-button"
         )
         .forEach(
+
             button => {
 
                 button.setAttribute(
+
                     "aria-expanded",
+
                     "false"
+
                 );
 
             }
+
         );
 
 }
@@ -1577,10 +1644,6 @@ function beginPostEdit(
         getCurrentUserId();
 
 
-    /*
-     * Owner-only edit protection.
-     */
-
     if (
         !postId ||
         !ownerId ||
@@ -1625,10 +1688,9 @@ function beginPostEdit(
 
 
     /*
-     * INLINE EDIT:
+     * Small inline editor.
      *
-     * Replace the existing content with a small
-     * textarea. No giant editor card and no overlay.
+     * It replaces only the post content.
      */
 
     contentElement.innerHTML = `
@@ -1702,8 +1764,11 @@ function beginPostEdit(
 
 
         updatePostCharacterCount(
+
             input,
+
             counter
+
         );
 
 
@@ -1728,7 +1793,7 @@ function beginPostEdit(
 
 
 // ============================================================
-// CANCEL EDIT
+// CANCEL POST EDIT
 // ============================================================
 
 function cancelPostEdit(
@@ -1996,7 +2061,7 @@ async function updatePost(
 
 
 // ============================================================
-// SAVE EDIT
+// SAVE POST EDIT
 // ============================================================
 
 async function savePostEdit(
@@ -2011,8 +2076,13 @@ async function savePostEdit(
 
 
     const postId =
-        postElement.dataset.postId ||
-        "";
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
 
 
     const ownerId =
@@ -2053,7 +2123,10 @@ async function savePostEdit(
         );
 
 
-    if (!contentElement || !input) {
+    if (
+        !contentElement ||
+        !input
+    ) {
 
         return null;
 
@@ -2162,7 +2235,7 @@ async function savePostEdit(
 
 
         /*
-         * Add subtle edited indicator.
+         * Subtle edited indicator.
          */
 
         const headerRight =
@@ -2231,8 +2304,11 @@ async function savePostEdit(
     ) {
 
         console.error(
+
             "Save post edit error:",
+
             error
+
         );
 
 
@@ -2344,6 +2420,27 @@ async function deletePost(
             cleanPostId
         )
     ) {
+
+        return false;
+
+    }
+
+
+    /*
+     * Explicit permanent-delete confirmation.
+     */
+
+    const confirmed =
+        window.confirm(
+
+            "Delete this post?\n\n" +
+
+            "This will permanently delete your post."
+
+        );
+
+
+    if (!confirmed) {
 
         return false;
 
@@ -2521,8 +2618,11 @@ async function deletePost(
     ) {
 
         console.error(
+
             "Delete post error:",
+
             error
+
         );
 
 
@@ -2717,31 +2817,6 @@ function bindPostActions(
 
 
                 if (!postCard) {
-
-                    return;
-
-                }
-
-
-                const ownerId =
-                    String(
-
-                        postCard.dataset.postOwnerId ||
-
-                        ""
-
-                    ).trim();
-
-
-                const currentUserId =
-                    getCurrentUserId();
-
-
-                if (
-                    !ownerId ||
-                    ownerId !==
-                    currentUserId
-                ) {
 
                     return;
 
@@ -2969,19 +3044,6 @@ function bindPostActions(
                 );
 
 
-                const confirmed =
-                    window.confirm(
-                        "Delete this post?"
-                    );
-
-
-                if (!confirmed) {
-
-                    return;
-
-                }
-
-
                 await deletePost(
 
                     postCard.dataset.postId,
@@ -3138,7 +3200,7 @@ function bindPostActions(
 
 
     // ========================================================
-    // CLOSE MENUS OUTSIDE
+    // CLOSE POST MENUS OUTSIDE
     // ========================================================
 
     if (
@@ -3615,8 +3677,11 @@ function initializePostComposer(
                 ) {
 
                     console.error(
+
                         "Publish post error:",
+
                         error
+
                     );
 
 
@@ -3761,6 +3826,8 @@ export {
     formatPostDate,
 
     getPostId,
+
+    getPostAuthorId,
 
     getPostLikes,
 
