@@ -1166,6 +1166,142 @@
                 0 30px 85px rgba(0,0,0,.25);
         }
 
+        /* ==================================================
+           PROJECTS SECTION
+           ================================================== */
+
+        .projects-section {
+            position: relative;
+        }
+
+        .projects-section > .section-heading {
+            margin-bottom: 34px;
+        }
+
+        .projects-section > .section-heading .category {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 6px 11px;
+            margin-bottom: 13px;
+            border: 1px solid rgba(255,255,255,.085);
+            border-radius: 999px;
+            background: rgba(255,255,255,.035);
+            color: #a6afbd;
+            font-size: .7rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .projects-section > .section-heading h2 {
+            margin-bottom: 10px;
+        }
+
+        .projects-section > .section-heading p {
+            max-width: 690px;
+            color: #8f98a7;
+            font-size: .98rem;
+            line-height: 1.8;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .projects-grid .project-card {
+            min-height: 300px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .projects-grid .project-card::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -130px;
+            bottom: -145px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(216,212,255,.08), transparent 68%);
+            filter: blur(18px);
+            pointer-events: none;
+        }
+
+        .projects-grid .project-card:nth-child(2)::after {
+            background: radial-gradient(circle, rgba(185,198,220,.07), transparent 68%);
+        }
+
+        .project-card .category {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            align-self: flex-start;
+            min-height: 29px;
+            margin-bottom: auto;
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,.085);
+            border-radius: 999px;
+            background: rgba(255,255,255,.032);
+            color: #9da7b6;
+            font-size: .67rem;
+            font-weight: 600;
+            letter-spacing: .045em;
+            text-transform: uppercase;
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+        }
+
+        .projects-grid .project-card h3 {
+            z-index: 1;
+            font-size: clamp(1.55rem, 3vw, 2rem);
+            margin-bottom: 11px;
+            letter-spacing: -.035em;
+        }
+
+        .projects-grid .project-card p {
+            z-index: 1;
+            max-width: 34rem;
+            margin-bottom: 24px;
+            color: #a9b2bf;
+            line-height: 1.78;
+        }
+
+        .projects-grid .project-card a {
+            z-index: 1;
+        }
+
+        .projects-footer {
+            margin-top: 22px;
+            padding: 0 4px;
+        }
+
+        .projects-footer p {
+            max-width: 740px;
+            color: #6f7a89;
+            font-size: .82rem;
+            line-height: 1.75;
+        }
+
+        @media (max-width: 760px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .projects-grid .project-card {
+                min-height: 270px;
+                padding: 26px 22px;
+            }
+        }
+
         /* Buttons */
         .button,
         .notification-button {
@@ -1838,7 +1974,7 @@
 
 
             <!-- ====================================================
-                 FEATURED PROJECT
+                 FEATURED PROJECTS
                  ==================================================== -->
 
             <section
@@ -1847,30 +1983,111 @@
                 aria-labelledby="projects-title"
             >
 
-                <h2 id="projects-title">
-                    Featured Project
-                </h2>
+                <div class="section-heading">
 
+                    <span class="category">
+                        Original IP
+                    </span>
 
-                <div class="project-card">
-
-                    <h3>
-                        Shunyavas
-                    </h3>
-
+                    <h2 id="projects-title">
+                        Projects
+                    </h2>
 
                     <p>
-                        An original fantasy universe currently
-                        in development.
+                        Original worlds and characters being developed
+                        as part of Dheere Studio's long-term creative vision.
                     </p>
 
+                </div>
 
-                    <a
-                        href="shunyavas.html"
-                        aria-label="View details about Shunyavas"
+
+                <div class="projects-grid">
+
+
+                    <!-- =================================================
+                         SHUNYAVAS
+                         ================================================= -->
+
+                    <article
+                        class="project-card"
+                        aria-labelledby="project-shunyavas-title"
                     >
-                        View Details &rarr;
-                    </a>
+
+                        <span class="category">
+                            Major Original IP
+                        </span>
+
+
+                        <h3 id="project-shunyavas-title">
+                            Shunyavas
+                        </h3>
+
+
+                        <p>
+                            An original fantasy universe currently
+                            in development.
+                        </p>
+
+
+                        <a
+                            href="shunyavas.html"
+                            aria-label="View details about Shunyavas"
+                        >
+                            View Details &rarr;
+                        </a>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         OWLMAN
+                         ================================================= -->
+
+                    <article
+                        class="project-card"
+                        aria-labelledby="project-owlman-title"
+                    >
+
+                        <span class="category">
+                            Second Major Original IP
+                        </span>
+
+
+                        <h3 id="project-owlman-title">
+                            OWLMAN
+                        </h3>
+
+
+                        <p>
+                            A second major original IP currently
+                            in development at Dheere Studio.
+                        </p>
+
+
+                        <a
+                            href="owlman.html"
+                            aria-label="View details about OWLMAN"
+                        >
+                            View Details &rarr;
+                        </a>
+
+                    </article>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     PROJECTS FOOTNOTE
+                     ================================================= -->
+
+                <div class="projects-footer">
+
+                    <p>
+                        Dheere Studio is building original IPs with
+                        a long-term approach to stories, worlds,
+                        characters, and future creative experiences.
+                    </p>
 
                 </div>
 

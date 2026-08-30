@@ -1,0 +1,4520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <!-- =====================================================
+         PRIMARY SEO
+         ===================================================== -->
+
+    <title>
+        OWLMAN — Dheere Studio
+    </title>
+
+    <meta
+        name="description"
+        content="OWLMAN is the second major original IP in development by Dheere Studio."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <link
+        rel="canonical"
+        href="https://dheerestudio.com/owlman.html"
+    >
+
+    <meta
+        name="theme-color"
+        content="#08090b"
+    >
+
+
+    <!-- =====================================================
+         OPEN GRAPH
+         ===================================================== -->
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:title"
+        content="OWLMAN — Dheere Studio"
+    >
+
+    <meta
+        property="og:description"
+        content="The second major original IP in development by Dheere Studio."
+    >
+
+    <meta
+        property="og:url"
+        content="https://dheerestudio.com/owlman.html"
+    >
+
+    <meta
+        property="og:site_name"
+        content="Dheere Studio"
+    >
+
+
+    <!-- =====================================================
+         TWITTER
+         ===================================================== -->
+
+    <meta
+        name="twitter:card"
+        content="summary"
+    >
+
+    <meta
+        name="twitter:title"
+        content="OWLMAN — Dheere Studio"
+    >
+
+    <meta
+        name="twitter:description"
+        content="The second major original IP in development by Dheere Studio."
+    >
+
+
+    <!-- =====================================================
+         STRUCTURED DATA
+         ===================================================== -->
+
+    <script type="application/ld+json">
+
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+
+            {
+                "@type": "Organization",
+                "@id": "https://dheerestudio.com/#organization",
+                "name": "Dheere Studio",
+                "url": "https://dheerestudio.com/"
+            },
+
+            {
+                "@type": "CreativeWork",
+                "@id": "https://dheerestudio.com/owlman.html#owlman",
+                "name": "OWLMAN",
+                "alternateName": "The Nisaachar",
+                "url": "https://dheerestudio.com/owlman.html",
+                "description": "The second major original IP in development by Dheere Studio.",
+                "creator": {
+                    "@id": "https://dheerestudio.com/#organization"
+                }
+            }
+
+        ]
+    }
+
+    </script>
+
+
+    <!-- =====================================================
+         EXISTING WEBSITE ENVIRONMENT
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="homepage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="mood.css"
+    >
+
+    <script
+        src="mood-engine.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         OWLMAN PAGE STYLES
+         ===================================================== -->
+
+    <style>
+
+        /* ==================================================
+           BASE
+           ================================================== */
+
+        #owlmanPage {
+
+            --owl-bg:
+                #08090b;
+
+            --owl-text:
+                #edf1f5;
+
+            --owl-soft:
+                #b2bac5;
+
+            --owl-muted:
+                #788392;
+
+            --owl-dim:
+                #5e6875;
+
+            --owl-border:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .075
+                );
+
+            --owl-border-strong:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .13
+                );
+
+            --owl-glass:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            --owl-glass-strong:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            min-height:
+                100vh;
+
+            overflow-x:
+                hidden;
+
+            background:
+                var(--owl-bg);
+
+        }
+
+
+        #owlmanPage *,
+        #owlmanPage *::before,
+        #owlmanPage *::after {
+
+            box-sizing:
+                border-box;
+
+        }
+
+
+        html {
+
+            scroll-behavior:
+                smooth;
+
+        }
+
+
+        body {
+
+            margin:
+                0;
+
+            background:
+                var(--owl-bg);
+
+        }
+
+
+        /* ==================================================
+           AMBIENT BACKGROUND
+           ================================================== */
+
+        #owlmanPage::before {
+
+            content:
+                "";
+
+            position:
+                fixed;
+
+            top:
+                -20vh;
+
+            left:
+                -15vw;
+
+            width:
+                52vw;
+
+            height:
+                52vw;
+
+            border-radius:
+                50%;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -2;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(
+                        155,
+                        167,
+                        183,
+                        .075
+                    ),
+                    transparent
+                    68%
+                );
+
+            filter:
+                blur(80px);
+
+            animation:
+                owlAmbientOne
+                19s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        #owlmanPage::after {
+
+            content:
+                "";
+
+            position:
+                fixed;
+
+            right:
+                -20vw;
+
+            bottom:
+                -24vh;
+
+            width:
+                58vw;
+
+            height:
+                58vw;
+
+            border-radius:
+                50%;
+
+            pointer-events:
+                none;
+
+            z-index:
+                -2;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(
+                        94,
+                        107,
+                        123,
+                        .055
+                    ),
+                    transparent
+                    70%
+                );
+
+            filter:
+                blur(90px);
+
+            animation:
+                owlAmbientTwo
+                24s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes owlAmbientOne {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    scale(1);
+
+            }
+
+            to {
+
+                transform:
+                    translate3d(
+                        9vw,
+                        7vh,
+                        0
+                    )
+                    scale(1.12);
+
+            }
+
+        }
+
+
+        @keyframes owlAmbientTwo {
+
+            from {
+
+                transform:
+                    translate3d(
+                        0,
+                        0,
+                        0
+                    )
+                    scale(1);
+
+            }
+
+            to {
+
+                transform:
+                    translate3d(
+                        -8vw,
+                        -6vh,
+                        0
+                    )
+                    scale(1.1);
+
+            }
+
+        }
+
+
+        /* ==================================================
+           HEADER
+           ================================================== */
+
+        #owlmanPage header {
+
+            position:
+                sticky;
+
+            top:
+                0;
+
+            z-index:
+                1000;
+
+            background:
+                rgba(
+                    8,
+                    9,
+                    11,
+                    .48
+                );
+
+            backdrop-filter:
+                blur(18px)
+                saturate(135%);
+
+            -webkit-backdrop-filter:
+                blur(18px)
+                saturate(135%);
+
+            border-bottom:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .065
+                );
+
+            box-shadow:
+                0
+                14px
+                45px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .10
+                );
+
+        }
+
+
+        .owlman-navbar {
+
+            width:
+                min(
+                    1200px,
+                    calc(100% - 40px)
+                );
+
+            min-height:
+                70px;
+
+            margin:
+                0 auto;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                25px;
+
+        }
+
+
+        .owlman-nav-logo {
+
+            flex:
+                0
+                0
+                auto;
+
+        }
+
+
+        .owlman-nav-logo a {
+
+            color:
+                #f2f4f7;
+
+            text-decoration:
+                none;
+
+            font-size:
+                .93rem;
+
+            font-weight:
+                500;
+
+            letter-spacing:
+                -.02em;
+
+        }
+
+
+        .owlman-nav-links {
+
+            flex:
+                1;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            gap:
+                24px;
+
+        }
+
+
+        .owlman-nav-links a {
+
+            color:
+                #8e97a4;
+
+            text-decoration:
+                none;
+
+            font-size:
+                .77rem;
+
+            transition:
+                color .25s ease,
+                transform .25s ease;
+
+        }
+
+
+        .owlman-nav-links a:hover {
+
+            color:
+                #f4f6f8;
+
+            transform:
+                translateY(
+                    -1px
+                );
+
+        }
+
+
+        .owlman-back-link {
+
+            flex:
+                0
+                0
+                auto;
+
+            color:
+                #8c96a2;
+
+            text-decoration:
+                none;
+
+            font-size:
+                .75rem;
+
+            transition:
+                color .25s ease,
+                transform .25s ease;
+
+        }
+
+
+        .owlman-back-link:hover {
+
+            color:
+                #fff;
+
+            transform:
+                translateX(
+                    -3px
+                );
+
+        }
+
+
+        .owlman-mobile-toggle {
+
+            display:
+                none;
+
+            width:
+                40px;
+
+            height:
+                40px;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            gap:
+                4px;
+
+            padding:
+                0;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                );
+
+            border-radius:
+                9px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .035
+                );
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .owlman-mobile-toggle span {
+
+            width:
+                16px;
+
+            height:
+                1px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .78
+                );
+
+        }
+
+
+        /* ==================================================
+           MAIN WIDTH
+           ================================================== */
+
+        .owlman-main {
+
+            width:
+                min(
+                    1120px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto;
+
+        }
+
+
+        /* ==================================================
+           HERO
+           ================================================== */
+
+        .owlman-hero {
+
+            position:
+                relative;
+
+            min-height:
+                76vh;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            padding:
+                105px 0
+                95px;
+
+        }
+
+
+        .owlman-hero-inner {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            width:
+                min(
+                    900px,
+                    100%
+                );
+
+        }
+
+
+        .owlman-hero::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                8%
+                3%;
+
+            pointer-events:
+                none;
+
+            background:
+                radial-gradient(
+                    circle at
+                    45% 50%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .072
+                    ),
+                    transparent
+                    48%
+                );
+
+            filter:
+                blur(12px);
+
+            animation:
+                owlHeroBreath
+                7s
+                ease-in-out
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes owlHeroBreath {
+
+            from {
+
+                opacity:
+                    .45;
+
+                transform:
+                    scale(
+                        .96
+                    );
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    scale(
+                        1.05
+                    );
+
+            }
+
+        }
+
+
+        .owlman-kicker {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                26px;
+
+            color:
+                #7b8796;
+
+            font-size:
+                .69rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .18em;
+
+        }
+
+
+        .owlman-kicker::before {
+
+            content:
+                "";
+
+            width:
+                30px;
+
+            height:
+                1px;
+
+            background:
+                currentColor;
+
+        }
+
+
+        .owlman-hero h1 {
+
+            margin:
+                0;
+
+            color:
+                #f4f6f8;
+
+            font-size:
+                clamp(
+                    4.4rem,
+                    12vw,
+                    9.5rem
+                );
+
+            font-weight:
+                500;
+
+            letter-spacing:
+                -.075em;
+
+            line-height:
+                .82;
+
+            text-wrap:
+                balance;
+
+        }
+
+
+        .owlman-subtitle {
+
+            margin-top:
+                22px;
+
+            color:
+                #a9b1bd;
+
+            font-size:
+                clamp(
+                    1.05rem,
+                    2.2vw,
+                    1.4rem
+                );
+
+            font-weight:
+                300;
+
+            letter-spacing:
+                .035em;
+
+        }
+
+
+        .owlman-hero-lead {
+
+            max-width:
+                760px;
+
+            margin:
+                31px 0
+                0;
+
+            color:
+                #a0aab7;
+
+            font-size:
+                clamp(
+                    1rem,
+                    1.9vw,
+                    1.17rem
+                );
+
+            font-weight:
+                300;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        /* ==================================================
+           HERO META
+           ================================================== */
+
+        .owlman-hero-meta {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                14px;
+
+            max-width:
+                900px;
+
+            margin-top:
+                52px;
+
+        }
+
+
+        .owlman-meta-card {
+
+            position:
+                relative;
+
+            padding:
+                19px
+                20px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .055
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .014
+                    )
+                );
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                ),
+                0
+                18px
+                50px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .12
+                );
+
+            backdrop-filter:
+                blur(15px);
+
+            -webkit-backdrop-filter:
+                blur(15px);
+
+            transition:
+                transform .35s ease,
+                border-color .35s ease,
+                background .35s ease;
+
+        }
+
+
+        .owlman-meta-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                150px;
+
+            height:
+                150px;
+
+            top:
+                -105px;
+
+            right:
+                -70px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .05
+                );
+
+            filter:
+                blur(25px);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .owlman-meta-card:hover {
+
+            transform:
+                translateY(
+                    -5px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .14
+                );
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .07
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .018
+                    )
+                );
+
+        }
+
+
+        .owlman-meta-card span {
+
+            display:
+                block;
+
+            margin-bottom:
+                7px;
+
+            color:
+                #687483;
+
+            font-size:
+                .65rem;
+
+            letter-spacing:
+                .12em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .owlman-meta-card strong {
+
+            color:
+                #dce3ea;
+
+            font-size:
+                .87rem;
+
+            font-weight:
+                500;
+
+            line-height:
+                1.45;
+
+        }
+
+
+        /* ==================================================
+           SECTIONS
+           ================================================== */
+
+        .owlman-section {
+
+            padding:
+                100px
+                0;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .065
+                );
+
+        }
+
+
+        .owlman-label {
+
+            margin-bottom:
+                39px;
+
+            color:
+                #65717f;
+
+            font-size:
+                .69rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .17em;
+
+        }
+
+
+        .owlman-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(
+                    0,
+                    .88fr
+                )
+                minmax(
+                    0,
+                    1.12fr
+                );
+
+            gap:
+                clamp(
+                    40px,
+                    8vw,
+                    120px
+                );
+
+        }
+
+
+        .owlman-section h2 {
+
+            margin:
+                0
+                0
+                22px;
+
+            color:
+                var(--owl-text);
+
+            font-size:
+                clamp(
+                    2rem,
+                    4vw,
+                    3.6rem
+                );
+
+            font-weight:
+                400;
+
+            letter-spacing:
+                -.045em;
+
+            line-height:
+                1.09;
+
+        }
+
+
+        .owlman-copy {
+
+            color:
+                #96a1ae;
+
+            font-size:
+                1rem;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.94;
+
+        }
+
+
+        .owlman-copy p {
+
+            margin:
+                0
+                0
+                21px;
+
+        }
+
+
+        .owlman-copy p:last-child {
+
+            margin-bottom:
+                0;
+
+        }
+
+
+        /* ==================================================
+           LARGE GLASS FEATURE
+           ================================================== */
+
+        .owlman-glass-feature {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            padding:
+                clamp(
+                    34px,
+                    6vw,
+                    74px
+                );
+
+            border:
+                1px solid
+                var(--owl-border-strong);
+
+            border-radius:
+                25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .075
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .023
+                    )
+                );
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .10
+                ),
+                0
+                30px
+                90px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .18
+                );
+
+            backdrop-filter:
+                blur(20px)
+                saturate(120%);
+
+            -webkit-backdrop-filter:
+                blur(20px)
+                saturate(120%);
+
+        }
+
+
+        .owlman-glass-feature::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                430px;
+
+            height:
+                430px;
+
+            top:
+                -275px;
+
+            right:
+                -160px;
+
+            border-radius:
+                50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .075
+                    ),
+                    transparent
+                    70%
+                );
+
+            filter:
+                blur(10px);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .owlman-glass-feature::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                1px;
+
+            border-radius:
+                24px;
+
+            pointer-events:
+                none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .04
+                    ),
+                    transparent 33%,
+                    transparent 70%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .02
+                    )
+                );
+
+        }
+
+
+        .owlman-feature-mark {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            margin-bottom:
+                26px;
+
+            color:
+                #667280;
+
+            font-size:
+                .68rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .18em;
+
+        }
+
+
+        .owlman-glass-feature h3 {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            max-width:
+                870px;
+
+            margin:
+                0
+                0
+                24px;
+
+            color:
+                #eef2f6;
+
+            font-size:
+                clamp(
+                    1.9rem,
+                    4.2vw,
+                    3.35rem
+                );
+
+            font-weight:
+                400;
+
+            letter-spacing:
+                -.045em;
+
+            line-height:
+                1.1;
+
+        }
+
+
+        .owlman-glass-feature p {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            max-width:
+                790px;
+
+            margin:
+                0
+                0
+                20px;
+
+            color:
+                #98a2af;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        .owlman-glass-feature p:last-child {
+
+            margin-bottom:
+                0;
+
+        }
+
+
+        /* ==================================================
+           IDENTITY CARDS
+           ================================================== */
+
+        .owlman-card-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                15px;
+
+            margin-top:
+                60px;
+
+        }
+
+
+        .owlman-card {
+
+            position:
+                relative;
+
+            min-height:
+                255px;
+
+            padding:
+                28px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            justify-content:
+                flex-end;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                19px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .042
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .012
+                    )
+                );
+
+            backdrop-filter:
+                blur(15px);
+
+            -webkit-backdrop-filter:
+                blur(15px);
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+            transition:
+                transform .4s
+                    cubic-bezier(
+                        .22,
+                        1,
+                        .36,
+                        1
+                    ),
+                border-color .35s ease,
+                background .35s ease,
+                box-shadow .35s ease;
+
+        }
+
+
+        .owlman-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                210px;
+
+            height:
+                210px;
+
+            top:
+                -150px;
+
+            right:
+                -100px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .045
+                );
+
+            filter:
+                blur(35px);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .owlman-card:hover {
+
+            transform:
+                translateY(
+                    -8px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .15
+                );
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .06
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .018
+                    )
+                );
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .09
+                ),
+                0
+                26px
+                65px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .18
+                );
+
+        }
+
+
+        .owlman-card > span {
+
+            position:
+                absolute;
+
+            top:
+                27px;
+
+            left:
+                28px;
+
+            color:
+                #636e7c;
+
+            font-size:
+                .66rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .15em;
+
+        }
+
+
+        .owlman-card h3 {
+
+            margin:
+                0
+                0
+                10px;
+
+            color:
+                #e4e9ee;
+
+            font-size:
+                1.14rem;
+
+            font-weight:
+                500;
+
+        }
+
+
+        .owlman-card p {
+
+            margin:
+                0;
+
+            color:
+                #8c97a4;
+
+            font-size:
+                .87rem;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.75;
+
+        }
+
+
+        /* ==================================================
+           LONG TERM SECTION
+           ================================================== */
+
+        .owlman-longterm-panel {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(
+                    0,
+                    1.1fr
+                )
+                minmax(
+                    300px,
+                    .9fr
+                );
+
+            gap:
+                70px;
+
+            padding:
+                clamp(
+                    32px,
+                    5vw,
+                    62px
+                );
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .05
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .015
+                    )
+                );
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .065
+                ),
+                0
+                26px
+                75px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .14
+                );
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+        }
+
+
+        .owlman-longterm-copy h2 {
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .owlman-longterm-copy p {
+
+            max-width:
+                690px;
+
+            color:
+                #97a2af;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        .owlman-pillars {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap:
+                12px;
+
+            align-content:
+                center;
+
+        }
+
+
+        .owlman-pillar {
+
+            position:
+                relative;
+
+            padding:
+                21px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .06
+                );
+
+            border-radius:
+                15px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .022
+                );
+
+            transition:
+                transform .3s ease,
+                background .3s ease,
+                border-color .3s ease;
+
+        }
+
+
+        .owlman-pillar:hover {
+
+            transform:
+                translateY(
+                    -3px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .11
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .035
+                );
+
+        }
+
+
+        .owlman-pillar strong {
+
+            display:
+                block;
+
+            margin-bottom:
+                7px;
+
+            color:
+                #dce3e9;
+
+            font-size:
+                .88rem;
+
+            font-weight:
+                500;
+
+        }
+
+
+        .owlman-pillar span {
+
+            color:
+                #7f8a97;
+
+            font-size:
+                .76rem;
+
+            line-height:
+                1.55;
+
+        }
+
+
+        /* ==================================================
+           CREATIVE FOUNDATIONS
+           ================================================== */
+
+        .owlman-foundations {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                14px;
+
+            margin-top:
+                60px;
+
+        }
+
+
+        .owlman-foundation {
+
+            min-height:
+                250px;
+
+            padding:
+                26px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                18px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .017
+                );
+
+            transition:
+                transform .35s ease,
+                border-color .35s ease,
+                background .35s ease;
+
+        }
+
+
+        .owlman-foundation:hover {
+
+            transform:
+                translateY(
+                    -6px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .14
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .032
+                );
+
+        }
+
+
+        .owlman-foundation > span {
+
+            color:
+                #626e7b;
+
+            font-size:
+                .65rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .14em;
+
+        }
+
+
+        .owlman-foundation h3 {
+
+            margin:
+                auto
+                0
+                12px;
+
+            color:
+                #e4eaf0;
+
+            font-size:
+                1.05rem;
+
+            font-weight:
+                500;
+
+        }
+
+
+        .owlman-foundation p {
+
+            margin:
+                0;
+
+            color:
+                #8994a1;
+
+            font-size:
+                .85rem;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.72;
+
+        }
+
+
+        /* ==================================================
+           DEVELOPMENT
+           ================================================== */
+
+        .owlman-development-panel {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(
+                    0,
+                    1.15fr
+                )
+                minmax(
+                    290px,
+                    .85fr
+                );
+
+            gap:
+                70px;
+
+            padding:
+                clamp(
+                    32px,
+                    5vw,
+                    62px
+                );
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .045
+                    ),
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .012
+                    )
+                );
+
+            backdrop-filter:
+                blur(17px);
+
+            -webkit-backdrop-filter:
+                blur(17px);
+
+        }
+
+
+        .owlman-development-panel p {
+
+            max-width:
+                700px;
+
+            color:
+                #96a1ae;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        .owlman-development-status {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            justify-content:
+                center;
+
+            gap:
+                7px;
+
+        }
+
+
+        .owlman-status-row {
+
+            padding:
+                17px
+                0;
+
+            border-bottom:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .07
+                );
+
+        }
+
+
+        .owlman-status-row span {
+
+            display:
+                block;
+
+            margin-bottom:
+                7px;
+
+            color:
+                #626d7a;
+
+            font-size:
+                .65rem;
+
+            letter-spacing:
+                .12em;
+
+        }
+
+
+        .owlman-status-row strong {
+
+            color:
+                #dce3e9;
+
+            font-size:
+                .88rem;
+
+            font-weight:
+                500;
+
+            line-height:
+                1.5;
+
+        }
+
+
+        /* ==================================================
+           FUTURE HORIZONS
+           ================================================== */
+
+        .owlman-wide-heading {
+
+            max-width:
+                860px;
+
+        }
+
+
+        .owlman-wide-copy {
+
+            max-width:
+                730px;
+
+            margin-top:
+                28px;
+
+            color:
+                #96a1ae;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.9;
+
+        }
+
+
+        .owlman-future-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                14px;
+
+            margin-top:
+                60px;
+
+        }
+
+
+        .owlman-future-card {
+
+            position:
+                relative;
+
+            min-height:
+                285px;
+
+            padding:
+                26px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                var(--owl-border);
+
+            border-radius:
+                18px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .018
+                );
+
+            transition:
+                transform .4s
+                    cubic-bezier(
+                        .22,
+                        1,
+                        .36,
+                        1
+                    ),
+                border-color .35s ease,
+                background .35s ease;
+
+        }
+
+
+        .owlman-future-card::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                170px;
+
+            height:
+                170px;
+
+            right:
+                -95px;
+
+            bottom:
+                -100px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            filter:
+                blur(28px);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .owlman-future-card:hover {
+
+            transform:
+                translateY(
+                    -7px
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .14
+                );
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .03
+                );
+
+        }
+
+
+        .owlman-future-card > span {
+
+            color:
+                #626e7b;
+
+            font-size:
+                .67rem;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .owlman-future-card h3 {
+
+            margin:
+                auto
+                0
+                14px;
+
+            color:
+                #e4eaf0;
+
+            font-size:
+                1.08rem;
+
+            font-weight:
+                500;
+
+        }
+
+
+        .owlman-future-card p {
+
+            margin:
+                0;
+
+            color:
+                #8994a1;
+
+            font-size:
+                .86rem;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.75;
+
+        }
+
+
+        /* ==================================================
+           CLOSING
+           ================================================== */
+
+        .owlman-closing {
+
+            max-width:
+                900px;
+
+            padding:
+                135px
+                0
+                155px;
+
+        }
+
+
+        .owlman-closing > span {
+
+            display:
+                block;
+
+            margin-bottom:
+                28px;
+
+            color:
+                #64707d;
+
+            font-size:
+                .67rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                .17em;
+
+        }
+
+
+        .owlman-closing h2 {
+
+            margin:
+                0
+                0
+                34px;
+
+            color:
+                #edf2f6;
+
+            font-size:
+                clamp(
+                    2.4rem,
+                    5.2vw,
+                    4.95rem
+                );
+
+            font-weight:
+                400;
+
+            letter-spacing:
+                -.055em;
+
+            line-height:
+                1.06;
+
+        }
+
+
+        .owlman-closing p {
+
+            max-width:
+                730px;
+
+            margin:
+                0
+                0
+                18px;
+
+            color:
+                #95a0ad;
+
+            font-weight:
+                300;
+
+            line-height:
+                1.95;
+
+        }
+
+
+        .owlman-status-badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            margin-top:
+                24px;
+
+            padding:
+                9px
+                13px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .08
+                );
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .025
+                );
+
+            color:
+                #828e9b;
+
+            font-size:
+                .74rem;
+
+            box-shadow:
+                inset
+                0
+                1px
+                0
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .055
+                );
+
+        }
+
+
+        .owlman-status-badge strong {
+
+            color:
+                #dbe2e9;
+
+            font-weight:
+                500;
+
+        }
+
+
+        /* ==================================================
+           FOOTER
+           ================================================== */
+
+        #owlmanPage footer {
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .065
+                );
+
+        }
+
+
+        .owlman-footer {
+
+            width:
+                min(
+                    1200px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                30px
+                0
+                43px;
+
+        }
+
+
+        .owlman-footer-nav {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                18px;
+
+            margin-bottom:
+                21px;
+
+        }
+
+
+        .owlman-footer-nav a {
+
+            color:
+                #7a8592;
+
+            text-decoration:
+                none;
+
+            font-size:
+                .77rem;
+
+            transition:
+                color .25s ease;
+
+        }
+
+
+        .owlman-footer-nav a:hover {
+
+            color:
+                #f4f6f8;
+
+        }
+
+
+        .owlman-footer p {
+
+            margin:
+                0;
+
+            text-align:
+                center;
+
+            color:
+                #59636f;
+
+            font-size:
+                .72rem;
+
+        }
+
+
+        /* ==================================================
+           MOOD — FOREST
+           ================================================== */
+
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-kicker,
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-label,
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-feature-mark {
+
+            color:
+                #88a18d;
+
+        }
+
+
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-hero h1,
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-section h2,
+        html[data-dheere-mood="forest"]
+        #owlmanPage .owlman-closing h2 {
+
+            color:
+                #e5f2e7;
+
+        }
+
+
+        /* ==================================================
+           MOOD — OCEAN
+           ================================================== */
+
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-kicker,
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-label,
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-feature-mark {
+
+            color:
+                #8ba1ba;
+
+        }
+
+
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-hero h1,
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-section h2,
+        html[data-dheere-mood="ocean"]
+        #owlmanPage .owlman-closing h2 {
+
+            color:
+                #e3efff;
+
+        }
+
+
+        /* ==================================================
+           MOOD — EMBER
+           ================================================== */
+
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-kicker,
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-label,
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-feature-mark {
+
+            color:
+                #aa918a;
+
+        }
+
+
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-hero h1,
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-section h2,
+        html[data-dheere-mood="ember"]
+        #owlmanPage .owlman-closing h2 {
+
+            color:
+                #ffe8e3;
+
+        }
+
+
+        /* ==================================================
+           MOOD — MIDNIGHT
+           ================================================== */
+
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-kicker,
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-label,
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-feature-mark {
+
+            color:
+                #9d96af;
+
+        }
+
+
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-hero h1,
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-section h2,
+        html[data-dheere-mood="midnight"]
+        #owlmanPage .owlman-closing h2 {
+
+            color:
+                #eeeaff;
+
+        }
+
+
+        /* ==================================================
+           RESPONSIVE — 1000
+           ================================================== */
+
+        @media (
+            max-width: 1000px
+        ) {
+
+            .owlman-nav-links {
+
+                display:
+                    none;
+
+            }
+
+
+            .owlman-mobile-toggle {
+
+                display:
+                    flex;
+
+                margin-left:
+                    auto;
+
+            }
+
+
+            .owlman-hero-meta {
+
+                grid-template-columns:
+                    1fr;
+
+                max-width:
+                    560px;
+
+            }
+
+
+            .owlman-card-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .owlman-foundations {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+
+            .owlman-future-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+        }
+
+
+        /* ==================================================
+           RESPONSIVE — 760
+           ================================================== */
+
+        @media (
+            max-width: 760px
+        ) {
+
+            .owlman-main {
+
+                width:
+                    min(
+                        calc(100% - 28px),
+                        1120px
+                    );
+
+            }
+
+
+            .owlman-navbar {
+
+                width:
+                    min(
+                        calc(100% - 28px),
+                        1200px
+                    );
+
+            }
+
+
+            .owlman-back-link {
+
+                display:
+                    none;
+
+            }
+
+
+            .owlman-hero {
+
+                min-height:
+                    auto;
+
+                padding:
+                    80px
+                    0
+                    70px;
+
+            }
+
+
+            .owlman-section {
+
+                padding:
+                    72px
+                    0;
+
+            }
+
+
+            .owlman-grid,
+            .owlman-longterm-panel,
+            .owlman-development-panel {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    34px;
+
+            }
+
+
+            .owlman-pillars {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .owlman-development-status {
+
+                gap:
+                    0;
+
+            }
+
+
+            .owlman-foundations {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .owlman-future-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .owlman-closing {
+
+                padding:
+                    92px
+                    0
+                    112px;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           RESPONSIVE — 500
+           ================================================== */
+
+        @media (
+            max-width: 500px
+        ) {
+
+            .owlman-hero h1 {
+
+                font-size:
+                    clamp(
+                        3.5rem,
+                        19vw,
+                        5.8rem
+                    );
+
+            }
+
+
+            .owlman-glass-feature,
+            .owlman-longterm-panel,
+            .owlman-development-panel {
+
+                border-radius:
+                    18px;
+
+            }
+
+
+            .owlman-glass-feature::after {
+
+                border-radius:
+                    17px;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           REDUCED MOTION
+           ================================================== */
+
+        @media (
+            prefers-reduced-motion: reduce
+        ) {
+
+            html {
+
+                scroll-behavior:
+                    auto;
+
+            }
+
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    .01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    .01ms !important;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         OWLMAN PAGE
+         ===================================================== -->
+
+    <div
+        id="owlmanPage"
+        class="page-view"
+    >
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header>
+
+            <nav
+                class="owlman-navbar"
+                aria-label="Main navigation"
+            >
+
+
+                <div class="owlman-nav-logo">
+
+                    <a
+                        href="index.html"
+                        aria-label="Dheere Studio homepage"
+                    >
+                        Dheere Studio
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="owlman-nav-links"
+                >
+
+                    <a
+                        href="index.html#projects"
+                    >
+                        Projects
+                    </a>
+
+
+                    <a
+                        href="index.html#articles"
+                    >
+                        Articles
+                    </a>
+
+
+                    <a
+                        href="Community/community.html"
+                    >
+                        Community
+                    </a>
+
+
+                    <a
+                        href="about.html"
+                    >
+                        About
+                    </a>
+
+
+                    <a
+                        href="index.html#feedback"
+                    >
+                        Feedback
+                    </a>
+
+
+                    <a
+                        href="mood.html"
+                    >
+                        Dheere Mood
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="index.html#projects"
+                    class="owlman-back-link"
+                >
+                    &larr; Back to Projects
+                </a>
+
+
+                <button
+                    type="button"
+                    class="owlman-mobile-toggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                >
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
+
+            </nav>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+             ================================================= -->
+
+        <main
+            class="owlman-main"
+        >
+
+
+            <!-- =============================================
+                 HERO
+                 ============================================= -->
+
+            <section
+                class="owlman-hero"
+            >
+
+                <div
+                    class="owlman-hero-inner"
+                >
+
+                    <span
+                        class="owlman-kicker"
+                    >
+                        SECOND MAJOR ORIGINAL IP
+                    </span>
+
+
+                    <h1>
+                        OWLMAN
+                    </h1>
+
+
+                    <div
+                        class="owlman-subtitle"
+                    >
+                        The Nisaachar
+                    </div>
+
+
+                    <p
+                        class="owlman-hero-lead"
+                    >
+
+                        A second major original IP from
+                        Dheere Studio, developed with a
+                        long-term vision for character,
+                        identity, atmosphere, and
+                        multi-format storytelling.
+
+                    </p>
+
+
+                    <div
+                        class="owlman-hero-meta"
+                    >
+
+
+                        <div
+                            class="owlman-meta-card"
+                        >
+
+                            <span>
+                                Position
+                            </span>
+
+                            <strong>
+                                Second Major Original IP
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-meta-card"
+                        >
+
+                            <span>
+                                Development
+                            </span>
+
+                            <strong>
+                                Character & World Development
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-meta-card"
+                        >
+
+                            <span>
+                                Long-Term Vision
+                            </span>
+
+                            <strong>
+                                Multi-Format IP
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 01 — THE BEGINNING
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    01 — THE BEGINNING
+                </div>
+
+
+                <div
+                    class="owlman-glass-feature"
+                >
+
+                    <div
+                        class="owlman-feature-mark"
+                    >
+                        AN ORIGINAL IDENTITY
+                    </div>
+
+
+                    <h3>
+                        OWLMAN is being built
+                        to become more than
+                        its beginning.
+                    </h3>
+
+
+                    <p>
+
+                        The project is being developed as
+                        a major original IP within the larger
+                        creative direction of Dheere Studio.
+
+                    </p>
+
+
+                    <p>
+
+                        The aim is not to introduce something
+                        disposable. The foundation is being
+                        designed with enough room for the
+                        character, setting, themes, and larger
+                        identity to evolve over time.
+
+                    </p>
+
+
+                    <p>
+
+                        Much of the deeper architecture remains
+                        intentionally undisclosed while the
+                        project is in development.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 02 — A DIFFERENT IDENTITY
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    02 — A DIFFERENT IDENTITY
+                </div>
+
+
+                <div
+                    class="owlman-grid"
+                >
+
+                    <div>
+
+                        <h2>
+                            Built to stand
+                            on its own.
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        class="owlman-copy"
+                    >
+
+                        <p>
+
+                            OWLMAN belongs to the same
+                            studio as Shunyavas, but it
+                            is being developed with a
+                            fundamentally different identity.
+
+                        </p>
+
+
+                        <p>
+
+                            Its tone, atmosphere, visual
+                            language, and storytelling
+                            direction are intended to make
+                            it immediately recognizable as
+                            its own IP.
+
+                        </p>
+
+
+                        <p>
+
+                            The goal is not to repeat
+                            something that already exists.
+                            It is to establish a new identity
+                            that can carry its own weight.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="owlman-card-grid"
+                >
+
+
+                    <article
+                        class="owlman-card"
+                    >
+
+                        <span>
+                            01
+                        </span>
+
+                        <h3>
+                            Character
+                        </h3>
+
+                        <p>
+
+                            A central identity designed
+                            to support a much larger
+                            narrative future.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-card"
+                    >
+
+                        <span>
+                            02
+                        </span>
+
+                        <h3>
+                            Atmosphere
+                        </h3>
+
+                        <p>
+
+                            A distinct emotional and
+                            visual language with its
+                            own presence.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-card"
+                    >
+
+                        <span>
+                            03
+                        </span>
+
+                        <h3>
+                            Identity
+                        </h3>
+
+                        <p>
+
+                            A recognizable original IP
+                            intended to remain meaningful
+                            beyond a single release.
+
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 03 — CHARACTER & CONSEQUENCE
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    03 — CHARACTER & CONSEQUENCE
+                </div>
+
+
+                <div
+                    class="owlman-grid"
+                >
+
+                    <div>
+
+                        <h2>
+                            A character
+                            should carry a world.
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        class="owlman-copy"
+                    >
+
+                        <p>
+
+                            OWLMAN is being approached
+                            primarily through character.
+
+                        </p>
+
+
+                        <p>
+
+                            The intention is to create an
+                            identity whose decisions, internal
+                            conflicts, relationships, and
+                            consequences can generate stories
+                            naturally.
+
+                        </p>
+
+
+                        <p>
+
+                            Spectacle can be part of the
+                            experience, but it should never
+                            be the only reason the character
+                            exists.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="owlman-foundations"
+                >
+
+
+                    <article
+                        class="owlman-foundation"
+                    >
+
+                        <span>
+                            CHARACTER
+                        </span>
+
+                        <h3>
+                            Identity
+                        </h3>
+
+                        <p>
+
+                            The person behind the identity
+                            matters as much as the identity
+                            itself.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-foundation"
+                    >
+
+                        <span>
+                            STORY
+                        </span>
+
+                        <h3>
+                            Consequence
+                        </h3>
+
+                        <p>
+
+                            Choices should leave traces
+                            on both character and world.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-foundation"
+                    >
+
+                        <span>
+                            WORLD
+                        </span>
+
+                        <h3>
+                            Context
+                        </h3>
+
+                        <p>
+
+                            The character should exist
+                            inside a believable larger
+                            environment.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-foundation"
+                    >
+
+                        <span>
+                            TIME
+                        </span>
+
+                        <h3>
+                            Evolution
+                        </h3>
+
+                        <p>
+
+                            The IP should be able to
+                            grow naturally as the story
+                            expands.
+
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 04 — LONG TERM
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    04 — LONG-TERM VISION
+                </div>
+
+
+                <div
+                    class="owlman-longterm-panel"
+                >
+
+
+                    <div
+                        class="owlman-longterm-copy"
+                    >
+
+                        <h2>
+                            One identity.
+                            A much larger horizon.
+                        </h2>
+
+
+                        <p>
+
+                            OWLMAN is intended to function
+                            as a long-term character and
+                            intellectual property rather than
+                            a single short-lived project.
+
+                        </p>
+
+
+                        <p>
+
+                            Its foundation is being developed
+                            with the possibility of multiple
+                            stories, different creative
+                            expressions, and a larger future
+                            ecosystem around the IP.
+
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="owlman-pillars"
+                    >
+
+                        <div
+                            class="owlman-pillar"
+                        >
+
+                            <strong>
+                                Character
+                            </strong>
+
+                            <span>
+                                A strong central identity
+                                capable of carrying stories.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-pillar"
+                        >
+
+                            <strong>
+                                Stories
+                            </strong>
+
+                            <span>
+                                Room for narratives to
+                                expand over time.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-pillar"
+                        >
+
+                            <strong>
+                                World
+                            </strong>
+
+                            <span>
+                                A larger setting that can
+                                become richer with time.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-pillar"
+                        >
+
+                            <strong>
+                                Expansion
+                            </strong>
+
+                            <span>
+                                Potential for future forms
+                                of creative expression.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 05 — CURRENT DEVELOPMENT
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    05 — CURRENT DEVELOPMENT
+                </div>
+
+
+                <div
+                    class="owlman-development-panel"
+                >
+
+
+                    <div>
+
+                        <h2>
+                            Still being built.
+                        </h2>
+
+
+                        <p>
+
+                            OWLMAN is currently in development.
+                            Its deeper story architecture, world,
+                            characters, and direction are being
+                            developed before broader details
+                            are revealed.
+
+                        </p>
+
+
+                        <p>
+
+                            The public-facing project is therefore
+                            intentionally limited to the larger
+                            identity and ambition of the IP.
+
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="owlman-development-status"
+                    >
+
+
+                        <div
+                            class="owlman-status-row"
+                        >
+
+                            <span>
+                                CURRENT PHASE
+                            </span>
+
+                            <strong>
+                                Concept & World Development
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-status-row"
+                        >
+
+                            <span>
+                                PUBLIC STATUS
+                            </span>
+
+                            <strong>
+                                Intentionally Limited
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="owlman-status-row"
+                        >
+
+                            <span>
+                                STUDIO POSITION
+                            </span>
+
+                            <strong>
+                                Second Major Original IP
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 06 — FUTURE HORIZONS
+                 ============================================= -->
+
+            <section
+                class="owlman-section"
+            >
+
+
+                <div
+                    class="owlman-label"
+                >
+                    06 — FUTURE HORIZONS
+                </div>
+
+
+                <h2
+                    class="owlman-wide-heading"
+                >
+
+                    The beginning is only
+                    the first layer.
+
+                </h2>
+
+
+                <p
+                    class="owlman-wide-copy"
+                >
+
+                    The long-term ambition is to build an IP
+                    with enough identity and depth to explore
+                    different forms of storytelling without
+                    losing what makes OWLMAN itself.
+
+                </p>
+
+
+                <div
+                    class="owlman-future-grid"
+                >
+
+
+                    <article
+                        class="owlman-future-card"
+                    >
+
+                        <span>
+                            01
+                        </span>
+
+                        <h3>
+                            Narrative
+                        </h3>
+
+                        <p>
+
+                            Stories can establish the
+                            character, setting, tone,
+                            and larger conflicts.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-future-card"
+                    >
+
+                        <span>
+                            02
+                        </span>
+
+                        <h3>
+                            Visual Storytelling
+                        </h3>
+
+                        <p>
+
+                            Illustration, animation,
+                            cinematics, and visual media
+                            can expand its presence.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-future-card"
+                    >
+
+                        <span>
+                            03
+                        </span>
+
+                        <h3>
+                            Interactive Experiences
+                        </h3>
+
+                        <p>
+
+                            Future interactive formats may
+                            allow audiences to experience
+                            the IP differently.
+
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="owlman-future-card"
+                    >
+
+                        <span>
+                            04
+                        </span>
+
+                        <h3>
+                            A Larger IP
+                        </h3>
+
+                        <p>
+
+                            The ultimate ambition is to let
+                            the character and world continue
+                            growing beyond their beginning.
+
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CLOSING
+                 ============================================= -->
+
+            <section
+                class="owlman-closing"
+            >
+
+
+                <span>
+                    THE LONG VIEW
+                </span>
+
+
+                <h2>
+                    Build the identity.
+                    Earn the mythology.
+                    Let it grow.
+                </h2>
+
+
+                <p>
+
+                    OWLMAN is still at an early stage.
+                    The deeper story remains intentionally
+                    behind the curtain while the foundation
+                    is developed.
+
+                </p>
+
+
+                <p>
+
+                    For now, the important thing is the
+                    direction: this is being built as a
+                    major long-term original IP of
+                    Dheere Studio.
+
+                </p>
+
+
+                <div
+                    class="owlman-status-badge"
+                >
+
+                    <strong>
+                        Status:
+                    </strong>
+
+                    In Development
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer>
+
+            <div
+                class="owlman-footer"
+            >
+
+                <nav
+                    class="owlman-footer-nav"
+                    aria-label="Footer navigation"
+                >
+
+                    <a
+                        href="index.html"
+                    >
+                        Home
+                    </a>
+
+
+                    <a
+                        href="index.html#projects"
+                    >
+                        Projects
+                    </a>
+
+
+                    <a
+                        href="shunyavas.html"
+                    >
+                        Shunyavas
+                    </a>
+
+
+                    <a
+                        href="owlman.html"
+                    >
+                        OWLMAN
+                    </a>
+
+
+                    <a
+                        href="article.html"
+                    >
+                        Articles
+                    </a>
+
+
+                    <a
+                        href="Community/community.html"
+                    >
+                        Community
+                    </a>
+
+
+                    <a
+                        href="about.html"
+                    >
+                        About
+                    </a>
+
+
+                    <a
+                        href="mood.html"
+                    >
+                        Dheere Mood
+                    </a>
+
+
+                    <a
+                        href="profile/profile.html"
+                    >
+                        Profile
+                    </a>
+
+                </nav>
+
+
+                <p>
+                    &copy; 2026 Dheere Studio. All rights reserved.
+                </p>
+
+            </div>
+
+        </footer>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE MENU SCRIPT
+         ===================================================== -->
+
+    <script>
+
+        (function () {
+
+            const toggle =
+                document.querySelector(
+                    '.owlman-mobile-toggle'
+                );
+
+            const nav =
+                document.querySelector(
+                    '.owlman-nav-links'
+                );
+
+
+            if (
+                !toggle ||
+                !nav
+            ) {
+                return;
+            }
+
+
+            const closeMenu = () => {
+
+                nav.dataset.open =
+                    'false';
+
+                toggle.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+                nav.style =
+                    '';
+
+            };
+
+
+            toggle.addEventListener(
+                'click',
+                () => {
+
+                    const isOpen =
+                        nav.dataset.open ===
+                        'true';
+
+
+                    if (isOpen) {
+
+                        closeMenu();
+
+                        return;
+
+                    }
+
+
+                    nav.dataset.open =
+                        'true';
+
+                    toggle.setAttribute(
+                        'aria-expanded',
+                        'true'
+                    );
+
+
+                    nav.style.position =
+                        'fixed';
+
+                    nav.style.top =
+                        '70px';
+
+                    nav.style.left =
+                        '14px';
+
+                    nav.style.right =
+                        '14px';
+
+                    nav.style.display =
+                        'flex';
+
+                    nav.style.flexDirection =
+                        'column';
+
+                    nav.style.alignItems =
+                        'stretch';
+
+                    nav.style.justifyContent =
+                        'flex-start';
+
+                    nav.style.gap =
+                        '0';
+
+                    nav.style.padding =
+                        '10px';
+
+                    nav.style.border =
+                        '1px solid rgba(255,255,255,.10)';
+
+                    nav.style.borderRadius =
+                        '15px';
+
+                    nav.style.background =
+                        'rgba(16,17,20,.97)';
+
+                    nav.style.backdropFilter =
+                        'blur(18px)';
+
+                    nav.style.webkitBackdropFilter =
+                        'blur(18px)';
+
+                    nav.style.boxShadow =
+                        '0 24px 65px rgba(0,0,0,.38)';
+
+
+                    Array.from(
+                        nav.querySelectorAll(
+                            'a'
+                        )
+                    ).forEach(
+                        (link) => {
+
+                            link.style.display =
+                                'block';
+
+                            link.style.padding =
+                                '13px 12px';
+
+                        }
+                    );
+
+                }
+            );
+
+
+            Array.from(
+                nav.querySelectorAll(
+                    'a'
+                )
+            ).forEach(
+                (link) => {
+
+                    link.addEventListener(
+                        'click',
+                        closeMenu
+                    );
+
+                }
+            );
+
+
+            window.addEventListener(
+                'resize',
+                () => {
+
+                    if (
+                        window.innerWidth >
+                        1000
+                    ) {
+
+                        closeMenu();
+
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>
