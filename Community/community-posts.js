@@ -1,6 +1,6 @@
 // ============================================================
 // COMMUNITY POSTS
-// Post loading, rendering, publishing and likes
+// Post loading, rendering, publishing, likes and post deletion
 // ============================================================
 
 "use strict";
@@ -59,6 +59,10 @@ const likeLoadingState =
 
 
 const postLoadingState =
+    new Set();
+
+
+const postDeletingState =
     new Set();
 
 
@@ -244,6 +248,47 @@ function isPostLiked(
 
 
 // ============================================================
+// POST OWNERSHIP
+// ============================================================
+
+function isOwnPost(
+    post
+) {
+
+    const currentUserId =
+        String(
+            getUserId() ||
+            ""
+        ).trim();
+
+
+    const postAuthorId =
+        String(
+            post?.authorId ||
+            ""
+        ).trim();
+
+
+    if (
+        !currentUserId ||
+        !postAuthorId
+    ) {
+
+        return false;
+
+    }
+
+
+    return (
+        currentUserId ===
+        postAuthorId
+    );
+
+}
+
+
+
+// ============================================================
 // SAFE JSON RESPONSE
 // ============================================================
 
@@ -348,11 +393,6 @@ function triggerLikeAnimation(
     );
 
 
-    /*
-     * Force a reflow so the animation can restart
-     * every time the user likes/unlikes.
-     */
-
     void button.offsetWidth;
 
 
@@ -374,6 +414,67 @@ function triggerLikeAnimation(
         500
 
     );
+
+}
+
+
+
+// ============================================================
+// RENDER POST OWNER ACTIONS
+// ============================================================
+
+function renderPostOwnerActions(
+    post
+) {
+
+    if (
+        !isOwnPost(
+            post
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return `
+
+        <div
+            class="post-owner-actions"
+            data-post-owner-actions
+        >
+
+            <button
+                type="button"
+                class="post-menu-button"
+                data-post-action="menu"
+                aria-label="Post options"
+                aria-expanded="false"
+            >
+                ⋯
+            </button>
+
+
+            <div
+                class="post-menu"
+                data-post-menu
+                hidden
+            >
+
+                <button
+                    type="button"
+                    data-post-action="delete"
+                    class="danger"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
 
@@ -434,6 +535,12 @@ function renderPost(
         );
 
 
+    const ownerActions =
+        renderPostOwnerActions(
+            post
+        );
+
+
     return `
 
         <article
@@ -447,27 +554,42 @@ function renderPost(
                 class="post-header"
             >
 
-                <a
-                    class="post-author"
-                    href="../profile/profile.html"
+                <div
+                    class="post-author-wrapper"
                 >
 
-                    @${escapeHTML(
-                        username
-                    )}
+                    <a
+                        class="post-author"
+                        href="../profile/profile.html"
+                    >
 
-                </a>
+                        @${escapeHTML(
+                            username
+                        )}
+
+                    </a>
+
+                </div>
 
 
-                <span
-                    class="post-date"
+                <div
+                    class="post-header-right"
                 >
 
-                    ${escapeHTML(
-                        createdAt
-                    )}
+                    <span
+                        class="post-date"
+                    >
 
-                </span>
+                        ${escapeHTML(
+                            createdAt
+                        )}
+
+                    </span>
+
+
+                    ${ownerActions}
+
+                </div>
 
             </div>
 
@@ -687,20 +809,10 @@ function renderPosts(
             .join("");
 
 
-    /*
-     * The comments module owns comment-specific
-     * actions such as edit/delete.
-     */
-
     initializeComments(
         postsFeed
     );
 
-
-    /*
-     * The post module owns like, comment-panel,
-     * and comment-submit interactions.
-     */
 
     bindPostActions(
         postsFeed
@@ -1106,11 +1218,6 @@ async function toggleLike(
         }
 
 
-        /*
-         * Trigger the small interaction animation
-         * after the server confirms the action.
-         */
-
         triggerLikeAnimation(
             button
         );
@@ -1150,6 +1257,427 @@ async function toggleLike(
 
         button.disabled =
             false;
+
+    }
+
+}
+
+
+
+// ============================================================
+// TOGGLE POST MENU
+// ============================================================
+
+function togglePostMenu(
+    postCard,
+    button
+) {
+
+    if (
+        !postCard ||
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    const menu =
+        postCard.querySelector(
+            "[data-post-menu]"
+        );
+
+
+    if (!menu) {
+
+        return;
+
+    }
+
+
+    const willOpen =
+        menu.hidden;
+
+
+    /*
+     * Close other post menus first.
+     */
+
+    const feed =
+        postCard.closest(
+            ".posts-feed"
+        );
+
+
+    if (feed) {
+
+        feed
+            .querySelectorAll(
+                "[data-post-menu]"
+            )
+            .forEach(
+                otherMenu => {
+
+                    otherMenu.hidden =
+                        true;
+
+                }
+            );
+
+
+        feed
+            .querySelectorAll(
+                ".post-menu-button"
+            )
+            .forEach(
+                otherButton => {
+
+                    otherButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
+    }
+
+
+    menu.hidden =
+        !willOpen;
+
+
+    button.setAttribute(
+        "aria-expanded",
+        willOpen
+            ? "true"
+            : "false"
+    );
+
+}
+
+
+
+// ============================================================
+// CLOSE ALL POST MENUS
+// ============================================================
+
+function closeAllPostMenus(
+    root
+) {
+
+    if (!root) {
+
+        return;
+
+    }
+
+
+    root
+        .querySelectorAll(
+            "[data-post-menu]"
+        )
+        .forEach(
+            menu => {
+
+                menu.hidden =
+                    true;
+
+            }
+        );
+
+
+    root
+        .querySelectorAll(
+            ".post-menu-button"
+        )
+        .forEach(
+            button => {
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+        );
+
+}
+
+
+
+// ============================================================
+// DELETE POST
+// ============================================================
+
+async function deletePost(
+    postId,
+    postElement
+) {
+
+    const cleanPostId =
+        String(
+            postId ||
+            ""
+        ).trim();
+
+
+    if (
+        !cleanPostId ||
+        !postElement
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        alert(
+            "Please login first."
+        );
+
+
+        return false;
+
+    }
+
+
+    if (
+        postDeletingState.has(
+            cleanPostId
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    postDeletingState.add(
+        cleanPostId
+    );
+
+
+    const deleteButton =
+        postElement.querySelector(
+            '[data-post-action="delete"]'
+        );
+
+
+    if (deleteButton) {
+
+        deleteButton.disabled =
+            true;
+
+        deleteButton.textContent =
+            "Deleting...";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE_URL}/posts/${encodeURIComponent(
+                    cleanPostId
+                )}`,
+
+                {
+
+                    method:
+                        "DELETE",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+
+            );
+
+
+        const result =
+            await parseJSON(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            throw processAuthFailure(
+                result
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only delete your own posts."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Post not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not delete post."
+
+            );
+
+        }
+
+
+        /*
+         * Small exit transition. This works without requiring
+         * a separate animation library.
+         */
+
+        postElement.style.transition =
+            "opacity .22s ease, transform .22s ease, max-height .25s ease";
+
+
+        postElement.style.opacity =
+            "0";
+
+
+        postElement.style.transform =
+            "translateY(-5px)";
+
+
+        postElement.style.maxHeight =
+            `${postElement.offsetHeight}px`;
+
+
+        requestAnimationFrame(
+
+            () => {
+
+                postElement.style.maxHeight =
+                    "0px";
+
+            }
+
+        );
+
+
+        window.setTimeout(
+
+            () => {
+
+                postElement.remove();
+
+
+                /*
+                 * If no posts remain, restore the feed empty state.
+                 */
+
+                const postsFeed =
+                    postElement.closest(
+                        ".posts-feed"
+                    );
+
+
+                if (
+                    postsFeed &&
+                    !postsFeed.querySelector(
+                        ".post-card"
+                    )
+                ) {
+
+                    postsFeed.innerHTML = `
+
+                        <div class="empty-feed">
+
+                            No posts yet.
+
+                            <br>
+
+                            Be the first person
+                            to share something.
+
+                        </div>
+
+                    `;
+
+                }
+
+            },
+
+            280
+
+        );
+
+
+        return true;
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "Delete post error:",
+            error
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to delete post."
+
+        );
+
+
+        return false;
+
+
+    } finally {
+
+        postDeletingState.delete(
+            cleanPostId
+        );
 
     }
 
@@ -1297,11 +1825,6 @@ function bindPostActions(
     }
 
 
-    /*
-     * Avoid attaching the same delegated listener
-     * multiple times.
-     */
-
     if (
         postsFeed.dataset.postActionsReady ===
         "true"
@@ -1321,6 +1844,168 @@ function bindPostActions(
         "click",
 
         async event => {
+
+            // ================================================
+            // POST OWNER MENU
+            // ================================================
+
+            const menuButton =
+                event.target.closest(
+                    '[data-post-action="menu"]'
+                );
+
+
+            if (menuButton) {
+
+                event.preventDefault();
+
+
+                event.stopPropagation();
+
+
+                const postCard =
+                    menuButton.closest(
+                        ".post-card"
+                    );
+
+
+                /*
+                 * Extra ownership protection in the frontend.
+                 * The button itself is only rendered for owner posts.
+                 */
+
+                const ownerId =
+                    postCard?.dataset.postOwnerId ||
+                    "";
+
+
+                const currentUserId =
+                    String(
+                        getUserId() ||
+                        ""
+                    );
+
+
+                if (
+                    !ownerId ||
+                    ownerId !==
+                    currentUserId
+                ) {
+
+                    return;
+
+                }
+
+
+                togglePostMenu(
+
+                    postCard,
+
+                    menuButton
+
+                );
+
+
+                return;
+
+            }
+
+
+            // ================================================
+            // DELETE POST
+            // ================================================
+
+            const deleteButton =
+                event.target.closest(
+                    '[data-post-action="delete"]'
+                );
+
+
+            if (deleteButton) {
+
+                event.preventDefault();
+
+
+                event.stopPropagation();
+
+
+                const postCard =
+                    deleteButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (!postCard) {
+
+                    return;
+
+                }
+
+
+                const postId =
+                    postCard.dataset.postId ||
+                    "";
+
+
+                const postOwnerId =
+                    postCard.dataset.postOwnerId ||
+                    "";
+
+
+                const currentUserId =
+                    String(
+                        getUserId() ||
+                        ""
+                    );
+
+
+                /*
+                 * Do not even show confirmation when the
+                 * post is not owned by the current user.
+                 */
+
+                if (
+                    !postOwnerId ||
+                    postOwnerId !==
+                    currentUserId
+                ) {
+
+                    return;
+
+                }
+
+
+                closeAllPostMenus(
+                    postCard
+                );
+
+
+                const confirmed =
+                    window.confirm(
+                        "Delete this post?"
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                await deletePost(
+
+                    postId,
+
+                    postCard
+
+                );
+
+
+                return;
+
+            }
+
 
             // ================================================
             // LIKE
@@ -1455,6 +2140,36 @@ function bindPostActions(
                 return;
 
             }
+
+        }
+
+    );
+
+
+    // ========================================================
+    // CLOSE MENUS WHEN CLICKING OUTSIDE
+    // ========================================================
+
+    document.addEventListener(
+
+        "click",
+
+        event => {
+
+            if (
+                event.target.closest(
+                    ".post-owner-actions"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            closeAllPostMenus(
+                postsFeed
+            );
 
         }
 
@@ -1686,6 +2401,7 @@ function initializePostComposer(
         counter,
         publishButton,
         postsFeed
+
     } = {}
 ) {
 
@@ -1875,17 +2591,13 @@ function initializePosts(
     } = {}
 ) {
 
-    /*
-     * Post action events are initialized here.
-     */
-
     bindPostActions(
         postsFeed
     );
 
 
     /*
-     * Comment action events belong to
+     * Comment-specific interactions remain inside
      * community-comments.js.
      */
 
@@ -1988,13 +2700,23 @@ export {
 
     isPostLiked,
 
+    isOwnPost,
+
     renderPost,
+
+    renderPostOwnerActions,
 
     renderPosts,
 
     loadPosts,
 
     toggleLike,
+
+    togglePostMenu,
+
+    closeAllPostMenus,
+
+    deletePost,
 
     toggleCommentsPanel,
 

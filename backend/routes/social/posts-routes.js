@@ -678,7 +678,300 @@ module.exports =
         );
 
 
+        // ====================================================
+// DELETE POST
+// ====================================================
 
+router.delete(
+
+    "/posts/:postId",
+
+    postWriteLimiter,
+
+    authenticateToken,
+
+    async (
+        req,
+        res
+    ) => {
+
+        try {
+
+            // =============================================
+            // POST ID
+            // =============================================
+
+            const postId =
+                typeof req.params.postId ===
+                "string"
+
+                    ? req.params.postId.trim()
+
+                    : "";
+
+
+            // =============================================
+            // AUTHENTICATED USER
+            // =============================================
+
+            const authenticatedUserId =
+                getAuthenticatedUserId(
+                    req
+                );
+
+
+            // =============================================
+            // VALIDATE POST ID
+            // =============================================
+
+            if (
+                !isValidObjectId(
+                    postId
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Invalid post ID"
+
+                });
+
+            }
+
+
+            // =============================================
+            // AUTHENTICATION
+            // =============================================
+
+            if (
+                !authenticatedUserId
+            ) {
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Authentication required"
+
+                });
+
+            }
+
+
+            const postObjectId =
+                new ObjectId(
+                    postId
+                );
+
+
+            const userObjectId =
+                new ObjectId(
+                    authenticatedUserId
+                );
+
+
+            // =============================================
+            // LOAD POST
+            // =============================================
+
+            const post =
+                await postsCollection.findOne(
+
+                    {
+
+                        _id:
+                            postObjectId
+
+                    },
+
+                    {
+
+                        projection: {
+
+                            _id:
+                                1,
+
+                            authorId:
+                                1
+
+                        }
+
+                    }
+
+                );
+
+
+            if (
+                !post
+            ) {
+
+                return res.status(404).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Post not found"
+
+                });
+
+            }
+
+
+            // =============================================
+            // OWNERSHIP CHECK
+            // =============================================
+
+            if (
+
+                !post.authorId
+
+                ||
+
+                post.authorId.toString() !==
+                authenticatedUserId
+
+            ) {
+
+                return res.status(403).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "You can only delete your own posts"
+
+                });
+
+            }
+
+
+            // =============================================
+            // DELETE POST
+            // =============================================
+
+            const deleteResult =
+                await postsCollection.deleteOne(
+
+                    {
+
+                        _id:
+                            postObjectId,
+
+                        authorId:
+                            userObjectId
+
+                    }
+
+                );
+
+
+            if (
+                deleteResult.deletedCount !==
+                1
+            ) {
+
+                return res.status(404).json({
+
+                    success:
+                        false,
+
+                    error:
+                        "Post could not be deleted"
+
+                });
+
+            }
+
+
+            // =============================================
+            // CLEAN RELATED NOTIFICATIONS
+            // =============================================
+
+            if (
+                notificationsCollection
+            ) {
+
+                try {
+
+                    await notificationsCollection.deleteMany({
+
+                        postId:
+                            postObjectId
+
+                    });
+
+                } catch (
+                    notificationError
+                ) {
+
+                    /*
+                     * Notification cleanup must never make
+                     * an already-successful post deletion fail.
+                     */
+
+                    console.error(
+
+                        "Post notification cleanup error:",
+
+                        notificationError
+
+                    );
+
+                }
+
+            }
+
+
+            // =============================================
+            // RESPONSE
+            // =============================================
+
+            return res.json({
+
+                success:
+                    true,
+
+                message:
+                    "Post deleted successfully",
+
+                postId:
+                    postId
+
+            });
+
+
+        } catch (
+            error
+        ) {
+
+            console.error(
+                "Delete post error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                error:
+                    "Could not delete post"
+
+            });
+
+        }
+
+    }
+
+);
         // ====================================================
         // LIKE / UNLIKE POST
         // ====================================================

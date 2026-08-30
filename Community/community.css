@@ -525,7 +525,11 @@
 
     transition:
         border-color .2s ease,
-        transform .2s ease;
+        transform .2s ease,
+        opacity .22s ease,
+        max-height .25s ease,
+        margin .25s ease,
+        padding .25s ease;
 
 }
 
@@ -563,6 +567,20 @@
 }
 
 
+.post-author-wrapper {
+
+    min-width:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+}
+
+
 .post-author {
 
     color:
@@ -573,6 +591,15 @@
 
     text-decoration:
         none;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
 
 }
 
@@ -585,6 +612,26 @@
 }
 
 
+.post-header-right {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        flex-end;
+
+    gap:
+        9px;
+
+    flex:
+        0 0 auto;
+
+}
+
+
 .post-date {
 
     color:
@@ -592,6 +639,9 @@
 
     font-size:
         12px;
+
+    white-space:
+        nowrap;
 
 }
 
@@ -612,6 +662,322 @@
 
     overflow-wrap:
         anywhere;
+
+}
+
+
+
+/* ============================================================
+   POST OWNER MENU
+   Only the owner receives this element from JS.
+   ============================================================ */
+
+.post-owner-actions {
+
+    position:
+        relative;
+
+    flex:
+        0 0 auto;
+
+}
+
+
+.post-menu-button {
+
+    width:
+        30px;
+
+    height:
+        30px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        0;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        #687080;
+
+    font-family:
+        inherit;
+
+    font-size:
+        18px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        transform .15s ease;
+
+}
+
+
+.post-menu-button:hover {
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            .08
+        );
+
+    color:
+        #fff;
+
+}
+
+
+.post-menu-button:active {
+
+    transform:
+        scale(.94);
+
+}
+
+
+.post-menu {
+
+    position:
+        absolute;
+
+    top:
+        34px;
+
+    right:
+        0;
+
+    z-index:
+        50;
+
+    min-width:
+        120px;
+
+    padding:
+        5px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .1
+        );
+
+    border-radius:
+        9px;
+
+    background:
+        #171717;
+
+    box-shadow:
+        0 14px 35px
+        rgba(
+            0,
+            0,
+            0,
+            .32
+        );
+
+    animation:
+        communityMenuAppear
+        .14s
+        ease-out;
+
+}
+
+
+.post-menu[hidden] {
+
+    display:
+        none;
+
+}
+
+
+.post-menu button {
+
+    width:
+        100%;
+
+    display:
+        block;
+
+    padding:
+        8px 10px;
+
+    border:
+        0;
+
+    border-radius:
+        6px;
+
+    background:
+        transparent;
+
+    color:
+        #d5d9e0;
+
+    font-family:
+        inherit;
+
+    font-size:
+        12px;
+
+    font-weight:
+        500;
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .15s ease,
+        color .15s ease;
+
+}
+
+
+.post-menu button:hover {
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+
+    color:
+        #fff;
+
+}
+
+
+.post-menu button.danger {
+
+    color:
+        #ed8585;
+
+}
+
+
+.post-menu button.danger:hover {
+
+    background:
+        rgba(
+            237,
+            133,
+            133,
+            .08
+        );
+
+}
+
+
+@keyframes communityMenuAppear {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(
+                -3px
+            );
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(
+                0
+            );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   POST DELETE
+   ============================================================ */
+
+.post-card.post-deleting {
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    opacity:
+        0;
+
+    transform:
+        translateY(
+            -5px
+        );
+
+    max-height:
+        0;
+
+    margin-top:
+        0;
+
+    margin-bottom:
+        0;
+
+    padding-top:
+        0;
+
+    padding-bottom:
+        0;
+
+    border-width:
+        0;
 
 }
 
@@ -1535,35 +1901,6 @@
 
     display:
         none;
-
-}
-
-
-@keyframes communityMenuAppear {
-
-    from {
-
-        opacity:
-            0;
-
-        transform:
-            translateY(
-                -3px
-            );
-
-    }
-
-    to {
-
-        opacity:
-            1;
-
-        transform:
-            translateY(
-                0
-            );
-
-    }
 
 }
 
@@ -2554,6 +2891,17 @@ html[data-dheere-mood="midnight"]
     }
 
 
+    .post-header-right {
+
+        width:
+            100%;
+
+        justify-content:
+            space-between;
+
+    }
+
+
     .post-footer {
 
         flex-wrap:
@@ -2574,6 +2922,14 @@ html[data-dheere-mood="midnight"]
 
         width:
             100%;
+
+    }
+
+
+    .post-menu {
+
+        right:
+            0;
 
     }
 
@@ -2609,8 +2965,11 @@ html[data-dheere-mood="midnight"]
     .refresh-button,
     .publish-button,
     .post-action-button,
+    .post-card,
     .post-comment,
     .post-comments-panel,
+    .post-menu,
+    .post-menu-button,
     .post-comment-menu,
     .post-comment-menu-button {
 
