@@ -30,8 +30,6 @@ import {
 
     initializeComments,
 
-    loadComments,
-
     submitCommentFromForm
 
 } from "./community-comments.js";
@@ -384,7 +382,7 @@ function processAuthFailure(
 
 
 // ============================================================
-// POST CHARACTER COUNT
+// CHARACTER COUNT
 // ============================================================
 
 function updatePostCharacterCount(
@@ -423,6 +421,14 @@ function triggerLikeAnimation(
 
     }
 
+
+    /*
+     * This class is deliberately transient.
+     *
+     * The `.liked` class is the persistent state.
+     * The animation class is only added after a
+     * successful user interaction.
+     */
 
     button.classList.remove(
         "like-just-toggled"
@@ -466,8 +472,7 @@ function renderPostOwnerActions(
     /*
      * CRITICAL:
      *
-     * No owner menu is rendered unless the current
-     * authenticated user owns the post.
+     * No menu is generated for another user's post.
      */
 
     if (
@@ -516,9 +521,7 @@ function renderPostOwnerActions(
                     type="button"
                     data-post-action="edit"
                 >
-
                     Edit
-
                 </button>
 
 
@@ -527,9 +530,7 @@ function renderPostOwnerActions(
                     class="danger"
                     data-post-action="delete"
                 >
-
                     Delete
-
                 </button>
 
             </div>
@@ -687,10 +688,6 @@ function renderPost(
                 class="post-footer"
             >
 
-                <!-- =========================================
-                     LIKE
-                     ========================================= -->
-
                 <button
                     type="button"
                     class="post-action-button post-like-button ${
@@ -751,10 +748,6 @@ function renderPost(
                 </button>
 
 
-                <!-- =========================================
-                     COMMENTS
-                     ========================================= -->
-
                 <button
                     type="button"
                     class="post-action-button post-comment-button"
@@ -763,6 +756,16 @@ function renderPost(
                     )}"
                     aria-expanded="false"
                 >
+
+                    <span
+                        class="post-action-icon"
+                        aria-hidden="true"
+                    >
+
+                        💬
+
+                    </span>
+
 
                     <span
                         class="post-action-text"
@@ -785,10 +788,6 @@ function renderPost(
 
             </div>
 
-
-            <!-- =============================================
-                 COMMENTS PANEL
-                 ============================================= -->
 
             <div
                 class="post-comments-panel"
@@ -888,6 +887,18 @@ function renderPosts(
 
     }
 
+
+    /*
+     * IMPORTANT:
+     *
+     * Render-time liked state is persistent state.
+     * We intentionally DO NOT trigger the like animation here.
+     *
+     * Therefore:
+     *
+     * refresh → ♥ Liked stays red
+     * refresh → NO animation
+     */
 
     postsFeed.innerHTML =
         posts
@@ -1228,6 +1239,12 @@ async function toggleLike(
             );
 
 
+        /*
+         * `.liked` is the persistent visual state.
+         * It stays after refresh because renderPost()
+         * derives it from the backend response.
+         */
+
         button.classList.toggle(
             "liked",
             liked
@@ -1291,6 +1308,11 @@ async function toggleLike(
 
         }
 
+
+        /*
+         * ONLY actual click gets animation.
+         * Initial render never calls this.
+         */
 
         triggerLikeAnimation(
             button
@@ -1357,19 +1379,6 @@ function togglePostMenu(
     }
 
 
-    const menu =
-        postCard.querySelector(
-            "[data-post-menu]"
-        );
-
-
-    if (!menu) {
-
-        return;
-
-    }
-
-
     const ownerId =
         String(
 
@@ -1385,7 +1394,7 @@ function togglePostMenu(
 
 
     /*
-     * Only the owner can open this menu.
+     * Extra frontend ownership protection.
      */
 
     if (
@@ -1393,6 +1402,19 @@ function togglePostMenu(
         ownerId !==
         currentUserId
     ) {
+
+        return;
+
+    }
+
+
+    const menu =
+        postCard.querySelector(
+            "[data-post-menu]"
+        );
+
+
+    if (!menu) {
 
         return;
 
@@ -1459,7 +1481,7 @@ function togglePostMenu(
 
 
 // ============================================================
-// CLOSE POST MENUS
+// CLOSE MENUS
 // ============================================================
 
 function closeAllPostMenus(
@@ -1532,8 +1554,13 @@ function beginPostEdit(
 
 
     const postId =
-        postElement.dataset.postId ||
-        "";
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
 
 
     const ownerId =
@@ -1551,7 +1578,7 @@ function beginPostEdit(
 
 
     /*
-     * Frontend ownership protection.
+     * Owner-only edit protection.
      */
 
     if (
@@ -1597,30 +1624,33 @@ function beginPostEdit(
     );
 
 
+    /*
+     * INLINE EDIT:
+     *
+     * Replace the existing content with a small
+     * textarea. No giant editor card and no overlay.
+     */
+
     contentElement.innerHTML = `
 
+        <textarea
+            class="post-edit-input"
+            maxlength="${MAX_POST_LENGTH}"
+            aria-label="Edit post"
+        ></textarea>
+
+
         <div
-            class="post-edit-editor"
+            class="post-edit-inline-footer"
         >
 
-            <textarea
-                class="post-edit-input"
-                maxlength="${MAX_POST_LENGTH}"
-                aria-label="Edit post"
-            ></textarea>
-
-
-            <div
-                class="post-edit-character-row"
+            <span
+                class="post-edit-character-count"
             >
 
-                <span
-                    class="post-edit-character-count"
-                >
-                    0 / ${MAX_POST_LENGTH}
-                </span>
+                0 / ${MAX_POST_LENGTH}
 
-            </div>
+            </span>
 
 
             <div
@@ -1631,7 +1661,9 @@ function beginPostEdit(
                     type="button"
                     data-post-action="cancel-edit"
                 >
+
                     Cancel
+
                 </button>
 
 
@@ -1639,7 +1671,9 @@ function beginPostEdit(
                     type="button"
                     data-post-action="save-edit"
                 >
+
                     Save
+
                 </button>
 
             </div>
@@ -1694,7 +1728,7 @@ function beginPostEdit(
 
 
 // ============================================================
-// CANCEL POST EDIT
+// CANCEL EDIT
 // ============================================================
 
 function cancelPostEdit(
@@ -1962,7 +1996,7 @@ async function updatePost(
 
 
 // ============================================================
-// SAVE POST EDIT
+// SAVE EDIT
 // ============================================================
 
 async function savePostEdit(
@@ -2128,8 +2162,7 @@ async function savePostEdit(
 
 
         /*
-         * Add an "edited" label next to the post date.
-         * Avoid duplicate labels.
+         * Add subtle edited indicator.
          */
 
         const headerRight =
@@ -2161,9 +2194,31 @@ async function savePostEdit(
                 "edited";
 
 
-            headerRight.appendChild(
-                editedLabel
-            );
+            const ownerActions =
+                headerRight.querySelector(
+                    ".post-owner-actions"
+                );
+
+
+            if (
+                ownerActions
+            ) {
+
+                headerRight.insertBefore(
+
+                    editedLabel,
+
+                    ownerActions
+
+                );
+
+            } else {
+
+                headerRight.appendChild(
+                    editedLabel
+                );
+
+            }
 
         }
 
@@ -2272,11 +2327,6 @@ async function deletePost(
     const currentUserId =
         getCurrentUserId();
 
-
-    /*
-     * Never allow delete action in the frontend
-     * when the post is not owned by the user.
-     */
 
     if (
         !ownerId ||
@@ -2427,33 +2477,28 @@ async function deletePost(
                 }
 
 
-                const postsFeed =
+                const feed =
                     document.querySelector(
                         ".posts-feed"
                     );
 
 
                 if (
-                    postsFeed &&
+                    feed &&
 
-                    !postsFeed.querySelector(
+                    !feed.querySelector(
                         ".post-card"
                     )
 
                 ) {
 
-                    postsFeed.innerHTML = `
+                    feed.innerHTML = `
 
                         <div
                             class="empty-feed"
                         >
 
                             No posts yet.
-
-                            <br>
-
-                            Be the first person
-                            to share something.
 
                         </div>
 
@@ -2511,7 +2556,7 @@ async function deletePost(
 
 
 // ============================================================
-// COMMENTS PANEL
+// TOGGLE COMMENTS PANEL
 // ============================================================
 
 async function toggleCommentsPanel(
@@ -2534,12 +2579,6 @@ async function toggleCommentsPanel(
     const commentsContainer =
         postCard.querySelector(
             ".post-comments-list"
-        );
-
-
-    const countElement =
-        postCard.querySelector(
-            ".post-comment-count"
         );
 
 
@@ -2613,30 +2652,6 @@ async function toggleCommentsPanel(
 
     }
 
-
-    await loadComments(
-
-        postId,
-
-        commentsContainer,
-
-        countElement
-
-    );
-
-
-    const input =
-        postCard.querySelector(
-            ".post-comment-input"
-        );
-
-
-    if (input) {
-
-        input.focus();
-
-    }
-
 }
 
 
@@ -2655,10 +2670,6 @@ function bindPostActions(
 
     }
 
-
-    /*
-     * Prevent duplicate event binding.
-     */
 
     if (
         postsFeed.dataset.postActionsReady ===
@@ -2681,7 +2692,7 @@ function bindPostActions(
         async event => {
 
             // ================================================
-            // POST MENU BUTTON
+            // MENU
             // ================================================
 
             const menuButton =
@@ -2695,7 +2706,6 @@ function bindPostActions(
             ) {
 
                 event.preventDefault();
-
 
                 event.stopPropagation();
 
@@ -2753,7 +2763,7 @@ function bindPostActions(
 
 
             // ================================================
-            // EDIT POST
+            // EDIT
             // ================================================
 
             const editButton =
@@ -2767,7 +2777,6 @@ function bindPostActions(
             ) {
 
                 event.preventDefault();
-
 
                 event.stopPropagation();
 
@@ -2821,7 +2830,7 @@ function bindPostActions(
 
 
             // ================================================
-            // CANCEL POST EDIT
+            // CANCEL EDIT
             // ================================================
 
             const cancelEditButton =
@@ -2835,7 +2844,6 @@ function bindPostActions(
             ) {
 
                 event.preventDefault();
-
 
                 event.stopPropagation();
 
@@ -2861,7 +2869,7 @@ function bindPostActions(
 
 
             // ================================================
-            // SAVE POST EDIT
+            // SAVE EDIT
             // ================================================
 
             const saveEditButton =
@@ -2875,7 +2883,6 @@ function bindPostActions(
             ) {
 
                 event.preventDefault();
-
 
                 event.stopPropagation();
 
@@ -2901,7 +2908,7 @@ function bindPostActions(
 
 
             // ================================================
-            // DELETE POST
+            // DELETE
             // ================================================
 
             const deleteButton =
@@ -2915,7 +2922,6 @@ function bindPostActions(
             ) {
 
                 event.preventDefault();
-
 
                 event.stopPropagation();
 
@@ -3069,7 +3075,7 @@ function bindPostActions(
 
 
             // ================================================
-            // SUBMIT COMMENT
+            // COMMENT SUBMIT
             // ================================================
 
             const submitButton =
@@ -3132,7 +3138,7 @@ function bindPostActions(
 
 
     // ========================================================
-    // CLOSE POST MENUS OUTSIDE
+    // CLOSE MENUS OUTSIDE
     // ========================================================
 
     if (
@@ -3172,7 +3178,7 @@ function bindPostActions(
 
 
     // ========================================================
-    // POST EDIT KEYBOARD EVENTS
+    // EDIT KEYBOARD EVENTS
     // ========================================================
 
     postsFeed.addEventListener(
@@ -3207,10 +3213,6 @@ function bindPostActions(
             }
 
 
-            // ================================================
-            // ESCAPE = CANCEL
-            // ================================================
-
             if (
                 event.key ===
                 "Escape"
@@ -3228,10 +3230,6 @@ function bindPostActions(
 
             }
 
-
-            // ================================================
-            // CMD/CTRL + ENTER = SAVE
-            // ================================================
 
             if (
 
@@ -3256,35 +3254,13 @@ function bindPostActions(
 
             }
 
-
-            // ================================================
-            // LIVE CHARACTER COUNT
-            // ================================================
-
-            const contentElement =
-                postCard.querySelector(
-                    "[data-post-content]"
-                );
-
-
-            const counter =
-                contentElement?.querySelector(
-                    ".post-edit-character-count"
-                );
-
-
-            updatePostCharacterCount(
-                input,
-                counter
-            );
-
         }
 
     );
 
 
     // ========================================================
-    // POST EDIT INPUT CHARACTER COUNT
+    // EDIT CHARACTER COUNT
     // ========================================================
 
     postsFeed.addEventListener(

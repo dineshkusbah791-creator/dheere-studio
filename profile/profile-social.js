@@ -445,6 +445,11 @@ function triggerLikeAnimation(
     }
 
 
+    /*
+     * Animation is explicitly transient.
+     * The persistent `.liked` state is separate.
+     */
+
     button.classList.remove(
         "like-just-toggled"
     );
@@ -1198,17 +1203,10 @@ async function toggleLike(
             );
 
 
-        if (
-            countElement
-        ) {
-
-            countElement.textContent =
-                String(
-                    likes
-                );
-
-        }
-
+        /*
+         * Persistent state:
+         * this stays until another actual like/unlike action.
+         */
 
         button.classList.toggle(
             "liked",
@@ -1228,6 +1226,18 @@ async function toggleLike(
                 ? "true"
                 : "false"
         );
+
+
+        if (
+            countElement
+        ) {
+
+            countElement.textContent =
+                String(
+                    likes
+                );
+
+        }
 
 
         const icon =
@@ -1261,6 +1271,12 @@ async function toggleLike(
 
         }
 
+
+        /*
+         * IMPORTANT:
+         * Animation happens ONLY after a successful click.
+         * renderPosts() never calls this function.
+         */
 
         triggerLikeAnimation(
             button
@@ -1314,8 +1330,7 @@ function renderPostOwnerActions(
 ) {
 
     /*
-     * IMPORTANT:
-     * No menu is rendered for another user's post.
+     * No owner menu for another user's post.
      */
 
     if (
@@ -1518,6 +1533,13 @@ function renderPosts(
                             post
                         );
 
+
+                    /*
+                     * CRITICAL:
+                     * `liked` controls the persistent visual state.
+                     *
+                     * We DO NOT call triggerLikeAnimation() here.
+                     */
 
                     return `
 
@@ -1838,32 +1860,32 @@ function beginPostEdit(
     );
 
 
+    /*
+     * SMALL INLINE EDITOR
+     *
+     * No wrapper/card-like visual treatment.
+     * The textarea takes the place of the original
+     * post content.
+     */
+
     contentElement.innerHTML = `
 
+        <textarea
+            class="post-edit-input"
+            maxlength="${MAX_POST_LENGTH}"
+            aria-label="Edit post"
+        ></textarea>
+
+
         <div
-            class="post-edit-editor"
+            class="post-edit-inline-footer"
         >
 
-            <textarea
-                class="post-edit-input"
-                maxlength="${MAX_POST_LENGTH}"
-                aria-label="Edit post"
-            ></textarea>
-
-
-            <div
-                class="post-edit-character-row"
+            <span
+                class="post-edit-character-count"
             >
-
-                <span
-                    class="post-edit-character-count"
-                >
-
-                    0 / ${MAX_POST_LENGTH}
-
-                </span>
-
-            </div>
+                0 / ${MAX_POST_LENGTH}
+            </span>
 
 
             <div
@@ -1874,9 +1896,7 @@ function beginPostEdit(
                     type="button"
                     data-profile-post-action="cancel-edit"
                 >
-
                     Cancel
-
                 </button>
 
 
@@ -1884,9 +1904,7 @@ function beginPostEdit(
                     type="button"
                     data-profile-post-action="save-edit"
                 >
-
                     Save
-
                 </button>
 
             </div>
@@ -1917,8 +1935,11 @@ function beginPostEdit(
 
 
         updateProfileEditCounter(
+
             input,
+
             counter
+
         );
 
 
@@ -1962,6 +1983,7 @@ function updateProfileEditCounter(
 
 
     counter.textContent =
+
         `${input.value.length} / ${MAX_POST_LENGTH}`;
 
 }
@@ -2395,8 +2417,7 @@ async function savePostEdit(
 
 
         /*
-         * Rebuild the header date label so the edited
-         * state is visible without disturbing owner menu.
+         * Show subtle edited state.
          */
 
         const headerRight =
@@ -2409,14 +2430,14 @@ async function savePostEdit(
             headerRight
         ) {
 
-            const oldEdited =
+            const existingLabel =
                 headerRight.querySelector(
                     ".post-edited-label"
                 );
 
 
             if (
-                !oldEdited
+                !existingLabel
             ) {
 
                 const editedLabel =
@@ -2433,15 +2454,31 @@ async function savePostEdit(
                     "edited";
 
 
-                headerRight.insertBefore(
-
-                    editedLabel,
-
+                const ownerActions =
                     headerRight.querySelector(
                         ".post-owner-actions"
-                    )
+                    );
 
-                );
+
+                if (
+                    ownerActions
+                ) {
+
+                    headerRight.insertBefore(
+
+                        editedLabel,
+
+                        ownerActions
+
+                    );
+
+                } else {
+
+                    headerRight.appendChild(
+                        editedLabel
+                    );
+
+                }
 
             }
 
@@ -2580,6 +2617,11 @@ function togglePostMenu(
     const currentUserId =
         getCurrentUserId();
 
+
+    /*
+     * Extra safety:
+     * another user's menu cannot be opened.
+     */
 
     if (
         !ownerId ||
@@ -3369,7 +3411,7 @@ async function handlePostClick(
 
 
     // ========================================================
-    // POST MENU
+    // MENU
     // ========================================================
 
     const menuButton =
@@ -4076,8 +4118,7 @@ function setupSocialEvents() {
 
 
     /*
-     * Close owner menus when clicking anywhere
-     * outside the current menu.
+     * Close owner menus when clicking outside them.
      */
 
     document.addEventListener(
