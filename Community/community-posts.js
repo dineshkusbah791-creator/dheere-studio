@@ -13,13 +13,9 @@
 import {
 
     getCurrentUser,
-
     getUserId,
-
     getAuthHeaders,
-
     hasValidLoginSession,
-
     clearAuthStorage
 
 } from "./community-auth.js";
@@ -28,9 +24,7 @@ import {
 import {
 
     initializeComments,
-
     loadComments,
-
     submitCommentFromForm
 
 } from "./community-comments.js";
@@ -51,7 +45,7 @@ const MAX_POST_LENGTH =
 
 
 // ============================================================
-// INTERNAL STATE
+// STATE
 // ============================================================
 
 const likeLoadingState =
@@ -174,7 +168,7 @@ function getPostId(
 
 
 // ============================================================
-// POST LIKES
+// LIKES
 // ============================================================
 
 function getPostLikes(
@@ -183,7 +177,7 @@ function getPostLikes(
 
     const likes =
         Number(
-            post?.likes ||
+            post?.likes ??
             0
         );
 
@@ -191,10 +185,12 @@ function getPostLikes(
     return Number.isFinite(
         likes
     )
+
         ? Math.max(
             0,
             likes
         )
+
         : 0;
 
 }
@@ -202,28 +198,34 @@ function getPostLikes(
 
 
 // ============================================================
-// POST COMMENTS COUNT
+// COMMENTS COUNT
 // ============================================================
 
 function getPostCommentsCount(
     post
 ) {
 
-    const comments =
+    const count =
         Number(
-            post?.comments ||
-            post?.commentCount ||
+
+            post?.comments ??
+
+            post?.commentCount ??
+
             0
+
         );
 
 
     return Number.isFinite(
-        comments
+        count
     )
+
         ? Math.max(
             0,
-            comments
+            count
         )
+
         : 0;
 
 }
@@ -231,7 +233,7 @@ function getPostCommentsCount(
 
 
 // ============================================================
-// POST LIKED
+// LIKED STATE
 // ============================================================
 
 function isPostLiked(
@@ -239,9 +241,34 @@ function isPostLiked(
 ) {
 
     return (
-        post?.liked === true ||
-        post?.isLiked === true
+
+        post?.liked ===
+        true
+
+        ||
+
+        post?.isLiked ===
+        true
+
     );
+
+}
+
+
+
+// ============================================================
+// CURRENT USER ID
+// ============================================================
+
+function getCurrentUserId() {
+
+    return String(
+
+        getUserId() ||
+
+        ""
+
+    ).trim();
 
 }
 
@@ -256,22 +283,24 @@ function isOwnPost(
 ) {
 
     const currentUserId =
-        String(
-            getUserId() ||
-            ""
-        ).trim();
+        getCurrentUserId();
 
 
-    const postAuthorId =
+    const authorId =
         String(
+
             post?.authorId ||
+
+            post?.userId ||
+
             ""
+
         ).trim();
 
 
     if (
         !currentUserId ||
-        !postAuthorId
+        !authorId
     ) {
 
         return false;
@@ -281,7 +310,7 @@ function isOwnPost(
 
     return (
         currentUserId ===
-        postAuthorId
+        authorId
     );
 
 }
@@ -289,7 +318,7 @@ function isOwnPost(
 
 
 // ============================================================
-// SAFE JSON RESPONSE
+// PARSE JSON
 // ============================================================
 
 async function parseJSON(
@@ -344,7 +373,7 @@ function processAuthFailure(
 
 
 // ============================================================
-// UPDATE CHARACTER COUNT
+// CHARACTER COUNT
 // ============================================================
 
 function updatePostCharacterCount(
@@ -362,19 +391,15 @@ function updatePostCharacterCount(
     }
 
 
-    const length =
-        textarea.value.length;
-
-
     counter.textContent =
-        `${length} / ${MAX_POST_LENGTH}`;
+        `${textarea.value.length} / ${MAX_POST_LENGTH}`;
 
 }
 
 
 
 // ============================================================
-// TRIGGER LIKE ANIMATION
+// LIKE ANIMATION
 // ============================================================
 
 function triggerLikeAnimation(
@@ -420,12 +445,18 @@ function triggerLikeAnimation(
 
 
 // ============================================================
-// RENDER POST OWNER ACTIONS
+// POST OWNER MENU
 // ============================================================
 
 function renderPostOwnerActions(
     post
 ) {
+
+    /*
+     * IMPORTANT:
+     * The menu is generated ONLY when this is the
+     * currently authenticated user's post.
+     */
 
     if (
         !isOwnPost(
@@ -450,9 +481,14 @@ function renderPostOwnerActions(
                 class="post-menu-button"
                 data-post-action="menu"
                 aria-label="Post options"
+                aria-haspopup="true"
                 aria-expanded="false"
             >
-                ⋯
+
+                <span aria-hidden="true">
+                    ⋯
+                </span>
+
             </button>
 
 
@@ -464,10 +500,12 @@ function renderPostOwnerActions(
 
                 <button
                     type="button"
-                    data-post-action="delete"
                     class="danger"
+                    data-post-action="delete"
                 >
+
                     Delete
+
                 </button>
 
             </div>
@@ -481,7 +519,7 @@ function renderPostOwnerActions(
 
 
 // ============================================================
-// RENDER SINGLE POST
+// RENDER POST
 // ============================================================
 
 function renderPost(
@@ -501,13 +539,27 @@ function renderPost(
     }
 
 
+    const authorId =
+        String(
+
+            post?.authorId ||
+
+            post?.userId ||
+
+            ""
+
+        ).trim();
+
+
     const username =
         post?.username ||
+
         "user";
 
 
     const content =
         post?.content ||
+
         "";
 
 
@@ -547,6 +599,9 @@ function renderPost(
             class="post-card"
             data-post-id="${escapeHTML(
                 postId
+            )}"
+            data-post-owner-id="${escapeHTML(
+                authorId
             )}"
         >
 
@@ -609,10 +664,6 @@ function renderPost(
                 class="post-footer"
             >
 
-                <!-- =========================================
-                     LIKE
-                     ========================================= -->
-
                 <button
                     type="button"
                     class="post-action-button post-like-button ${
@@ -673,10 +724,6 @@ function renderPost(
                 </button>
 
 
-                <!-- =========================================
-                     COMMENTS
-                     ========================================= -->
-
                 <button
                     type="button"
                     class="post-action-button post-comment-button"
@@ -689,7 +736,9 @@ function renderPost(
                     <span
                         class="post-action-text"
                     >
+
                         Comment
+
                     </span>
 
 
@@ -705,10 +754,6 @@ function renderPost(
 
             </div>
 
-
-            <!-- =============================================
-                 COMMENTS PANEL
-                 ============================================= -->
 
             <div
                 class="post-comments-panel"
@@ -774,15 +819,23 @@ function renderPosts(
 
 
     if (
+
         !Array.isArray(
             posts
-        ) ||
-        posts.length === 0
+        )
+
+        ||
+
+        posts.length ===
+        0
+
     ) {
 
         postsFeed.innerHTML = `
 
-            <div class="empty-feed">
+            <div
+                class="empty-feed"
+            >
 
                 No posts yet.
 
@@ -808,6 +861,14 @@ function renderPosts(
             )
             .join("");
 
+
+    /*
+     * Comments module owns:
+     * comment loading
+     * comment creation
+     * comment editing
+     * comment deletion
+     */
 
     initializeComments(
         postsFeed
@@ -855,7 +916,9 @@ async function loadPosts(
 
     postsFeed.innerHTML = `
 
-        <div class="empty-feed">
+        <div
+            class="empty-feed"
+        >
 
             Loading community...
 
@@ -893,6 +956,9 @@ async function loadPosts(
 
                 {
 
+                    method:
+                        "GET",
+
                     cache:
                         "no-store"
 
@@ -920,12 +986,7 @@ async function loadPosts(
 
 
         if (
-
-            !response.ok ||
-
-            result?.success !==
-            true
-
+            !response.ok
         ) {
 
             throw new Error(
@@ -950,11 +1011,8 @@ async function loadPosts(
 
 
         renderPosts(
-
             posts,
-
             postsFeed
-
         );
 
 
@@ -973,7 +1031,9 @@ async function loadPosts(
 
         postsFeed.innerHTML = `
 
-            <div class="empty-feed">
+            <div
+                class="empty-feed"
+            >
 
                 ${
                     error?.code ===
@@ -1107,22 +1167,6 @@ async function toggleLike(
 
 
         if (
-            response.status ===
-            404
-        ) {
-
-            throw new Error(
-
-                result?.error ||
-
-                "Post not found."
-
-            );
-
-        }
-
-
-        if (
             !response.ok
         ) {
 
@@ -1192,7 +1236,7 @@ async function toggleLike(
             );
 
 
-        const text =
+        const label =
             button.querySelector(
                 ".post-action-text"
             );
@@ -1208,9 +1252,9 @@ async function toggleLike(
         }
 
 
-        if (text) {
+        if (label) {
 
-            text.textContent =
+            label.textContent =
                 liked
                     ? "Liked"
                     : "Like";
@@ -1296,13 +1340,40 @@ function togglePostMenu(
     }
 
 
+    /*
+     * Extra owner check.
+     * The menu should never be opened for
+     * somebody else's post.
+     */
+
+    const ownerId =
+        String(
+
+            postCard.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return;
+
+    }
+
+
     const willOpen =
         menu.hidden;
 
-
-    /*
-     * Close other post menus first.
-     */
 
     const feed =
         postCard.closest(
@@ -1447,6 +1518,40 @@ async function deletePost(
     }
 
 
+    /*
+     * Frontend ownership check.
+     */
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        alert(
+            "You can only delete your own posts."
+        );
+
+
+        return false;
+
+    }
+
+
     if (
         postDeletingState.has(
             cleanPostId
@@ -1568,65 +1673,52 @@ async function deletePost(
 
 
         /*
-         * Small exit transition. This works without requiring
-         * a separate animation library.
+         * Delete animation.
          */
 
-        postElement.style.transition =
-            "opacity .22s ease, transform .22s ease, max-height .25s ease";
-
-
-        postElement.style.opacity =
-            "0";
-
-
-        postElement.style.transform =
-            "translateY(-5px)";
-
-
-        postElement.style.maxHeight =
-            `${postElement.offsetHeight}px`;
-
-
-        requestAnimationFrame(
-
-            () => {
-
-                postElement.style.maxHeight =
-                    "0px";
-
-            }
-
+        postElement.classList.add(
+            "post-deleting"
         );
 
+
+        /*
+         * Fallback for browsers / CSS states where
+         * max-height transition is not effective.
+         */
 
         window.setTimeout(
 
             () => {
 
-                postElement.remove();
+                if (
+                    postElement.isConnected
+                ) {
 
+                    postElement.remove();
 
-                /*
-                 * If no posts remain, restore the feed empty state.
-                 */
+                }
+
 
                 const postsFeed =
-                    postElement.closest(
+                    document.querySelector(
                         ".posts-feed"
                     );
 
 
                 if (
                     postsFeed &&
+
                     !postsFeed.querySelector(
                         ".post-card"
                     )
+
                 ) {
 
                     postsFeed.innerHTML = `
 
-                        <div class="empty-feed">
+                        <div
+                            class="empty-feed"
+                        >
 
                             No posts yet.
 
@@ -1658,6 +1750,11 @@ async function deletePost(
         console.error(
             "Delete post error:",
             error
+        );
+
+
+        postElement.classList.remove(
+            "post-deleting"
         );
 
 
@@ -1740,20 +1837,24 @@ async function toggleCommentsPanel(
     }
 
 
-    const isOpen =
+    const currentlyOpen =
         panel.classList.contains(
             "open"
         );
 
 
-    if (isOpen) {
+    if (
+        currentlyOpen
+    ) {
 
         panel.classList.remove(
             "open"
         );
 
 
-        if (commentButton) {
+        if (
+            commentButton
+        ) {
 
             commentButton.setAttribute(
                 "aria-expanded",
@@ -1773,7 +1874,9 @@ async function toggleCommentsPanel(
     );
 
 
-    if (commentButton) {
+    if (
+        commentButton
+    ) {
 
         commentButton.setAttribute(
             "aria-expanded",
@@ -1825,6 +1928,10 @@ function bindPostActions(
     }
 
 
+    /*
+     * Prevent duplicate event binding.
+     */
+
     if (
         postsFeed.dataset.postActionsReady ===
         "true"
@@ -1846,7 +1953,7 @@ function bindPostActions(
         async event => {
 
             // ================================================
-            // POST OWNER MENU
+            // POST MENU
             // ================================================
 
             const menuButton =
@@ -1855,7 +1962,9 @@ function bindPostActions(
                 );
 
 
-            if (menuButton) {
+            if (
+                menuButton
+            ) {
 
                 event.preventDefault();
 
@@ -1869,21 +1978,25 @@ function bindPostActions(
                     );
 
 
-                /*
-                 * Extra ownership protection in the frontend.
-                 * The button itself is only rendered for owner posts.
-                 */
+                if (!postCard) {
+
+                    return;
+
+                }
+
 
                 const ownerId =
-                    postCard?.dataset.postOwnerId ||
-                    "";
+                    String(
+
+                        postCard.dataset.postOwnerId ||
+
+                        ""
+
+                    ).trim();
 
 
                 const currentUserId =
-                    String(
-                        getUserId() ||
-                        ""
-                    );
+                    getCurrentUserId();
 
 
                 if (
@@ -1921,7 +2034,9 @@ function bindPostActions(
                 );
 
 
-            if (deleteButton) {
+            if (
+                deleteButton
+            ) {
 
                 event.preventDefault();
 
@@ -1942,31 +2057,27 @@ function bindPostActions(
                 }
 
 
-                const postId =
-                    postCard.dataset.postId ||
-                    "";
+                const ownerId =
+                    String(
 
+                        postCard.dataset.postOwnerId ||
 
-                const postOwnerId =
-                    postCard.dataset.postOwnerId ||
-                    "";
+                        ""
+
+                    ).trim();
 
 
                 const currentUserId =
-                    String(
-                        getUserId() ||
-                        ""
-                    );
+                    getCurrentUserId();
 
 
                 /*
-                 * Do not even show confirmation when the
-                 * post is not owned by the current user.
+                 * Owner-only UI protection.
                  */
 
                 if (
-                    !postOwnerId ||
-                    postOwnerId !==
+                    !ownerId ||
+                    ownerId !==
                     currentUserId
                 ) {
 
@@ -1995,7 +2106,7 @@ function bindPostActions(
 
                 await deletePost(
 
-                    postId,
+                    postCard.dataset.postId,
 
                     postCard
 
@@ -2017,7 +2128,9 @@ function bindPostActions(
                 );
 
 
-            if (likeButton) {
+            if (
+                likeButton
+            ) {
 
                 event.preventDefault();
 
@@ -2028,10 +2141,6 @@ function bindPostActions(
                     );
 
 
-                const postId =
-                    likeButton.dataset.postId;
-
-
                 const countElement =
                     postCard?.querySelector(
                         ".post-like-count"
@@ -2040,7 +2149,7 @@ function bindPostActions(
 
                 await toggleLike(
 
-                    postId,
+                    likeButton.dataset.postId,
 
                     likeButton,
 
@@ -2064,7 +2173,9 @@ function bindPostActions(
                 );
 
 
-            if (commentButton) {
+            if (
+                commentButton
+            ) {
 
                 event.preventDefault();
 
@@ -2095,7 +2206,9 @@ function bindPostActions(
                 );
 
 
-            if (submitButton) {
+            if (
+                submitButton
+            ) {
 
                 event.preventDefault();
 
@@ -2147,94 +2260,43 @@ function bindPostActions(
 
 
     // ========================================================
-    // CLOSE MENUS WHEN CLICKING OUTSIDE
+    // CLOSE POST MENUS OUTSIDE
     // ========================================================
 
-    document.addEventListener(
+    if (
+        !postsFeed.dataset.postMenuDocumentReady
+    ) {
 
-        "click",
-
-        event => {
-
-            if (
-                event.target.closest(
-                    ".post-owner-actions"
-                )
-            ) {
-
-                return;
-
-            }
+        postsFeed.dataset.postMenuDocumentReady =
+            "true";
 
 
-            closeAllPostMenus(
-                postsFeed
-            );
+        document.addEventListener(
 
-        }
+            "click",
 
-    );
+            event => {
 
+                if (
+                    event.target.closest(
+                        ".post-owner-actions"
+                    )
+                ) {
 
-    // ========================================================
-    // ENTER TO SUBMIT COMMENT
-    // ========================================================
+                    return;
 
-    postsFeed.addEventListener(
-
-        "keydown",
-
-        event => {
-
-            if (
-                event.key !==
-                "Enter" ||
-
-                event.shiftKey
-            ) {
-
-                return;
-
-            }
+                }
 
 
-            const input =
-                event.target.closest(
-                    ".post-comment-input"
+                closeAllPostMenus(
+                    postsFeed
                 );
 
-
-            if (!input) {
-
-                return;
-
             }
 
+        );
 
-            event.preventDefault();
-
-
-            const postCard =
-                input.closest(
-                    ".post-card"
-                );
-
-
-            const submitButton =
-                postCard?.querySelector(
-                    ".post-submit-comment"
-                );
-
-
-            if (submitButton) {
-
-                submitButton.click();
-
-            }
-
-        }
-
-    );
+    }
 
 }
 
@@ -2377,22 +2439,28 @@ async function publishPost(
     ) {
 
         await options.afterPublish(
+
             result?.post ||
+
             null
+
         );
 
     }
 
 
-    return result?.post ||
-        null;
+    return (
+        result?.post ||
+
+        null
+    );
 
 }
 
 
 
 // ============================================================
-// BIND POST COMPOSER
+// POST COMPOSER
 // ============================================================
 
 function initializePostComposer(
@@ -2470,7 +2538,9 @@ function initializePostComposer(
 
                 const content =
                     textarea
+
                         ? textarea.value.trim()
+
                         : "";
 
 
@@ -2546,7 +2616,7 @@ function initializePostComposer(
 
                         error?.message ||
 
-                        "Backend server se connect nahi ho paya."
+                        "Could not publish post."
 
                     );
 
@@ -2579,17 +2649,17 @@ function initializePostComposer(
 function initializePosts(
     {
         postsFeed,
-
         textarea,
-
         counter,
-
         publishButton,
-
         refreshButton
 
     } = {}
 ) {
+
+    /*
+     * Post actions
+     */
 
     bindPostActions(
         postsFeed
@@ -2597,14 +2667,17 @@ function initializePosts(
 
 
     /*
-     * Comment-specific interactions remain inside
-     * community-comments.js.
+     * Comments module
      */
 
     initializeComments(
         postsFeed
     );
 
+
+    /*
+     * Post composer
+     */
 
     initializePostComposer({
 
@@ -2618,6 +2691,10 @@ function initializePosts(
 
     });
 
+
+    /*
+     * Refresh
+     */
 
     if (
         refreshButton &&
@@ -2654,7 +2731,6 @@ function initializePosts(
                     await loadPosts(
                         postsFeed
                     );
-
 
                 } finally {
 
@@ -2702,9 +2778,9 @@ export {
 
     isOwnPost,
 
-    renderPost,
-
     renderPostOwnerActions,
+
+    renderPost,
 
     renderPosts,
 
