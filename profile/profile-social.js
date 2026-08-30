@@ -12,6 +12,8 @@
    - Comments
    - Comment loading
    - Comment submission
+   - Post editing
+   - Post deletion
    - Posts count
    - Social UI events
 
@@ -31,6 +33,8 @@ import {
 
     getCurrentUser,
 
+    getUserId,
+
     getUsername,
 
     getAuthHeaders,
@@ -40,6 +44,7 @@ import {
     handleAuthError
 
 } from "./profile-auth.js";
+
 
 
 /* =========================================================
@@ -56,6 +61,24 @@ const MAX_POST_LENGTH =
 
 const MAX_COMMENT_LENGTH =
     1000;
+
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+const likeLoadingState =
+    new Set();
+
+
+const postEditingState =
+    new Set();
+
+
+const postDeletingState =
+    new Set();
+
 
 
 /* =========================================================
@@ -92,6 +115,7 @@ const createPostBtn =
     );
 
 
+
 /* =========================================================
    RESPONSE HELPER
    ========================================================= */
@@ -104,13 +128,16 @@ async function parseResponse(
 
         return await response.json();
 
-    } catch {
+    } catch (
+        error
+    ) {
 
         return {};
 
     }
 
 }
+
 
 
 /* =========================================================
@@ -138,6 +165,25 @@ function escapeHTML(
 }
 
 
+
+/* =========================================================
+   CURRENT USER ID
+   ========================================================= */
+
+function getCurrentUserId() {
+
+    return String(
+
+        getUserId() ||
+
+        ""
+
+    ).trim();
+
+}
+
+
+
 /* =========================================================
    POST ID
    ========================================================= */
@@ -159,85 +205,64 @@ function getPostId(
 }
 
 
+
 /* =========================================================
-   POST LIKES
+   POST AUTHOR ID
    ========================================================= */
 
-function getPostLikes(
+function getPostAuthorId(
     post
 ) {
 
-    const value =
-        Number(
-            post?.likes
-        );
+    return String(
 
+        post?.authorId ||
 
-    return Number.isFinite(
-        value
-    )
+        post?.userId ||
 
-        ? Math.max(
-            0,
-            value
-        )
+        ""
 
-        : 0;
+    ).trim();
 
 }
 
 
+
 /* =========================================================
-   POST COMMENT COUNT
+   POST OWNERSHIP
    ========================================================= */
 
-function getPostCommentsCount(
+function isOwnPost(
     post
 ) {
 
-    const value =
-        Number(
+    const currentUserId =
+        getCurrentUserId();
 
-            post?.comments ??
 
-            post?.commentCount ??
-
-            0
-
+    const authorId =
+        getPostAuthorId(
+            post
         );
 
 
-    return Number.isFinite(
-        value
-    )
+    if (
+        !currentUserId ||
+        !authorId
+    ) {
 
-        ? Math.max(
-            0,
-            value
-        )
+        return false;
 
-        : 0;
+    }
 
-}
-
-
-/* =========================================================
-   POST LIKE STATE
-   ========================================================= */
-
-function isPostLiked(
-    post
-) {
 
     return (
-
-        post?.liked === true ||
-
-        post?.isLiked === true
-
+        currentUserId ===
+        authorId
     );
 
 }
+
 
 
 /* =========================================================
@@ -291,6 +316,166 @@ function formatPostDate(
 }
 
 
+
+/* =========================================================
+   POST LIKES
+   ========================================================= */
+
+function getPostLikes(
+    post
+) {
+
+    const value =
+        Number(
+            post?.likes ??
+            0
+        );
+
+
+    return Number.isFinite(
+        value
+    )
+
+        ? Math.max(
+            0,
+            value
+        )
+
+        : 0;
+
+}
+
+
+
+/* =========================================================
+   POST COMMENT COUNT
+   ========================================================= */
+
+function getPostCommentsCount(
+    post
+) {
+
+    const value =
+        Number(
+
+            post?.comments ??
+
+            post?.commentCount ??
+
+            0
+
+        );
+
+
+    return Number.isFinite(
+        value
+    )
+
+        ? Math.max(
+            0,
+            value
+        )
+
+        : 0;
+
+}
+
+
+
+/* =========================================================
+   POST LIKE STATE
+   ========================================================= */
+
+function isPostLiked(
+    post
+) {
+
+    return (
+
+        post?.liked ===
+        true
+
+        ||
+
+        post?.isLiked ===
+        true
+
+    );
+
+}
+
+
+
+/* =========================================================
+   POST CHARACTER COUNT
+   ========================================================= */
+
+function updatePostCharacterCount() {
+
+    if (
+        !postContent ||
+        !postCharacterCount
+    ) {
+
+        return;
+
+    }
+
+
+    postCharacterCount.textContent =
+
+        `${postContent.value.length} / ${MAX_POST_LENGTH}`;
+
+}
+
+
+
+/* =========================================================
+   LIKE ANIMATION
+   ========================================================= */
+
+function triggerLikeAnimation(
+    button
+) {
+
+    if (!button) {
+
+        return;
+
+    }
+
+
+    button.classList.remove(
+        "like-just-toggled"
+    );
+
+
+    void button.offsetWidth;
+
+
+    button.classList.add(
+        "like-just-toggled"
+    );
+
+
+    window.setTimeout(
+
+        () => {
+
+            button.classList.remove(
+                "like-just-toggled"
+            );
+
+        },
+
+        500
+
+    );
+
+}
+
+
+
 /* =========================================================
    RENDER COMMENTS
    ========================================================= */
@@ -308,18 +493,26 @@ function renderComments(
 
 
     if (
+
         !Array.isArray(
             comments
         )
+
         ||
+
         comments.length ===
-            0
+        0
+
     ) {
 
         container.innerHTML = `
 
-            <div class="post-comments-empty">
+            <div
+                class="post-comments-empty"
+            >
+
                 No comments yet.
+
             </div>
 
         `;
@@ -338,35 +531,43 @@ function renderComments(
                 comment => {
 
                     const username =
-                        comment.username ||
+                        comment?.username ||
                         "Dheere User";
 
 
                     const content =
-                        comment.content ||
+                        comment?.content ||
                         "";
 
 
                     const date =
                         formatPostDate(
-                            comment.createdAt
+                            comment?.createdAt
                         );
 
 
                     return `
 
-                        <div class="post-comment">
+                        <div
+                            class="post-comment"
+                        >
 
-                            <div class="post-comment-header">
+                            <div
+                                class="post-comment-header"
+                            >
 
                                 <strong>
+
                                     @${escapeHTML(
                                         username
                                     )}
+
                                 </strong>
+
 
                                 ${
                                     date
+
                                         ? `
                                             <span>
                                                 ${escapeHTML(
@@ -374,13 +575,16 @@ function renderComments(
                                                 )}
                                             </span>
                                         `
+
                                         : ""
                                 }
 
                             </div>
 
 
-                            <div class="post-comment-content">
+                            <div
+                                class="post-comment-content"
+                            >
 
                                 ${escapeHTML(
                                     content
@@ -398,6 +602,7 @@ function renderComments(
             .join("");
 
 }
+
 
 
 /* =========================================================
@@ -422,8 +627,12 @@ async function loadPostComments(
 
     commentsContainer.innerHTML = `
 
-        <div class="post-comments-loading">
+        <div
+            class="post-comments-loading"
+        >
+
             Loading comments...
+
         </div>
 
     `;
@@ -434,7 +643,9 @@ async function loadPostComments(
         const response =
             await fetch(
 
-                `${API_BASE}/posts/${encodeURIComponent(postId)}/comments`,
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/comments`,
 
                 {
 
@@ -514,7 +725,9 @@ async function loadPostComments(
         }
 
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
 
@@ -527,8 +740,12 @@ async function loadPostComments(
 
         commentsContainer.innerHTML = `
 
-            <div class="post-comments-error">
+            <div
+                class="post-comments-error"
+            >
+
                 Unable to load comments right now.
+
             </div>
 
         `;
@@ -538,22 +755,17 @@ async function loadPostComments(
 }
 
 
+
 /* =========================================================
-   CREATE COMMENT
+   CREATE POST COMMENT
    ========================================================= */
 
 async function createPostComment(
-
     postId,
-
     input,
-
     submitButton,
-
     commentsContainer,
-
     commentCountElement
-
 ) {
 
     if (
@@ -627,7 +839,9 @@ async function createPostComment(
         const response =
             await fetch(
 
-                `${API_BASE}/posts/${encodeURIComponent(postId)}/comments`,
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/comments`,
 
                 {
 
@@ -701,9 +915,7 @@ async function createPostComment(
 
             const emptyState =
                 commentsContainer?.querySelector(
-
                     ".post-comments-empty"
-
                 );
 
 
@@ -727,9 +939,12 @@ async function createPostComment(
 
             element.innerHTML = `
 
-                <div class="post-comment-header">
+                <div
+                    class="post-comment-header"
+                >
 
                     <strong>
+
                         @${escapeHTML(
 
                             comment.username ||
@@ -739,7 +954,9 @@ async function createPostComment(
                             "user"
 
                         )}
+
                     </strong>
+
 
                     ${
                         comment.createdAt
@@ -760,7 +977,9 @@ async function createPostComment(
                 </div>
 
 
-                <div class="post-comment-content">
+                <div
+                    class="post-comment-content"
+                >
 
                     ${escapeHTML(
 
@@ -775,7 +994,7 @@ async function createPostComment(
             `;
 
 
-            commentsContainer?.appendChild(
+            commentsContainer.appendChild(
                 element
             );
 
@@ -812,7 +1031,9 @@ async function createPostComment(
         }
 
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
 
@@ -825,7 +1046,7 @@ async function createPostComment(
 
         alert(
 
-            error.message ||
+            error?.message ||
 
             "Unable to add comment."
 
@@ -847,6 +1068,7 @@ async function createPostComment(
     }
 
 }
+
 
 
 /* =========================================================
@@ -873,16 +1095,9 @@ async function toggleLike(
     }
 
 
-    if (!postId || !button) {
-
-        return;
-
-    }
-
-
     if (
-        button.dataset.busy ===
-        "true"
+        !postId ||
+        !button
     ) {
 
         return;
@@ -890,8 +1105,20 @@ async function toggleLike(
     }
 
 
-    button.dataset.busy =
-        "true";
+    if (
+        likeLoadingState.has(
+            postId
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    likeLoadingState.add(
+        postId
+    );
 
 
     button.disabled =
@@ -903,7 +1130,9 @@ async function toggleLike(
         const response =
             await fetch(
 
-                `${API_BASE}/posts/${encodeURIComponent(postId)}/like`,
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}/like`,
 
                 {
 
@@ -994,13 +1223,10 @@ async function toggleLike(
 
 
         button.setAttribute(
-
             "aria-pressed",
-
             liked
                 ? "true"
                 : "false"
-
         );
 
 
@@ -1036,7 +1262,14 @@ async function toggleLike(
         }
 
 
-    } catch (error) {
+        triggerLikeAnimation(
+            button
+        );
+
+
+    } catch (
+        error
+    ) {
 
         console.error(
 
@@ -1049,7 +1282,7 @@ async function toggleLike(
 
         alert(
 
-            error.message ||
+            error?.message ||
 
             "Unable to update like."
 
@@ -1058,16 +1291,102 @@ async function toggleLike(
 
     } finally {
 
+        likeLoadingState.delete(
+            postId
+        );
+
+
         button.disabled =
             false;
-
-
-        button.dataset.busy =
-            "false";
 
     }
 
 }
+
+
+
+/* =========================================================
+   POST OWNER MENU
+   ========================================================= */
+
+function renderPostOwnerActions(
+    post
+) {
+
+    /*
+     * IMPORTANT:
+     * No menu is rendered for another user's post.
+     */
+
+    if (
+        !isOwnPost(
+            post
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return `
+
+        <div
+            class="post-owner-actions"
+        >
+
+            <button
+                type="button"
+                class="post-menu-button"
+                data-profile-post-action="menu"
+                aria-label="Post options"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+
+                <span
+                    aria-hidden="true"
+                >
+                    ⋯
+                </span>
+
+            </button>
+
+
+            <div
+                class="post-menu"
+                data-post-menu
+                hidden
+            >
+
+                <button
+                    type="button"
+                    data-profile-post-action="edit"
+                >
+
+                    Edit
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="danger"
+                    data-profile-post-action="delete"
+                >
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
 
 
 /* =========================================================
@@ -1086,16 +1405,26 @@ function renderPosts(
 
 
     if (
-        !Array.isArray(posts)
+
+        !Array.isArray(
+            posts
+        )
+
         ||
+
         posts.length ===
-            0
+        0
+
     ) {
 
         postsFeed.innerHTML = `
 
-            <div class="empty-state">
+            <div
+                class="empty-state"
+            >
+
                 No posts yet.
+
             </div>
 
         `;
@@ -1141,8 +1470,14 @@ function renderPosts(
                         );
 
 
+                    const authorId =
+                        getPostAuthorId(
+                            post
+                        );
+
+
                     const username =
-                        post.username ||
+                        post?.username ||
 
                         getUsername() ||
 
@@ -1150,13 +1485,13 @@ function renderPosts(
 
 
                     const content =
-                        post.content ||
+                        post?.content ||
                         "";
 
 
                     const date =
                         formatPostDate(
-                            post.createdAt
+                            post?.createdAt
                         );
 
 
@@ -1178,6 +1513,12 @@ function renderPosts(
                         );
 
 
+                    const ownerActions =
+                        renderPostOwnerActions(
+                            post
+                        );
+
+
                     return `
 
                         <article
@@ -1185,31 +1526,58 @@ function renderPosts(
                             data-post-id="${escapeHTML(
                                 postId
                             )}"
+                            data-post-owner-id="${escapeHTML(
+                                authorId
+                            )}"
                         >
 
-                            <div class="post-header">
+                            <div
+                                class="post-header"
+                            >
 
-                                <div class="post-author">
+                                <div
+                                    class="post-author-wrapper"
+                                >
 
-                                    @${escapeHTML(
-                                        username
-                                    )}
+                                    <div
+                                        class="post-author"
+                                    >
+
+                                        @${escapeHTML(
+                                            username
+                                        )}
+
+                                    </div>
 
                                 </div>
 
 
-                                <div class="post-date">
+                                <div
+                                    class="post-header-right"
+                                >
 
-                                    ${escapeHTML(
-                                        date
-                                    )}
+                                    <span
+                                        class="post-date"
+                                    >
+
+                                        ${escapeHTML(
+                                            date
+                                        )}
+
+                                    </span>
+
+
+                                    ${ownerActions}
 
                                 </div>
 
                             </div>
 
 
-                            <div class="post-content">
+                            <div
+                                class="post-content"
+                                data-profile-post-content
+                            >
 
                                 ${escapeHTML(
                                     content
@@ -1218,15 +1586,18 @@ function renderPosts(
                             </div>
 
 
-                            <div class="post-actions">
+                            <div
+                                class="post-footer"
+                            >
 
                                 <button
                                     type="button"
-                                    class="post-action post-like-btn ${
+                                    class="post-action-button post-like-button ${
                                         liked
                                             ? "liked"
                                             : ""
                                     }"
+                                    data-profile-post-action="like"
                                     data-liked="${
                                         liked
                                             ? "true"
@@ -1239,24 +1610,39 @@ function renderPosts(
                                     }"
                                 >
 
-                                    <span class="post-action-icon">
+                                    <span
+                                        class="post-action-icon"
+                                        aria-hidden="true"
+                                    >
+
                                         ${
                                             liked
                                                 ? "♥"
                                                 : "♡"
                                         }
+
                                     </span>
 
-                                    <span class="post-action-text">
+
+                                    <span
+                                        class="post-action-text"
+                                    >
+
                                         ${
                                             liked
                                                 ? "Liked"
                                                 : "Like"
                                         }
+
                                     </span>
 
-                                    <span class="post-like-count">
+
+                                    <span
+                                        class="post-action-count post-like-count"
+                                    >
+
                                         ${likes}
+
                                     </span>
 
                                 </button>
@@ -1264,19 +1650,36 @@ function renderPosts(
 
                                 <button
                                     type="button"
-                                    class="post-action post-comment-toggle"
+                                    class="post-action-button post-comment-button"
+                                    data-profile-post-action="comment"
+                                    aria-expanded="false"
                                 >
 
-                                    <span class="post-action-icon">
+                                    <span
+                                        class="post-action-icon"
+                                        aria-hidden="true"
+                                    >
+
                                         💬
+
                                     </span>
 
-                                    <span class="post-action-text">
+
+                                    <span
+                                        class="post-action-text"
+                                    >
+
                                         Comment
+
                                     </span>
 
-                                    <span class="post-comment-count">
+
+                                    <span
+                                        class="post-action-count post-comment-count"
+                                    >
+
                                         ${comments}
+
                                     </span>
 
                                 </button>
@@ -1285,7 +1688,7 @@ function renderPosts(
 
 
                             <div
-                                class="post-comments"
+                                class="post-comments-panel"
                                 hidden
                             >
 
@@ -1293,8 +1696,12 @@ function renderPosts(
                                     class="post-comments-list"
                                 >
 
-                                    <div class="post-comments-empty">
+                                    <div
+                                        class="post-comments-empty"
+                                    >
+
                                         No comments loaded yet.
+
                                     </div>
 
                                 </div>
@@ -1304,18 +1711,22 @@ function renderPosts(
                                     class="post-comment-form"
                                 >
 
-                                    <textarea
+                                    <input
+                                        type="text"
                                         class="post-comment-input"
                                         maxlength="${MAX_COMMENT_LENGTH}"
                                         placeholder="Write a comment..."
-                                    ></textarea>
+                                        autocomplete="off"
+                                    >
 
 
                                     <button
                                         type="button"
                                         class="post-submit-comment"
                                     >
+
                                         Comment
+
                                     </button>
 
                                 </div>
@@ -1332,6 +1743,1216 @@ function renderPosts(
             .join("");
 
 }
+
+
+
+/* =========================================================
+   BEGIN POST EDIT
+   ========================================================= */
+
+function beginPostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return false;
+
+    }
+
+
+    if (
+        postElement.dataset.editing ===
+        "true"
+    ) {
+
+        return false;
+
+    }
+
+
+    const postId =
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return false;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-profile-post-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return false;
+
+    }
+
+
+    const originalContent =
+        contentElement.textContent ||
+        "";
+
+
+    postElement.dataset.originalContent =
+        originalContent;
+
+
+    postElement.dataset.editing =
+        "true";
+
+
+    closePostMenus(
+        postElement
+    );
+
+
+    contentElement.innerHTML = `
+
+        <div
+            class="post-edit-editor"
+        >
+
+            <textarea
+                class="post-edit-input"
+                maxlength="${MAX_POST_LENGTH}"
+                aria-label="Edit post"
+            ></textarea>
+
+
+            <div
+                class="post-edit-character-row"
+            >
+
+                <span
+                    class="post-edit-character-count"
+                >
+
+                    0 / ${MAX_POST_LENGTH}
+
+                </span>
+
+            </div>
+
+
+            <div
+                class="post-edit-actions"
+            >
+
+                <button
+                    type="button"
+                    data-profile-post-action="cancel-edit"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="button"
+                    data-profile-post-action="save-edit"
+                >
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const input =
+        contentElement.querySelector(
+            ".post-edit-input"
+        );
+
+
+    const counter =
+        contentElement.querySelector(
+            ".post-edit-character-count"
+        );
+
+
+    if (
+        input
+    ) {
+
+        input.value =
+            originalContent;
+
+
+        updateProfileEditCounter(
+            input,
+            counter
+        );
+
+
+        input.focus();
+
+
+        input.setSelectionRange(
+
+            input.value.length,
+
+            input.value.length
+
+        );
+
+    }
+
+
+    return true;
+
+}
+
+
+
+/* =========================================================
+   PROFILE EDIT COUNTER
+   ========================================================= */
+
+function updateProfileEditCounter(
+    input,
+    counter
+) {
+
+    if (
+        !input ||
+        !counter
+    ) {
+
+        return;
+
+    }
+
+
+    counter.textContent =
+        `${input.value.length} / ${MAX_POST_LENGTH}`;
+
+}
+
+
+
+/* =========================================================
+   CANCEL POST EDIT
+   ========================================================= */
+
+function cancelPostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-profile-post-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return;
+
+    }
+
+
+    const originalContent =
+        postElement.dataset.originalContent ||
+        "";
+
+
+    contentElement.innerHTML =
+        escapeHTML(
+            originalContent
+        );
+
+
+    postElement.dataset.editing =
+        "false";
+
+
+    delete postElement.dataset.originalContent;
+
+}
+
+
+
+/* =========================================================
+   UPDATE POST
+   ========================================================= */
+
+async function updatePost(
+    postId,
+    content
+) {
+
+    const cleanPostId =
+        String(
+            postId ||
+            ""
+        ).trim();
+
+
+    const cleanContent =
+        typeof content ===
+        "string"
+
+            ? content.trim()
+
+            : "";
+
+
+    if (!cleanPostId) {
+
+        throw new Error(
+            "Invalid post ID."
+        );
+
+    }
+
+
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        throw new Error(
+            "Please login first."
+        );
+
+    }
+
+
+    if (!cleanContent) {
+
+        throw new Error(
+            "Post cannot be empty."
+        );
+
+    }
+
+
+    if (
+        cleanContent.length >
+        MAX_POST_LENGTH
+    ) {
+
+        throw new Error(
+
+            `Post cannot exceed ${MAX_POST_LENGTH} characters.`
+
+        );
+
+    }
+
+
+    if (
+        postEditingState.has(
+            cleanPostId
+        )
+    ) {
+
+        return null;
+
+    }
+
+
+    postEditingState.add(
+        cleanPostId
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE}/posts/${encodeURIComponent(
+                    cleanPostId
+                )}`,
+
+                {
+
+                    method:
+                        "PATCH",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            content:
+                                cleanContent
+
+                        })
+
+                }
+
+            );
+
+
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return null;
+
+        }
+
+
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only edit your own posts."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Post not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not update post."
+
+            );
+
+        }
+
+
+        return (
+            result?.post ||
+            null
+        );
+
+
+    } finally {
+
+        postEditingState.delete(
+            cleanPostId
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SAVE POST EDIT
+   ========================================================= */
+
+async function savePostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return;
+
+    }
+
+
+    const postId =
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-profile-post-content]"
+        );
+
+
+    const input =
+        contentElement?.querySelector(
+            ".post-edit-input"
+        );
+
+
+    if (!contentElement || !input) {
+
+        return;
+
+    }
+
+
+    const saveButton =
+        postElement.querySelector(
+            '[data-profile-post-action="save-edit"]'
+        );
+
+
+    const cancelButton =
+        postElement.querySelector(
+            '[data-profile-post-action="cancel-edit"]'
+        );
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        alert(
+            "Post cannot be empty."
+        );
+
+
+        input.focus();
+
+
+        return;
+
+    }
+
+
+    if (
+        content.length >
+        MAX_POST_LENGTH
+    ) {
+
+        alert(
+
+            `Post cannot exceed ${MAX_POST_LENGTH} characters.`
+
+        );
+
+
+        input.focus();
+
+
+        return;
+
+    }
+
+
+    if (saveButton) {
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Saving...";
+
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.disabled =
+            true;
+
+    }
+
+
+    try {
+
+        const updatedPost =
+            await updatePost(
+
+                postId,
+
+                content
+
+            );
+
+
+        if (!updatedPost) {
+
+            return;
+
+        }
+
+
+        const updatedContent =
+            updatedPost?.content ||
+            content;
+
+
+        contentElement.innerHTML =
+            escapeHTML(
+                updatedContent
+            );
+
+
+        postElement.dataset.editing =
+            "false";
+
+
+        delete postElement.dataset.originalContent;
+
+
+        /*
+         * Rebuild the header date label so the edited
+         * state is visible without disturbing owner menu.
+         */
+
+        const headerRight =
+            postElement.querySelector(
+                ".post-header-right"
+            );
+
+
+        if (
+            headerRight
+        ) {
+
+            const oldEdited =
+                headerRight.querySelector(
+                    ".post-edited-label"
+                );
+
+
+            if (
+                !oldEdited
+            ) {
+
+                const editedLabel =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                editedLabel.className =
+                    "post-edited-label";
+
+
+                editedLabel.textContent =
+                    "edited";
+
+
+                headerRight.insertBefore(
+
+                    editedLabel,
+
+                    headerRight.querySelector(
+                        ".post-owner-actions"
+                    )
+
+                );
+
+            }
+
+        }
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+
+            "Save post edit error:",
+
+            error
+
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to update post."
+
+        );
+
+
+    } finally {
+
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save";
+
+        }
+
+
+        if (cancelButton) {
+
+            cancelButton.disabled =
+                false;
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CLOSE POST MENUS
+   ========================================================= */
+
+function closePostMenus(
+    root = postsFeed
+) {
+
+    if (!root) {
+
+        return;
+
+    }
+
+
+    root
+        .querySelectorAll(
+            "[data-post-menu]"
+        )
+        .forEach(
+
+            menu => {
+
+                menu.hidden =
+                    true;
+
+            }
+
+        );
+
+
+    root
+        .querySelectorAll(
+            ".post-menu-button"
+        )
+        .forEach(
+
+            button => {
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        );
+
+}
+
+
+
+/* =========================================================
+   TOGGLE POST MENU
+   ========================================================= */
+
+function togglePostMenu(
+    postElement,
+    button
+) {
+
+    if (
+        !postElement ||
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return;
+
+    }
+
+
+    const menu =
+        postElement.querySelector(
+            "[data-post-menu]"
+        );
+
+
+    if (!menu) {
+
+        return;
+
+    }
+
+
+    const shouldOpen =
+        menu.hidden;
+
+
+    closePostMenus(
+        postsFeed
+    );
+
+
+    menu.hidden =
+        !shouldOpen;
+
+
+    button.setAttribute(
+
+        "aria-expanded",
+
+        shouldOpen
+            ? "true"
+            : "false"
+
+    );
+
+}
+
+
+
+/* =========================================================
+   DELETE POST
+   ========================================================= */
+
+async function deletePost(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return false;
+
+    }
+
+
+    const postId =
+        String(
+
+            postElement.dataset.postId ||
+
+            ""
+
+        ).trim();
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        alert(
+            "Please login first."
+        );
+
+
+        return false;
+
+    }
+
+
+    if (
+        postDeletingState.has(
+            postId
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    const confirmed =
+        window.confirm(
+            "Delete this post?"
+        );
+
+
+    if (!confirmed) {
+
+        return false;
+
+    }
+
+
+    postDeletingState.add(
+        postId
+    );
+
+
+    const deleteButton =
+        postElement.querySelector(
+            '[data-profile-post-action="delete"]'
+        );
+
+
+    if (deleteButton) {
+
+        deleteButton.disabled =
+            true;
+
+        deleteButton.textContent =
+            "Deleting...";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE}/posts/${encodeURIComponent(
+                    postId
+                )}`,
+
+                {
+
+                    method:
+                        "DELETE",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+
+            );
+
+
+        const result =
+            await parseResponse(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            handleAuthError(
+                result?.error
+            );
+
+
+            return false;
+
+        }
+
+
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only delete your own posts."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Post not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not delete post."
+
+            );
+
+        }
+
+
+        postElement.classList.add(
+            "post-deleting"
+        );
+
+
+        window.setTimeout(
+
+            () => {
+
+                if (
+                    postElement.isConnected
+                ) {
+
+                    postElement.remove();
+
+                }
+
+
+                if (
+                    profilePostCount
+                ) {
+
+                    const currentCount =
+                        Number(
+                            profilePostCount.textContent
+                        );
+
+
+                    if (
+                        Number.isFinite(
+                            currentCount
+                        )
+                    ) {
+
+                        profilePostCount.textContent =
+                            String(
+                                Math.max(
+                                    0,
+                                    currentCount - 1
+                                )
+                            );
+
+                    }
+
+                }
+
+
+                if (
+                    postsFeed &&
+
+                    !postsFeed.querySelector(
+                        ".post-card"
+                    )
+
+                ) {
+
+                    postsFeed.innerHTML = `
+
+                        <div
+                            class="empty-state"
+                        >
+
+                            No posts yet.
+
+                        </div>
+
+                    `;
+
+                }
+
+            },
+
+            280
+
+        );
+
+
+        return true;
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+
+            "Delete post error:",
+
+            error
+
+        );
+
+
+        postElement.classList.remove(
+            "post-deleting"
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to delete post."
+
+        );
+
+
+        return false;
+
+
+    } finally {
+
+        postDeletingState.delete(
+            postId
+        );
+
+    }
+
+}
+
 
 
 /* =========================================================
@@ -1369,6 +2990,8 @@ async function loadUserPosts() {
 
             currentUser?.userId ||
 
+            getUserId() ||
+
             ""
 
         ).trim();
@@ -1378,8 +3001,12 @@ async function loadUserPosts() {
 
         postsFeed.innerHTML = `
 
-            <div class="empty-state error-state">
+            <div
+                class="empty-state error-state"
+            >
+
                 Username is missing from your profile.
+
             </div>
 
         `;
@@ -1392,8 +3019,12 @@ async function loadUserPosts() {
 
     postsFeed.innerHTML = `
 
-        <div class="empty-state">
+        <div
+            class="empty-state"
+        >
+
             Loading your posts...
+
         </div>
 
     `;
@@ -1403,14 +3034,20 @@ async function loadUserPosts() {
 
         const query =
             userId
-                ? `?userId=${encodeURIComponent(userId)}`
+
+                ? `?userId=${encodeURIComponent(
+                    userId
+                )}`
+
                 : "";
 
 
         const response =
             await fetch(
 
-                `${API_BASE}/posts/user/${encodeURIComponent(username)}${query}`,
+                `${API_BASE}/posts/user/${encodeURIComponent(
+                    username
+                )}${query}`,
 
                 {
 
@@ -1477,7 +3114,9 @@ async function loadUserPosts() {
         );
 
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
 
@@ -1500,8 +3139,12 @@ async function loadUserPosts() {
 
         postsFeed.innerHTML = `
 
-            <div class="empty-state error-state">
+            <div
+                class="empty-state error-state"
+            >
+
                 Unable to load your posts right now.
+
             </div>
 
         `;
@@ -1509,6 +3152,7 @@ async function loadUserPosts() {
     }
 
 }
+
 
 
 /* =========================================================
@@ -1631,8 +3275,10 @@ async function createPost() {
 
         if (
             !response.ok ||
+
             result?.success !==
-                true
+            true
+
         ) {
 
             throw new Error(
@@ -1657,18 +3303,15 @@ async function createPost() {
         updatePostCharacterCount();
 
 
-        /*
-         * Reload feed so server-generated post data,
-         * timestamps and counts are authoritative.
-         */
-
         await loadUserPosts();
 
 
         return true;
 
 
-    } catch (error) {
+    } catch (
+        error
+    ) {
 
         console.error(
 
@@ -1681,7 +3324,7 @@ async function createPost() {
 
         alert(
 
-            error.message ||
+            error?.message ||
 
             "Unable to publish post."
 
@@ -1709,28 +3352,6 @@ async function createPost() {
 }
 
 
-/* =========================================================
-   UPDATE POST CHARACTER COUNT
-   ========================================================= */
-
-function updatePostCharacterCount() {
-
-    if (
-        !postContent ||
-        !postCharacterCount
-    ) {
-
-        return;
-
-    }
-
-
-    postCharacterCount.textContent =
-
-        `${postContent.value.length} / ${MAX_POST_LENGTH}`;
-
-}
-
 
 /* =========================================================
    POST CLICK HANDLER
@@ -1747,44 +3368,81 @@ async function handlePostClick(
     }
 
 
-    /* ---------------------------------------------
-       LIKE
-       --------------------------------------------- */
+    // ========================================================
+    // POST MENU
+    // ========================================================
 
-    const likeButton =
+    const menuButton =
         event.target.closest(
-            ".post-like-btn"
+            '[data-profile-post-action="menu"]'
         );
 
 
-    if (likeButton) {
+    if (
+        menuButton
+    ) {
 
-        const postCard =
-            likeButton.closest(
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            menuButton.closest(
                 ".post-card"
             );
 
 
-        const postId =
-            postCard?.dataset.postId;
+        if (!postElement) {
+
+            return;
+
+        }
 
 
-        const countElement =
-            likeButton.querySelector(
-                ".post-like-count"
+        togglePostMenu(
+
+            postElement,
+
+            menuButton
+
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // EDIT
+    // ========================================================
+
+    const editButton =
+        event.target.closest(
+            '[data-profile-post-action="edit"]'
+        );
+
+
+    if (
+        editButton
+    ) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            editButton.closest(
+                ".post-card"
             );
 
 
-        if (postId) {
+        if (postElement) {
 
-            await toggleLike(
-
-                postId,
-
-                likeButton,
-
-                countElement
-
+            beginPostEdit(
+                postElement
             );
 
         }
@@ -1795,42 +3453,223 @@ async function handlePostClick(
     }
 
 
-    /* ---------------------------------------------
-       COMMENT TOGGLE
-       --------------------------------------------- */
+    // ========================================================
+    // DELETE
+    // ========================================================
 
-    const commentToggle =
+    const deleteButton =
         event.target.closest(
-            ".post-comment-toggle"
+            '[data-profile-post-action="delete"]'
         );
 
 
-    if (commentToggle) {
+    if (
+        deleteButton
+    ) {
 
-        const postCard =
-            commentToggle.closest(
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        const postElement =
+            deleteButton.closest(
+                ".post-card"
+            );
+
+
+        if (postElement) {
+
+            closePostMenus(
+                postElement
+            );
+
+
+            await deletePost(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // CANCEL EDIT
+    // ========================================================
+
+    const cancelEditButton =
+        event.target.closest(
+            '[data-profile-post-action="cancel-edit"]'
+        );
+
+
+    if (
+        cancelEditButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            cancelEditButton.closest(
+                ".post-card"
+            );
+
+
+        if (postElement) {
+
+            cancelPostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // SAVE EDIT
+    // ========================================================
+
+    const saveEditButton =
+        event.target.closest(
+            '[data-profile-post-action="save-edit"]'
+        );
+
+
+    if (
+        saveEditButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            saveEditButton.closest(
+                ".post-card"
+            );
+
+
+        if (postElement) {
+
+            await savePostEdit(
+                postElement
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // LIKE
+    // ========================================================
+
+    const likeButton =
+        event.target.closest(
+            '[data-profile-post-action="like"]'
+        );
+
+
+    if (
+        likeButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            likeButton.closest(
                 ".post-card"
             );
 
 
         const postId =
-            postCard?.dataset.postId;
+            postElement?.dataset.postId ||
+            "";
+
+
+        const countElement =
+            likeButton.querySelector(
+                ".post-like-count"
+            );
+
+
+        await toggleLike(
+
+            postId,
+
+            likeButton,
+
+            countElement
+
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // COMMENT TOGGLE
+    // ========================================================
+
+    const commentButton =
+        event.target.closest(
+            '[data-profile-post-action="comment"]'
+        );
+
+
+    if (
+        commentButton
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            commentButton.closest(
+                ".post-card"
+            );
+
+
+        if (!postElement) {
+
+            return;
+
+        }
+
+
+        const postId =
+            postElement.dataset.postId ||
+            "";
 
 
         const commentsBox =
-            postCard?.querySelector(
-                ".post-comments"
+            postElement.querySelector(
+                ".post-comments-panel"
             );
 
 
         const commentsList =
-            postCard?.querySelector(
+            postElement.querySelector(
                 ".post-comments-list"
             );
 
 
-        const countElement =
-            postCard?.querySelector(
+        const commentCount =
+            postElement.querySelector(
                 ".post-comment-count"
             );
 
@@ -1850,10 +3689,24 @@ async function handlePostClick(
             !opening;
 
 
+        commentButton.setAttribute(
+
+            "aria-expanded",
+
+            opening
+                ? "true"
+                : "false"
+
+        );
+
+
         if (
             opening &&
+
             postId &&
+
             commentsList
+
         ) {
 
             await loadPostComments(
@@ -1862,7 +3715,7 @@ async function handlePostClick(
 
                 commentsList,
 
-                countElement
+                commentCount
 
             );
 
@@ -1874,9 +3727,9 @@ async function handlePostClick(
     }
 
 
-    /* ---------------------------------------------
-       COMMENT SUBMIT
-       --------------------------------------------- */
+    // ========================================================
+    // COMMENT SUBMIT
+    // ========================================================
 
     const submitButton =
         event.target.closest(
@@ -1884,32 +3737,45 @@ async function handlePostClick(
         );
 
 
-    if (submitButton) {
+    if (
+        submitButton
+    ) {
 
-        const postCard =
+        event.preventDefault();
+
+
+        const postElement =
             submitButton.closest(
                 ".post-card"
             );
 
 
+        if (!postElement) {
+
+            return;
+
+        }
+
+
         const postId =
-            postCard?.dataset.postId;
+            postElement.dataset.postId ||
+            "";
 
 
         const input =
-            postCard?.querySelector(
+            postElement.querySelector(
                 ".post-comment-input"
             );
 
 
         const commentsContainer =
-            postCard?.querySelector(
+            postElement.querySelector(
                 ".post-comments-list"
             );
 
 
-        const countElement =
-            postCard?.querySelector(
+        const commentCountElement =
+            postElement.querySelector(
                 ".post-comment-count"
             );
 
@@ -1930,7 +3796,7 @@ async function handlePostClick(
 
                 commentsContainer,
 
-                countElement
+                commentCountElement
 
             );
 
@@ -1941,6 +3807,7 @@ async function handlePostClick(
 }
 
 
+
 /* =========================================================
    POST KEYBOARD HANDLER
    ========================================================= */
@@ -1949,61 +3816,198 @@ function handlePostKeydown(
     event
 ) {
 
+    // ========================================================
+    // COMMENT ENTER
+    // ========================================================
+
     if (
-        event.key !==
-        "Enter" ||
-        event.shiftKey
-    ) {
+        event.key ===
+        "Enter"
 
-        return;
+        &&
 
-    }
+        !event.shiftKey
 
+        &&
 
-    const input =
         event.target.closest(
             ".post-comment-input"
-        );
+        )
+
+    ) {
+
+        event.preventDefault();
 
 
-    if (!input) {
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
+
+
+        const submitButton =
+            postElement?.querySelector(
+                ".post-submit-comment"
+            );
+
+
+        if (
+            submitButton
+        ) {
+
+            submitButton.click();
+
+        }
+
 
         return;
 
     }
 
 
-    event.preventDefault();
+    // ========================================================
+    // EDIT CMD/CTRL + ENTER
+    // ========================================================
+
+    if (
+        event.key ===
+        "Enter"
+
+        &&
+
+        (
+            event.metaKey ||
+            event.ctrlKey
+        )
+
+        &&
+
+        event.target.closest(
+            ".post-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
 
 
-    const postCard =
-        input.closest(
-            ".post-card"
-        );
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
 
 
-    const submitButton =
-        postCard?.querySelector(
-            ".post-submit-comment"
-        );
+        if (
+            postElement
+        ) {
+
+            savePostEdit(
+                postElement
+            );
+
+        }
 
 
-    if (submitButton) {
+        return;
 
-        submitButton.click();
+    }
+
+
+    // ========================================================
+    // EDIT ESCAPE
+    // ========================================================
+
+    if (
+        event.key ===
+        "Escape"
+
+        &&
+
+        event.target.closest(
+            ".post-edit-input"
+        )
+
+    ) {
+
+        event.preventDefault();
+
+
+        const postElement =
+            event.target.closest(
+                ".post-card"
+            );
+
+
+        if (
+            postElement
+        ) {
+
+            cancelPostEdit(
+                postElement
+            );
+
+        }
 
     }
 
 }
 
 
+
 /* =========================================================
-   SETUP EVENTS
+   POST EDIT INPUT HANDLER
+   ========================================================= */
+
+function handlePostInput(
+    event
+) {
+
+    const editInput =
+        event.target.closest(
+            ".post-edit-input"
+        );
+
+
+    if (!editInput) {
+
+        return;
+
+    }
+
+
+    const postElement =
+        editInput.closest(
+            ".post-card"
+        );
+
+
+    const counter =
+        postElement?.querySelector(
+            ".post-edit-character-count"
+        );
+
+
+    updateProfileEditCounter(
+
+        editInput,
+
+        counter
+
+    );
+
+}
+
+
+
+/* =========================================================
+   SETUP SOCIAL EVENTS
    ========================================================= */
 
 function setupSocialEvents() {
 
-    if (postsFeed) {
+    if (
+        postsFeed
+    ) {
 
         postsFeed.addEventListener(
 
@@ -2022,10 +4026,21 @@ function setupSocialEvents() {
 
         );
 
+
+        postsFeed.addEventListener(
+
+            "input",
+
+            handlePostInput
+
+        );
+
     }
 
 
-    if (postContent) {
+    if (
+        postContent
+    ) {
 
         postContent.addEventListener(
 
@@ -2038,7 +4053,9 @@ function setupSocialEvents() {
     }
 
 
-    if (createPostBtn) {
+    if (
+        createPostBtn
+    ) {
 
         createPostBtn.addEventListener(
 
@@ -2048,6 +4065,7 @@ function setupSocialEvents() {
 
                 event.preventDefault();
 
+
                 await createPost();
 
             }
@@ -2056,16 +4074,41 @@ function setupSocialEvents() {
 
     }
 
+
+    /*
+     * Close owner menus when clicking anywhere
+     * outside the current menu.
+     */
+
+    document.addEventListener(
+
+        "click",
+
+        event => {
+
+            if (
+                event.target.closest(
+                    ".post-owner-actions"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            closePostMenus();
+
+        }
+
+    );
+
 }
+
 
 
 /* =========================================================
    PROFILE UPDATE REACTION
-   =========================================================
-
-   Username changes affect the user's post lookup path.
-   Reloading posts after a profile update keeps the feed
-   consistent with the new username.
    ========================================================= */
 
 function setupProfileUpdateListener() {
@@ -2085,6 +4128,7 @@ function setupProfileUpdateListener() {
 }
 
 
+
 /* =========================================================
    INITIALIZE
    ========================================================= */
@@ -2098,6 +4142,7 @@ function initializeProfileSocial() {
     updatePostCharacterCount();
 
 }
+
 
 
 /* =========================================================
@@ -2121,6 +4166,20 @@ export {
     createPostComment,
 
     toggleLike,
+
+    isOwnPost,
+
+    beginPostEdit,
+
+    cancelPostEdit,
+
+    updatePost,
+
+    savePostEdit,
+
+    deletePost,
+
+    renderPostOwnerActions,
 
     setupSocialEvents
 
