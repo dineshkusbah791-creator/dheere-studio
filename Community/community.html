@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Community — Dheere Studio</title>
+
+    <meta
+        name="description"
+        content="Dheere Studio Community — discover creators, share ideas, and build together."
+    >
+
+
+    <!-- ======================================================
+         GLOBAL STYLES
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../homepage.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../mood.css"
+    >
+
+
+    <!-- ======================================================
+         COMMUNITY STYLES
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="community.css"
+    >
+
+
+    <!-- ======================================================
+         DHEERE MOOD ENGINE
+         ====================================================== -->
+
+    <script
+        src="../mood-engine.js"
+        defer
+    ></script>
+
+</head>
+
+
+<body class="dheere-mood-page">
+
+
+    <!-- ======================================================
+         HEADER
+         ====================================================== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="nav-logo">
+
+                <a href="../index.html">
+                    Dheere Studio
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <a
+                    href="../index.html"
+                    class="back-home-link static-link"
+                >
+                    &larr; Back to Dheere Studio
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ======================================================
+         COMMUNITY
+         ====================================================== -->
+
+    <main class="community-container">
+
+
+        <!-- ==================================================
+             HERO
+             ================================================== -->
+
+        <section class="community-hero">
+
+            <h1>
+                COMMUNITY
+            </h1>
+
+
+            <p>
+                A space for people who want to create,
+                share, learn, and build together.
+            </p>
+
+
+            <div class="community-actions">
+
+                <button
+                    id="exploreVisionBtn"
+                    class="community-action secondary-action"
+                    type="button"
+                    aria-expanded="false"
+                >
+                    Explore Vision
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             LOGIN NOTICE
+             ================================================== -->
+
+        <div
+            id="loginNotice"
+            class="login-notice"
+        >
+
+            <strong>
+                Want to share something?
+            </strong>
+
+            &nbsp;
+
+            Log in to create your own posts.
+
+            <a href="../index.html">
+                Login
+            </a>
+
+        </div>
+
+
+        <!-- ==================================================
+             COMMUNITY FEED
+             ================================================== -->
+
+        <section
+            id="communityFeedSection"
+            class="community-feed-section"
+        >
+
+
+            <!-- =================================================
+                 FEED HEADER
+                 ================================================= -->
+
+            <div class="section-heading">
+
+                <h2>
+                    Latest Posts
+                </h2>
+
+
+                <button
+                    id="refreshPostsBtn"
+                    class="refresh-button"
+                    type="button"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 CREATE POST
+                 ================================================= -->
+
+            <div
+                id="createPostCard"
+                class="create-post-card"
+            >
+
+                <textarea
+                    id="communityPostContent"
+                    maxlength="2000"
+                    placeholder="Share something with the community..."
+                    aria-label="Create a community post"
+                ></textarea>
+
+
+                <div class="post-composer-bottom">
+
+                    <span
+                        id="communityCharacterCount"
+                        class="character-count"
+                    >
+                        0 / 2000
+                    </span>
+
+
+                    <button
+                        id="communityPublishBtn"
+                        class="publish-button"
+                        type="button"
+                    >
+                        Publish Post
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 POSTS
+                 ================================================= -->
+
+            <div
+                id="postsFeed"
+                class="posts-feed"
+                aria-live="polite"
+            >
+
+                <div class="empty-feed">
+
+                    Loading community...
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             VISION
+             ================================================== -->
+
+        <section
+            id="visionSection"
+        >
+
+
+            <!-- =================================================
+                 VISION HEADER
+                 ================================================= -->
+
+            <div class="vision-header">
+
+                <h2>
+                    The Vision Behind Dheere Studio Community
+                </h2>
+
+
+                <p>
+                    This is what we're trying to build
+                    and why the community exists.
+                </p>
+
+
+                <!-- =============================================
+                     LANGUAGE SWITCH
+                     ============================================= -->
+
+                <div
+                    class="lang-switch"
+                    role="group"
+                    aria-label="Vision language"
+                >
+
+                    <button
+                        id="btnEnglish"
+                        class="lang-btn active"
+                        type="button"
+                        aria-pressed="true"
+                    >
+                        English
+                    </button>
+
+
+                    <button
+                        id="btnHinglish"
+                        class="lang-btn"
+                        type="button"
+                        aria-pressed="false"
+                    >
+                        In Hinglish
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ENGLISH
+                 ================================================= -->
+
+            <div
+                id="englishCommunity"
+            >
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        The Purpose
+                    </h3>
+
+
+                    <p>
+                        Dheere Studio Community is being
+                        built as a place for people
+                        interested in stories, worldbuilding,
+                        art, animation, games, and other
+                        forms of creative work.
+                    </p>
+
+
+                    <p>
+                        The idea is simple: create a space
+                        where people can share what they are
+                        making, discuss ideas, ask for
+                        feedback, and find others who are
+                        interested in building something of
+                        their own.
+                    </p>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Who It's For
+                    </h3>
+
+
+                    <p>
+                        The community is for anyone
+                        interested in creating and exploring
+                        ideas across different forms of media.
+                    </p>
+
+
+                    <ul class="roadmap-list">
+
+                        <li>
+                            <strong>Writers</strong>
+                            — Stories, novels, characters
+                            and narrative ideas.
+                        </li>
+
+                        <li>
+                            <strong>Artists</strong>
+                            — Illustration, concept art
+                            and visual development.
+                        </li>
+
+                        <li>
+                            <strong>Worldbuilders</strong>
+                            — Worlds, cultures, mythology
+                            and lore.
+                        </li>
+
+                        <li>
+                            <strong>Animators</strong>
+                            — Animation, motion and visual
+                            storytelling.
+                        </li>
+
+                        <li>
+                            <strong>Game Creators</strong>
+                            — Game ideas, systems and
+                            interactive experiences.
+                        </li>
+
+                        <li>
+                            <strong>Developers</strong>
+                            — Tools, websites and technology
+                            for creative projects.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        What We're Building
+                    </h3>
+
+
+                    <p>
+                        We don't want the community to become
+                        just another place where people scroll
+                        through endless posts. We want to build
+                        a place where people can actually work
+                        on their ideas.
+                    </p>
+
+
+                    <p>
+                        Initially, the community will focus on:
+                    </p>
+
+
+                    <ul class="roadmap-list">
+
+                        <li>
+                            <strong>Discussions</strong>
+                            — Talk about stories, art, games,
+                            worldbuilding and creative processes.
+                        </li>
+
+                        <li>
+                            <strong>Project Sharing</strong>
+                            — Share projects, concepts and
+                            work in progress.
+                        </li>
+
+                        <li>
+                            <strong>Feedback</strong>
+                            — Get useful and honest feedback
+                            from other creators.
+                        </li>
+
+                        <li>
+                            <strong>Collaboration</strong>
+                            — Find people who can help turn
+                            an idea into a project.
+                        </li>
+
+                        <li>
+                            <strong>Discovering Creators</strong>
+                            — Find interesting people and
+                            projects from the community.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Get Involved Early
+                    </h3>
+
+
+                    <p>
+                        The community is still being built.
+                        We're starting small and figuring out
+                        what actually makes a creative community
+                        useful before adding more features.
+                    </p>
+
+
+                    <p>
+                        If you'd like to be part of the early
+                        community or have an idea for what it
+                        should become, we'd like to hear from you.
+                    </p>
+
+
+                    <br>
+
+
+                    <a
+                        href="../index.html#feedback"
+                        class="community-action primary-action"
+                    >
+                        Express Interest &amp; Feedback &rarr;
+                    </a>
+
+                </section>
+
+            </div>
+
+
+            <!-- =================================================
+                 HINGLISH
+                 ================================================= -->
+
+            <div
+                id="hinglishCommunity"
+                class="hidden-vision"
+            >
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Hamara Goal
+                    </h3>
+
+
+                    <p>
+                        Dheere Studio Community ko un logo
+                        ke liye ek jagah ke roop mein build
+                        kiya ja raha hai jo stories,
+                        worldbuilding, art, animation, games
+                        aur creative work mein interest rakhte hain.
+                    </p>
+
+
+                    <p>
+                        Idea ekdum simple hai: ek aisi space
+                        banana jahan log apna kaam share kar
+                        sakein, ideas discuss kar sakein,
+                        feedback maang sakein, aur un logo
+                        ko dhoondh sakein jo khud ka kuch
+                        banana chahte hain.
+                    </p>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Yeh Kiske Liye Hai
+                    </h3>
+
+
+                    <p>
+                        Yeh community un sabhi logo ke liye hai
+                        jo alag-alag media formats ke zariye
+                        ideas create aur explore karna chahte hain.
+                    </p>
+
+
+                    <ul class="roadmap-list">
+
+                        <li>
+                            <strong>Writers</strong>
+                            — Stories, novels, characters
+                            aur narrative ideas.
+                        </li>
+
+                        <li>
+                            <strong>Artists</strong>
+                            — Illustration, concept art
+                            aur visual development.
+                        </li>
+
+                        <li>
+                            <strong>Worldbuilders</strong>
+                            — Worlds, cultures, mythology
+                            aur lore.
+                        </li>
+
+                        <li>
+                            <strong>Animators</strong>
+                            — Animation, motion aur visual
+                            storytelling.
+                        </li>
+
+                        <li>
+                            <strong>Game Creators</strong>
+                            — Game ideas, systems aur
+                            interactive experiences.
+                        </li>
+
+                        <li>
+                            <strong>Developers</strong>
+                            — Creative projects ke liye
+                            tools, websites aur technology.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Hum Kya Bana Rahe Hain
+                    </h3>
+
+
+                    <p>
+                        Hum is community ko bas ek aur aisi
+                        jagah nahi banana chahte jahan log
+                        bas endless posts scroll karte rahein.
+                        Hum ek aisi jagah banana chahte hain
+                        jahan log sach mein apne ideas par
+                        kaam kar sakein.
+                    </p>
+
+
+                    <p>
+                        Shuruwaat mein, community in baaton
+                        par focus karegi:
+                    </p>
+
+
+                    <ul class="roadmap-list">
+
+                        <li>
+                            <strong>Discussions</strong>
+                            — Stories, art, games,
+                            worldbuilding aur creative
+                            processes ke baare mein baat karna.
+                        </li>
+
+                        <li>
+                            <strong>Project Sharing</strong>
+                            — Apne projects, concepts aur
+                            ongoing work-in-progress share karna.
+                        </li>
+
+                        <li>
+                            <strong>Feedback</strong>
+                            — Dusre creators se useful aur
+                            honest feedback lena.
+                        </li>
+
+                        <li>
+                            <strong>Collaboration</strong>
+                            — Aise logo ko dhoondhna jo ek
+                            idea ko project mein badalne mein
+                            madad kar sakein.
+                        </li>
+
+                        <li>
+                            <strong>Discovering Creators</strong>
+                            — Community se naye aur interesting
+                            creators aur unke projects ko discover karna.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <section class="vision-section">
+
+                    <h3>
+                        Shuruwaat Mein Saath Judein
+                    </h3>
+
+
+                    <p>
+                        Community abhi bhi build ho rahi hai.
+                        Hum chote level se shuru kar rahe hain
+                        aur yeh samajh rahe hain ki zyada
+                        features add karne se pehle ek creative
+                        community sach mein useful kaise banti hai.
+                    </p>
+
+
+                    <p>
+                        Agar aap early community ka hissa
+                        banna chahte hain ya aapke paas koi
+                        idea hai ki is community ko kaisa hona
+                        chahiye, toh hum aapse sunna chahenge.
+                    </p>
+
+
+                    <br>
+
+
+                    <a
+                        href="../index.html#feedback"
+                        class="community-action primary-action"
+                    >
+                        Express Interest &amp; Feedback &rarr;
+                    </a>
+
+                </section>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <p>
+                &copy; 2026 Dheere Studio.
+                All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ======================================================
+         COMMUNITY MAIN CONTROLLER
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="community.js"
+    ></script>
+
+</body>
+
+</html>

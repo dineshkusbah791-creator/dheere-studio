@@ -80,7 +80,7 @@ const createFeedbackRouter =
 
 const createSocialRouter =
     require(
-        "./social-routes"
+        "./routes/social/social-routes"
     );
 
 
