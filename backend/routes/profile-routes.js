@@ -78,6 +78,29 @@ const {
 
 
 // ============================================================
+// PROFILE CONSTANTS
+// ============================================================
+
+// Frontend currently uses 150 characters.
+const PROFILE_BIO_MAX_LENGTH =
+    150;
+
+
+// Supported private gender values.
+const ALLOWED_GENDER_VALUES = new Set([
+    "",
+    "male",
+    "female",
+    "other"
+]);
+
+
+// Strict YYYY-MM-DD format.
+const DATE_OF_BIRTH_REGEX =
+    /^\d{4}-\d{2}-\d{2}$/;
+
+
+// ============================================================
 // OBJECT ID VALIDATION
 // ============================================================
 
@@ -143,6 +166,142 @@ function isAuthorizedUser(
 
 
 // ============================================================
+// DATE OF BIRTH VALIDATION
+// ============================================================
+
+function isValidDateOfBirth(
+    value
+) {
+
+    if (
+        value === ""
+    ) {
+
+        return true;
+
+    }
+
+
+    if (
+        typeof value !==
+        "string"
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        !DATE_OF_BIRTH_REGEX.test(
+            value
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    const [
+        year,
+        month,
+        day
+    ] =
+        value
+            .split("-")
+            .map(
+                Number
+            );
+
+
+    if (
+        !Number.isInteger(
+            year
+        )
+
+        ||
+
+        !Number.isInteger(
+            month
+        )
+
+        ||
+
+        !Number.isInteger(
+            day
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        month < 1 ||
+        month > 12
+    ) {
+
+        return false;
+
+    }
+
+
+    const daysInMonth =
+        new Date(
+            year,
+            month,
+            0
+        ).getDate();
+
+
+    if (
+        day < 1 ||
+        day > daysInMonth
+    ) {
+
+        return false;
+
+    }
+
+
+    const today =
+        new Date();
+
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    const selectedDate =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
+
+
+    if (
+        selectedDate >
+        today
+    ) {
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+// ============================================================
 // CONFIGURE CLOUDINARY
 // ============================================================
 
@@ -202,6 +361,204 @@ function createProfileRouter(
         express.Router();
 
 
+    // ========================================================
+    // CHECK USERNAME
+    //
+    // Public route.
+    //
+    // Optional ?userId= allows the current user's own username
+    // to be treated as available.
+    // ========================================================
+
+    router.get(
+
+        "/check-username/:username",
+
+        async (
+
+            req,
+
+            res
+
+        ) => {
+
+            try {
+
+                const username =
+                    typeof req.params.username ===
+                    "string"
+
+                        ? normalizeUsername(
+                            req.params.username
+                        )
+
+                        : "";
+
+
+                const currentUserId =
+                    typeof req.query.userId ===
+                    "string"
+
+                        ? req.query.userId.trim()
+
+                        : "";
+
+
+                // ============================================
+                // VALIDATE USERNAME
+                // ============================================
+
+                if (
+
+                    !USERNAME_REGEX.test(
+                        username
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        available:
+                            false,
+
+                        error:
+                            "Username must be 3-20 characters and contain only lowercase letters, numbers, and underscores"
+
+                    });
+
+                }
+
+
+                // ============================================
+                // FIND USERNAME OWNER
+                // ============================================
+
+                const owner =
+                    await usersCollection.findOne(
+
+                        {
+
+                            username:
+                                username
+
+                        },
+
+                        {
+
+                            projection: {
+
+                                _id:
+                                    1
+
+                            }
+
+                        }
+
+                    );
+
+
+                // ============================================
+                // USERNAME DOES NOT EXIST
+                // ============================================
+
+                if (
+                    !owner
+                ) {
+
+                    return res.json({
+
+                        success:
+                            true,
+
+                        available:
+                            true
+
+                    });
+
+                }
+
+
+                // ============================================
+                // CURRENT USER OWNS THIS USERNAME
+                // ============================================
+
+                if (
+
+                    isValidObjectId(
+                        currentUserId
+                    )
+
+                    &&
+
+                    owner
+                        ._id
+                        .toString() ===
+                    currentUserId
+
+                ) {
+
+                    return res.json({
+
+                        success:
+                            true,
+
+                        available:
+                            true
+
+                    });
+
+                }
+
+
+                // ============================================
+                // USERNAME TAKEN
+                // ============================================
+
+                return res.json({
+
+                    success:
+                        true,
+
+                    available:
+                        false
+
+                });
+
+
+            } catch (
+                error
+            ) {
+
+                console.error(
+
+                    "Check username error:",
+
+                    error
+
+                );
+
+
+                return res.status(500).json({
+
+                    success:
+                        false,
+
+                    available:
+                        false,
+
+                    error:
+                        "Could not check username"
+
+                });
+
+            }
+
+        }
+
+    );
 
 
     // ========================================================
@@ -209,7 +566,8 @@ function createProfileRouter(
     //
     // Public route.
     //
-    // Email is intentionally NOT exposed.
+    // Private fields such as dateOfBirth and gender are NOT
+    // exposed here.
     // ========================================================
 
     router.get(
@@ -224,9 +582,7 @@ function createProfileRouter(
 
         ) => {
 
-
             try {
-
 
                 const userId =
                     typeof req.params.userId ===
@@ -235,7 +591,6 @@ function createProfileRouter(
                         ? req.params.userId.trim()
 
                         : "";
-
 
 
                 // ============================================
@@ -261,7 +616,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -306,15 +660,12 @@ function createProfileRouter(
                     );
 
 
-
                 // ============================================
                 // USER NOT FOUND
                 // ============================================
 
                 if (
-
                     !user
-
                 ) {
 
                     return res.status(404).json({
@@ -328,7 +679,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -375,7 +725,6 @@ function createProfileRouter(
                 error
             ) {
 
-
                 console.error(
 
                     "Get profile error:",
@@ -383,7 +732,6 @@ function createProfileRouter(
                     error
 
                 );
-
 
 
                 return res.status(500).json({
@@ -398,12 +746,9 @@ function createProfileRouter(
 
             }
 
-
         }
 
     );
-
-
 
 
     // ========================================================
@@ -427,9 +772,7 @@ function createProfileRouter(
 
         ) => {
 
-
             try {
-
 
                 const userId =
                     typeof req.params.userId ===
@@ -450,12 +793,15 @@ function createProfileRouter(
 
                     username,
 
-                    bio
+                    bio,
+
+                    dateOfBirth,
+
+                    gender
 
                 } =
                     req.body ||
                     {};
-
 
 
                 // ============================================
@@ -483,9 +829,8 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
-                // AUTHORIZE USER
+                // AUTHORIZATION
                 // ============================================
 
                 if (
@@ -511,7 +856,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -541,6 +885,32 @@ function createProfileRouter(
 
                     )
 
+                    ||
+
+                    (
+
+                        dateOfBirth !== undefined
+
+                        &&
+
+                        typeof dateOfBirth !==
+                        "string"
+
+                    )
+
+                    ||
+
+                    (
+
+                        gender !== undefined
+
+                        &&
+
+                        typeof gender !==
+                        "string"
+
+                    )
+
                 ) {
 
                     return res.status(400).json({
@@ -556,9 +926,8 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
-                // CLEAN VALUES
+                // CLEAN BASIC VALUES
                 // ============================================
 
                 const cleanedName =
@@ -580,15 +949,29 @@ function createProfileRouter(
                     );
 
 
+                const cleanDateOfBirth =
+                    (
+                        dateOfBirth ||
+                        ""
+                    )
+                        .trim();
+
+
+                const cleanGender =
+                    (
+                        gender ||
+                        ""
+                    )
+                        .trim()
+                        .toLowerCase();
+
 
                 // ============================================
                 // VALIDATE NAME
                 // ============================================
 
                 if (
-
                     !cleanedName
-
                 ) {
 
                     return res.status(400).json({
@@ -604,11 +987,9 @@ function createProfileRouter(
                 }
 
 
-
                 if (
 
                     cleanedName.length >
-
                     MAX_NAME_LENGTH
 
                 ) {
@@ -624,7 +1005,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -652,7 +1032,6 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
                 // VALIDATE BIO
                 // ============================================
@@ -660,8 +1039,7 @@ function createProfileRouter(
                 if (
 
                     cleanBioValue.length >
-
-                    MAX_BIO_LENGTH
+                    PROFILE_BIO_MAX_LENGTH
 
                 ) {
 
@@ -671,12 +1049,61 @@ function createProfileRouter(
                             false,
 
                         error:
-                            `Bio must not exceed ${MAX_BIO_LENGTH} characters`
+                            `Bio must not exceed ${PROFILE_BIO_MAX_LENGTH} characters`
 
                     });
 
                 }
 
+
+                // ============================================
+                // VALIDATE DATE OF BIRTH
+                // ============================================
+
+                if (
+
+                    !isValidDateOfBirth(
+                        cleanDateOfBirth
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Invalid date of birth"
+
+                    });
+
+                }
+
+
+                // ============================================
+                // VALIDATE GENDER
+                // ============================================
+
+                if (
+
+                    !ALLOWED_GENDER_VALUES.has(
+                        cleanGender
+                    )
+
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Invalid gender value"
+
+                    });
+
+                }
 
 
                 // ============================================
@@ -698,11 +1125,8 @@ function createProfileRouter(
                     );
 
 
-
                 if (
-
                     !user
-
                 ) {
 
                     return res.status(404).json({
@@ -718,21 +1142,21 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
-                // CHECK USERNAME
+                // CHECK USERNAME CONFLICT
                 // ============================================
 
                 const usernameChanged =
-                    user.username !==
+                    (
+                        user.username ||
+                        ""
+                    )
+                    !==
                     cleanUsername;
 
 
-
                 if (
-
                     usernameChanged
-
                 ) {
 
                     const usernameOwner =
@@ -743,10 +1167,20 @@ function createProfileRouter(
                                 username:
                                     cleanUsername
 
+                            },
+
+                            {
+
+                                projection: {
+
+                                    _id:
+                                        1
+
+                                }
+
                             }
 
                         );
-
 
 
                     if (
@@ -758,9 +1192,7 @@ function createProfileRouter(
                         usernameOwner
                             ._id
                             .toString()
-
                         !==
-
                         user
                             ._id
                             .toString()
@@ -782,39 +1214,73 @@ function createProfileRouter(
                 }
 
 
+                // ============================================
+                // BUILD UPDATE
+                //
+                // Supports existing accounts that may not yet
+                // have private profile fields.
+                // ============================================
+
+                const updateFields = {
+
+                    name:
+                        cleanedName,
+
+                    username:
+                        cleanUsername,
+
+                    bio:
+                        cleanBioValue,
+
+                    dateOfBirth:
+                        cleanDateOfBirth,
+
+                    gender:
+                        cleanGender
+
+                };
+
 
                 // ============================================
                 // UPDATE USER
                 // ============================================
 
-                await usersCollection.updateOne(
+                const updateResult =
+                    await usersCollection.updateOne(
 
-                    {
+                        {
 
-                        _id:
-                            user._id
+                            _id:
+                                user._id
 
-                    },
+                        },
 
-                    {
+                        {
 
-                        $set: {
-
-                            name:
-                                cleanedName,
-
-                            username:
-                                cleanUsername,
-
-                            bio:
-                                cleanBioValue
+                            $set:
+                                updateFields
 
                         }
 
-                    }
+                    );
 
-                );
 
+                if (
+                    updateResult.matchedCount ===
+                    0
+                ) {
+
+                    return res.status(404).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "User not found"
+
+                    });
+
+                }
 
 
                 // ============================================
@@ -849,6 +1315,12 @@ function createProfileRouter(
                         bio:
                             cleanBioValue,
 
+                        dateOfBirth:
+                            cleanDateOfBirth,
+
+                        gender:
+                            cleanGender,
+
                         avatarUrl:
                             user.avatarUrl ||
                             ""
@@ -862,7 +1334,6 @@ function createProfileRouter(
                 error
             ) {
 
-
                 // ============================================
                 // DUPLICATE USERNAME
                 // ============================================
@@ -870,9 +1341,7 @@ function createProfileRouter(
                 if (
 
                     error
-
                     &&
-
                     error.code ===
                     11000
 
@@ -891,7 +1360,6 @@ function createProfileRouter(
                 }
 
 
-
                 console.error(
 
                     "Update profile error:",
@@ -899,7 +1367,6 @@ function createProfileRouter(
                     error
 
                 );
-
 
 
                 return res.status(500).json({
@@ -914,12 +1381,9 @@ function createProfileRouter(
 
             }
 
-
         }
 
     );
-
-
 
 
     // ========================================================
@@ -943,9 +1407,7 @@ function createProfileRouter(
 
         ) => {
 
-
             try {
-
 
                 const userId =
                     typeof req.params.userId ===
@@ -965,7 +1427,6 @@ function createProfileRouter(
                 } =
                     req.body ||
                     {};
-
 
 
                 // ============================================
@@ -991,7 +1452,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -1023,7 +1483,6 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
                 // VALIDATE IMAGE
                 // ============================================
@@ -1034,11 +1493,8 @@ function createProfileRouter(
                     );
 
 
-
                 if (
-
                     !validation.valid
-
                 ) {
 
                     return res.status(400).json({
@@ -1052,7 +1508,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -1074,11 +1529,8 @@ function createProfileRouter(
                     );
 
 
-
                 if (
-
                     !user
-
                 ) {
 
                     return res.status(404).json({
@@ -1094,9 +1546,8 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
-                // CHECK CLOUDINARY
+                // CLOUDINARY CONFIG CHECK
                 // ============================================
 
                 if (
@@ -1112,7 +1563,6 @@ function createProfileRouter(
                     );
 
 
-
                     return res.status(500).json({
 
                         success:
@@ -1126,13 +1576,11 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
                 // CONFIGURE CLOUDINARY
                 // ============================================
 
                 configureCloudinary();
-
 
 
                 // ============================================
@@ -1171,14 +1619,12 @@ function createProfileRouter(
                     );
 
 
-
                 const avatarUrl =
                     uploadResult.secure_url;
 
 
                 const avatarPublicId =
                     uploadResult.public_id;
-
 
 
                 if (
@@ -1198,7 +1644,6 @@ function createProfileRouter(
                     );
 
                 }
-
 
 
                 // ============================================
@@ -1231,7 +1676,6 @@ function createProfileRouter(
                 );
 
 
-
                 console.log(
 
                     "Profile photo updated:",
@@ -1241,7 +1685,6 @@ function createProfileRouter(
                         .toString()
 
                 );
-
 
 
                 // ============================================
@@ -1266,7 +1709,6 @@ function createProfileRouter(
                 error
             ) {
 
-
                 console.error(
 
                     "Profile photo upload error:",
@@ -1274,7 +1716,6 @@ function createProfileRouter(
                     error
 
                 );
-
 
 
                 return res.status(500).json({
@@ -1289,12 +1730,9 @@ function createProfileRouter(
 
             }
 
-
         }
 
     );
-
-
 
 
     // ========================================================
@@ -1318,9 +1756,7 @@ function createProfileRouter(
 
         ) => {
 
-
             try {
-
 
                 const userId =
                     typeof req.params.userId ===
@@ -1333,7 +1769,6 @@ function createProfileRouter(
 
                 const authenticatedUserId =
                     req.user?.userId;
-
 
 
                 // ============================================
@@ -1359,7 +1794,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -1391,7 +1825,6 @@ function createProfileRouter(
                 }
 
 
-
                 // ============================================
                 // FIND USER
                 // ============================================
@@ -1411,11 +1844,8 @@ function createProfileRouter(
                     );
 
 
-
                 if (
-
                     !user
-
                 ) {
 
                     return res.status(404).json({
@@ -1429,7 +1859,6 @@ function createProfileRouter(
                     });
 
                 }
-
 
 
                 // ============================================
@@ -1448,9 +1877,7 @@ function createProfileRouter(
 
                     try {
 
-
                         configureCloudinary();
-
 
 
                         await cloudinary.uploader.destroy(
@@ -1472,11 +1899,9 @@ function createProfileRouter(
 
                         );
 
-
                     } catch (
                         cloudinaryError
                     ) {
-
 
                         console.error(
 
@@ -1489,7 +1914,6 @@ function createProfileRouter(
                     }
 
                 }
-
 
 
                 // ============================================
@@ -1522,7 +1946,6 @@ function createProfileRouter(
                 );
 
 
-
                 console.log(
 
                     "Profile photo removed:",
@@ -1532,7 +1955,6 @@ function createProfileRouter(
                         .toString()
 
                 );
-
 
 
                 // ============================================
@@ -1554,7 +1976,6 @@ function createProfileRouter(
                 error
             ) {
 
-
                 console.error(
 
                     "Profile photo delete error:",
@@ -1562,7 +1983,6 @@ function createProfileRouter(
                     error
 
                 );
-
 
 
                 return res.status(500).json({
@@ -1577,12 +1997,9 @@ function createProfileRouter(
 
             }
 
-
         }
 
     );
-
-
 
 
     // ========================================================
@@ -1591,9 +2008,7 @@ function createProfileRouter(
 
     return router;
 
-
 }
-
 
 
 // ============================================================
