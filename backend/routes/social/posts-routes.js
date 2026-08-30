@@ -82,24 +82,19 @@ const postWriteLimiter =
             60 *
             1000,
 
-
         max:
             30,
-
 
         standardHeaders:
             true,
 
-
         legacyHeaders:
             false,
-
 
         message: {
 
             success:
                 false,
-
 
             error:
                 "Too many requests. Please try again later."
@@ -118,24 +113,19 @@ const postReadLimiter =
             60 *
             1000,
 
-
         max:
             300,
-
 
         standardHeaders:
             true,
 
-
         legacyHeaders:
             false,
-
 
         message: {
 
             success:
                 false,
-
 
             error:
                 "Too many requests. Please try again later."
@@ -153,7 +143,6 @@ const postReadLimiter =
 module.exports =
     function createPostsRouter(
         {
-
             postsCollection,
 
             usersCollection,
@@ -201,6 +190,7 @@ module.exports =
                         {};
 
 
+
                     // =========================================
                     // AUTHENTICATION
                     // =========================================
@@ -214,13 +204,13 @@ module.exports =
                             success:
                                 false,
 
-
                             error:
                                 "Authentication required"
 
                         });
 
                     }
+
 
 
                     // =========================================
@@ -237,6 +227,7 @@ module.exports =
                             : "";
 
 
+
                     // =========================================
                     // EMPTY CONTENT
                     // =========================================
@@ -250,13 +241,13 @@ module.exports =
                             success:
                                 false,
 
-
                             error:
                                 "Post cannot be empty"
 
                         });
 
                     }
+
 
 
                     // =========================================
@@ -275,13 +266,13 @@ module.exports =
                             success:
                                 false,
 
-
                             error:
                                 `Post cannot exceed ${MAX_POST_LENGTH} characters`
 
                         });
 
                     }
+
 
 
                     // =========================================
@@ -307,7 +298,6 @@ module.exports =
                                     _id:
                                         1,
 
-
                                     username:
                                         1
 
@@ -327,13 +317,13 @@ module.exports =
                             success:
                                 false,
 
-
                             error:
                                 "User not found"
 
                         });
 
                     }
+
 
 
                     // =========================================
@@ -345,28 +335,24 @@ module.exports =
                         authorId:
                             user._id,
 
-
                         username:
                             user.username ||
                             "",
 
-
                         content:
                             cleanContent,
-
 
                         createdAt:
                             new Date(),
 
-
                         likedBy:
                             [],
-
 
                         comments:
                             []
 
                     };
+
 
 
                     // =========================================
@@ -379,6 +365,7 @@ module.exports =
                         );
 
 
+
                     // =========================================
                     // RESPONSE
                     // =========================================
@@ -388,10 +375,8 @@ module.exports =
                         success:
                             true,
 
-
                         message:
                             "Post published successfully",
-
 
                         post:
                             formatPost(
@@ -399,7 +384,6 @@ module.exports =
                                 {
 
                                     ...post,
-
 
                                     _id:
                                         result.insertedId
@@ -427,7 +411,6 @@ module.exports =
 
                         success:
                             false,
-
 
                         error:
                             "Could not create post"
@@ -487,7 +470,6 @@ module.exports =
                         success:
                             true,
 
-
                         posts:
 
                             posts.map(
@@ -523,7 +505,6 @@ module.exports =
 
                         success:
                             false,
-
 
                         error:
                             "Could not load posts"
@@ -569,6 +550,7 @@ module.exports =
                         );
 
 
+
                     // =========================================
                     // USERNAME VALIDATION
                     // =========================================
@@ -586,13 +568,13 @@ module.exports =
                             success:
                                 false,
 
-
                             error:
                                 "Invalid username"
 
                         });
 
                     }
+
 
 
                     // =========================================
@@ -624,10 +606,8 @@ module.exports =
                         success:
                             true,
 
-
                         username:
                             username,
-
 
                         posts:
 
@@ -665,7 +645,6 @@ module.exports =
                         success:
                             false,
 
-
                         error:
                             "Could not load user posts"
 
@@ -678,300 +657,688 @@ module.exports =
         );
 
 
+
         // ====================================================
-// DELETE POST
-// ====================================================
+        // UPDATE POST
+        //
+        // Only the post owner may edit the post.
+        //
+        // PATCH /posts/:postId
+        // ====================================================
 
-router.delete(
+        router.patch(
 
-    "/posts/:postId",
+            "/posts/:postId",
 
-    postWriteLimiter,
+            postWriteLimiter,
 
-    authenticateToken,
+            authenticateToken,
 
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            // =============================================
-            // POST ID
-            // =============================================
-
-            const postId =
-                typeof req.params.postId ===
-                "string"
-
-                    ? req.params.postId.trim()
-
-                    : "";
-
-
-            // =============================================
-            // AUTHENTICATED USER
-            // =============================================
-
-            const authenticatedUserId =
-                getAuthenticatedUserId(
-                    req
-                );
-
-
-            // =============================================
-            // VALIDATE POST ID
-            // =============================================
-
-            if (
-                !isValidObjectId(
-                    postId
-                )
-            ) {
-
-                return res.status(400).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Invalid post ID"
-
-                });
-
-            }
-
-
-            // =============================================
-            // AUTHENTICATION
-            // =============================================
-
-            if (
-                !authenticatedUserId
-            ) {
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Authentication required"
-
-                });
-
-            }
-
-
-            const postObjectId =
-                new ObjectId(
-                    postId
-                );
-
-
-            const userObjectId =
-                new ObjectId(
-                    authenticatedUserId
-                );
-
-
-            // =============================================
-            // LOAD POST
-            // =============================================
-
-            const post =
-                await postsCollection.findOne(
-
-                    {
-
-                        _id:
-                            postObjectId
-
-                    },
-
-                    {
-
-                        projection: {
-
-                            _id:
-                                1,
-
-                            authorId:
-                                1
-
-                        }
-
-                    }
-
-                );
-
-
-            if (
-                !post
-            ) {
-
-                return res.status(404).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Post not found"
-
-                });
-
-            }
-
-
-            // =============================================
-            // OWNERSHIP CHECK
-            // =============================================
-
-            if (
-
-                !post.authorId
-
-                ||
-
-                post.authorId.toString() !==
-                authenticatedUserId
-
-            ) {
-
-                return res.status(403).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "You can only delete your own posts"
-
-                });
-
-            }
-
-
-            // =============================================
-            // DELETE POST
-            // =============================================
-
-            const deleteResult =
-                await postsCollection.deleteOne(
-
-                    {
-
-                        _id:
-                            postObjectId,
-
-                        authorId:
-                            userObjectId
-
-                    }
-
-                );
-
-
-            if (
-                deleteResult.deletedCount !==
-                1
-            ) {
-
-                return res.status(404).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Post could not be deleted"
-
-                });
-
-            }
-
-
-            // =============================================
-            // CLEAN RELATED NOTIFICATIONS
-            // =============================================
-
-            if (
-                notificationsCollection
-            ) {
+            async (
+                req,
+                res
+            ) => {
 
                 try {
 
-                    await notificationsCollection.deleteMany({
+                    // =========================================
+                    // POST ID
+                    // =========================================
 
-                        postId:
-                            postObjectId
+                    const postId =
+                        typeof req.params.postId ===
+                        "string"
+
+                            ? req.params.postId.trim()
+
+                            : "";
+
+
+                    // =========================================
+                    // AUTHENTICATED USER
+                    // =========================================
+
+                    const authenticatedUserId =
+                        getAuthenticatedUserId(
+                            req
+                        );
+
+
+                    // =========================================
+                    // VALIDATE POST ID
+                    // =========================================
+
+                    if (
+                        !isValidObjectId(
+                            postId
+                        )
+                    ) {
+
+                        return res.status(400).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Invalid post ID"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // AUTHENTICATION
+                    // =========================================
+
+                    if (
+                        !authenticatedUserId
+                    ) {
+
+                        return res.status(401).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Authentication required"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // CONTENT
+                    // =========================================
+
+                    const {
+                        content
+                    } =
+                        req.body ||
+                        {};
+
+
+                    const cleanContent =
+
+                        typeof content ===
+                        "string"
+
+                            ? content.trim()
+
+                            : "";
+
+
+                    // =========================================
+                    // VALIDATE CONTENT
+                    // =========================================
+
+                    if (
+                        !cleanContent
+                    ) {
+
+                        return res.status(400).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Post cannot be empty"
+
+                        });
+
+                    }
+
+
+                    if (
+
+                        cleanContent.length >
+                        MAX_POST_LENGTH
+
+                    ) {
+
+                        return res.status(400).json({
+
+                            success:
+                                false,
+
+                            error:
+                                `Post cannot exceed ${MAX_POST_LENGTH} characters`
+
+                        });
+
+                    }
+
+
+                    const postObjectId =
+                        new ObjectId(
+                            postId
+                        );
+
+
+                    const userObjectId =
+                        new ObjectId(
+                            authenticatedUserId
+                        );
+
+
+                    // =========================================
+                    // LOAD POST
+                    // =========================================
+
+                    const post =
+                        await postsCollection.findOne(
+
+                            {
+
+                                _id:
+                                    postObjectId
+
+                            },
+
+                            {
+
+                                projection: {
+
+                                    _id:
+                                        1,
+
+                                    authorId:
+                                        1
+
+                                }
+
+                            }
+
+                        );
+
+
+                    if (
+                        !post
+                    ) {
+
+                        return res.status(404).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Post not found"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // OWNERSHIP CHECK
+                    // =========================================
+
+                    if (
+
+                        !post.authorId
+
+                        ||
+
+                        post.authorId.toString() !==
+                        authenticatedUserId
+
+                    ) {
+
+                        return res.status(403).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "You can only edit your own posts"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // UPDATE POST
+                    // =========================================
+
+                    const updateResult =
+                        await postsCollection.updateOne(
+
+                            {
+
+                                _id:
+                                    postObjectId,
+
+                                authorId:
+                                    userObjectId
+
+                            },
+
+                            {
+
+                                $set: {
+
+                                    content:
+                                        cleanContent,
+
+                                    updatedAt:
+                                        new Date()
+
+                                }
+
+                            }
+
+                        );
+
+
+                    if (
+                        updateResult.matchedCount !==
+                        1
+                    ) {
+
+                        return res.status(404).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Post could not be updated"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // LOAD UPDATED POST
+                    // =========================================
+
+                    const updatedPost =
+                        await postsCollection.findOne(
+
+                            {
+
+                                _id:
+                                    postObjectId
+
+                            }
+
+                        );
+
+
+                    if (
+                        !updatedPost
+                    ) {
+
+                        return res.status(404).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Updated post could not be loaded"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // RESPONSE
+                    // =========================================
+
+                    return res.json({
+
+                        success:
+                            true,
+
+                        message:
+                            "Post updated successfully",
+
+                        post:
+                            formatPost(
+
+                                updatedPost,
+
+                                authenticatedUserId
+
+                            ),
+
+                        updatedAt:
+                            updatedPost.updatedAt
 
                     });
 
+
                 } catch (
-                    notificationError
+                    error
                 ) {
 
-                    /*
-                     * Notification cleanup must never make
-                     * an already-successful post deletion fail.
-                     */
-
                     console.error(
-
-                        "Post notification cleanup error:",
-
-                        notificationError
-
+                        "Update post error:",
+                        error
                     );
+
+
+                    return res.status(500).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Could not update post"
+
+                    });
 
                 }
 
             }
 
-
-            // =============================================
-            // RESPONSE
-            // =============================================
-
-            return res.json({
-
-                success:
-                    true,
-
-                message:
-                    "Post deleted successfully",
-
-                postId:
-                    postId
-
-            });
+        );
 
 
-        } catch (
-            error
-        ) {
 
-            console.error(
-                "Delete post error:",
-                error
-            );
+        // ====================================================
+        // DELETE POST
+        //
+        // Only the post owner may delete the post.
+        // ====================================================
+
+        router.delete(
+
+            "/posts/:postId",
+
+            postWriteLimiter,
+
+            authenticateToken,
+
+            async (
+                req,
+                res
+            ) => {
+
+                try {
+
+                    // =========================================
+                    // POST ID
+                    // =========================================
+
+                    const postId =
+                        typeof req.params.postId ===
+                        "string"
+
+                            ? req.params.postId.trim()
+
+                            : "";
 
 
-            return res.status(500).json({
+                    // =========================================
+                    // AUTHENTICATED USER
+                    // =========================================
 
-                success:
-                    false,
+                    const authenticatedUserId =
+                        getAuthenticatedUserId(
+                            req
+                        );
 
-                error:
-                    "Could not delete post"
 
-            });
+                    // =========================================
+                    // VALIDATE POST ID
+                    // =========================================
 
-        }
+                    if (
+                        !isValidObjectId(
+                            postId
+                        )
+                    ) {
 
-    }
+                        return res.status(400).json({
 
-);
+                            success:
+                                false,
+
+                            error:
+                                "Invalid post ID"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // AUTHENTICATION
+                    // =========================================
+
+                    if (
+                        !authenticatedUserId
+                    ) {
+
+                        return res.status(401).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Authentication required"
+
+                        });
+
+                    }
+
+
+                    const postObjectId =
+                        new ObjectId(
+                            postId
+                        );
+
+
+                    const userObjectId =
+                        new ObjectId(
+                            authenticatedUserId
+                        );
+
+
+                    // =========================================
+                    // LOAD POST
+                    // =========================================
+
+                    const post =
+                        await postsCollection.findOne(
+
+                            {
+
+                                _id:
+                                    postObjectId
+
+                            },
+
+                            {
+
+                                projection: {
+
+                                    _id:
+                                        1,
+
+                                    authorId:
+                                        1
+
+                                }
+
+                            }
+
+                        );
+
+
+                    if (
+                        !post
+                    ) {
+
+                        return res.status(404).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Post not found"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // OWNERSHIP CHECK
+                    // =========================================
+
+                    if (
+
+                        !post.authorId
+
+                        ||
+
+                        post.authorId.toString() !==
+                        authenticatedUserId
+
+                    ) {
+
+                        return res.status(403).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "You can only delete your own posts"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // DELETE POST
+                    // =========================================
+
+                    const deleteResult =
+                        await postsCollection.deleteOne(
+
+                            {
+
+                                _id:
+                                    postObjectId,
+
+                                authorId:
+                                    userObjectId
+
+                            }
+
+                        );
+
+
+                    if (
+                        deleteResult.deletedCount !==
+                        1
+                    ) {
+
+                        return res.status(404).json({
+
+                            success:
+                                false,
+
+                            error:
+                                "Post could not be deleted"
+
+                        });
+
+                    }
+
+
+                    // =========================================
+                    // CLEAN RELATED NOTIFICATIONS
+                    // =========================================
+
+                    if (
+                        notificationsCollection
+                    ) {
+
+                        try {
+
+                            await notificationsCollection.deleteMany({
+
+                                postId:
+                                    postObjectId
+
+                            });
+
+                        } catch (
+                            notificationError
+                        ) {
+
+                            /*
+                             * Notification cleanup must never
+                             * make an already-successful post
+                             * deletion fail.
+                             */
+
+                            console.error(
+
+                                "Post notification cleanup error:",
+
+                                notificationError
+
+                            );
+
+                        }
+
+                    }
+
+
+                    // =========================================
+                    // RESPONSE
+                    // =========================================
+
+                    return res.json({
+
+                        success:
+                            true,
+
+                        message:
+                            "Post deleted successfully",
+
+                        postId:
+                            postId
+
+                    });
+
+
+                } catch (
+                    error
+                ) {
+
+                    console.error(
+                        "Delete post error:",
+                        error
+                    );
+
+
+                    return res.status(500).json({
+
+                        success:
+                            false,
+
+                        error:
+                            "Could not delete post"
+
+                    });
+
+                }
+
+            }
+
+        );
+
+
+
         // ====================================================
         // LIKE / UNLIKE POST
         // ====================================================
@@ -1023,7 +1390,6 @@ router.delete(
                             success:
                                 false,
 
-
                             error:
                                 "Invalid post ID"
 
@@ -1044,7 +1410,6 @@ router.delete(
 
                             success:
                                 false,
-
 
                             error:
                                 "Authentication required"
@@ -1087,10 +1452,8 @@ router.delete(
                                     _id:
                                         1,
 
-
                                     name:
                                         1,
-
 
                                     username:
                                         1
@@ -1110,7 +1473,6 @@ router.delete(
 
                             success:
                                 false,
-
 
                             error:
                                 "User not found"
@@ -1141,7 +1503,6 @@ router.delete(
 
                             success:
                                 false,
-
 
                             error:
                                 "Post not found"
@@ -1193,7 +1554,6 @@ router.delete(
                                 _id:
                                     postObjectId,
 
-
                                 likedBy:
                                     userObjectId
 
@@ -1235,14 +1595,11 @@ router.delete(
                                         recipientId:
                                             post.authorId,
 
-
                                         actorId:
                                             userObjectId,
 
-
                                         type:
                                             "like",
-
 
                                         postId:
                                             postObjectId
@@ -1311,10 +1668,8 @@ router.delete(
                             success:
                                 true,
 
-
                             liked:
                                 false,
-
 
                             likes:
                                 likes
@@ -1335,7 +1690,6 @@ router.delete(
 
                                 _id:
                                     postObjectId,
-
 
                                 likedBy: {
 
@@ -1427,10 +1781,8 @@ router.delete(
                             success:
                                 true,
 
-
                             liked:
                                 latestLiked,
-
 
                             likes:
                                 latestLikedBy.length
@@ -1465,31 +1817,24 @@ router.delete(
 
                             notificationsCollection,
 
-
                             recipientId:
                                 post.authorId.toString(),
-
 
                             actorId:
                                 authenticatedUserId,
 
-
                             actorName:
                                 actorName,
-
 
                             actorUsername:
                                 user.username ||
                                 "",
 
-
                             type:
                                 "like",
 
-
                             postId:
                                 postId,
-
 
                             message:
                                 `${actorName} liked your post.`
@@ -1542,10 +1887,8 @@ router.delete(
                         success:
                             true,
 
-
                         liked:
                             true,
-
 
                         likes:
                             updatedLikes
@@ -1567,7 +1910,6 @@ router.delete(
 
                         success:
                             false,
-
 
                         error:
                             "Could not update like"

@@ -242,7 +242,8 @@
     transition:
         color .2s ease,
         border-color .2s ease,
-        background .2s ease;
+        background .2s ease,
+        transform .15s ease;
 
 }
 
@@ -254,6 +255,18 @@
 
     border-color:
         #555;
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.refresh-button:active {
+
+    transform:
+        translateY(0)
+        scale(.97);
 
 }
 
@@ -646,6 +659,28 @@
 }
 
 
+.post-edited-label {
+
+    color:
+        #676e7a;
+
+    font-size:
+        10px;
+
+    font-style:
+        italic;
+
+    opacity:
+        .9;
+
+}
+
+
+
+/* ============================================================
+   POST CONTENT
+   ============================================================ */
+
 .post-content {
 
     color:
@@ -920,7 +955,10 @@
 
         transform:
             translateY(
-                -3px
+                -4px
+            )
+            scale(
+                .98
             );
 
     }
@@ -933,9 +971,262 @@
         transform:
             translateY(
                 0
+            )
+            scale(
+                1
             );
 
     }
+
+}
+
+
+
+/* ============================================================
+   POST EDITOR
+   ============================================================ */
+
+.post-edit-editor {
+
+    width:
+        100%;
+
+}
+
+
+.post-edit-input {
+
+    width:
+        100%;
+
+    min-height:
+        120px;
+
+    box-sizing:
+        border-box;
+
+    resize:
+        vertical;
+
+    padding:
+        13px 14px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .12
+        );
+
+    border-radius:
+        10px;
+
+    outline:
+        none;
+
+    background:
+        #101010;
+
+    color:
+        #f5f7fa;
+
+    font-family:
+        inherit;
+
+    font-size:
+        15px;
+
+    line-height:
+        1.65;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.post-edit-input:focus {
+
+    border-color:
+        #777;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            255,
+            255,
+            255,
+            .035
+        );
+
+}
+
+
+.post-edit-character-row {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    margin-top:
+        7px;
+
+}
+
+
+.post-edit-character-count {
+
+    color:
+        #686f7a;
+
+    font-size:
+        10px;
+
+}
+
+
+.post-edit-actions {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    margin-top:
+        11px;
+
+}
+
+
+.post-edit-actions button {
+
+    min-height:
+        34px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .1
+        );
+
+    border-radius:
+        8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .035
+        );
+
+    color:
+        #cbd1da;
+
+    font-family:
+        inherit;
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .16s ease,
+        border-color .16s ease,
+        color .16s ease,
+        transform .14s ease,
+        opacity .16s ease;
+
+}
+
+
+.post-edit-actions button:hover {
+
+    border-color:
+        #555;
+
+    color:
+        #fff;
+
+    transform:
+        translateY(
+            -1px
+        );
+
+}
+
+
+.post-edit-actions button:active {
+
+    transform:
+        translateY(
+            0
+        )
+        scale(
+            .97
+        );
+
+}
+
+
+.post-edit-actions button:last-child {
+
+    background:
+        #f5f7fa;
+
+    color:
+        #0b0c0e;
+
+    border-color:
+        #f5f7fa;
+
+}
+
+
+.post-edit-actions button:last-child:hover {
+
+    background:
+        #fff;
+
+    border-color:
+        #fff;
+
+}
+
+
+.post-edit-actions button:disabled {
+
+    opacity:
+        .45;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
 
 }
 
@@ -958,7 +1249,7 @@
 
     transform:
         translateY(
-            -5px
+            -6px
         );
 
     max-height:
@@ -996,7 +1287,7 @@
         center;
 
     gap:
-        8px;
+        9px;
 
     margin-top:
         18px;
@@ -1019,7 +1310,7 @@
 .post-action-button {
 
     min-height:
-        36px;
+        37px;
 
     display:
         inline-flex;
@@ -1030,6 +1321,9 @@
     gap:
         7px;
 
+    position:
+        relative;
+
     padding:
         0 12px;
 
@@ -1039,11 +1333,11 @@
             255,
             255,
             255,
-            .09
+            .085
         );
 
     border-radius:
-        8px;
+        9px;
 
     background:
         rgba(
@@ -1068,11 +1362,15 @@
     cursor:
         pointer;
 
+    overflow:
+        hidden;
+
     transition:
         border-color .18s ease,
         color .18s ease,
         background .18s ease,
-        transform .15s ease;
+        transform .15s ease,
+        box-shadow .18s ease;
 
 }
 
@@ -1080,13 +1378,28 @@
 .post-action-button:hover {
 
     border-color:
-        #666;
+        rgba(
+            255,
+            255,
+            255,
+            .2
+        );
 
     color:
         #fff;
 
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .045
+        );
+
     transform:
-        translateY(-1px);
+        translateY(
+            -1px
+        );
 
 }
 
@@ -1094,8 +1407,12 @@
 .post-action-button:active {
 
     transform:
-        translateY(0)
-        scale(.97);
+        translateY(
+            0
+        )
+        scale(
+            .96
+        );
 
 }
 
@@ -1114,13 +1431,62 @@
 }
 
 
-.post-action-icon {
-
-    font-size:
-        16px;
+.post-action-text,
+.post-action-count {
 
     line-height:
         1;
+
+}
+
+
+.post-action-count {
+
+    color:
+        #717986;
+
+    min-width:
+        10px;
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+
+/* ============================================================
+   ACTION ICONS
+   ============================================================ */
+
+.post-action-icon {
+
+    width:
+        17px;
+
+    height:
+        17px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex:
+        0 0 auto;
+
+    font-size:
+        17px;
+
+    line-height:
+        1;
+
+    transform-origin:
+        center;
 
 }
 
@@ -1132,11 +1498,27 @@
 
 .post-like-button {
 
-    position:
-        relative;
+    --like-glow:
+        rgba(
+            237,
+            133,
+            133,
+            .2
+        );
 
-    isolation:
-        isolate;
+}
+
+
+.post-like-button:hover {
+
+    box-shadow:
+        0 6px 20px
+        rgba(
+            0,
+            0,
+            0,
+            .14
+        );
 
 }
 
@@ -1151,7 +1533,7 @@
             237,
             133,
             133,
-            .4
+            .38
         );
 
     background:
@@ -1159,7 +1541,7 @@
             237,
             133,
             133,
-            .07
+            .065
         );
 
 }
@@ -1167,12 +1549,18 @@
 
 .post-like-button.liked .post-action-icon {
 
+    text-shadow:
+        0 0 12px
+        var(
+            --like-glow
+        );
+
     animation:
         communityLikePop
-        .35s
+        .38s
         cubic-bezier(
             .2,
-            .8,
+            .85,
             .2,
             1
         );
@@ -1184,8 +1572,13 @@
 
     animation:
         communityLikeButton
-        .28s
-        ease-out;
+        .3s
+        cubic-bezier(
+            .2,
+            .8,
+            .2,
+            1
+        );
 
 }
 
@@ -1199,7 +1592,7 @@
         absolute;
 
     inset:
-        -4px;
+        -5px;
 
     border-radius:
         inherit;
@@ -1216,28 +1609,53 @@
 
     animation:
         communityLikeRipple
-        .45s
+        .5s
         ease-out;
 
 }
 
 
-.post-action-text,
-.post-action-count {
+.post-like-button.like-just-toggled::before {
+
+    content:
+        "♥";
+
+    position:
+        absolute;
+
+    left:
+        11px;
+
+    top:
+        50%;
+
+    pointer-events:
+        none;
+
+    font-size:
+        10px;
 
     line-height:
         1;
 
-}
+    opacity:
+        0;
 
-
-.post-action-count {
+    transform:
+        translateY(
+            -50%
+        )
+        scale(
+            .7
+        );
 
     color:
-        #777;
+        currentColor;
 
-    min-width:
-        10px;
+    animation:
+        communityLikeBurst
+        .52s
+        ease-out;
 
 }
 
@@ -1247,21 +1665,36 @@
     0% {
 
         transform:
-            scale(1);
+            scale(
+                1
+            );
 
     }
 
-    45% {
+    40% {
 
         transform:
-            scale(1.06);
+            scale(
+                1.07
+            );
+
+    }
+
+    70% {
+
+        transform:
+            scale(
+                .985
+            );
 
     }
 
     100% {
 
         transform:
-            scale(1);
+            scale(
+                1
+            );
 
     }
 
@@ -1273,21 +1706,48 @@
     0% {
 
         transform:
-            scale(.72);
+            scale(
+                .7
+            )
+            rotate(
+                -8deg
+            );
 
     }
 
-    55% {
+    45% {
 
         transform:
-            scale(1.24);
+            scale(
+                1.24
+            )
+            rotate(
+                4deg
+            );
+
+    }
+
+    72% {
+
+        transform:
+            scale(
+                .95
+            )
+            rotate(
+                -1deg
+            );
 
     }
 
     100% {
 
         transform:
-            scale(1);
+            scale(
+                1
+            )
+            rotate(
+                0
+            );
 
     }
 
@@ -1302,7 +1762,9 @@
             .32;
 
         transform:
-            scale(.94);
+            scale(
+                .93
+            );
 
     }
 
@@ -1312,7 +1774,319 @@
             0;
 
         transform:
-            scale(1.16);
+            scale(
+                1.18
+            );
+
+    }
+
+}
+
+
+@keyframes communityLikeBurst {
+
+    0% {
+
+        opacity:
+            0;
+
+        transform:
+            translate(
+                0,
+                -50%
+            )
+            scale(
+                .65
+            );
+
+    }
+
+    25% {
+
+        opacity:
+            .85;
+
+    }
+
+    100% {
+
+        opacity:
+            0;
+
+        transform:
+            translate(
+                4px,
+                -19px
+            )
+            scale(
+                1.2
+            );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   COMMENT BUTTON
+   ============================================================ */
+
+.post-comment-button {
+
+    position:
+        relative;
+
+}
+
+
+.post-comment-button::before {
+
+    content:
+        "";
+
+    width:
+        14px;
+
+    height:
+        11px;
+
+    display:
+        inline-block;
+
+    flex:
+        0 0 auto;
+
+    border:
+        1.6px solid
+        currentColor;
+
+    border-radius:
+        4px;
+
+    transform:
+        translateY(
+            -1px
+        );
+
+    opacity:
+        .82;
+
+    transition:
+        transform .18s ease,
+        opacity .18s ease;
+
+}
+
+
+.post-comment-button::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    left:
+        14px;
+
+    bottom:
+        8px;
+
+    border-left:
+        1.6px solid
+        currentColor;
+
+    border-bottom:
+        1.6px solid
+        currentColor;
+
+    transform:
+        skew(
+            -24deg
+        )
+        rotate(
+            -8deg
+        );
+
+    opacity:
+        .82;
+
+    transition:
+        transform .18s ease,
+        opacity .18s ease;
+
+}
+
+
+.post-comment-button:hover::before {
+
+    opacity:
+        1;
+
+    transform:
+        translate(
+            1px,
+            -2px
+        );
+
+}
+
+
+.post-comment-button:hover::after {
+
+    opacity:
+        1;
+
+    transform:
+        translate(
+            1px,
+            -1px
+        )
+        skew(
+            -24deg
+        )
+        rotate(
+            -8deg
+        );
+
+}
+
+
+.post-comment-button[aria-expanded="true"] {
+
+    color:
+        #e0e5ec;
+
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            .18
+        );
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+}
+
+
+.post-comment-button[aria-expanded="true"]::before {
+
+    animation:
+        communityCommentPulse
+        .55s
+        ease-out;
+
+}
+
+
+.post-comment-button[aria-expanded="true"]::after {
+
+    animation:
+        communityCommentTail
+        .55s
+        ease-out;
+
+}
+
+
+@keyframes communityCommentPulse {
+
+    0% {
+
+        transform:
+            translateY(
+                -1px
+            )
+            scale(
+                1
+            );
+
+    }
+
+    45% {
+
+        transform:
+            translateY(
+                -2px
+            )
+            scale(
+                1.12
+            );
+
+    }
+
+    100% {
+
+        transform:
+            translateY(
+                -1px
+            )
+            scale(
+                1
+            );
+
+    }
+
+}
+
+
+@keyframes communityCommentTail {
+
+    0% {
+
+        transform:
+            skew(
+                -24deg
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+    45% {
+
+        transform:
+            translate(
+                1px,
+                -1px
+            )
+            skew(
+                -24deg
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+    100% {
+
+        transform:
+            translate(
+                0,
+                0
+            )
+            skew(
+                -24deg
+            )
+            rotate(
+                -8deg
+            );
 
     }
 
@@ -1369,7 +2143,7 @@
 
         transform:
             translateY(
-                -4px
+                -5px
             );
 
     }
@@ -1452,6 +2226,9 @@
         transform:
             translateY(
                 5px
+            )
+            scale(
+                .99
             );
 
     }
@@ -1464,6 +2241,9 @@
         transform:
             translateY(
                 0
+            )
+            scale(
+                1
             );
 
     }
@@ -1717,7 +2497,8 @@
 
     transition:
         transform .15s ease,
-        opacity .18s ease;
+        opacity .18s ease,
+        box-shadow .18s ease;
 
 }
 
@@ -1727,13 +2508,25 @@
     transform:
         translateY(-1px);
 
+    box-shadow:
+        0 7px 20px
+        rgba(
+            0,
+            0,
+            0,
+            .18
+        );
+
 }
 
 
 .post-submit-comment:active {
 
     transform:
-        translateY(0);
+        translateY(0)
+        scale(
+            .97
+        );
 
 }
 
@@ -1816,7 +2609,8 @@
     transition:
         background .15s ease,
         border-color .15s ease,
-        color .15s ease;
+        color .15s ease,
+        transform .15s ease;
 
 }
 
@@ -1841,6 +2635,16 @@
 
     color:
         #fff;
+
+}
+
+
+.post-comment-menu-button:active {
+
+    transform:
+        scale(
+            .94
+        );
 
 }
 
@@ -1939,6 +2743,10 @@
 
     cursor:
         pointer;
+
+    transition:
+        background .15s ease,
+        color .15s ease;
 
 }
 
@@ -2910,6 +3718,14 @@ html[data-dheere-mood="midnight"]
     }
 
 
+    .post-action-button {
+
+        min-height:
+            36px;
+
+    }
+
+
     .post-comment-form {
 
         flex-direction:
@@ -2949,6 +3765,22 @@ html[data-dheere-mood="midnight"]
 
     }
 
+
+    .post-edit-actions {
+
+        width:
+            100%;
+
+    }
+
+
+    .post-edit-actions button {
+
+        flex:
+            1;
+
+    }
+
 }
 
 
@@ -2971,7 +3803,8 @@ html[data-dheere-mood="midnight"]
     .post-menu,
     .post-menu-button,
     .post-comment-menu,
-    .post-comment-menu-button {
+    .post-comment-menu-button,
+    .post-edit-actions button {
 
         transition:
             none;

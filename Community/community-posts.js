@@ -1,6 +1,7 @@
 // ============================================================
 // COMMUNITY POSTS
-// Post loading, rendering, publishing, likes and post deletion
+// Post loading, rendering, publishing, likes,
+// post editing and post deletion
 // ============================================================
 
 "use strict";
@@ -13,9 +14,13 @@
 import {
 
     getCurrentUser,
+
     getUserId,
+
     getAuthHeaders,
+
     hasValidLoginSession,
+
     clearAuthStorage
 
 } from "./community-auth.js";
@@ -24,7 +29,9 @@ import {
 import {
 
     initializeComments,
+
     loadComments,
+
     submitCommentFromForm
 
 } from "./community-comments.js";
@@ -57,6 +64,10 @@ const postLoadingState =
 
 
 const postDeletingState =
+    new Set();
+
+
+const postEditingState =
     new Set();
 
 
@@ -373,7 +384,7 @@ function processAuthFailure(
 
 
 // ============================================================
-// CHARACTER COUNT
+// POST CHARACTER COUNT
 // ============================================================
 
 function updatePostCharacterCount(
@@ -453,9 +464,10 @@ function renderPostOwnerActions(
 ) {
 
     /*
-     * IMPORTANT:
-     * The menu is generated ONLY when this is the
-     * currently authenticated user's post.
+     * CRITICAL:
+     *
+     * No owner menu is rendered unless the current
+     * authenticated user owns the post.
      */
 
     if (
@@ -485,7 +497,9 @@ function renderPostOwnerActions(
                 aria-expanded="false"
             >
 
-                <span aria-hidden="true">
+                <span
+                    aria-hidden="true"
+                >
                     ⋯
                 </span>
 
@@ -497,6 +511,16 @@ function renderPostOwnerActions(
                 data-post-menu
                 hidden
             >
+
+                <button
+                    type="button"
+                    data-post-action="edit"
+                >
+
+                    Edit
+
+                </button>
+
 
                 <button
                     type="button"
@@ -553,13 +577,11 @@ function renderPost(
 
     const username =
         post?.username ||
-
         "user";
 
 
     const content =
         post?.content ||
-
         "";
 
 
@@ -651,6 +673,7 @@ function renderPost(
 
             <div
                 class="post-content"
+                data-post-content
             >
 
                 ${escapeHTML(
@@ -663,6 +686,10 @@ function renderPost(
             <div
                 class="post-footer"
             >
+
+                <!-- =========================================
+                     LIKE
+                     ========================================= -->
 
                 <button
                     type="button"
@@ -724,6 +751,10 @@ function renderPost(
                 </button>
 
 
+                <!-- =========================================
+                     COMMENTS
+                     ========================================= -->
+
                 <button
                     type="button"
                     class="post-action-button post-comment-button"
@@ -754,6 +785,10 @@ function renderPost(
 
             </div>
 
+
+            <!-- =============================================
+                 COMMENTS PANEL
+                 ============================================= -->
 
             <div
                 class="post-comments-panel"
@@ -861,14 +896,6 @@ function renderPosts(
             )
             .join("");
 
-
-    /*
-     * Comments module owns:
-     * comment loading
-     * comment creation
-     * comment editing
-     * comment deletion
-     */
 
     initializeComments(
         postsFeed
@@ -1011,8 +1038,11 @@ async function loadPosts(
 
 
         renderPosts(
+
             posts,
+
             postsFeed
+
         );
 
 
@@ -1340,12 +1370,6 @@ function togglePostMenu(
     }
 
 
-    /*
-     * Extra owner check.
-     * The menu should never be opened for
-     * somebody else's post.
-     */
-
     const ownerId =
         String(
 
@@ -1359,6 +1383,10 @@ function togglePostMenu(
     const currentUserId =
         getCurrentUserId();
 
+
+    /*
+     * Only the owner can open this menu.
+     */
 
     if (
         !ownerId ||
@@ -1431,7 +1459,7 @@ function togglePostMenu(
 
 
 // ============================================================
-// CLOSE ALL POST MENUS
+// CLOSE POST MENUS
 // ============================================================
 
 function closeAllPostMenus(
@@ -1479,6 +1507,719 @@ function closeAllPostMenus(
 
 
 // ============================================================
+// BEGIN POST EDIT
+// ============================================================
+
+function beginPostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return false;
+
+    }
+
+
+    if (
+        postElement.dataset.editing ===
+        "true"
+    ) {
+
+        return false;
+
+    }
+
+
+    const postId =
+        postElement.dataset.postId ||
+        "";
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    /*
+     * Frontend ownership protection.
+     */
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return false;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-post-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return false;
+
+    }
+
+
+    const currentContent =
+        contentElement.textContent ||
+        "";
+
+
+    postElement.dataset.originalContent =
+        currentContent;
+
+
+    postElement.dataset.editing =
+        "true";
+
+
+    closeAllPostMenus(
+        postElement
+    );
+
+
+    contentElement.innerHTML = `
+
+        <div
+            class="post-edit-editor"
+        >
+
+            <textarea
+                class="post-edit-input"
+                maxlength="${MAX_POST_LENGTH}"
+                aria-label="Edit post"
+            ></textarea>
+
+
+            <div
+                class="post-edit-character-row"
+            >
+
+                <span
+                    class="post-edit-character-count"
+                >
+                    0 / ${MAX_POST_LENGTH}
+                </span>
+
+            </div>
+
+
+            <div
+                class="post-edit-actions"
+            >
+
+                <button
+                    type="button"
+                    data-post-action="cancel-edit"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    data-post-action="save-edit"
+                >
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const input =
+        contentElement.querySelector(
+            ".post-edit-input"
+        );
+
+
+    const counter =
+        contentElement.querySelector(
+            ".post-edit-character-count"
+        );
+
+
+    if (input) {
+
+        input.value =
+            currentContent;
+
+
+        updatePostCharacterCount(
+            input,
+            counter
+        );
+
+
+        input.focus();
+
+
+        input.setSelectionRange(
+
+            input.value.length,
+
+            input.value.length
+
+        );
+
+    }
+
+
+    return true;
+
+}
+
+
+
+// ============================================================
+// CANCEL POST EDIT
+// ============================================================
+
+function cancelPostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-post-content]"
+        );
+
+
+    if (!contentElement) {
+
+        return;
+
+    }
+
+
+    const originalContent =
+        postElement.dataset.originalContent ||
+        "";
+
+
+    contentElement.innerHTML =
+        escapeHTML(
+            originalContent
+        );
+
+
+    postElement.dataset.editing =
+        "false";
+
+
+    delete postElement.dataset.originalContent;
+
+}
+
+
+
+// ============================================================
+// UPDATE POST
+// ============================================================
+
+async function updatePost(
+    postId,
+    content
+) {
+
+    const cleanPostId =
+        String(
+            postId ||
+            ""
+        ).trim();
+
+
+    const cleanContent =
+        typeof content ===
+        "string"
+
+            ? content.trim()
+
+            : "";
+
+
+    if (!cleanPostId) {
+
+        throw new Error(
+            "Invalid post ID."
+        );
+
+    }
+
+
+    if (
+        !hasValidLoginSession()
+    ) {
+
+        throw new Error(
+            "Please login first."
+        );
+
+    }
+
+
+    if (!cleanContent) {
+
+        throw new Error(
+            "Post cannot be empty."
+        );
+
+    }
+
+
+    if (
+        cleanContent.length >
+        MAX_POST_LENGTH
+    ) {
+
+        throw new Error(
+
+            `Post cannot exceed ${MAX_POST_LENGTH} characters.`
+
+        );
+
+    }
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (!currentUserId) {
+
+        throw new Error(
+            "Authentication required."
+        );
+
+    }
+
+
+    if (
+        postEditingState.has(
+            cleanPostId
+        )
+    ) {
+
+        throw new Error(
+            "Post is already being edited."
+        );
+
+    }
+
+
+    postEditingState.add(
+        cleanPostId
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API_BASE_URL}/posts/${encodeURIComponent(
+                    cleanPostId
+                )}`,
+
+                {
+
+                    method:
+                        "PATCH",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            content:
+                                cleanContent
+
+                        })
+
+                }
+
+            );
+
+
+        const result =
+            await parseJSON(
+                response
+            );
+
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            throw processAuthFailure(
+                result
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            403
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "You can only edit your own posts."
+
+            );
+
+        }
+
+
+        if (
+            response.status ===
+            404
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Post not found."
+
+            );
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+
+                result?.error ||
+
+                "Could not update post."
+
+            );
+
+        }
+
+
+        return {
+
+            post:
+                result?.post ||
+                null,
+
+            updatedAt:
+                result?.updatedAt ||
+                null
+
+        };
+
+
+    } finally {
+
+        postEditingState.delete(
+            cleanPostId
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// SAVE POST EDIT
+// ============================================================
+
+async function savePostEdit(
+    postElement
+) {
+
+    if (!postElement) {
+
+        return null;
+
+    }
+
+
+    const postId =
+        postElement.dataset.postId ||
+        "";
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    if (
+        !postId ||
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return null;
+
+    }
+
+
+    const contentElement =
+        postElement.querySelector(
+            "[data-post-content]"
+        );
+
+
+    const input =
+        contentElement?.querySelector(
+            ".post-edit-input"
+        );
+
+
+    if (!contentElement || !input) {
+
+        return null;
+
+    }
+
+
+    const content =
+        input.value.trim();
+
+
+    if (!content) {
+
+        alert(
+            "Post cannot be empty."
+        );
+
+
+        input.focus();
+
+
+        return null;
+
+    }
+
+
+    if (
+        content.length >
+        MAX_POST_LENGTH
+    ) {
+
+        alert(
+
+            `Post cannot exceed ${MAX_POST_LENGTH} characters.`
+
+        );
+
+
+        input.focus();
+
+
+        return null;
+
+    }
+
+
+    const saveButton =
+        postElement.querySelector(
+            '[data-post-action="save-edit"]'
+        );
+
+
+    const cancelButton =
+        postElement.querySelector(
+            '[data-post-action="cancel-edit"]'
+        );
+
+
+    if (saveButton) {
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Saving...";
+
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.disabled =
+            true;
+
+    }
+
+
+    try {
+
+        const result =
+            await updatePost(
+
+                postId,
+
+                content
+
+            );
+
+
+        const updatedContent =
+            result?.post?.content ||
+
+            content;
+
+
+        contentElement.innerHTML =
+            escapeHTML(
+                updatedContent
+            );
+
+
+        postElement.dataset.editing =
+            "false";
+
+
+        delete postElement.dataset.originalContent;
+
+
+        /*
+         * Add an "edited" label next to the post date.
+         * Avoid duplicate labels.
+         */
+
+        const headerRight =
+            postElement.querySelector(
+                ".post-header-right"
+            );
+
+
+        if (
+            headerRight &&
+
+            !headerRight.querySelector(
+                ".post-edited-label"
+            )
+
+        ) {
+
+            const editedLabel =
+                document.createElement(
+                    "span"
+                );
+
+
+            editedLabel.className =
+                "post-edited-label";
+
+
+            editedLabel.textContent =
+                "edited";
+
+
+            headerRight.appendChild(
+                editedLabel
+            );
+
+        }
+
+
+        return result;
+
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "Save post edit error:",
+            error
+        );
+
+
+        alert(
+
+            error?.message ||
+
+            "Unable to update post."
+
+        );
+
+
+        return null;
+
+
+    } finally {
+
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save";
+
+        }
+
+
+        if (cancelButton) {
+
+            cancelButton.disabled =
+                false;
+
+        }
+
+    }
+
+}
+
+
+
+// ============================================================
 // DELETE POST
 // ============================================================
 
@@ -1518,10 +2259,6 @@ async function deletePost(
     }
 
 
-    /*
-     * Frontend ownership check.
-     */
-
     const ownerId =
         String(
 
@@ -1536,16 +2273,16 @@ async function deletePost(
         getCurrentUserId();
 
 
+    /*
+     * Never allow delete action in the frontend
+     * when the post is not owned by the user.
+     */
+
     if (
         !ownerId ||
         ownerId !==
         currentUserId
     ) {
-
-        alert(
-            "You can only delete your own posts."
-        );
-
 
         return false;
 
@@ -1672,19 +2409,10 @@ async function deletePost(
         }
 
 
-        /*
-         * Delete animation.
-         */
-
         postElement.classList.add(
             "post-deleting"
         );
 
-
-        /*
-         * Fallback for browsers / CSS states where
-         * max-height transition is not effective.
-         */
 
         window.setTimeout(
 
@@ -1783,7 +2511,7 @@ async function deletePost(
 
 
 // ============================================================
-// TOGGLE COMMENTS PANEL
+// COMMENTS PANEL
 // ============================================================
 
 async function toggleCommentsPanel(
@@ -1953,7 +2681,7 @@ function bindPostActions(
         async event => {
 
             // ================================================
-            // POST MENU
+            // POST MENU BUTTON
             // ================================================
 
             const menuButton =
@@ -2025,6 +2753,154 @@ function bindPostActions(
 
 
             // ================================================
+            // EDIT POST
+            // ================================================
+
+            const editButton =
+                event.target.closest(
+                    '[data-post-action="edit"]'
+                );
+
+
+            if (
+                editButton
+            ) {
+
+                event.preventDefault();
+
+
+                event.stopPropagation();
+
+
+                const postCard =
+                    editButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (!postCard) {
+
+                    return;
+
+                }
+
+
+                const ownerId =
+                    String(
+
+                        postCard.dataset.postOwnerId ||
+
+                        ""
+
+                    ).trim();
+
+
+                const currentUserId =
+                    getCurrentUserId();
+
+
+                if (
+                    !ownerId ||
+                    ownerId !==
+                    currentUserId
+                ) {
+
+                    return;
+
+                }
+
+
+                beginPostEdit(
+                    postCard
+                );
+
+
+                return;
+
+            }
+
+
+            // ================================================
+            // CANCEL POST EDIT
+            // ================================================
+
+            const cancelEditButton =
+                event.target.closest(
+                    '[data-post-action="cancel-edit"]'
+                );
+
+
+            if (
+                cancelEditButton
+            ) {
+
+                event.preventDefault();
+
+
+                event.stopPropagation();
+
+
+                const postCard =
+                    cancelEditButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (postCard) {
+
+                    cancelPostEdit(
+                        postCard
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            // ================================================
+            // SAVE POST EDIT
+            // ================================================
+
+            const saveEditButton =
+                event.target.closest(
+                    '[data-post-action="save-edit"]'
+                );
+
+
+            if (
+                saveEditButton
+            ) {
+
+                event.preventDefault();
+
+
+                event.stopPropagation();
+
+
+                const postCard =
+                    saveEditButton.closest(
+                        ".post-card"
+                    );
+
+
+                if (postCard) {
+
+                    await savePostEdit(
+                        postCard
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            // ================================================
             // DELETE POST
             // ================================================
 
@@ -2070,10 +2946,6 @@ function bindPostActions(
                 const currentUserId =
                     getCurrentUserId();
 
-
-                /*
-                 * Owner-only UI protection.
-                 */
 
                 if (
                     !ownerId ||
@@ -2297,6 +3169,166 @@ function bindPostActions(
         );
 
     }
+
+
+    // ========================================================
+    // POST EDIT KEYBOARD EVENTS
+    // ========================================================
+
+    postsFeed.addEventListener(
+
+        "keydown",
+
+        event => {
+
+            const input =
+                event.target.closest(
+                    ".post-edit-input"
+                );
+
+
+            if (!input) {
+
+                return;
+
+            }
+
+
+            const postCard =
+                input.closest(
+                    ".post-card"
+                );
+
+
+            if (!postCard) {
+
+                return;
+
+            }
+
+
+            // ================================================
+            // ESCAPE = CANCEL
+            // ================================================
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                event.preventDefault();
+
+
+                cancelPostEdit(
+                    postCard
+                );
+
+
+                return;
+
+            }
+
+
+            // ================================================
+            // CMD/CTRL + ENTER = SAVE
+            // ================================================
+
+            if (
+
+                event.key ===
+                "Enter"
+
+                &&
+
+                (
+                    event.metaKey ||
+                    event.ctrlKey
+                )
+
+            ) {
+
+                event.preventDefault();
+
+
+                savePostEdit(
+                    postCard
+                );
+
+            }
+
+
+            // ================================================
+            // LIVE CHARACTER COUNT
+            // ================================================
+
+            const contentElement =
+                postCard.querySelector(
+                    "[data-post-content]"
+                );
+
+
+            const counter =
+                contentElement?.querySelector(
+                    ".post-edit-character-count"
+                );
+
+
+            updatePostCharacterCount(
+                input,
+                counter
+            );
+
+        }
+
+    );
+
+
+    // ========================================================
+    // POST EDIT INPUT CHARACTER COUNT
+    // ========================================================
+
+    postsFeed.addEventListener(
+
+        "input",
+
+        event => {
+
+            const input =
+                event.target.closest(
+                    ".post-edit-input"
+                );
+
+
+            if (!input) {
+
+                return;
+
+            }
+
+
+            const postCard =
+                input.closest(
+                    ".post-card"
+                );
+
+
+            const counter =
+                postCard?.querySelector(
+                    ".post-edit-character-count"
+                );
+
+
+            updatePostCharacterCount(
+
+                input,
+
+                counter
+
+            );
+
+        }
+
+    );
 
 }
 
@@ -2657,27 +3689,15 @@ function initializePosts(
     } = {}
 ) {
 
-    /*
-     * Post actions
-     */
-
     bindPostActions(
         postsFeed
     );
 
 
-    /*
-     * Comments module
-     */
-
     initializeComments(
         postsFeed
     );
 
-
-    /*
-     * Post composer
-     */
 
     initializePostComposer({
 
@@ -2691,10 +3711,6 @@ function initializePosts(
 
     });
 
-
-    /*
-     * Refresh
-     */
 
     if (
         refreshButton &&
@@ -2791,6 +3807,14 @@ export {
     togglePostMenu,
 
     closeAllPostMenus,
+
+    beginPostEdit,
+
+    cancelPostEdit,
+
+    updatePost,
+
+    savePostEdit,
 
     deletePost,
 
