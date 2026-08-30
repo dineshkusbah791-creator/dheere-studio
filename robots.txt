@@ -3,13 +3,13 @@
 # https://dheerestudio.com/
 # ==================================================
 
-# Default rule: allow compliant crawlers to access
-# the public pages of Dheere Studio.
+# Default rule:
+# Allow compliant crawlers to access public site content.
 User-agent: *
 Allow: /
 
 # ==================================================
-# OPENAI
+# OPENAI SEARCH
 # ==================================================
 
 User-agent: OAI-SearchBot
@@ -23,7 +23,7 @@ User-agent: Googlebot
 Allow: /
 
 # ==================================================
-# GOOGLE AI / EXTENDED USE
+# GOOGLE AI
 # ==================================================
 
 User-agent: Google-Extended

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+>
+
+    <!-- ==================================================
+         HOME
+         ================================================== -->
 
     <url>
         <loc>https://dheerestudio.com/</loc>
     </url>
+
+
+    <!-- ==================================================
+         CORE STUDIO PAGES
+         ================================================== -->
 
     <url>
         <loc>https://dheerestudio.com/about.html</loc>
@@ -14,20 +25,56 @@
         <loc>https://dheerestudio.com/founder.html</loc>
     </url>
 
+
+    <!-- ==================================================
+         CREATIVE CONTENT
+         ================================================== -->
+
     <url>
         <loc>https://dheerestudio.com/worlds.html</loc>
     </url>
 
     <url>
-        <loc>https://dheerestudio.com/shunyavas.html</loc>
+        <loc>https://dheerestudio.com/stories.html</loc>
+    </url>
+
+    <url>
+        <loc>https://dheerestudio.com/experiences.html</loc>
     </url>
 
     <url>
         <loc>https://dheerestudio.com/article.html</loc>
     </url>
 
+
+    <!-- ==================================================
+         MAJOR ORIGINAL IPS
+         ================================================== -->
+
     <url>
-        <loc>https://dheerestudio.com/community.html</loc>
+        <loc>https://dheerestudio.com/shunyavas.html</loc>
+    </url>
+
+    <url>
+        <loc>https://dheerestudio.com/owlman.html</loc>
+    </url>
+
+
+    <!-- ==================================================
+         COMMUNITY
+         ================================================== -->
+
+    <url>
+        <loc>https://dheerestudio.com/Community/community.html</loc>
+    </url>
+
+
+    <!-- ==================================================
+         OTHER PUBLIC PAGES
+         ================================================== -->
+
+    <url>
+        <loc>https://dheerestudio.com/mood.html</loc>
     </url>
 
 </urlset>
