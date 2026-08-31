@@ -30,6 +30,8 @@ import {
 
     initializeComments,
 
+    loadComments,
+
     submitCommentFromForm
 
 } from "./community-comments.js";
@@ -2751,6 +2753,24 @@ async function toggleCommentsPanel(
         );
 
     }
+
+
+    /*
+     * Load the actual comments when the
+     * comments panel is opened.
+     */
+
+    await loadComments(
+
+        postId,
+
+        commentsContainer,
+
+        postCard.querySelector(
+            ".post-comment-count"
+        )
+
+    );
 
 }
 
