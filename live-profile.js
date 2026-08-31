@@ -1,18 +1,10 @@
 "use strict";
 
+
 /* ============================================================
    LIVE PROFILE
    Public profile page
    ============================================================ */
-
-
-/* ============================================================
-   AUTH
-   ============================================================ */
-
-import {
-    getAuthHeaders
-} from "./profile/profile-auth.js";
 
 
 /* ============================================================
@@ -25,6 +17,10 @@ const API_BASE =
 
 const USER_STORAGE_KEY =
     "dheereStudioUser";
+
+
+const TOKEN_STORAGE_KEY =
+    "dheereStudioToken";
 
 
 /* ============================================================
@@ -202,6 +198,42 @@ function getCurrentUserId() {
         user?.user?._id ||
         ""
     );
+
+}
+
+
+/* ============================================================
+   AUTH HEADERS
+   ============================================================ */
+
+function getAuthHeaders() {
+
+    const token =
+        localStorage.getItem(
+            TOKEN_STORAGE_KEY
+        );
+
+
+    const headers = {
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json"
+
+    };
+
+
+    if (token) {
+
+        headers.Authorization =
+            `Bearer ${token}`;
+
+    }
+
+
+    return headers;
 
 }
 
