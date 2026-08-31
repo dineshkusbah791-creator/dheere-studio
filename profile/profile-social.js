@@ -5722,8 +5722,6 @@ export {
 
     deletePostComment,
 
-    renderPostOwnerActions,
-
     setupSocialEvents
 
 };
