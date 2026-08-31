@@ -1,7 +1,18 @@
+"use strict";
+
 /* ============================================================
    LIVE PROFILE
    Public profile page
    ============================================================ */
+
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+
+import {
+    getAuthHeaders
+} from "./profile/profile-auth.js";
 
 
 /* ============================================================
@@ -1231,10 +1242,8 @@ async function addComment(
                     method:
                         "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+                    headers:
+                        getAuthHeaders(),
 
                     body:
                         JSON.stringify({
@@ -1365,10 +1374,8 @@ async function toggleLike(
                     method:
                         "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+                    headers:
+                        getAuthHeaders(),
 
                     body:
                         JSON.stringify({
