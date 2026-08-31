@@ -22,7 +22,7 @@
    - Profile editing
    - Avatar/photo
    - Dheere AI
-   ========================================================= */
+   ========================================================== */
 
 
 /* =========================================================
@@ -1471,6 +1471,159 @@ async function deletePostComment(
     }
 
 }
+
+
+
+/* =========================================================
+   TOGGLE POST MENU
+   ========================================================= */
+
+function togglePostMenu(
+    postElement,
+    button
+) {
+
+    if (
+        !postElement ||
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    const ownerId =
+        String(
+
+            postElement.dataset.postOwnerId ||
+
+            ""
+
+        ).trim();
+
+
+    const currentUserId =
+        getCurrentUserId();
+
+
+    /*
+     * Only the post owner can open
+     * the post owner menu.
+     */
+
+    if (
+        !ownerId ||
+        ownerId !==
+        currentUserId
+    ) {
+
+        return;
+
+    }
+
+
+    const menu =
+        postElement.querySelector(
+            "[data-post-menu]"
+        );
+
+
+    if (!menu) {
+
+        return;
+
+    }
+
+
+    const shouldOpen =
+        menu.hidden;
+
+
+    /*
+     * Close all other post menus first.
+     */
+
+    closePostMenus(
+        postsFeed
+    );
+
+
+    /*
+     * Toggle the requested menu.
+     */
+
+    menu.hidden =
+        !shouldOpen;
+
+
+    button.setAttribute(
+
+        "aria-expanded",
+
+        shouldOpen
+            ? "true"
+            : "false"
+
+    );
+
+}
+
+
+
+/* =========================================================
+   CLOSE POST MENUS
+   ========================================================= */
+
+function closePostMenus(
+    root = postsFeed
+) {
+
+    if (!root) {
+
+        return;
+
+    }
+
+
+    root
+        .querySelectorAll(
+            "[data-post-menu]"
+        )
+        .forEach(
+
+            menu => {
+
+                menu.hidden =
+                    true;
+
+            }
+
+        );
+
+
+    root
+        .querySelectorAll(
+            ".post-menu-button"
+        )
+        .forEach(
+
+            button => {
+
+                button.setAttribute(
+
+                    "aria-expanded",
+
+                    "false"
+
+                );
+
+            }
+
+        );
+
+}
+
 
 
 
