@@ -8076,3 +8076,12227 @@ html[data-dheere-mood]
     }
 
 }
+
+/* ============================================================
+   64 — DESERT ENVIRONMENT
+   ------------------------------------------------------------
+   Natural desert atmosphere:
+   restrained sand palette, layered dunes, heat haze,
+   low drifting sand and visible wind-driven dust.
+   ============================================================ */
+
+html[data-dheere-mood]
+.desert-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    isolation:
+        isolate;
+
+}
+
+
+html[data-dheere-mood]
+.desert-sky {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        1;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                218,
+                203,
+                181,
+                .045
+            ),
+            rgba(
+                171,
+                149,
+                118,
+                .025
+            )
+            54%,
+            rgba(
+                91,
+                76,
+                60,
+                .035
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood]
+.desert-horizon {
+
+    position:
+        absolute;
+
+    left:
+        -12%;
+
+    right:
+        -12%;
+
+    bottom:
+        34%;
+
+    height:
+        2px;
+
+    z-index:
+        3;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                222,
+                206,
+                185,
+                .14
+            ),
+            rgba(
+                176,
+                154,
+                124,
+                .18
+            ),
+            transparent
+        );
+
+    filter:
+        blur(
+            .7px
+        );
+
+    opacity:
+        .82;
+
+}
+
+
+html[data-dheere-mood]
+.desert-dunes-far {
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        19%;
+
+    height:
+        36%;
+
+    z-index:
+        2;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            18% 82%,
+            rgba(
+                173,
+                145,
+                106,
+                .16
+            ),
+            transparent
+            34%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            61% 76%,
+            rgba(
+                157,
+                128,
+                91,
+                .12
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            88% 88%,
+            rgba(
+                132,
+                105,
+                76,
+                .11
+            ),
+            transparent
+            29%
+        );
+
+    filter:
+        blur(
+            4px
+        );
+
+}
+
+
+html[data-dheere-mood]
+.desert-dunes-mid {
+
+    position:
+        absolute;
+
+    left:
+        -16%;
+
+    right:
+        -16%;
+
+    bottom:
+        5%;
+
+    height:
+        34%;
+
+    z-index:
+        3;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            12% 92%,
+            rgba(
+                119,
+                95,
+                66,
+                .15
+            ),
+            transparent
+            37%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            54% 84%,
+            rgba(
+                136,
+                105,
+                72,
+                .17
+            ),
+            transparent
+            39%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            89% 95%,
+            rgba(
+                103,
+                80,
+                55,
+                .14
+            ),
+            transparent
+            33%
+        );
+
+    filter:
+        blur(
+            1.5px
+        );
+
+}
+
+
+html[data-dheere-mood]
+.desert-haze {
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        16%;
+
+    height:
+        31%;
+
+    z-index:
+        4;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            center,
+            rgba(
+                222,
+                199,
+                167,
+                .045
+            ),
+            transparent
+            68%
+        );
+
+    filter:
+        blur(
+            24px
+        );
+
+    opacity:
+        .72;
+
+}
+
+
+html[data-dheere-mood]
+.desert-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -35%;
+
+    z-index:
+        6;
+
+    background-image:
+
+        repeating-linear-gradient(
+            12deg,
+            transparent
+            0 42px,
+            rgba(
+                223,
+                205,
+                179,
+                .075
+            )
+            43px 44px,
+            transparent
+            45px 76px
+        );
+
+    opacity:
+        .16;
+
+    transform:
+        rotate(
+            -4deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.desert-gusts {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    z-index:
+        5;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0 44%,
+            rgba(
+                224,
+                203,
+                174,
+                .045
+            )
+            47%,
+            transparent
+            51% 100%
+        );
+
+    filter:
+        blur(
+            11px
+        );
+
+    opacity:
+        .24;
+
+}
+
+
+html[data-dheere-mood]
+.desert-dust-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --dust-size,
+            2px
+        );
+
+    height:
+        var(
+            --dust-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            221,
+            199,
+            166,
+            .62
+        );
+
+    box-shadow:
+        0 0 5px
+        rgba(
+            226,
+            204,
+            170,
+            .12
+        );
+
+    z-index:
+        7;
+
+}
+
+
+html[data-dheere-mood]
+.desert-dust-fine {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --fine-size,
+            1px
+        );
+
+    height:
+        var(
+            --fine-size,
+            1px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            233,
+            218,
+            193,
+            .42
+        );
+
+    box-shadow:
+        0 0 4px
+        rgba(
+            231,
+            215,
+            192,
+            .08
+        );
+
+    z-index:
+        6;
+
+}
+
+
+@keyframes moodDesertDunes {
+
+    from {
+
+        transform:
+            translateX(
+                -8px
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                12px
+            );
+
+    }
+
+}
+
+
+@keyframes moodDesertHaze {
+
+    from {
+
+        transform:
+            translateX(
+                -3%
+            );
+
+        opacity:
+            .34;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                4%
+            );
+
+        opacity:
+            .74;
+
+    }
+
+}
+
+
+@keyframes moodDesertWind {
+
+    from {
+
+        transform:
+            translate3d(
+                -8%,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                14%,
+                0,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodDesertGust {
+
+    from {
+
+        transform:
+            translate3d(
+                -4%,
+                0,
+                0
+            )
+            skewX(
+                -3deg
+            );
+
+        opacity:
+            .18;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8%,
+                -1%,
+                0
+            )
+            skewX(
+                3deg
+            );
+
+        opacity:
+            .52;
+
+    }
+
+}
+
+
+@keyframes moodDesertDust {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --dust-drift,
+                        80px
+                    )
+                    * -1
+                ),
+                8px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    14% {
+
+        opacity:
+            .74;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --dust-drift,
+                    80px
+                ),
+                var(
+                    --dust-rise,
+                    -12px
+                ),
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes moodDesertFineDust {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --fine-drift,
+                        120px
+                    )
+                    * -1
+                ),
+                4px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    18% {
+
+        opacity:
+            .42;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --fine-drift,
+                    120px
+                ),
+                -8px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* ============================================================
+   65 — MONSOON ENVIRONMENT
+   ------------------------------------------------------------
+   Dense rain, wind-driven streaks, foreground droplets,
+   wet ground and repeated impact ripples.
+   ============================================================ */
+
+html[data-dheere-mood]
+.monsoon-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    isolation:
+        isolate;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-clouds {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            22% 16%,
+            rgba(
+                78,
+                94,
+                103,
+                .19
+            ),
+            transparent
+            32%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            72% 18%,
+            rgba(
+                66,
+                84,
+                93,
+                .18
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            50% 42%,
+            rgba(
+                43,
+                57,
+                63,
+                .10
+            ),
+            transparent
+            50%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(
+                48,
+                61,
+                68,
+                .08
+            ),
+            transparent
+            70%
+        );
+
+    filter:
+        blur(
+            28px
+        );
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-rain-back {
+
+    position:
+        absolute;
+
+    inset:
+        -30%;
+
+    z-index:
+        3;
+
+    opacity:
+        .22;
+
+    background-image:
+
+        repeating-linear-gradient(
+            101deg,
+            transparent
+            0 28px,
+            rgba(
+                181,
+                215,
+                222,
+                .20
+            )
+            29px 30px,
+            transparent
+            31px 57px
+        );
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-rain {
+
+    position:
+        absolute;
+
+    inset:
+        -35%;
+
+    z-index:
+        5;
+
+    background-image:
+
+        repeating-linear-gradient(
+            103deg,
+            transparent
+            0 14px,
+            rgba(
+                211,
+                236,
+                241,
+                .34
+            )
+            15px 17px,
+            transparent
+            18px 32px
+        );
+
+    opacity:
+        .46;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    z-index:
+        6;
+
+    background:
+
+        repeating-linear-gradient(
+            12deg,
+            transparent
+            0 42px,
+            rgba(
+                189,
+                224,
+                229,
+                .10
+            )
+            43px 45px,
+            transparent
+            46px 82px
+        );
+
+    opacity:
+        .27;
+
+    transform:
+        rotate(
+            -7deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-drops {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        7;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-drop {
+
+    position:
+        absolute;
+
+    width:
+        1.6px;
+
+    height:
+        var(
+            --drop-length,
+            16px
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                236,
+                249,
+                252,
+                .12
+            ),
+            rgba(
+                205,
+                234,
+                241,
+                .78
+            )
+        );
+
+    box-shadow:
+        0 0 6px
+        rgba(
+            191,
+            226,
+            233,
+            .15
+        );
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-drop-foreground {
+
+    position:
+        absolute;
+
+    width:
+        2px;
+
+    height:
+        var(
+            --drop-fg-height,
+            28px
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                241,
+                249,
+                252,
+                .14
+            ),
+            rgba(
+                209,
+                235,
+                241,
+                .86
+            )
+        );
+
+    filter:
+        blur(
+            .15px
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            201,
+            230,
+            237,
+            .18
+        );
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-ground {
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    height:
+        31%;
+
+    z-index:
+        2;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(
+                28,
+                63,
+                67,
+                .30
+            )
+            58%,
+            rgba(
+                11,
+                30,
+                33,
+                .44
+            )
+        );
+
+    overflow:
+        hidden;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-ripple {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --ripple-size,
+            22px
+        );
+
+    height:
+        calc(
+            var(
+                --ripple-size,
+                22px
+            )
+            * .42
+        );
+
+    border:
+        1px solid
+        rgba(
+            198,
+            229,
+            234,
+            .34
+        );
+
+    border-radius:
+        50%;
+
+    transform:
+        scale(
+            .18
+        );
+
+    opacity:
+        0;
+
+}
+
+
+html[data-dheere-mood]
+.monsoon-lightning {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        9;
+
+    background:
+        rgba(
+            225,
+            242,
+            250,
+            .13
+        );
+
+    opacity:
+        0;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+@keyframes moodMonsoonClouds {
+
+    from {
+
+        transform:
+            translate3d(
+                -2%,
+                0,
+                0
+            )
+            scale(
+                1
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                4%,
+                1%,
+                0
+            )
+            scale(
+                1.05
+            );
+
+    }
+
+}
+
+
+@keyframes moodMonsoonRainBack {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -4%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8%,
+                9%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodMonsoonRain {
+
+    from {
+
+        transform:
+            translate3d(
+                -4%,
+                -7%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                6%,
+                10%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodMonsoonWind {
+
+    from {
+
+        transform:
+            translateX(
+                -9%
+            )
+            rotate(
+                -5deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                11%
+            )
+            rotate(
+                -5deg
+            );
+
+    }
+
+}
+
+
+@keyframes moodMonsoonDrop {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --drop-drift,
+                        24px
+                    )
+                    * -1
+                ),
+                -14vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    9% {
+
+        opacity:
+            .72;
+
+    }
+
+    90% {
+
+        opacity:
+            .46;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --drop-drift,
+                    24px
+                ),
+                120vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes moodMonsoonForegroundDrop {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --drop-fg-drift,
+                        26px
+                    )
+                    * -1
+                ),
+                -12vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    10% {
+
+        opacity:
+            .78;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --drop-fg-drift,
+                    26px
+                ),
+                118vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes moodMonsoonRipple {
+
+    0% {
+
+        transform:
+            scale(
+                .16
+            );
+
+        opacity:
+            0;
+
+    }
+
+    16% {
+
+        opacity:
+            .48;
+
+    }
+
+    100% {
+
+        transform:
+            scale(
+                1.20
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes moodMonsoonLightning {
+
+    0%,
+    86%,
+    100% {
+
+        opacity:
+            0;
+
+    }
+
+    87% {
+
+        opacity:
+            .12;
+
+    }
+
+    88% {
+
+        opacity:
+            0;
+
+    }
+
+    90% {
+
+        opacity:
+            .20;
+
+    }
+
+    91% {
+
+        opacity:
+            .02;
+
+    }
+
+}
+
+
+/* ============================================================
+   66 — WINTER ENVIRONMENT
+   ------------------------------------------------------------
+   Tree-free winter atmosphere:
+   continuous snow, fine ice dust, cold diagonal wind
+   and separate falling ice crystals.
+   ============================================================ */
+
+html[data-dheere-mood]
+.winter-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    pointer-events:
+        none;
+
+    isolation:
+        isolate;
+
+}
+
+
+html[data-dheere-mood]
+.winter-frost {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                194,
+                226,
+                241,
+                .18
+            ),
+            transparent
+            54%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            20% 70%,
+            rgba(
+                173,
+                214,
+                232,
+                .05
+            ),
+            transparent
+            42%
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+    opacity:
+        .88;
+
+}
+
+
+html[data-dheere-mood]
+.winter-ground {
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    height:
+        28%;
+
+    z-index:
+        2;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(
+                217,
+                239,
+                249,
+                .09
+            )
+            50%,
+            rgba(
+                204,
+                229,
+                241,
+                .16
+            )
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+html[data-dheere-mood]
+.winter-snow {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    z-index:
+        5;
+
+    opacity:
+        .46;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                240,
+                250,
+                255,
+                .88
+            )
+            0 1.4px,
+            transparent
+            2px
+        );
+
+    background-size:
+        68px
+        68px;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.winter-ice-dust {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    z-index:
+        6;
+
+    opacity:
+        .24;
+
+    background-image:
+
+        repeating-linear-gradient(
+            17deg,
+            transparent
+            0 28px,
+            rgba(
+                210,
+                237,
+                247,
+                .10
+            )
+            29px 30px,
+            transparent
+            31px 57px
+        );
+
+    transform:
+        rotate(
+            -6deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.winter-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    z-index:
+        7;
+
+    opacity:
+        .19;
+
+    background-image:
+
+        repeating-linear-gradient(
+            11deg,
+            transparent
+            0 36px,
+            rgba(
+                222,
+                244,
+                251,
+                .10
+            )
+            37px 39px,
+            transparent
+            40px 74px
+        );
+
+    transform:
+        rotate(
+            -6deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+html[data-dheere-mood]
+.winter-ice-crystals {
+
+    position:
+        absolute;
+
+    inset:
+        -15%;
+
+    z-index:
+        4;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                215,
+                242,
+                251,
+                .42
+            )
+            0 1px,
+            transparent
+            1.8px
+        );
+
+    background-size:
+        115px
+        115px;
+
+    opacity:
+        .18;
+
+}
+
+
+html[data-dheere-mood]
+.winter-snowflake {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --snow-size,
+            2px
+        );
+
+    height:
+        var(
+            --snow-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            241,
+            250,
+            255,
+            .82
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            218,
+            241,
+            250,
+            .24
+        );
+
+    z-index:
+        8;
+
+}
+
+
+html[data-dheere-mood]
+.winter-ice-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --ice-size,
+            2px
+        );
+
+    height:
+        var(
+            --ice-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            220,
+            243,
+            252,
+            .72
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            204,
+            237,
+            250,
+            .28
+        );
+
+    z-index:
+        9;
+
+}
+
+
+@keyframes moodWinterSnow {
+
+    from {
+
+        transform:
+            translate3d(
+                0,
+                -4%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                3%,
+                8%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodWinterIceDust {
+
+    from {
+
+        transform:
+            translateX(
+                -7%
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                12%
+            );
+
+    }
+
+}
+
+
+@keyframes moodWinterWind {
+
+    from {
+
+        transform:
+            translateX(
+                -9%
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                11%
+            );
+
+    }
+
+}
+
+
+@keyframes moodWinterCrystals {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -2%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8%,
+                7%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes moodWinterSnowflake {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --snow-drift,
+                        0px
+                    )
+                    * -1
+                ),
+                -12vh,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    10% {
+
+        opacity:
+            .72;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --snow-drift,
+                    0px
+                ),
+                var(
+                    --snow-drop,
+                    110vh
+                ),
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes moodWinterIceFall {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --ice-drift,
+                        0px
+                    )
+                    * -1
+                ),
+                -10vh,
+                0
+            )
+            rotate(
+                0deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    12% {
+
+        opacity:
+            .62;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --ice-drift,
+                    0px
+                ),
+                var(
+                    --ice-fall,
+                    100vh
+                ),
+                0
+            )
+            rotate(
+                180deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* ============================================================
+   67 — SEASONAL REDUCED MOTION
+   ============================================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    html[data-dheere-mood]
+    .desert-dunes,
+    html[data-dheere-mood]
+    .desert-haze,
+    html[data-dheere-mood]
+    .desert-wind,
+    html[data-dheere-mood]
+    .desert-dust-particle,
+    html[data-dheere-mood]
+    .monsoon-rain,
+    html[data-dheere-mood]
+    .monsoon-wind,
+    html[data-dheere-mood]
+    .monsoon-drop,
+    html[data-dheere-mood]
+    .monsoon-ripple,
+    html[data-dheere-mood]
+    .monsoon-lightning,
+    html[data-dheere-mood]
+    .winter-snow,
+    html[data-dheere-mood]
+    .winter-ice-dust,
+    html[data-dheere-mood]
+    .winter-wind,
+    html[data-dheere-mood]
+    .winter-ice-particle {
+
+        animation:
+            none !important;
+
+    }
+
+}
+
+
+/* ============================================================
+   FEATURE 3 — SEASONAL ATMOSPHERIC ENHANCEMENT V2
+   ------------------------------------------------------------
+   Premium environmental pass for:
+   08 Desert
+   09 Monsoon
+   10 Winter
+
+   Design goals:
+   - Desert must read as a real registaan, not an orange theme.
+   - Monsoon must read as active rain + wind + wet surface.
+   - Winter must read as cold air + snow + ice crystals.
+   - Existing website chrome remains untouched.
+   ============================================================ */
+
+
+/* ============================================================
+   64A — DESERT: REGISTAAN ATMOSPHERE
+   ============================================================ */
+
+html[data-dheere-mood="desert"]
+.desert-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    pointer-events:
+        none;
+
+}
+
+
+/*
+ * Deep neutral dusk / dry-air field.
+ * Avoids the flat "orange template" look.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-sky {
+
+    position:
+        absolute;
+
+    inset:
+        -4%;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 38%,
+            rgba(
+                207,
+                188,
+                158,
+                .035
+            ),
+            transparent
+            34%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(
+                221,
+                208,
+                190,
+                .035
+            )
+            0%,
+            rgba(
+                171,
+                151,
+                124,
+                .022
+            )
+            43%,
+            rgba(
+                89,
+                75,
+                61,
+                .055
+            )
+            100%
+        );
+
+    filter:
+        saturate(
+            .72
+        );
+
+}
+
+
+/*
+ * Distant heat shimmer.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-haze {
+
+    position:
+        absolute;
+
+    left:
+        -16%;
+
+    right:
+        -16%;
+
+    bottom:
+        18%;
+
+    height:
+        31%;
+
+    z-index:
+        4;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            22% 55%,
+            rgba(
+                228,
+                215,
+                194,
+                .035
+            ),
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            56% 50%,
+            rgba(
+                215,
+                199,
+                176,
+                .045
+            ),
+            transparent
+            31%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            88% 54%,
+            rgba(
+                195,
+                176,
+                149,
+                .032
+            ),
+            transparent
+            28%
+        );
+
+    filter:
+        blur(
+            24px
+        );
+
+    animation:
+        desertHeatHaze
+        10s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Far dunes: softer and higher.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-far {
+
+    position:
+        absolute;
+
+    left:
+        -13%;
+
+    right:
+        -13%;
+
+    bottom:
+        20%;
+
+    height:
+        39%;
+
+    z-index:
+        2;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            5% 95%,
+            rgba(
+                151,
+                132,
+                104,
+                .13
+            ),
+            transparent
+            31%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            27% 79%,
+            rgba(
+                175,
+                153,
+                120,
+                .13
+            ),
+            transparent
+            34%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            54% 85%,
+            rgba(
+                142,
+                121,
+                93,
+                .12
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            84% 78%,
+            rgba(
+                171,
+                149,
+                117,
+                .10
+            ),
+            transparent
+            34%
+        );
+
+    filter:
+        blur(
+            5px
+        );
+
+    transform:
+        translateZ(
+            0
+        );
+
+    animation:
+        desertFarDunes
+        24s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Mid dunes: darker, closer, more physical.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid {
+
+    position:
+        absolute;
+
+    left:
+        -18%;
+
+    right:
+        -18%;
+
+    bottom:
+        0;
+
+    height:
+        36%;
+
+    z-index:
+        3;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            9% 100%,
+            rgba(
+                100,
+                82,
+                62,
+                .19
+            ),
+            transparent
+            38%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            30% 91%,
+            rgba(
+                122,
+                98,
+                69,
+                .16
+            ),
+            transparent
+            37%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            60% 93%,
+            rgba(
+                93,
+                73,
+                53,
+                .20
+            ),
+            transparent
+            41%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            93% 100%,
+            rgba(
+                83,
+                64,
+                48,
+                .17
+            ),
+            transparent
+            35%
+        );
+
+    filter:
+        blur(
+            1.4px
+        );
+
+    animation:
+        desertNearDunes
+        20s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * A fine horizontal horizon gives the scene depth.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-horizon {
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        35%;
+
+    height:
+        2px;
+
+    z-index:
+        5;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent
+            0%,
+            rgba(
+                219,
+                204,
+                183,
+                .025
+            )
+            18%,
+            rgba(
+                219,
+                204,
+                183,
+                .15
+            )
+            50%,
+            rgba(
+                195,
+                176,
+                150,
+                .04
+            )
+            81%,
+            transparent
+            100%
+        );
+
+    filter:
+        blur(
+            .8px
+        );
+
+    opacity:
+        .84;
+
+}
+
+
+/*
+ * Wind streaks are intentionally pale and desaturated,
+ * so they read as moving air / sand rather than orange glow.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -42%;
+
+    z-index:
+        7;
+
+    background-image:
+
+        repeating-linear-gradient(
+            10deg,
+            transparent
+            0 38px,
+            rgba(
+                224,
+                211,
+                193,
+                .055
+            )
+            39px 40px,
+            transparent
+            41px 72px
+        ),
+
+        repeating-linear-gradient(
+            10deg,
+            transparent
+            0 87px,
+            rgba(
+                203,
+                187,
+                163,
+                .032
+            )
+            88px 89px,
+            transparent
+            90px 126px
+        );
+
+    opacity:
+        .18;
+
+    mix-blend-mode:
+        screen;
+
+    transform:
+        rotate(
+            -5deg
+        );
+
+    animation:
+        desertWindSweep
+        3.8s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Stronger low-level sand gust.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts {
+
+    position:
+        absolute;
+
+    left:
+        -20%;
+
+    right:
+        -20%;
+
+    bottom:
+        13%;
+
+    height:
+        32%;
+
+    z-index:
+        8;
+
+    background:
+
+        repeating-linear-gradient(
+            12deg,
+            transparent
+            0 26px,
+            rgba(
+                224,
+                208,
+                184,
+                .036
+            )
+            27px 29px,
+            transparent
+            30px 53px
+        );
+
+    filter:
+        blur(
+            7px
+        );
+
+    opacity:
+        .30;
+
+    transform:
+        rotate(
+            -4deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        desertGustSweep
+        4.4s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Main dust particles.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --dust-size,
+            2px
+        );
+
+    height:
+        var(
+            --dust-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            223,
+            204,
+            177,
+            .62
+        );
+
+    box-shadow:
+        0 0 5px
+        rgba(
+            227,
+            209,
+            181,
+            .10
+        );
+
+    z-index:
+        9;
+
+}
+
+
+/*
+ * High-level fine dust — almost invisible until movement.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --fine-size,
+            1px
+        );
+
+    height:
+        var(
+            --fine-size,
+            1px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            235,
+            222,
+            204,
+            .40
+        );
+
+    box-shadow:
+        0 0 4px
+        rgba(
+            236,
+            223,
+            205,
+            .08
+        );
+
+    z-index:
+        10;
+
+}
+
+
+/* ============================================================
+   64B — DESERT ANIMATION
+   ============================================================ */
+
+@keyframes desertHeatHaze {
+
+    from {
+
+        transform:
+            translate3d(
+                -2%,
+                0,
+                0
+            )
+            scale(
+                .99
+            );
+
+        opacity:
+            .36;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                4%,
+                -1%,
+                0
+            )
+            scale(
+                1.035
+            );
+
+        opacity:
+            .75;
+
+    }
+
+}
+
+
+@keyframes desertFarDunes {
+
+    from {
+
+        transform:
+            translate3d(
+                -8px,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                14px,
+                -2px,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes desertNearDunes {
+
+    from {
+
+        transform:
+            translate3d(
+                -12px,
+                0,
+                0
+            )
+            scale(
+                1.005
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                16px,
+                0,
+                0
+            )
+            scale(
+                1.018
+            );
+
+    }
+
+}
+
+
+@keyframes desertWindSweep {
+
+    from {
+
+        transform:
+            translate3d(
+                -8%,
+                0,
+                0
+            )
+            rotate(
+                -5deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                14%,
+                1%,
+                0
+            )
+            rotate(
+                -5deg
+            );
+
+    }
+
+}
+
+
+@keyframes desertGustSweep {
+
+    from {
+
+        transform:
+            translate3d(
+                -6%,
+                0,
+                0
+            )
+            skewX(
+                -4deg
+            );
+
+        opacity:
+            .16;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                10%,
+                -1%,
+                0
+            )
+            skewX(
+                4deg
+            );
+
+        opacity:
+            .48;
+
+    }
+
+}
+
+
+@keyframes desertDustField {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --dust-drift,
+                        85px
+                    )
+                    * -1
+                ),
+                10px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    13% {
+
+        opacity:
+            .72;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --dust-drift,
+                    85px
+                ),
+                var(
+                    --dust-rise,
+                    -14px
+                ),
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes desertFineDustField {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --fine-drift,
+                        130px
+                    )
+                    * -1
+                ),
+                5px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    18% {
+
+        opacity:
+            .42;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --fine-drift,
+                    130px
+                ),
+                -10px,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    animation:
+        desertDustField
+        var(
+            --dust-speed,
+            5s
+        )
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    animation:
+        desertFineDustField
+        var(
+            --fine-speed,
+            7s
+        )
+        linear
+        infinite;
+
+}
+
+
+/* ============================================================
+   65A — MONSOON: ACTIVE STORM
+   ============================================================ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    pointer-events:
+        none;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-clouds {
+
+    position:
+        absolute;
+
+    inset:
+        -8%;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            17% 17%,
+            rgba(
+                109,
+                125,
+                133,
+                .13
+            ),
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            76% 13%,
+            rgba(
+                92,
+                111,
+                121,
+                .16
+            ),
+            transparent
+            32%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            50% 40%,
+            rgba(
+                58,
+                74,
+                81,
+                .12
+            ),
+            transparent
+            44%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(
+                52,
+                68,
+                76,
+                .08
+            ),
+            transparent
+            72%
+        );
+
+    filter:
+        blur(
+            30px
+        );
+
+    animation:
+        monsoonCloudDrift
+        19s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Far rain creates depth.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain-back {
+
+    position:
+        absolute;
+
+    inset:
+        -36%;
+
+    z-index:
+        3;
+
+    background-image:
+
+        repeating-linear-gradient(
+            101deg,
+            transparent
+            0 25px,
+            rgba(
+                196,
+                221,
+                227,
+                .17
+            )
+            26px 27px,
+            transparent
+            28px 53px
+        );
+
+    opacity:
+        .24;
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        monsoonBackRain
+        2.15s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Main rain wall.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain {
+
+    position:
+        absolute;
+
+    inset:
+        -42%;
+
+    z-index:
+        5;
+
+    background-image:
+
+        repeating-linear-gradient(
+            103deg,
+            transparent
+            0 13px,
+            rgba(
+                215,
+                237,
+                241,
+                .29
+            )
+            14px 16px,
+            transparent
+            17px 30px
+        );
+
+    opacity:
+        .50;
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        monsoonMainRain
+        .82s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Wind layer makes the storm feel diagonal and alive.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -25%;
+
+    z-index:
+        6;
+
+    background:
+
+        repeating-linear-gradient(
+            12deg,
+            transparent
+            0 37px,
+            rgba(
+                202,
+                229,
+                234,
+                .08
+            )
+            38px 40px,
+            transparent
+            41px 78px
+        );
+
+    opacity:
+        .30;
+
+    mix-blend-mode:
+        screen;
+
+    transform:
+        rotate(
+            -8deg
+        );
+
+    animation:
+        monsoonWindSweep
+        1.75s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Wet atmospheric veil close to the ground.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground {
+
+    position:
+        absolute;
+
+    left:
+        -5%;
+
+    right:
+        -5%;
+
+    bottom:
+        0;
+
+    height:
+        33%;
+
+    z-index:
+        2;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0%,
+            rgba(
+                37,
+                81,
+                84,
+                .18
+            )
+            58%,
+            rgba(
+                13,
+                34,
+                37,
+                .50
+            )
+            100%
+        );
+
+    overflow:
+        hidden;
+
+}
+
+
+/*
+ * Subtle wet-road reflection strip.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        8%;
+
+    height:
+        34%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent
+            0 24px,
+            rgba(
+                178,
+                219,
+                224,
+                .027
+            )
+            25px 30px,
+            transparent
+            31px 53px
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+    opacity:
+        .50;
+
+    animation:
+        monsoonGroundSheen
+        6s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Rain drops in the foreground.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drops {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        7;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop {
+
+    position:
+        absolute;
+
+    width:
+        1.6px;
+
+    height:
+        var(
+            --drop-length,
+            16px
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                240,
+                250,
+                253,
+                .08
+            ),
+            rgba(
+                210,
+                237,
+                243,
+                .78
+            )
+        );
+
+    box-shadow:
+        0 0 6px
+        rgba(
+            203,
+            232,
+            238,
+            .14
+        );
+
+    transform:
+        rotate(
+            4deg
+        );
+
+    animation:
+        monsoonDropFall
+        var(
+            --drop-speed,
+            1s
+        )
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop-foreground {
+
+    position:
+        absolute;
+
+    width:
+        2px;
+
+    height:
+        var(
+            --drop-fg-height,
+            28px
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                245,
+                252,
+                254,
+                .10
+            ),
+            rgba(
+                216,
+                240,
+                246,
+                .88
+            )
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            209,
+            236,
+            242,
+            .17
+        );
+
+    animation:
+        monsoonForegroundDrop
+        var(
+            --drop-fg-speed,
+            1.3s
+        )
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Impact ripples.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ripple {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --ripple-size,
+            22px
+        );
+
+    height:
+        calc(
+            var(
+                --ripple-size,
+                22px
+            )
+            * .40
+        );
+
+    border:
+        1px solid
+        rgba(
+            201,
+            231,
+            235,
+            .36
+        );
+
+    border-radius:
+        50%;
+
+    transform:
+        scale(
+            .14
+        );
+
+    opacity:
+        0;
+
+    animation:
+        monsoonRippleExpand
+        2.4s
+        ease-out
+        infinite;
+
+    animation-delay:
+        var(
+            --ripple-delay,
+            0s
+        );
+
+}
+
+
+/*
+ * Very soft distant splash rings.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        11%;
+
+    height:
+        1px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                197,
+                231,
+                235,
+                .10
+            )
+            50%,
+            transparent
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+/*
+ * Lightning remains atmospheric rather than cartoonish.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-lightning {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        10;
+
+    background:
+        rgba(
+            234,
+            247,
+            251,
+            .13
+        );
+
+    opacity:
+        0;
+
+    mix-blend-mode:
+        screen;
+
+    animation:
+        monsoonLightningFlash
+        9s
+        ease-in-out
+        infinite;
+
+}
+
+
+/* ============================================================
+   65B — MONSOON ANIMATION
+   ============================================================ */
+
+@keyframes monsoonCloudDrift {
+
+    from {
+
+        transform:
+            translate3d(
+                -2%,
+                0,
+                0
+            )
+            scale(
+                1
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                4%,
+                1.5%,
+                0
+            )
+            scale(
+                1.045
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonBackRain {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -5%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8%,
+                10%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonMainRain {
+
+    from {
+
+        transform:
+            translate3d(
+                -4%,
+                -7%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                6%,
+                10%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonWindSweep {
+
+    from {
+
+        transform:
+            translate3d(
+                -10%,
+                0,
+                0
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                12%,
+                1%,
+                0
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonGroundSheen {
+
+    from {
+
+        transform:
+            translateX(
+                -6%
+            );
+
+        opacity:
+            .24;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                7%
+            );
+
+        opacity:
+            .70;
+
+    }
+
+}
+
+
+@keyframes monsoonDropFall {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --drop-drift,
+                        24px
+                    )
+                    * -1
+                ),
+                -16vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    8% {
+
+        opacity:
+            .72;
+
+    }
+
+    90% {
+
+        opacity:
+            .48;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --drop-drift,
+                    24px
+                ),
+                121vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes monsoonForegroundDrop {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --drop-fg-drift,
+                        26px
+                    )
+                    * -1
+                ),
+                -14vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    8% {
+
+        opacity:
+            .82;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --drop-fg-drift,
+                    26px
+                ),
+                120vh,
+                0
+            )
+            rotate(
+                4deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes monsoonRippleExpand {
+
+    0% {
+
+        transform:
+            scale(
+                .14
+            );
+
+        opacity:
+            0;
+
+    }
+
+    18% {
+
+        opacity:
+            .48;
+
+    }
+
+    100% {
+
+        transform:
+            scale(
+                1.24
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes monsoonLightningFlash {
+
+    0%,
+    84%,
+    100% {
+
+        opacity:
+            0;
+
+    }
+
+    85% {
+
+        opacity:
+            .09;
+
+    }
+
+    86% {
+
+        opacity:
+            0;
+
+    }
+
+    88% {
+
+        opacity:
+            .19;
+
+    }
+
+    89% {
+
+        opacity:
+            .02;
+
+    }
+
+}
+
+
+/* ============================================================
+   66A — WINTER: COLD / ICE / SNOW
+   ------------------------------------------------------------
+   No tree / no wood forms.
+   ============================================================ */
+
+html[data-dheere-mood="winter"]
+.winter-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    pointer-events:
+        none;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-frost {
+
+    position:
+        absolute;
+
+    inset:
+        -8%;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                208,
+                234,
+                245,
+                .14
+            ),
+            transparent
+            52%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            18% 64%,
+            rgba(
+                185,
+                220,
+                235,
+                .045
+            ),
+            transparent
+            40%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            83% 67%,
+            rgba(
+                186,
+                222,
+                237,
+                .038
+            ),
+            transparent
+            42%
+        );
+
+    filter:
+        blur(
+            3px
+        );
+
+    opacity:
+        .90;
+
+}
+
+
+/*
+ * Cold snow-covered ground.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ground {
+
+    position:
+        absolute;
+
+    left:
+        -5%;
+
+    right:
+        -5%;
+
+    bottom:
+        0;
+
+    height:
+        31%;
+
+    z-index:
+        2;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0%,
+            rgba(
+                216,
+                238,
+                246,
+                .055
+            )
+            50%,
+            rgba(
+                205,
+                231,
+                242,
+                .14
+            )
+            100%
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+/*
+ * Main soft snow field.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    position:
+        absolute;
+
+    inset:
+        -24%;
+
+    z-index:
+        5;
+
+    opacity:
+        .48;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                242,
+                251,
+                255,
+                .90
+            )
+            0 1.5px,
+            transparent
+            2.2px
+        );
+
+    background-size:
+        70px
+        70px;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Fine ice-dust moving sideways in the wind.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    position:
+        absolute;
+
+    inset:
+        -24%;
+
+    z-index:
+        6;
+
+    opacity:
+        .25;
+
+    background-image:
+
+        repeating-linear-gradient(
+            16deg,
+            transparent
+            0 27px,
+            rgba(
+                219,
+                242,
+                250,
+                .11
+            )
+            28px 30px,
+            transparent
+            31px 58px
+        );
+
+    transform:
+        rotate(
+            -7deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Colder, longer wind ribbons.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    position:
+        absolute;
+
+    inset:
+        -26%;
+
+    z-index:
+        7;
+
+    opacity:
+        .21;
+
+    background:
+
+        repeating-linear-gradient(
+            11deg,
+            transparent
+            0 34px,
+            rgba(
+                231,
+                247,
+                252,
+                .095
+            )
+            35px 37px,
+            transparent
+            38px 73px
+        );
+
+    transform:
+        rotate(
+            -7deg
+        );
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Separate crystal field.
+ * Not the same as normal snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    position:
+        absolute;
+
+    inset:
+        -18%;
+
+    z-index:
+        4;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                222,
+                246,
+                253,
+                .42
+            )
+            0 1px,
+            transparent
+            1.8px
+        );
+
+    background-size:
+        122px
+        122px;
+
+    opacity:
+        .20;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Individual snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-snowflake {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --snow-size,
+            2px
+        );
+
+    height:
+        var(
+            --snow-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            241,
+            250,
+            255,
+            .84
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            218,
+            242,
+            251,
+            .28
+        );
+
+    z-index:
+        8;
+
+}
+
+
+/*
+ * Individual ice crystal / ice dust.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    position:
+        absolute;
+
+    width:
+        var(
+            --ice-size,
+            2px
+        );
+
+    height:
+        var(
+            --ice-size,
+            2px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            223,
+            245,
+            253,
+            .76
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            204,
+            237,
+            250,
+            .30
+        );
+
+    z-index:
+        9;
+
+}
+
+
+/* ============================================================
+   66B — WINTER ANIMATION
+   ============================================================ */
+
+@keyframes winterSnowField {
+
+    from {
+
+        transform:
+            translate3d(
+                -1%,
+                -5%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                4%,
+                9%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes winterIceDustField {
+
+    from {
+
+        transform:
+            translate3d(
+                -8%,
+                0,
+                0
+            )
+            rotate(
+                -7deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                13%,
+                1%,
+                0
+            )
+            rotate(
+                -7deg
+            );
+
+    }
+
+}
+
+
+@keyframes winterWindField {
+
+    from {
+
+        transform:
+            translate3d(
+                -10%,
+                0,
+                0
+            )
+            rotate(
+                -7deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                12%,
+                1%,
+                0
+            )
+            rotate(
+                -7deg
+            );
+
+    }
+
+}
+
+
+@keyframes winterCrystalField {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -2%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                9%,
+                7%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes winterSnowflakeFall {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --snow-drift,
+                        0px
+                    )
+                    * -1
+                ),
+                -14vh,
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+    10% {
+
+        opacity:
+            .74;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --snow-drift,
+                    0px
+                ),
+                var(
+                    --snow-drop,
+                    110vh
+                ),
+                0
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+@keyframes winterIceCrystalFall {
+
+    0% {
+
+        transform:
+            translate3d(
+                calc(
+                    var(
+                        --ice-drift,
+                        0px
+                    )
+                    * -1
+                ),
+                -12vh,
+                0
+            )
+            rotate(
+                0deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+    12% {
+
+        opacity:
+            .66;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(
+                    --ice-drift,
+                    0px
+                ),
+                var(
+                    --ice-fall,
+                    100vh
+                ),
+                0
+            )
+            rotate(
+                180deg
+            );
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    animation:
+        winterSnowField
+        16s
+        linear
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    animation:
+        winterIceDustField
+        5.2s
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    animation:
+        winterWindField
+        3.8s
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    animation:
+        winterCrystalField
+        7s
+        linear
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-snowflake {
+
+    animation:
+        winterSnowflakeFall
+        var(
+            --snow-speed,
+            9s
+        )
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    animation:
+        winterIceCrystalFall
+        var(
+            --ice-speed,
+            6s
+        )
+        linear
+        infinite;
+
+}
+
+
+/* ============================================================
+   FEATURE 3 — FINAL REDUCED MOTION
+   ============================================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    html[data-dheere-mood="desert"]
+    .desert-haze,
+    html[data-dheere-mood="desert"]
+    .desert-dunes-far,
+    html[data-dheere-mood="desert"]
+    .desert-dunes-mid,
+    html[data-dheere-mood="desert"]
+    .desert-wind,
+    html[data-dheere-mood="desert"]
+    .desert-gusts,
+    html[data-dheere-mood="desert"]
+    .desert-dust-particle,
+    html[data-dheere-mood="desert"]
+    .desert-dust-fine,
+
+    html[data-dheere-mood="monsoon"]
+    .monsoon-clouds,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-rain-back,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-rain,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-wind,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-ground::before,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-drop,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-drop-foreground,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-ripple,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-lightning,
+
+    html[data-dheere-mood="winter"]
+    .winter-snow,
+    html[data-dheere-mood="winter"]
+    .winter-ice-dust,
+    html[data-dheere-mood="winter"]
+    .winter-wind,
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals,
+    html[data-dheere-mood="winter"]
+    .winter-snowflake,
+    html[data-dheere-mood="winter"]
+    .winter-ice-particle {
+
+        animation:
+            none !important;
+
+    }
+
+}
+
+/* ============================================================
+   FEATURE 3 — FINAL CINEMATIC PASS V4
+   ------------------------------------------------------------
+   Desert:
+   - richer sand depth
+   - visible dune ridges
+   - warm sky, but NOT a flat orange theme
+   - stronger wind-driven sand streams
+   - rolling sand sheets close to the ground
+
+   Winter:
+   - visible crystalline ice shards
+   - distinct frozen particles
+   - denser layered snowfall
+   - cold blue-white wind
+   - no tree / no wood
+   ============================================================ */
+
+
+/* ============================================================
+   DESERT — CINEMATIC REGISTAAN
+   ============================================================ */
+
+html[data-dheere-mood="desert"]
+.desert-environment {
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                210,
+                196,
+                176,
+                .025
+            ),
+            rgba(
+                120,
+                96,
+                69,
+                .035
+            )
+            55%,
+            rgba(
+                45,
+                38,
+                32,
+                .075
+            )
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-sky {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 22%,
+            rgba(
+                226,
+                215,
+                199,
+                .055
+            ),
+            transparent
+            33%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            15% 44%,
+            rgba(
+                190,
+                162,
+                127,
+                .032
+            ),
+            transparent
+            24%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(
+                226,
+                214,
+                198,
+                .040
+            )
+            0%,
+            rgba(
+                176,
+                153,
+                120,
+                .026
+            )
+            52%,
+            rgba(
+                85,
+                67,
+                48,
+                .055
+            )
+            100%
+        );
+
+    filter:
+        saturate(
+            .66
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dunes-far {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            4% 98%,
+            rgba(
+                176,
+                152,
+                117,
+                .18
+            ),
+            transparent
+            28%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            23% 78%,
+            rgba(
+                188,
+                164,
+                127,
+                .18
+            ),
+            transparent
+            33%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            49% 86%,
+            rgba(
+                148,
+                123,
+                91,
+                .15
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            73% 77%,
+            rgba(
+                172,
+                145,
+                107,
+                .16
+            ),
+            transparent
+            33%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            98% 91%,
+            rgba(
+                126,
+                100,
+                72,
+                .14
+            ),
+            transparent
+            31%
+        );
+
+    filter:
+        blur(
+            3px
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            7% 106%,
+            rgba(
+                104,
+                82,
+                58,
+                .29
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            28% 92%,
+            rgba(
+                136,
+                106,
+                73,
+                .22
+            ),
+            transparent
+            36%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            53% 102%,
+            rgba(
+                92,
+                71,
+                51,
+                .28
+            ),
+            transparent
+            39%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            78% 91%,
+            rgba(
+                125,
+                95,
+                66,
+                .23
+            ),
+            transparent
+            37%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            101% 106%,
+            rgba(
+                80,
+                62,
+                45,
+                .28
+            ),
+            transparent
+            34%
+        );
+
+    filter:
+        blur(
+            1.1px
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        2%;
+
+    right:
+        2%;
+
+    bottom:
+        46%;
+
+    height:
+        3px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(
+                214,
+                192,
+                162,
+                .07
+            )
+            14%,
+            rgba(
+                235,
+                215,
+                188,
+                .13
+            )
+            35%,
+            rgba(
+                200,
+                178,
+                147,
+                .05
+            )
+            57%,
+            rgba(
+                225,
+                203,
+                175,
+                .10
+            )
+            73%,
+            transparent 100%
+        );
+
+    filter:
+        blur(
+            1px
+        );
+
+    opacity:
+        .82;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-gusts {
+
+    bottom:
+        10%;
+
+    height:
+        36%;
+
+    opacity:
+        .34;
+
+    background:
+
+        repeating-linear-gradient(
+            13deg,
+            transparent
+            0 21px,
+            rgba(
+                232,
+                217,
+                194,
+                .045
+            )
+            22px 24px,
+            transparent
+            25px 47px
+        ),
+
+        repeating-linear-gradient(
+            13deg,
+            transparent
+            0 72px,
+            rgba(
+                215,
+                197,
+                170,
+                .032
+            )
+            73px 74px,
+            transparent
+            75px 118px
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-wind {
+
+    opacity:
+        .21;
+
+    background-image:
+
+        repeating-linear-gradient(
+            10deg,
+            transparent
+            0 34px,
+            rgba(
+                232,
+                219,
+                201,
+                .062
+            )
+            35px 37px,
+            transparent
+            38px 67px
+        ),
+
+        repeating-linear-gradient(
+            10deg,
+            transparent
+            0 89px,
+            rgba(
+                205,
+                189,
+                164,
+                .035
+            )
+            90px 92px,
+            transparent
+            93px 138px
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    background:
+        rgba(
+            228,
+            211,
+            187,
+            .68
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            228,
+            211,
+            187,
+            .13
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    background:
+        rgba(
+            242,
+            231,
+            215,
+            .43
+        );
+
+}
+
+
+/*
+ * Extra low sand-sheet stream.
+ * This does not need another element from JS; it uses the
+ * existing gust pseudo layer for a more physical ground sweep.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts::before,
+html[data-dheere-mood="desert"]
+.desert-gusts::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -8%;
+
+    width:
+        116%;
+
+    border-radius:
+        50%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                224,
+                209,
+                187,
+                .06
+            )
+            38%,
+            rgba(
+                235,
+                220,
+                198,
+                .085
+            )
+            52%,
+            rgba(
+                207,
+                191,
+                168,
+                .035
+            )
+            67%,
+            transparent
+        );
+
+    filter:
+        blur(
+            8px
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-gusts::before {
+
+    bottom:
+        10%;
+
+    height:
+        32px;
+
+    animation:
+        desertGroundSweepOne
+        3.6s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-gusts::after {
+
+    bottom:
+        26%;
+
+    height:
+        21px;
+
+    opacity:
+        .60;
+
+    animation:
+        desertGroundSweepTwo
+        5.1s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes desertGroundSweepOne {
+
+    from {
+
+        transform:
+            translateX(
+                -7%
+            )
+            scaleX(
+                .96
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                10%
+            )
+            scaleX(
+                1.04
+            );
+
+    }
+
+}
+
+
+@keyframes desertGroundSweepTwo {
+
+    from {
+
+        transform:
+            translateX(
+                6%
+            )
+            scaleX(
+                1.01
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                -5%
+            )
+            scaleX(
+                .98
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   WINTER — CRYSTAL STORM
+   ============================================================ */
+
+html[data-dheere-mood="winter"]
+.winter-environment {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                215,
+                239,
+                249,
+                .025
+            ),
+            rgba(
+                171,
+                211,
+                228,
+                .018
+            )
+            54%,
+            rgba(
+                118,
+                160,
+                178,
+                .032
+            )
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-frost {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                221,
+                244,
+                252,
+                .19
+            ),
+            transparent
+            49%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            12% 71%,
+            rgba(
+                187,
+                226,
+                239,
+                .055
+            ),
+            transparent
+            39%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            86% 65%,
+            rgba(
+                188,
+                225,
+                239,
+                .05
+            ),
+            transparent
+            40%
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    opacity:
+        .58;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                244,
+                252,
+                255,
+                .95
+            )
+            0 1.4px,
+            transparent
+            2.1px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                229,
+                247,
+                253,
+                .72
+            )
+            0 1px,
+            transparent
+            1.7px
+        );
+
+    background-size:
+        73px
+        73px,
+        43px
+        43px;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    opacity:
+        .30;
+
+    background:
+
+        repeating-linear-gradient(
+            17deg,
+            transparent
+            0 24px,
+            rgba(
+                224,
+                245,
+                251,
+                .12
+            )
+            25px 27px,
+            transparent
+            28px 52px
+        ),
+
+        repeating-linear-gradient(
+            17deg,
+            transparent
+            0 69px,
+            rgba(
+                202,
+                233,
+                245,
+                .055
+            )
+            70px 72px,
+            transparent
+            73px 111px
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    opacity:
+        .27;
+
+    background:
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 30px,
+            rgba(
+                231,
+                247,
+                253,
+                .11
+            )
+            31px 33px,
+            transparent
+            34px 69px
+        ),
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 82px,
+            rgba(
+                205,
+                233,
+                244,
+                .05
+            )
+            83px 85px,
+            transparent
+            86px 124px
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    opacity:
+        .26;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                231,
+                248,
+                253,
+                .70
+            )
+            0 1.2px,
+            transparent
+            2px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                206,
+                239,
+                250,
+                .44
+            )
+            0 1px,
+            transparent
+            1.8px
+        );
+
+    background-size:
+        107px
+        107px,
+        67px
+        67px;
+
+}
+
+
+/*
+ * Individual "ice crystals" are visually differentiated
+ * from normal snow by elongation, brightness and rotation.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    width:
+        var(
+            --ice-size,
+            2px
+        );
+
+    height:
+        calc(
+            var(
+                --ice-size,
+                2px
+            )
+            * 2.6
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                248,
+                253,
+                255,
+                .95
+            ),
+            rgba(
+                200,
+                237,
+                248,
+                .58
+            )
+        );
+
+    box-shadow:
+
+        0 0 5px
+        rgba(
+            218,
+            243,
+            252,
+            .40
+        ),
+
+        0 0 12px
+        rgba(
+            193,
+            231,
+            246,
+            .15
+        );
+
+}
+
+
+/*
+ * Small diamond-like ice forms.
+ * These are layered behind individual particles and help the
+ * viewer actually perceive "crystal" rather than plain snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before,
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+    border:
+        1px solid
+        rgba(
+            222,
+            246,
+            253,
+            .22
+        );
+
+    transform:
+        rotate(
+            45deg
+        );
+
+    filter:
+        blur(
+            .2px
+        );
+
+    box-shadow:
+        0 0 10px
+        rgba(
+            204,
+            239,
+            250,
+            .14
+        );
+
+    animation:
+        winterCrystalShardFloat
+        7.5s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before {
+
+    left:
+        18%;
+
+    top:
+        22%;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    right:
+        23%;
+
+    top:
+        57%;
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    opacity:
+        .62;
+
+    animation-delay:
+        -2.4s;
+
+}
+
+
+@keyframes winterCrystalShardFloat {
+
+    from {
+
+        transform:
+            translate3d(
+                -7px,
+                5px,
+                0
+            )
+            rotate(
+                45deg
+            )
+            scale(
+                .72
+            );
+
+        opacity:
+            .16;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                10px,
+                -11px,
+                0
+            )
+            rotate(
+                137deg
+            )
+            scale(
+                1.16
+            );
+
+        opacity:
+            .72;
+
+    }
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ground::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -8%;
+
+    right:
+        -8%;
+
+    bottom:
+        9%;
+
+    height:
+        25%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent
+            0 31px,
+            rgba(
+                226,
+                245,
+                251,
+                .022
+            )
+            32px 37px,
+            transparent
+            38px 64px
+        );
+
+    filter:
+        blur(
+            3px
+        );
+
+    opacity:
+        .44;
+
+    animation:
+        winterGroundDrift
+        9s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes winterGroundDrift {
+
+    from {
+
+        transform:
+            translateX(
+                -5%
+            );
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                7%
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   FEATURE 3 — MOBILE TUNING
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood="desert"]
+    .desert-gusts {
+
+        opacity:
+            .25;
+
+    }
+
+
+    html[data-dheere-mood="desert"]
+    .desert-wind {
+
+        opacity:
+            .16;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-snow {
+
+        opacity:
+            .50;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-dust {
+
+        opacity:
+            .24;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-wind {
+
+        opacity:
+            .21;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals {
+
+        opacity:
+            .22;
+
+    }
+
+}
+
+/* ============================================================
+   FEATURE 3 — MASTER CINEMATIC WEATHER PASS V5
+   ------------------------------------------------------------
+   DESERT:
+   - visible moon
+   - true desert-night silhouette
+   - sand dunes
+   - wind-driven dust sheets
+   - fine airborne sand
+   - subtle heat / atmospheric shimmer
+
+   MONSOON:
+   - storm-cloud depth
+   - multiple rain scales
+   - foreground water drops
+   - diagonal wind
+   - wet reflective ground
+   - repeated splash rings
+   - subtle lightning ambience
+
+   WINTER:
+   - stronger snowfall
+   - clearly visible ice crystals
+   - crystal shafts / shards
+   - airborne ice dust
+   - cold wind
+   - frosted atmosphere
+   - NO TREE / NO WOOD
+   ============================================================ */
+
+
+/* ============================================================
+   DESERT — REAL REGISTAAN NIGHT
+   ============================================================ */
+
+html[data-dheere-mood="desert"]
+.desert-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    pointer-events:
+        none;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                7,
+                8,
+                11,
+                .02
+            ),
+            rgba(
+                48,
+                38,
+                29,
+                .04
+            )
+            58%,
+            rgba(
+                20,
+                17,
+                15,
+                .13
+            )
+        );
+
+}
+
+
+/*
+ * Desert moon.
+ * Created entirely with CSS; no asset is required.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        92px;
+
+    height:
+        92px;
+
+    top:
+        11%;
+
+    right:
+        14%;
+
+    border-radius:
+        50%;
+
+    z-index:
+        2;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            37% 34%,
+            rgba(
+                255,
+                251,
+                239,
+                .98
+            )
+            0 10%,
+            rgba(
+                238,
+                231,
+                211,
+                .94
+            )
+            36%,
+            rgba(
+                210,
+                201,
+                183,
+                .75
+            )
+            68%,
+            rgba(
+                184,
+                175,
+                160,
+                .34
+            )
+            100%
+        );
+
+    box-shadow:
+
+        0 0 24px
+        rgba(
+            243,
+            231,
+            206,
+            .20
+        ),
+
+        0 0 72px
+        rgba(
+            222,
+            204,
+            174,
+            .08
+        );
+
+    opacity:
+        .82;
+
+}
+
+
+/*
+ * Tiny crater details on the moon.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        92px;
+
+    height:
+        92px;
+
+    top:
+        11%;
+
+    right:
+        14%;
+
+    z-index:
+        3;
+
+    border-radius:
+        50%;
+
+    opacity:
+        .34;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            58% 31%,
+            rgba(
+                145,
+                132,
+                112,
+                .16
+            )
+            0 7%,
+            transparent
+            8%
+        ),
+
+        radial-gradient(
+            circle
+            at
+            33% 63%,
+            rgba(
+                145,
+                132,
+                112,
+                .12
+            )
+            0 11%,
+            transparent
+            12%
+        ),
+
+        radial-gradient(
+            circle
+            at
+            67% 71%,
+            rgba(
+                145,
+                132,
+                112,
+                .09
+            )
+            0 8%,
+            transparent
+            9%
+        );
+
+}
+
+
+/*
+ * Strengthen the dry desert horizon.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-horizon {
+
+    bottom:
+        34%;
+
+    height:
+        3px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                202,
+                181,
+                150,
+                .06
+            )
+            18%,
+            rgba(
+                233,
+                212,
+                181,
+                .16
+            )
+            50%,
+            rgba(
+                182,
+                159,
+                129,
+                .06
+            )
+            83%,
+            transparent
+        );
+
+    filter:
+        blur(
+            .8px
+        );
+
+}
+
+
+/*
+ * Larger dune silhouettes.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-far {
+
+    bottom:
+        17%;
+
+    height:
+        43%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            6% 102%,
+            rgba(
+                151,
+                129,
+                98,
+                .17
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            25% 82%,
+            rgba(
+                183,
+                153,
+                116,
+                .19
+            ),
+            transparent
+            35%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            48% 89%,
+            rgba(
+                151,
+                122,
+                87,
+                .16
+            ),
+            transparent
+            38%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            71% 79%,
+            rgba(
+                180,
+                148,
+                109,
+                .17
+            ),
+            transparent
+            34%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            98% 98%,
+            rgba(
+                110,
+                88,
+                64,
+                .18
+            ),
+            transparent
+            31%
+        );
+
+}
+
+
+/*
+ * Foreground dune body.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid {
+
+    bottom:
+        -2%;
+
+    height:
+        39%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            7% 112%,
+            rgba(
+                80,
+                62,
+                44,
+                .34
+            ),
+            transparent
+            35%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            29% 96%,
+            rgba(
+                119,
+                91,
+                62,
+                .28
+            ),
+            transparent
+            37%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            52% 108%,
+            rgba(
+                77,
+                58,
+                42,
+                .34
+            ),
+            transparent
+            40%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            77% 96%,
+            rgba(
+                111,
+                84,
+                58,
+                .29
+            ),
+            transparent
+            37%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            103% 113%,
+            rgba(
+                66,
+                50,
+                38,
+                .35
+            ),
+            transparent
+            34%
+        );
+
+}
+
+
+/*
+ * Sand ridge highlights.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        44%;
+
+    height:
+        4px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                225,
+                204,
+                174,
+                .05
+            )
+            15%,
+            rgba(
+                240,
+                220,
+                189,
+                .13
+            )
+            36%,
+            transparent
+            57%,
+            rgba(
+                226,
+                204,
+                176,
+                .11
+            )
+            78%,
+            transparent
+        );
+
+    filter:
+        blur(
+            1.2px
+        );
+
+}
+
+
+/*
+ * Strong low sand sheets.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts {
+
+    left:
+        -24%;
+
+    right:
+        -24%;
+
+    bottom:
+        8%;
+
+    height:
+        39%;
+
+    opacity:
+        .38;
+
+    background:
+
+        repeating-linear-gradient(
+            11deg,
+            transparent
+            0 19px,
+            rgba(
+                235,
+                219,
+                197,
+                .052
+            )
+            20px 22px,
+            transparent
+            23px 47px
+        ),
+
+        repeating-linear-gradient(
+            11deg,
+            transparent
+            0 75px,
+            rgba(
+                220,
+                199,
+                171,
+                .035
+            )
+            76px 78px,
+            transparent
+            79px 120px
+        );
+
+}
+
+
+/*
+ * Main wind ribbons.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-wind {
+
+    inset:
+        -45%;
+
+    opacity:
+        .24;
+
+    background:
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 31px,
+            rgba(
+                233,
+                219,
+                199,
+                .062
+            )
+            32px 34px,
+            transparent
+            35px 64px
+        ),
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 94px,
+            rgba(
+                205,
+                186,
+                158,
+                .036
+            )
+            95px 97px,
+            transparent
+            98px 142px
+        );
+
+}
+
+
+/*
+ * Dust should be visibly moving at the dune line.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    width:
+        var(
+            --dust-size,
+            2px
+        );
+
+    height:
+        var(
+            --dust-size,
+            2px
+        );
+
+    background:
+        rgba(
+            229,
+            211,
+            183,
+            .72
+        );
+
+    box-shadow:
+
+        0 0 7px
+        rgba(
+            232,
+            216,
+            190,
+            .16
+        );
+
+}
+
+
+/*
+ * Extra fine airborne sand.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    background:
+        rgba(
+            241,
+            228,
+            210,
+            .46
+        );
+
+    box-shadow:
+        0 0 4px
+        rgba(
+            238,
+            224,
+            205,
+            .11
+        );
+
+}
+
+
+/* ============================================================
+   MONSOON — FULL STORM ATMOSPHERE
+   ============================================================ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-environment {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                10,
+                17,
+                21,
+                .015
+            ),
+            rgba(
+                16,
+                34,
+                37,
+                .05
+            )
+            58%,
+            rgba(
+                8,
+                24,
+                27,
+                .10
+            )
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-clouds {
+
+    inset:
+        -12%;
+
+    filter:
+        blur(
+            32px
+        );
+
+    opacity:
+        .94;
+
+}
+
+
+/*
+ * Back rain: thinner and softer.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain-back {
+
+    inset:
+        -40%;
+
+    opacity:
+        .27;
+
+    background-image:
+
+        repeating-linear-gradient(
+            101deg,
+            transparent
+            0 24px,
+            rgba(
+                191,
+                224,
+                231,
+                .18
+            )
+            25px 27px,
+            transparent
+            28px 56px
+        );
+
+}
+
+
+/*
+ * Main rain: denser wall.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain {
+
+    inset:
+        -45%;
+
+    opacity:
+        .54;
+
+    background-image:
+
+        repeating-linear-gradient(
+            103deg,
+            transparent
+            0 12px,
+            rgba(
+                220,
+                241,
+                245,
+                .31
+            )
+            13px 15px,
+            transparent
+            16px 29px
+        );
+
+}
+
+
+/*
+ * Wind streaks.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-wind {
+
+    inset:
+        -30%;
+
+    opacity:
+        .34;
+
+    background:
+
+        repeating-linear-gradient(
+            10deg,
+            transparent
+            0 34px,
+            rgba(
+                204,
+                231,
+                235,
+                .09
+            )
+            35px 38px,
+            transparent
+            39px 72px
+        );
+
+}
+
+
+/*
+ * Foreground drops become more obvious.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop {
+
+    width:
+        1.8px;
+
+    filter:
+        blur(
+            .05px
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop-foreground {
+
+    width:
+        2.4px;
+
+    box-shadow:
+
+        0 0 9px
+        rgba(
+            213,
+            239,
+            245,
+            .22
+        );
+
+}
+
+
+/*
+ * Wet ground gets more reflective.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground {
+
+    height:
+        35%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0%,
+            rgba(
+                38,
+                83,
+                87,
+                .20
+            )
+            47%,
+            rgba(
+                12,
+                35,
+                39,
+                .54
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground::before {
+
+    height:
+        39%;
+
+    bottom:
+        7%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent
+            0 18px,
+            rgba(
+                195,
+                228,
+                233,
+                .030
+            )
+            19px 25px,
+            transparent
+            26px 48px
+        );
+
+    opacity:
+        .72;
+
+}
+
+
+/*
+ * Ripple clarity.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ripple {
+
+    border-color:
+        rgba(
+            206,
+            235,
+            239,
+            .42
+        );
+
+    filter:
+        blur(
+            .1px
+        );
+
+}
+
+
+/* ============================================================
+   WINTER — DEEP ICE CRYSTAL FIELD
+   ============================================================ */
+
+html[data-dheere-mood="winter"]
+.winter-environment {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                216,
+                240,
+                249,
+                .025
+            ),
+            rgba(
+                147,
+                190,
+                210,
+                .020
+            )
+            54%,
+            rgba(
+                85,
+                133,
+                154,
+                .038
+            )
+        );
+
+}
+
+
+/*
+ * Cold upper glow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-frost {
+
+    inset:
+        -12%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                229,
+                247,
+                252,
+                .23
+            ),
+            transparent
+            49%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            11% 61%,
+            rgba(
+                189,
+                229,
+                242,
+                .065
+            ),
+            transparent
+            40%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            89% 63%,
+            rgba(
+                190,
+                228,
+                241,
+                .06
+            ),
+            transparent
+            41%
+        );
+
+}
+
+
+/*
+ * Multi-layer snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    opacity:
+        .68;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                247,
+                253,
+                255,
+                .96
+            )
+            0 1.5px,
+            transparent
+            2.1px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                232,
+                248,
+                253,
+                .80
+            )
+            0 1.1px,
+            transparent
+            1.9px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                220,
+                242,
+                250,
+                .58
+            )
+            0 .8px,
+            transparent
+            1.5px
+        );
+
+    background-size:
+
+        69px 69px,
+        43px 43px,
+        29px 29px;
+
+}
+
+
+/*
+ * Dense ice-dust ribbons.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    opacity:
+        .34;
+
+    background:
+
+        repeating-linear-gradient(
+            15deg,
+            transparent
+            0 20px,
+            rgba(
+                223,
+                245,
+                252,
+                .13
+            )
+            21px 23px,
+            transparent
+            24px 47px
+        ),
+
+        repeating-linear-gradient(
+            15deg,
+            transparent
+            0 63px,
+            rgba(
+                200,
+                232,
+                244,
+                .055
+            )
+            64px 66px,
+            transparent
+            67px 108px
+        );
+
+}
+
+
+/*
+ * Stronger frozen wind.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    inset:
+        -32%;
+
+    opacity:
+        .28;
+
+    background:
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 27px,
+            rgba(
+                234,
+                248,
+                252,
+                .12
+            )
+            28px 31px,
+            transparent
+            32px 64px
+        ),
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 80px,
+            rgba(
+                205,
+                236,
+                246,
+                .055
+            )
+            81px 83px,
+            transparent
+            84px 128px
+        );
+
+}
+
+
+/*
+ * Crystal field should be visibly crystalline, not
+ * indistinguishable from snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    opacity:
+        .32;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                238,
+                251,
+                255,
+                .82
+            )
+            0 1.1px,
+            transparent
+            2px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                204,
+                237,
+                249,
+                .52
+            )
+            0 .9px,
+            transparent
+            1.8px
+        );
+
+    background-size:
+        103px
+        103px,
+        61px
+        61px;
+
+}
+
+
+/*
+ * Individual ice crystals:
+ * elongated, bright and slightly sharp.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    width:
+        var(
+            --ice-size,
+            2px
+        );
+
+    height:
+        calc(
+            var(
+                --ice-size,
+                2px
+            )
+            * 3.2
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                253,
+                255,
+                255,
+                .98
+            ),
+            rgba(
+                209,
+                241,
+                250,
+                .65
+            )
+        );
+
+    box-shadow:
+
+        0 0 4px
+        rgba(
+            234,
+            250,
+            255,
+            .48
+        ),
+
+        0 0 13px
+        rgba(
+            190,
+            232,
+            247,
+            .18
+        );
+
+}
+
+
+/*
+ * Extra crystal shards are drawn directly into the crystal layer.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before,
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        9px;
+
+    height:
+        9px;
+
+    border:
+        1px solid
+        rgba(
+            230,
+            248,
+            254,
+            .36
+        );
+
+    background:
+        transparent;
+
+    box-shadow:
+
+        0 0 11px
+        rgba(
+            210,
+            243,
+            251,
+            .18
+        );
+
+    filter:
+        blur(
+            .1px
+        );
+
+    transform:
+        rotate(
+            45deg
+        );
+
+    animation:
+        winterVisibleCrystalShard
+        6.8s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before {
+
+    left:
+        19%;
+
+    top:
+        24%;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    right:
+        19%;
+
+    top:
+        58%;
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    opacity:
+        .72;
+
+    animation-delay:
+        -2.1s;
+
+}
+
+
+@keyframes winterVisibleCrystalShard {
+
+    from {
+
+        transform:
+            translate3d(
+                -9px,
+                5px,
+                0
+            )
+            rotate(
+                45deg
+            )
+            scale(
+                .62
+            );
+
+        opacity:
+            .12;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                13px,
+                -14px,
+                0
+            )
+            rotate(
+                137deg
+            )
+            scale(
+                1.22
+            );
+
+        opacity:
+            .82;
+
+    }
+
+}
+
+
+/*
+ * Frozen ground sheen.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ground {
+
+    height:
+        31%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0%,
+            rgba(
+                218,
+                240,
+                248,
+                .06
+            )
+            46%,
+            rgba(
+                211,
+                237,
+                247,
+                .16
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ground::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        8%;
+
+    height:
+        25%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                230,
+                248,
+                254,
+                .035
+            )
+            50%,
+            transparent
+        );
+
+    filter:
+        blur(
+            4px
+        );
+
+    animation:
+        winterFrozenSheen
+        10s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes winterFrozenSheen {
+
+    from {
+
+        transform:
+            translateX(
+                -8%
+            );
+
+        opacity:
+            .24;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                8%
+            );
+
+        opacity:
+            .70;
+
+    }
+
+}
+
+
+/* ============================================================
+   DESERT / WINTER PERFORMANCE SAFETY
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::before {
+
+        width:
+            68px;
+
+        height:
+            68px;
+
+        top:
+            10%;
+
+        right:
+            12%;
+
+    }
+
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::after {
+
+        width:
+            68px;
+
+        height:
+            68px;
+
+        top:
+            10%;
+
+        right:
+            12%;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals::before {
+
+        width:
+            7px;
+
+        height:
+            7px;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals::after {
+
+        width:
+            6px;
+
+        height:
+            6px;
+
+    }
+
+}
+
+/* ============================================================
+   FEATURE 3 — FINAL VISUAL MASTER PASS V6
+   ------------------------------------------------------------
+   Desert is now clearly a REGISTAAN at warm dusk:
+   no moon-dominant night look, stronger dunes, sand sheets,
+   visible wind and airborne dust.
+
+   Winter is now an ICE STORM:
+   dense snow + clearly differentiated ice crystals,
+   crystalline shimmer, flying ice dust and cold wind.
+
+   Monsoon remains the strongest existing weather scene and
+   receives a restrained depth/impact polish only.
+   ============================================================ */
+
+
+/* ============================================================
+   DESERT — REGISTAAN, NOT NIGHT SKY
+   ============================================================ */
+
+html[data-dheere-mood="desert"]
+.desert-environment {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                122,
+                103,
+                82,
+                .018
+            ),
+            rgba(
+                85,
+                67,
+                48,
+                .045
+            )
+            52%,
+            rgba(
+                37,
+                29,
+                22,
+                .10
+            )
+        );
+
+}
+
+
+/*
+ * Replace the previous moon-dominant visual with a low desert sun.
+ * The palette is warm and dusty, not black/purple night.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::before {
+
+    width:
+        84px;
+
+    height:
+        84px;
+
+    top:
+        19%;
+
+    right:
+        18%;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            36% 34%,
+            rgba(
+                255,
+                244,
+                217,
+                1
+            )
+            0 12%,
+            rgba(
+                244,
+                221,
+                182,
+                .96
+            )
+            38%,
+            rgba(
+                216,
+                181,
+                135,
+                .72
+            )
+            68%,
+            rgba(
+                192,
+                153,
+                107,
+                .15
+            )
+            100%
+        );
+
+    box-shadow:
+
+        0 0 24px
+        rgba(
+            244,
+            216,
+            173,
+            .16
+        ),
+
+        0 0 80px
+        rgba(
+            211,
+            172,
+            120,
+            .07
+        );
+
+    opacity:
+        .72;
+
+}
+
+
+/*
+ * Remove the crater-like moon detail and turn it into a
+ * transparent heat halo around the low sun.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::after {
+
+    width:
+        150px;
+
+    height:
+        150px;
+
+    top:
+        calc(
+            19% - 33px
+        );
+
+    right:
+        calc(
+            18% - 33px
+        );
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(
+                232,
+                197,
+                149,
+                .045
+            ),
+            transparent
+            66%
+        );
+
+    box-shadow:
+        none;
+
+    opacity:
+        .88;
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+/*
+ * Stronger horizon line creates the long visual distance
+ * that makes a place read as a desert.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-horizon {
+
+    bottom:
+        31%;
+
+    height:
+        7px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent
+            0%,
+            rgba(
+                224,
+                202,
+                170,
+                .035
+            )
+            16%,
+            rgba(
+                236,
+                216,
+                186,
+                .12
+            )
+            38%,
+            rgba(
+                245,
+                224,
+                191,
+                .16
+            )
+            50%,
+            rgba(
+                220,
+                193,
+                160,
+                .09
+            )
+            69%,
+            transparent
+            100%
+        );
+
+    filter:
+        blur(
+            1.6px
+        );
+
+    opacity:
+        .88;
+
+}
+
+
+/*
+ * Far dunes: readable crest-to-valley shapes.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-far {
+
+    left:
+        -18%;
+
+    right:
+        -18%;
+
+    bottom:
+        18%;
+
+    height:
+        45%;
+
+    filter:
+        blur(
+            2.5px
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse
+            47%
+            70%
+            at
+            0%
+            98%,
+            rgba(
+                187,
+                157,
+                119,
+                .24
+            ),
+            transparent
+            72%
+        ),
+
+        radial-gradient(
+            ellipse
+            43%
+            70%
+            at
+            25%
+            83%,
+            rgba(
+                196,
+                166,
+                127,
+                .23
+            ),
+            transparent
+            70%
+        ),
+
+        radial-gradient(
+            ellipse
+            49%
+            75%
+            at
+            52%
+            95%,
+            rgba(
+                165,
+                132,
+                96,
+                .23
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            44%
+            73%
+            at
+            77%
+            82%,
+            rgba(
+                192,
+                160,
+                121,
+                .21
+            ),
+            transparent
+            70%
+        ),
+
+        radial-gradient(
+            ellipse
+            40%
+            66%
+            at
+            105%
+            98%,
+            rgba(
+                143,
+                111,
+                80,
+                .22
+            ),
+            transparent
+            68%
+        );
+
+    animation:
+        desertFarDunesV6
+        23s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Near dunes are darker and closer.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid {
+
+    left:
+        -20%;
+
+    right:
+        -20%;
+
+    bottom:
+        -5%;
+
+    height:
+        41%;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            46%
+            66%
+            at
+            4%
+            105%,
+            rgba(
+                76,
+                57,
+                40,
+                .40
+            ),
+            transparent
+            70%
+        ),
+
+        radial-gradient(
+            ellipse
+            43%
+            70%
+            at
+            28%
+            95%,
+            rgba(
+                115,
+                84,
+                57,
+                .35
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            47%
+            69%
+            at
+            52%
+            108%,
+            rgba(
+                70,
+                51,
+                37,
+                .42
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            44%
+            70%
+            at
+            78%
+            96%,
+            rgba(
+                105,
+                75,
+                51,
+                .36
+            ),
+            transparent
+            69%
+        ),
+
+        radial-gradient(
+            ellipse
+            38%
+            66%
+            at
+            104%
+            108%,
+            rgba(
+                60,
+                44,
+                33,
+                .42
+            ),
+            transparent
+            68%
+        );
+
+    animation:
+        desertNearDunesV6
+        18s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Multiple sand ridges across the dune faces.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::before {
+
+    left:
+        2%;
+
+    right:
+        2%;
+
+    bottom:
+        38%;
+
+    height:
+        26%;
+
+    background:
+
+        repeating-linear-gradient(
+            168deg,
+            transparent
+            0 21px,
+            rgba(
+                232,
+                208,
+                177,
+                .045
+            )
+            22px 24px,
+            transparent
+            25px 46px
+        );
+
+    filter:
+        blur(
+            1.2px
+        );
+
+    opacity:
+        .78;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -4%;
+
+    right:
+        -4%;
+
+    bottom:
+        21%;
+
+    height:
+        17%;
+
+    background:
+
+        repeating-linear-gradient(
+            172deg,
+            transparent
+            0 15px,
+            rgba(
+                223,
+                198,
+                165,
+                .035
+            )
+            16px 18px,
+            transparent
+            19px 37px
+        );
+
+    filter:
+        blur(
+            1.4px
+        );
+
+    opacity:
+        .70;
+
+}
+
+
+/*
+ * Big low-level sand movement: this is the part that should
+ * make the viewer instantly understand "windy desert".
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts {
+
+    left:
+        -28%;
+
+    right:
+        -28%;
+
+    bottom:
+        6%;
+
+    height:
+        43%;
+
+    opacity:
+        .46;
+
+    background:
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 16px,
+            rgba(
+                240,
+                221,
+                195,
+                .055
+            )
+            17px 19px,
+            transparent
+            20px 39px
+        ),
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 49px,
+            rgba(
+                223,
+                203,
+                176,
+                .040
+            )
+            50px 52px,
+            transparent
+            53px 94px
+        );
+
+    filter:
+        blur(
+            4px
+        );
+
+}
+
+
+/*
+ * Airborne dust becomes deliberately visible.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    width:
+        var(
+            --dust-size,
+            2px
+        );
+
+    height:
+        var(
+            --dust-size,
+            2px
+        );
+
+    background:
+        rgba(
+            237,
+            218,
+            191,
+            .78
+        );
+
+    box-shadow:
+
+        0 0 6px
+        rgba(
+            237,
+            218,
+            191,
+            .18
+        );
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    width:
+        max(
+            1px,
+            var(
+                --fine-size,
+                1px
+            )
+        );
+
+    height:
+        max(
+            1px,
+            var(
+                --fine-size,
+                1px
+            )
+        );
+
+    background:
+        rgba(
+            244,
+            232,
+            215,
+            .58
+        );
+
+}
+
+
+/*
+ * Dry-air veil moving across the horizon.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-haze {
+
+    bottom:
+        18%;
+
+    height:
+        36%;
+
+    opacity:
+        .82;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            17% 58%,
+            rgba(
+                226,
+                207,
+                181,
+                .055
+            ),
+            transparent
+            30%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            51% 48%,
+            rgba(
+                234,
+                217,
+                193,
+                .045
+            ),
+            transparent
+            34%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            83% 57%,
+            rgba(
+                210,
+                188,
+                159,
+                .042
+            ),
+            transparent
+            29%
+        );
+
+}
+
+
+/* Desert animation refinements. */
+
+@keyframes desertFarDunesV6 {
+
+    from {
+
+        transform:
+            translate3d(
+                -13px,
+                0,
+                0
+            )
+            scale(
+                1.005
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                18px,
+                -2px,
+                0
+            )
+            scale(
+                1.022
+            );
+
+    }
+
+}
+
+
+@keyframes desertNearDunesV6 {
+
+    from {
+
+        transform:
+            translate3d(
+                -15px,
+                0,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                20px,
+                -1px,
+                0
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   WINTER — VISIBLE ICE CRYSTAL STORM
+   ============================================================ */
+
+html[data-dheere-mood="winter"]
+.winter-environment {
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            52% 8%,
+            rgba(
+                229,
+                249,
+                255,
+                .055
+            ),
+            transparent
+            46%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(
+                218,
+                242,
+                250,
+                .025
+            ),
+            rgba(
+                139,
+                188,
+                207,
+                .018
+            )
+            55%,
+            rgba(
+                83,
+                129,
+                151,
+                .040
+            )
+        );
+
+}
+
+
+/*
+ * Frost becomes brighter near the top and sides.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-frost {
+
+    inset:
+        -14%;
+
+    opacity:
+        .96;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            52% 0%,
+            rgba(
+                236,
+                250,
+                255,
+                .24
+            ),
+            transparent
+            50%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            8% 58%,
+            rgba(
+                194,
+                230,
+                242,
+                .07
+            ),
+            transparent
+            38%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            93% 61%,
+            rgba(
+                193,
+                230,
+                243,
+                .065
+            ),
+            transparent
+            39%
+        );
+
+}
+
+
+/*
+ * Snow is now visibly layered.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    inset:
+        -28%;
+
+    opacity:
+        .76;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                251,
+                254,
+                255,
+                .98
+            )
+            0 1.6px,
+            transparent
+            2.4px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                237,
+                249,
+                254,
+                .85
+            )
+            0 1.25px,
+            transparent
+            2px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                221,
+                242,
+                250,
+                .68
+            )
+            0 .9px,
+            transparent
+            1.6px
+        );
+
+    background-size:
+        72px 72px,
+        44px 44px,
+        27px 27px;
+
+}
+
+
+/*
+ * Ice dust is more energetic than ordinary snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    inset:
+        -31%;
+
+    opacity:
+        .40;
+
+    background:
+
+        repeating-linear-gradient(
+            14deg,
+            transparent
+            0 19px,
+            rgba(
+                231,
+                249,
+                255,
+                .14
+            )
+            20px 22px,
+            transparent
+            23px 43px
+        ),
+
+        repeating-linear-gradient(
+            14deg,
+            transparent
+            0 59px,
+            rgba(
+                204,
+                237,
+                248,
+                .072
+            )
+            60px 62px,
+            transparent
+            63px 101px
+        );
+
+    filter:
+        blur(
+            .3px
+        );
+
+}
+
+
+/*
+ * Cold wind is stronger and more directional.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    inset:
+        -34%;
+
+    opacity:
+        .32;
+
+    background:
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 24px,
+            rgba(
+                240,
+                251,
+                255,
+                .13
+            )
+            25px 28px,
+            transparent
+            29px 58px
+        ),
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 79px,
+            rgba(
+                204,
+                237,
+                248,
+                .065
+            )
+            80px 82px,
+            transparent
+            83px 129px
+        );
+
+}
+
+
+/*
+ * Dense field of ice motes behind the individual particles.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    inset:
+        -20%;
+
+    opacity:
+        .42;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                242,
+                251,
+                255,
+                .88
+            )
+            0 1.1px,
+            transparent
+            1.9px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                208,
+                240,
+                250,
+                .62
+            )
+            0 .95px,
+            transparent
+            1.75px
+        ),
+
+        repeating-conic-gradient(
+            from
+            0deg
+            at
+            50% 50%,
+            rgba(
+                228,
+                248,
+                254,
+                .08
+            )
+            0deg
+            2deg,
+            transparent
+            2deg
+            14deg
+        );
+
+    background-size:
+        98px 98px,
+        57px 57px,
+        170px 170px;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Make individual ice crystals unmistakable.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    width:
+        clamp(
+            1px,
+            var(
+                --ice-size,
+                2px
+            ),
+            3px
+        );
+
+    height:
+        calc(
+            clamp(
+                1px,
+                var(
+                    --ice-size,
+                    2px
+                ),
+                3px
+            )
+            * 4
+        );
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                255,
+                255,
+                255,
+                1
+            ),
+            rgba(
+                218,
+                246,
+                253,
+                .90
+            )
+            50%,
+            rgba(
+                178,
+                227,
+                243,
+                .55
+            )
+        );
+
+    box-shadow:
+
+        0 0 4px
+        rgba(
+            238,
+            251,
+            255,
+            .60
+        ),
+
+        0 0 10px
+        rgba(
+            196,
+            234,
+            248,
+            .26
+        );
+
+}
+
+
+/*
+ * Real crystal-like star/diamond silhouettes.
+ * These are intentionally brighter than the normal snow.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        17%;
+
+    top:
+        24%;
+
+    width:
+        13px;
+
+    height:
+        13px;
+
+    background:
+
+        linear-gradient(
+            45deg,
+            transparent
+            40%,
+            rgba(
+                240,
+                252,
+                255,
+                .82
+            )
+            41%,
+            rgba(
+                214,
+                245,
+                253,
+                .72
+            )
+            53%,
+            transparent
+            54%
+        ),
+
+        linear-gradient(
+            -45deg,
+            transparent
+            40%,
+            rgba(
+                240,
+                252,
+                255,
+                .82
+            )
+            41%,
+            rgba(
+                214,
+                245,
+                253,
+                .72
+            )
+            53%,
+            transparent
+            54%
+        );
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(
+                214,
+                245,
+                253,
+                .34
+            )
+        );
+
+    opacity:
+        .78;
+
+    animation:
+        winterCrystalShardV6
+        5.4s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    right:
+        21%;
+
+    top:
+        59%;
+
+    width:
+        10px;
+
+    height:
+        10px;
+
+    border:
+        1px solid
+        rgba(
+            235,
+            251,
+            255,
+            .45
+        );
+
+    transform:
+        rotate(
+            45deg
+        );
+
+    box-shadow:
+
+        0 0 10px
+        rgba(
+            214,
+            246,
+            253,
+            .26
+        );
+
+    opacity:
+        .70;
+
+    animation:
+        winterCrystalShardV6Small
+        6.2s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes winterCrystalShardV6 {
+
+    from {
+
+        transform:
+            translate3d(
+                -12px,
+                5px,
+                0
+            )
+            rotate(
+                0deg
+            )
+            scale(
+                .60
+            );
+
+        opacity:
+            .12;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                18px,
+                -19px,
+                0
+            )
+            rotate(
+                90deg
+            )
+            scale(
+                1.18
+            );
+
+        opacity:
+            .92;
+
+    }
+
+}
+
+
+@keyframes winterCrystalShardV6Small {
+
+    from {
+
+        transform:
+            translate3d(
+                8px,
+                7px,
+                0
+            )
+            rotate(
+                45deg
+            )
+            scale(
+                .65
+            );
+
+        opacity:
+            .10;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                -14px,
+                -13px,
+                0
+            )
+            rotate(
+                135deg
+            )
+            scale(
+                1.08
+            );
+
+        opacity:
+            .78;
+
+    }
+
+}
+
+
+/*
+ * Make the frozen ground subtly sparkle.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ground {
+
+    height:
+        32%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(
+                221,
+                241,
+                249,
+                .075
+            )
+            45%,
+            rgba(
+                211,
+                238,
+                248,
+                .19
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ground::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -10%;
+
+    right:
+        -10%;
+
+    bottom:
+        17%;
+
+    height:
+        2px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                236,
+                250,
+                255,
+                .14
+            )
+            25%,
+            rgba(
+                238,
+                251,
+                255,
+                .26
+            )
+            51%,
+            rgba(
+                221,
+                246,
+                253,
+                .11
+            )
+            75%,
+            transparent
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+}
+
+
+/* ============================================================
+   MONSOON — SMALL FINAL DEPTH PASS
+   ============================================================ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain {
+
+    opacity:
+        .56;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain-back {
+
+    opacity:
+        .29;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop-foreground {
+
+    width:
+        2.6px;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ripple {
+
+    border-color:
+        rgba(
+            212,
+            238,
+            242,
+            .44
+        );
+
+}
+
+
+/* ============================================================
+   FEATURE 3 — FINAL MOBILE CALIBRATION
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::before {
+
+        width:
+            62px;
+
+        height:
+            62px;
+
+        top:
+            17%;
+
+        right:
+            12%;
+
+    }
+
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::after {
+
+        width:
+            112px;
+
+        height:
+            112px;
+
+        top:
+            calc(
+                17% - 25px
+            );
+
+        right:
+            calc(
+                12% - 25px
+            );
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-snow {
+
+        opacity:
+            .68;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-dust {
+
+        opacity:
+            .32;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-wind {
+
+        opacity:
+            .25;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals {
+
+        opacity:
+            .36;
+
+    }
+
+}
+
+/* ============================================================
+   FEATURE 3 — MASTER WEATHER PASS V7
+   ------------------------------------------------------------
+   DESERT
+   Vast registaan / warm dry air / dune depth / sand sheets /
+   airborne dust / wind trails / heat shimmer.
+
+   MONSOON
+   Smooth layered rainfall / foreground drops / wind / wet
+   ground / splash rings / cloud movement / visible lightning.
+
+   WINTER
+   Snowfall / ICE-CRYSTAL FALL / crystal shards / ice dust /
+   cold wind / frosted field / frozen sheen.
+
+   This pass is CSS-only and preserves the existing DOM.
+   ============================================================ */
+
+
+/* ============================================================
+   DESERT — VAST REGISTAAN
+   ============================================================ */
+
+html[data-dheere-mood="desert"]
+.desert-environment {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    pointer-events:
+        none;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                185,
+                163,
+                132,
+                .018
+            ),
+            rgba(
+                128,
+                99,
+                68,
+                .035
+            )
+            48%,
+            rgba(
+                55,
+                39,
+                27,
+                .115
+            )
+            100%
+        );
+
+}
+
+
+/*
+ * Warm atmospheric sun — secondary element.
+ * The dunes remain visually dominant.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        18%;
+
+    right:
+        16%;
+
+    width:
+        88px;
+
+    height:
+        88px;
+
+    border-radius:
+        50%;
+
+    z-index:
+        2;
+
+    background:
+
+        radial-gradient(
+            circle
+            at
+            35% 33%,
+            rgba(
+                255,
+                248,
+                228,
+                .99
+            )
+            0 9%,
+            rgba(
+                248,
+                224,
+                186,
+                .96
+            )
+            34%,
+            rgba(
+                220,
+                177,
+                118,
+                .78
+            )
+            63%,
+            rgba(
+                188,
+                134,
+                79,
+                .10
+            )
+            100%
+        );
+
+    box-shadow:
+
+        0 0 30px
+        rgba(
+            241,
+            205,
+            157,
+            .19
+        ),
+
+        0 0 100px
+        rgba(
+            216,
+            167,
+            104,
+            .08
+        );
+
+    opacity:
+        .76;
+
+}
+
+
+/*
+ * Sun haze / desert mirage halo.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-environment::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        calc(
+            18% - 42px
+        );
+
+    right:
+        calc(
+            16% - 42px
+        );
+
+    width:
+        172px;
+
+    height:
+        172px;
+
+    border-radius:
+        50%;
+
+    z-index:
+        1;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(
+                235,
+                205,
+                164,
+                .075
+            ),
+            rgba(
+                214,
+                173,
+                119,
+                .022
+            )
+            42%,
+            transparent
+            72%
+        );
+
+    filter:
+        blur(
+            5px
+        );
+
+    animation:
+        desertSunHazeV7
+        9s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Far desert dunes: broad horizon profiles.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-far {
+
+    left:
+        -20%;
+
+    right:
+        -20%;
+
+    bottom:
+        20%;
+
+    height:
+        47%;
+
+    filter:
+        blur(
+            2.5px
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse
+            38%
+            75%
+            at
+            3%
+            108%,
+            rgba(
+                187,
+                155,
+                113,
+                .23
+            ),
+            transparent
+            72%
+        ),
+
+        radial-gradient(
+            ellipse
+            44%
+            72%
+            at
+            24%
+            86%,
+            rgba(
+                210,
+                174,
+                128,
+                .24
+            ),
+            transparent
+            73%
+        ),
+
+        radial-gradient(
+            ellipse
+            47%
+            75%
+            at
+            50%
+            99%,
+            rgba(
+                173,
+                137,
+                98,
+                .23
+            ),
+            transparent
+            72%
+        ),
+
+        radial-gradient(
+            ellipse
+            43%
+            74%
+            at
+            76%
+            86%,
+            rgba(
+                201,
+                164,
+                119,
+                .22
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            38%
+            70%
+            at
+            105%
+            106%,
+            rgba(
+                149,
+                115,
+                82,
+                .20
+            ),
+            transparent
+            69%
+        );
+
+    animation:
+        desertDistantDunesV7
+        26s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Near dunes: dark foreground mass.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid {
+
+    left:
+        -22%;
+
+    right:
+        -22%;
+
+    bottom:
+        -5%;
+
+    height:
+        43%;
+
+    filter:
+        blur(
+            .9px
+        );
+
+    background:
+
+        radial-gradient(
+            ellipse
+            43%
+            69%
+            at
+            2%
+            112%,
+            rgba(
+                78,
+                56,
+                40,
+                .48
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            43%
+            72%
+            at
+            29%
+            96%,
+            rgba(
+                135,
+                96,
+                65,
+                .42
+            ),
+            transparent
+            71%
+        ),
+
+        radial-gradient(
+            ellipse
+            48%
+            71%
+            at
+            56%
+            110%,
+            rgba(
+                79,
+                56,
+                40,
+                .50
+            ),
+            transparent
+            72%
+        ),
+
+        radial-gradient(
+            ellipse
+            43%
+            69%
+            at
+            82%
+            97%,
+            rgba(
+                119,
+                84,
+                58,
+                .40
+            ),
+            transparent
+            69%
+        ),
+
+        radial-gradient(
+            ellipse
+            37%
+            68%
+            at
+            105%
+            113%,
+            rgba(
+                61,
+                44,
+                34,
+                .52
+            ),
+            transparent
+            68%
+        );
+
+    animation:
+        desertNearDunesV7
+        21s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Front dune silhouette.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -4%;
+
+    right:
+        -4%;
+
+    bottom:
+        0;
+
+    height:
+        41%;
+
+    border-radius:
+        50%
+        50%
+        0
+        0;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            20% 100%,
+            rgba(
+                39,
+                27,
+                20,
+                .74
+            ),
+            transparent
+            57%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            71% 100%,
+            rgba(
+                43,
+                29,
+                21,
+                .79
+            ),
+            transparent
+            58%
+        );
+
+    filter:
+        blur(
+            .6px
+        );
+
+    opacity:
+        .90;
+
+}
+
+
+/*
+ * Multiple sand contour lines.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dunes-mid::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        3%;
+
+    right:
+        3%;
+
+    bottom:
+        34%;
+
+    height:
+        20%;
+
+    background:
+
+        repeating-linear-gradient(
+            171deg,
+            transparent
+            0 17px,
+            rgba(
+                235,
+                211,
+                178,
+                .060
+            )
+            18px 20px,
+            transparent
+            21px 40px
+        );
+
+    filter:
+        blur(
+            1px
+        );
+
+    opacity:
+        .82;
+
+}
+
+
+/*
+ * Wind-driven sand sheets become obvious.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts {
+
+    left:
+        -32%;
+
+    right:
+        -32%;
+
+    bottom:
+        8%;
+
+    height:
+        46%;
+
+    opacity:
+        .48;
+
+    filter:
+        blur(
+            3.8px
+        );
+
+    background:
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 15px,
+            rgba(
+                240,
+                221,
+                194,
+                .060
+            )
+            16px 19px,
+            transparent
+            20px 42px
+        ),
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 55px,
+            rgba(
+                223,
+                200,
+                171,
+                .040
+            )
+            56px 58px,
+            transparent
+            59px 104px
+        );
+
+}
+
+
+/*
+ * Two independent moving sand fronts.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-gusts::before,
+html[data-dheere-mood="desert"]
+.desert-gusts::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -12%;
+
+    width:
+        124%;
+
+    border-radius:
+        50%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                234,
+                215,
+                190,
+                .050
+            )
+            28%,
+            rgba(
+                242,
+                224,
+                199,
+                .105
+            )
+            51%,
+            rgba(
+                218,
+                195,
+                166,
+                .040
+            )
+            72%,
+            transparent
+        );
+
+    filter:
+        blur(
+            6px
+        );
+
+    pointer-events:
+        none;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-gusts::before {
+
+    bottom:
+        17%;
+
+    height:
+        28px;
+
+    animation:
+        desertSandFrontV7
+        3.2s
+        linear
+        infinite;
+
+}
+
+
+html[data-dheere-mood="desert"]
+.desert-gusts::after {
+
+    bottom:
+        28%;
+
+    height:
+        16px;
+
+    opacity:
+        .62;
+
+    animation:
+        desertSandFrontV7Slow
+        5.4s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Main dust particles.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-particle {
+
+    background:
+        rgba(
+            240,
+            220,
+            193,
+            .82
+        );
+
+    box-shadow:
+
+        0 0 5px
+        rgba(
+            239,
+            220,
+            193,
+            .19
+        );
+
+}
+
+
+/*
+ * Fine high-air dust.
+ */
+
+html[data-dheere-mood="desert"]
+.desert-dust-fine {
+
+    background:
+        rgba(
+            245,
+            231,
+            214,
+            .54
+        );
+
+}
+
+
+/* Desert motion. */
+
+@keyframes desertSunHazeV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -3px,
+                2px,
+                0
+            )
+            scale(
+                .96
+            );
+
+        opacity:
+            .55;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                5px,
+                -3px,
+                0
+            )
+            scale(
+                1.05
+            );
+
+        opacity:
+            .90;
+
+    }
+
+}
+
+
+@keyframes desertDistantDunesV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -10px,
+                1px,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                18px,
+                -2px,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes desertNearDunesV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -13px,
+                0,
+                0
+            )
+            scale(
+                1
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                19px,
+                -1px,
+                0
+            )
+            scale(
+                1.024
+            );
+
+    }
+
+}
+
+
+@keyframes desertSandFrontV7 {
+
+    from {
+
+        transform:
+            translateX(
+                -12%
+            );
+
+        opacity:
+            .03;
+
+    }
+
+    42% {
+
+        opacity:
+            .62;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                16%
+            );
+
+        opacity:
+            .06;
+
+    }
+
+}
+
+
+@keyframes desertSandFrontV7Slow {
+
+    from {
+
+        transform:
+            translateX(
+                14%
+            );
+
+        opacity:
+            .02;
+
+    }
+
+    45% {
+
+        opacity:
+            .38;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                -10%
+            );
+
+        opacity:
+            .03;
+
+    }
+
+}
+
+
+/* ============================================================
+   MONSOON — RAINFALL / WIND / THUNDER
+   ============================================================ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-clouds {
+
+    inset:
+        -14%;
+
+    filter:
+        blur(
+            34px
+        );
+
+    opacity:
+        .98;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            13% 14%,
+            rgba(
+                115,
+                132,
+                140,
+                .16
+            ),
+            transparent
+            29%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            50% 10%,
+            rgba(
+                84,
+                105,
+                114,
+                .15
+            ),
+            transparent
+            34%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            86% 17%,
+            rgba(
+                90,
+                113,
+                122,
+                .17
+            ),
+            transparent
+            31%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            42% 44%,
+            rgba(
+                51,
+                70,
+                77,
+                .13
+            ),
+            transparent
+            45%
+        );
+
+    animation:
+        monsoonCloudRollV7
+        22s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Soft distant rain.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain-back {
+
+    inset:
+        -44%;
+
+    opacity:
+        .31;
+
+    background-image:
+
+        repeating-linear-gradient(
+            102deg,
+            transparent
+            0 25px,
+            rgba(
+                193,
+                224,
+                231,
+                .17
+            )
+            26px 28px,
+            transparent
+            29px 56px
+        );
+
+    animation:
+        monsoonRainBackV7
+        2.8s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Main rainfall.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-rain {
+
+    inset:
+        -48%;
+
+    opacity:
+        .58;
+
+    background-image:
+
+        repeating-linear-gradient(
+            103deg,
+            transparent
+            0 11px,
+            rgba(
+                224,
+                242,
+                246,
+                .30
+            )
+            12px 14px,
+            transparent
+            15px 28px
+        ),
+
+        repeating-linear-gradient(
+            103deg,
+            transparent
+            0 34px,
+            rgba(
+                195,
+                226,
+                232,
+                .12
+            )
+            35px 37px,
+            transparent
+            38px 63px
+        );
+
+    animation:
+        monsoonRainSmoothV7
+        1.1s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Wind-driven rain veil.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-wind {
+
+    inset:
+        -34%;
+
+    opacity:
+        .34;
+
+    background:
+
+        repeating-linear-gradient(
+            9deg,
+            transparent
+            0 31px,
+            rgba(
+                211,
+                237,
+                241,
+                .10
+            )
+            32px 35px,
+            transparent
+            36px 69px
+        );
+
+    animation:
+        monsoonWindV7
+        2.2s
+        linear
+        infinite;
+
+}
+
+
+/*
+ * Rain is visually closer to the viewer here.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop {
+
+    width:
+        1.8px;
+
+    height:
+        var(
+            --drop-length,
+            17px
+        );
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                246,
+                252,
+                253,
+                .12
+            ),
+            rgba(
+                213,
+                239,
+                245,
+                .82
+            )
+        );
+
+    box-shadow:
+
+        0 0 7px
+        rgba(
+            207,
+            235,
+            241,
+            .19
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-drop-foreground {
+
+    width:
+        2.5px;
+
+    height:
+        var(
+            --drop-fg-height,
+            31px
+        );
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(
+                250,
+                254,
+                255,
+                .13
+            ),
+            rgba(
+                218,
+                243,
+                248,
+                .92
+            )
+        );
+
+    box-shadow:
+
+        0 0 9px
+        rgba(
+            215,
+            239,
+            244,
+            .24
+        );
+
+}
+
+
+/*
+ * Wet ground becomes deeper and reflective.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground {
+
+    height:
+        36%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(
+                43,
+                91,
+                95,
+                .21
+            )
+            44%,
+            rgba(
+                8,
+                29,
+                33,
+                .58
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ground::before {
+
+    bottom:
+        8%;
+
+    height:
+        42%;
+
+    opacity:
+        .82;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent
+            0 15px,
+            rgba(
+                203,
+                233,
+                237,
+                .036
+            )
+            16px 21px,
+            transparent
+            22px 47px
+        );
+
+    filter:
+        blur(
+            2.5px
+        );
+
+    animation:
+        monsoonGroundReflectionV7
+        5.6s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/*
+ * Clear but soft splash ripples.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ripple {
+
+    border-color:
+        rgba(
+            219,
+            241,
+            244,
+            .48
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            192,
+            228,
+            234,
+            .10
+        );
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-ripple::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    top:
+        50%;
+
+    width:
+        35%;
+
+    height:
+        1px;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    background:
+        rgba(
+            222,
+            242,
+            245,
+            .30
+        );
+
+    filter:
+        blur(
+            1px
+        );
+
+}
+
+
+/*
+ * Thunder flash.
+ * CSS cannot produce literal sound, so this is the
+ * visual thunder/lightning layer.
+ */
+
+html[data-dheere-mood="monsoon"]
+.monsoon-lightning {
+
+    background:
+        rgba(
+            235,
+            248,
+            252,
+            .16
+        );
+
+    animation:
+        monsoonThunderFlashV7
+        10.5s
+        ease-in-out
+        infinite;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-lightning::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        63%;
+
+    top:
+        5%;
+
+    width:
+        3px;
+
+    height:
+        72%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent
+            0 7%,
+            rgba(
+                235,
+                249,
+                255,
+                .90
+            )
+            8% 10%,
+            transparent
+            11% 17%,
+            rgba(
+                229,
+                247,
+                253,
+                .86
+            )
+            18% 20%,
+            transparent
+            21% 29%,
+            rgba(
+                229,
+                247,
+                253,
+                .72
+            )
+            30% 32%,
+            transparent
+            33% 100%
+        );
+
+    clip-path:
+
+        polygon(
+            56% 0%,
+            100% 0%,
+            58% 28%,
+            94% 28%,
+            22% 57%,
+            45% 57%,
+            0% 100%,
+            27% 61%,
+            9% 61%,
+            44% 30%,
+            14% 30%
+        );
+
+    filter:
+        blur(
+            .25px
+        );
+
+    opacity:
+        0;
+
+}
+
+
+html[data-dheere-mood="monsoon"]
+.monsoon-lightning::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            63% 28%,
+            rgba(
+                231,
+                248,
+                253,
+                .17
+            ),
+            transparent
+            35%
+        );
+
+    opacity:
+        0;
+
+}
+
+
+@keyframes monsoonCloudRollV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -3%,
+                0,
+                0
+            )
+            scale(
+                1
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                5%,
+                1%,
+                0
+            )
+            scale(
+                1.06
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonRainBackV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -4%,
+                0
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                9%,
+                10%,
+                0
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonRainSmoothV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -5%,
+                -8%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                8%,
+                10%,
+                0
+            )
+            rotate(
+                3deg
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonWindV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -11%,
+                0,
+                0
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                13%,
+                1%,
+                0
+            )
+            rotate(
+                -8deg
+            );
+
+    }
+
+}
+
+
+@keyframes monsoonGroundReflectionV7 {
+
+    from {
+
+        transform:
+            translateX(
+                -7%
+            );
+
+        opacity:
+            .28;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                8%
+            );
+
+        opacity:
+            .76;
+
+    }
+
+}
+
+
+@keyframes monsoonThunderFlashV7 {
+
+    0%,
+    73%,
+    100% {
+
+        opacity:
+            0;
+
+    }
+
+    74% {
+
+        opacity:
+            .08;
+
+    }
+
+    75% {
+
+        opacity:
+            0;
+
+    }
+
+    77% {
+
+        opacity:
+            .20;
+
+    }
+
+    78% {
+
+        opacity:
+            .025;
+
+    }
+
+}
+
+
+@keyframes monsoonThunderBoltV7 {
+
+    0%,
+    73%,
+    100% {
+
+        opacity:
+            0;
+
+    }
+
+    74%,
+    77% {
+
+        opacity:
+            .94;
+
+    }
+
+    75%,
+    76% {
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* ============================================================
+   WINTER — ICE CRYSTAL STORM
+   ============================================================ */
+
+html[data-dheere-mood="winter"]
+.winter-frost {
+
+    inset:
+        -15%;
+
+    opacity:
+        .98;
+
+    background:
+
+        radial-gradient(
+            ellipse
+            at
+            50% 0%,
+            rgba(
+                237,
+                250,
+                255,
+                .26
+            ),
+            transparent
+            47%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            14% 58%,
+            rgba(
+                194,
+                229,
+                242,
+                .070
+            ),
+            transparent
+            39%
+        ),
+
+        radial-gradient(
+            ellipse
+            at
+            86% 60%,
+            rgba(
+                193,
+                229,
+                243,
+                .065
+            ),
+            transparent
+            40%
+        );
+
+}
+
+
+/*
+ * Dense snow field.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-snow {
+
+    inset:
+        -30%;
+
+    opacity:
+        .76;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                250,
+                254,
+                255,
+                .98
+            )
+            0 1.7px,
+            transparent
+            2.6px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                239,
+                249,
+                254,
+                .86
+            )
+            0 1.25px,
+            transparent
+            2.1px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                222,
+                243,
+                251,
+                .68
+            )
+            0 .8px,
+            transparent
+            1.6px
+        );
+
+    background-size:
+        68px 68px,
+        43px 43px,
+        27px 27px;
+
+}
+
+
+/*
+ * Ice dust: horizontal cold particles.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-dust {
+
+    inset:
+        -34%;
+
+    opacity:
+        .43;
+
+    background:
+
+        repeating-linear-gradient(
+            14deg,
+            transparent
+            0 18px,
+            rgba(
+                236,
+                249,
+                254,
+                .15
+            )
+            19px 22px,
+            transparent
+            23px 42px
+        ),
+
+        repeating-linear-gradient(
+            14deg,
+            transparent
+            0 58px,
+            rgba(
+                208,
+                239,
+                249,
+                .07
+            )
+            59px 62px,
+            transparent
+            63px 103px
+        );
+
+}
+
+
+/*
+ * Frozen wind.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-wind {
+
+    inset:
+        -36%;
+
+    opacity:
+        .34;
+
+    background:
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 23px,
+            rgba(
+                242,
+                251,
+                255,
+                .13
+            )
+            24px 28px,
+            transparent
+            29px 59px
+        ),
+
+        repeating-linear-gradient(
+            8deg,
+            transparent
+            0 77px,
+            rgba(
+                206,
+                237,
+                248,
+                .06
+            )
+            78px 81px,
+            transparent
+            82px 128px
+        );
+
+}
+
+
+/*
+ * Crystal field — multiple scales.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals {
+
+    inset:
+        -22%;
+
+    opacity:
+        .44;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(
+                245,
+                253,
+                255,
+                .92
+            )
+            0 1.25px,
+            transparent
+            2px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(
+                215,
+                243,
+                251,
+                .68
+            )
+            0 1px,
+            transparent
+            1.9px
+        );
+
+    background-size:
+        96px 96px,
+        53px 53px;
+
+    mix-blend-mode:
+        screen;
+
+}
+
+
+/*
+ * Individual ice particle is now a visible crystal glyph:
+ * bright cross + diagonal facets.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-particle {
+
+    width:
+        9px;
+
+    height:
+        9px;
+
+    border-radius:
+        2px;
+
+    background:
+
+        linear-gradient(
+            0deg,
+            transparent
+            43%,
+            rgba(
+                247,
+                254,
+                255,
+                .94
+            )
+            44% 56%,
+            transparent
+            57%
+        ),
+
+        linear-gradient(
+            90deg,
+            transparent
+            43%,
+            rgba(
+                247,
+                254,
+                255,
+                .94
+            )
+            44% 56%,
+            transparent
+            57%
+        ),
+
+        linear-gradient(
+            45deg,
+            transparent
+            44%,
+            rgba(
+                220,
+                246,
+                253,
+                .78
+            )
+            45% 53%,
+            transparent
+            54%
+        ),
+
+        linear-gradient(
+            -45deg,
+            transparent
+            44%,
+            rgba(
+                220,
+                246,
+                253,
+                .78
+            )
+            45% 53%,
+            transparent
+            54%
+        );
+
+    box-shadow:
+
+        0 0 5px
+        rgba(
+            235,
+            250,
+            255,
+            .55
+        ),
+
+        0 0 13px
+        rgba(
+            194,
+            232,
+            247,
+            .20
+        );
+
+    transform-origin:
+        center;
+
+}
+
+
+/*
+ * Crystal field also gets two large, slow-moving glints.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before,
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        15px;
+
+    height:
+        15px;
+
+    border-radius:
+        3px;
+
+    background:
+
+        linear-gradient(
+            0deg,
+            transparent
+            43%,
+            rgba(
+                249,
+                254,
+                255,
+                .88
+            )
+            44% 56%,
+            transparent
+            57%
+        ),
+
+        linear-gradient(
+            90deg,
+            transparent
+            43%,
+            rgba(
+                249,
+                254,
+                255,
+                .88
+            )
+            44% 56%,
+            transparent
+            57%
+        ),
+
+        linear-gradient(
+            45deg,
+            transparent
+            45%,
+            rgba(
+                210,
+                242,
+                251,
+                .68
+            )
+            46% 53%,
+            transparent
+            54%
+        ),
+
+        linear-gradient(
+            -45deg,
+            transparent
+            45%,
+            rgba(
+                210,
+                242,
+                251,
+                .68
+            )
+            46% 53%,
+            transparent
+            54%
+        );
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(
+                207,
+                241,
+                251,
+                .30
+            )
+        );
+
+    animation:
+        winterCrystalGlintV7
+        6.1s
+        ease-in-out
+        infinite
+        alternate;
+
+    opacity:
+        .70;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::before {
+
+    left:
+        18%;
+
+    top:
+        20%;
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ice-crystals::after {
+
+    right:
+        18%;
+
+    top:
+        61%;
+
+    width:
+        11px;
+
+    height:
+        11px;
+
+    opacity:
+        .56;
+
+    animation-delay:
+        -2.7s;
+
+}
+
+
+/*
+ * Frozen ground reflection.
+ */
+
+html[data-dheere-mood="winter"]
+.winter-ground {
+
+    height:
+        33%;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(
+                226,
+                245,
+                251,
+                .075
+            )
+            42%,
+            rgba(
+                207,
+                237,
+                247,
+                .19
+            )
+            100%
+        );
+
+}
+
+
+html[data-dheere-mood="winter"]
+.winter-ground::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -12%;
+
+    right:
+        -12%;
+
+    bottom:
+        16%;
+
+    height:
+        2px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                245,
+                253,
+                255,
+                .18
+            )
+            24%,
+            rgba(
+                242,
+                252,
+                255,
+                .34
+            )
+            50%,
+            rgba(
+                221,
+                246,
+                253,
+                .14
+            )
+            76%,
+            transparent
+        );
+
+    filter:
+        blur(
+            2px
+        );
+
+    animation:
+        winterGroundGlowV7
+        9s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes winterCrystalGlintV7 {
+
+    from {
+
+        transform:
+            translate3d(
+                -10px,
+                7px,
+                0
+            )
+            rotate(
+                0deg
+            )
+            scale(
+                .62
+            );
+
+        opacity:
+            .16;
+
+    }
+
+    to {
+
+        transform:
+            translate3d(
+                14px,
+                -14px,
+                0
+            )
+            rotate(
+                90deg
+            )
+            scale(
+                1.18
+            );
+
+        opacity:
+            .92;
+
+    }
+
+}
+
+
+@keyframes winterGroundGlowV7 {
+
+    from {
+
+        transform:
+            translateX(
+                -8%
+            );
+
+        opacity:
+            .22;
+
+    }
+
+    to {
+
+        transform:
+            translateX(
+                9%
+            );
+
+        opacity:
+            .78;
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE WEATHER CALIBRATION
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::before {
+
+        width:
+            62px;
+
+        height:
+            62px;
+
+        top:
+            17%;
+
+        right:
+            12%;
+
+    }
+
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::after {
+
+        width:
+            120px;
+
+        height:
+            120px;
+
+        top:
+            calc(
+                17% - 29px
+            );
+
+        right:
+            calc(
+                12% - 29px
+            );
+
+    }
+
+
+    html[data-dheere-mood="desert"]
+    .desert-gusts {
+
+        opacity:
+            .36;
+
+    }
+
+
+    html[data-dheere-mood="monsoon"]
+    .monsoon-rain {
+
+        opacity:
+            .50;
+
+    }
+
+
+    html[data-dheere-mood="monsoon"]
+    .monsoon-drop-foreground {
+
+        width:
+            2.2px;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-particle {
+
+        width:
+            8px;
+
+        height:
+            8px;
+
+    }
+
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals {
+
+        opacity:
+            .38;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    html[data-dheere-mood="desert"]
+    .desert-environment::after,
+    html[data-dheere-mood="desert"]
+    .desert-dunes-far,
+    html[data-dheere-mood="desert"]
+    .desert-dunes-mid,
+    html[data-dheere-mood="desert"]
+    .desert-gusts::before,
+    html[data-dheere-mood="desert"]
+    .desert-gusts::after,
+
+    html[data-dheere-mood="monsoon"]
+    .monsoon-clouds,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-rain-back,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-rain,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-wind,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-ground::before,
+    html[data-dheere-mood="monsoon"]
+    .monsoon-lightning,
+
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals::before,
+    html[data-dheere-mood="winter"]
+    .winter-ice-crystals::after,
+    html[data-dheere-mood="winter"]
+    .winter-ground::after {
+
+        animation:
+            none !important;
+
+    }
+
+}
