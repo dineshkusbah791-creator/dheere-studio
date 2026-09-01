@@ -234,11 +234,11 @@ restoreUserFromStorage();
 
    Logged in:
    - Same homepage
-   - Personalized greeting
-   - Very subtle visual mode
+   - Only the existing hero title is personalized
 
-   No sections are replaced.
-   No existing authentication logic is duplicated.
+   No extra greeting badge.
+   No extra homepage sections.
+   No duplicate authentication logic.
    ====================================================== */
 
 function updateHomepagePersonalization() {
@@ -255,18 +255,6 @@ function updateHomepagePersonalization() {
         );
 
 
-    const greeting =
-        document.getElementById(
-            'personalizedGreeting'
-        );
-
-
-    const heroDescription =
-        document.querySelector(
-            '.hero-content p'
-        );
-
-
     if (
         !homepage ||
         !heroTitle
@@ -278,16 +266,12 @@ function updateHomepagePersonalization() {
 
 
     /*
-     * Keep the original public homepage text in one place.
-     * These values are used whenever the user is logged out.
+     * Keep the original public homepage title unchanged
+     * when the visitor is logged out.
      */
 
     const publicTitle =
         'Welcome to Dheere Studio';
-
-
-    const publicDescription =
-        'Dheere Studio is an independent creative studio building original stories, worlds, and experiences across different forms of media.';
 
 
     /*
@@ -296,29 +280,8 @@ function updateHomepagePersonalization() {
 
     if (!currentUser) {
 
-        homepage.classList.remove(
-            'personalized-mode'
-        );
-
-
-        if (greeting) {
-
-            greeting.textContent =
-                '';
-
-        }
-
-
         heroTitle.textContent =
             publicTitle;
-
-
-        if (heroDescription) {
-
-            heroDescription.textContent =
-                publicDescription;
-
-        }
 
 
         return;
@@ -346,29 +309,8 @@ function updateHomepagePersonalization() {
         ).trim();
 
 
-    homepage.classList.add(
-        'personalized-mode'
-    );
-
-
-    if (greeting) {
-
-        greeting.textContent =
-            'Your Dheere Home';
-
-    }
-
-
     heroTitle.textContent =
         `Welcome back, ${name}.`;
-
-
-    if (heroDescription) {
-
-        heroDescription.textContent =
-            'Welcome back to Dheere Studio. Your place for stories, worlds, ideas, and the work we are building together.';
-
-    }
 
 }
 
@@ -572,7 +514,17 @@ async function getFreshProfile() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`
+                `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`,
+                {
+                    method:
+                        'GET',
+
+                    headers:
+                        getAuthHeaders(),
+
+                    cache:
+                        'no-store'
+                }
             );
 
 
