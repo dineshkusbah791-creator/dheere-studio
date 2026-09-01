@@ -88,6 +88,8 @@
         .mood-page {
             position:
                 relative;
+            -webkit-overflow-scrolling:
+                touch;
             min-height:
                 100vh;
             padding:
@@ -358,6 +360,8 @@
         .mood-header h1 {
             margin:
                 0 0 18px;
+            text-wrap:
+                balance;
             color:
                 #ffffff;
             font-size:
@@ -5598,7 +5602,129 @@
                     15px 0 21px;
             }
         }
-</style>
+
+        /* =====================================================
+           PERFORMANCE LAYER
+           Keeps the visual language intact while reducing
+           simultaneous paint/compositing work on phones and
+           lower-power devices.
+           ===================================================== */
+
+        .mood-card,
+        .mood-preview,
+        .mood-preview > *,
+        .mood-preview::before,
+        .mood-preview::after,
+        .mood-page::before,
+        .mood-page::after {
+            will-change: auto;
+        }
+
+        .mood-preview {
+            contain: paint;
+        }
+
+        @media (max-width: 840px) {
+
+            .mood-card:hover {
+                transform:
+                    translate3d(
+                        0,
+                        -3px,
+                        0
+                    );
+            }
+
+            .mood-preview {
+                contain:
+                    strict;
+            }
+
+            .mood-preview::after {
+                opacity:
+                    .78;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .mood-page::before,
+            .mood-page::after {
+                animation-duration:
+                    36s;
+                filter:
+                    blur(24px);
+            }
+
+            .mood-card::after {
+                filter:
+                    blur(20px);
+            }
+
+            .mood-preview {
+                contain:
+                    strict;
+                backface-visibility:
+                    hidden;
+            }
+
+        }
+
+        /* JS adds this class only to devices where the full
+           preview animation budget is likely to be expensive. */
+        body.mood-low-performance
+        .mood-page::before,
+        body.mood-low-performance
+        .mood-page::after {
+            animation-duration:
+                42s;
+            filter:
+                blur(18px);
+            opacity:
+                .62;
+        }
+
+        body.mood-low-performance
+        .mood-card::after {
+            filter:
+                blur(18px);
+            opacity:
+                .30;
+        }
+
+        body.mood-low-performance
+        .mood-preview::after {
+            opacity:
+                .58;
+        }
+
+        body.mood-low-performance
+        .mood-preview > .prism-spectrum,
+        body.mood-low-performance
+        .mood-preview > .prism-light-band,
+        body.mood-low-performance
+        .mood-preview > .prism-refraction,
+        body.mood-low-performance
+        .mood-preview > .desert-wind-ribbon,
+        body.mood-low-performance
+        .mood-preview > .ocean-light {
+            animation-play-state:
+                paused;
+        }
+
+        /* Battery-conscious mode while the tab is hidden. */
+        body.mood-page-hidden
+        .mood-page::before,
+        body.mood-page-hidden
+        .mood-page::after,
+        body.mood-page-hidden
+        .mood-preview * {
+            animation-play-state:
+                paused !important;
+        }
+
+    </style>
 </head>
 <body>
     <main class="mood-page">
@@ -5928,6 +6054,82 @@
         </div>
     </main>
     <script>
+        /* =====================================================
+           DHEERE MOOD — PERFORMANCE PROFILE
+           -----------------------------------------------------
+           Keeps desktop visuals intact. On constrained/mobile
+           devices it asks CSS to reduce the most expensive
+           preview effects without changing the mood system.
+           ===================================================== */
+
+        (function () {
+
+            const body =
+                document.body;
+
+            if (!body) {
+                return;
+            }
+
+            const reducedMotion =
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches;
+
+            const smallScreen =
+                window.innerWidth <= 640;
+
+            const memory =
+                Number(
+                    navigator.deviceMemory || 0
+                );
+
+            const cores =
+                Number(
+                    navigator.hardwareConcurrency || 0
+                );
+
+            const lowPowerDevice =
+                (
+                    smallScreen &&
+                    (
+                        (
+                            memory > 0 &&
+                            memory <= 4
+                        ) ||
+                        (
+                            cores > 0 &&
+                            cores <= 4
+                        )
+                    )
+                );
+
+            if (
+                reducedMotion ||
+                lowPowerDevice
+            ) {
+
+                body.classList.add(
+                    "mood-low-performance"
+                );
+
+            }
+
+            document.addEventListener(
+                "visibilitychange",
+                function () {
+
+                    body.classList.toggle(
+                        "mood-page-hidden",
+                        document.hidden
+                    );
+
+                }
+            );
+
+        })();
+
         /* =====================================================
            DHEERE MOOD — SELECTION SYSTEM
            ===================================================== */

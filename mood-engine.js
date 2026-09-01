@@ -57,7 +57,7 @@
 
 
     const TRANSITION_TIME =
-        1300;
+        950;
 
 
     const EXIT_BUFFER =
@@ -69,7 +69,7 @@
 
 
     const MAX_LAYERS =
-        3;
+        2;
 
 
     let environmentRoot =
@@ -303,11 +303,59 @@
         }
 
 
+        /*
+         * Keep high-end desktop visuals intact.
+         * Reduce particle density on constrained/mobile devices,
+         * especially when the browser advertises reduced data or
+         * has limited CPU / memory.
+         */
+
+        const connection =
+            navigator.connection ||
+            navigator.mozConnection ||
+            navigator.webkitConnection;
+
+
+        const saveData =
+            Boolean(
+                connection &&
+                connection.saveData
+            );
+
+
+        const cores =
+            Number(
+                navigator.hardwareConcurrency ||
+                0
+            );
+
+
+        const memory =
+            Number(
+                navigator.deviceMemory ||
+                0
+            );
+
+
+        const constrainedDevice =
+            saveData ||
+            (
+                cores > 0 &&
+                cores <= 4
+            ) ||
+            (
+                memory > 0 &&
+                memory <= 4
+            );
+
+
         if (
             isSmallMobile()
         ) {
 
-            return .46;
+            return constrainedDevice
+                ? .30
+                : .40;
 
         }
 
@@ -316,7 +364,9 @@
             isMobile()
         ) {
 
-            return .66;
+            return constrainedDevice
+                ? .43
+                : .56;
 
         }
 
@@ -326,12 +376,16 @@
             1000
         ) {
 
-            return .83;
+            return constrainedDevice
+                ? .66
+                : .76;
 
         }
 
 
-        return 1;
+        return constrainedDevice
+            ? .88
+            : 1;
 
     }
 
@@ -836,9 +890,9 @@
 
         const leafCount =
             Math.max(
-                10,
+                6,
                 Math.round(
-                    30 * scale
+                    24 * scale
                 )
             );
 
@@ -1094,9 +1148,9 @@
 
         const particleCount =
             Math.max(
-                8,
+                5,
                 Math.round(
-                    28 * scale
+                    20 * scale
                 )
             );
 
@@ -1237,9 +1291,9 @@
 
         const sparkCount =
             Math.max(
-                8,
+                5,
                 Math.round(
-                    36 * scale
+                    24 * scale
                 )
             );
 
@@ -1355,9 +1409,9 @@
 
         const starCount =
             Math.max(
-                32,
+                24,
                 Math.round(
-                    108 * scale
+                    72 * scale
                 )
             );
 
@@ -1440,9 +1494,9 @@
 
         const particleCount =
             Math.max(
-                6,
+                4,
                 Math.round(
-                    18 * scale
+                    12 * scale
                 )
             );
 
@@ -1922,9 +1976,9 @@
 
         const particleCount =
             Math.max(
-                12,
+                8,
                 Math.round(
-                    34 * scale
+                    24 * scale
                 )
             );
 
@@ -2341,9 +2395,9 @@
 
     const dustCount =
         Math.max(
-            24,
+            12,
             Math.round(
-                86 * scale
+                52 * scale
             )
         );
 
@@ -2433,9 +2487,9 @@
 
     const fineCount =
         Math.max(
-            10,
+            6,
             Math.round(
-                28 * scale
+                16 * scale
             )
         );
 
@@ -2656,9 +2710,9 @@
 
     const dropCount =
         Math.max(
-            36,
+            18,
             Math.round(
-                132 * scale
+                72 * scale
             )
         );
 
@@ -2748,9 +2802,9 @@
 
     const foregroundCount =
         Math.max(
-            8,
+            5,
             Math.round(
-                28 * scale
+                16 * scale
             )
         );
 
@@ -2840,9 +2894,9 @@
 
     const microDropCount =
         Math.max(
-            90,
+            28,
             Math.round(
-                260 * scale
+                96 * scale
             )
         );
 
@@ -2932,9 +2986,9 @@
 
     const rippleCount =
         Math.max(
-            12,
+            6,
             Math.round(
-                30 * scale
+                18 * scale
             )
         );
 
@@ -3226,9 +3280,9 @@
 
     const iceCount =
         Math.max(
-            55,
+            24,
             Math.round(
-                185 * scale
+                90 * scale
             )
         );
 
@@ -4369,6 +4423,36 @@
         );
 
     }
+
+
+    /* ============================================================
+       VISIBILITY PERFORMANCE
+       ============================================================ */
+
+    function syncEnvironmentPlayback() {
+
+        if (
+            !environmentRoot
+        ) {
+
+            return;
+
+        }
+
+
+        environmentRoot.classList.toggle(
+            "mood-animations-paused",
+            document.visibilityState !==
+            "visible"
+        );
+
+    }
+
+
+    document.addEventListener(
+        "visibilitychange",
+        syncEnvironmentPlayback
+    );
 
 
     /* ============================================================

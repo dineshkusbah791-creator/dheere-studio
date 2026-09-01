@@ -350,6 +350,39 @@ html[data-dheere-mood] .mood-environment-layer {
     overflow:hidden;
     pointer-events:none;
     will-change:opacity;
+    contain:paint;
+    transform:translateZ(0);
+    backface-visibility:hidden;
+}
+
+html[data-dheere-mood] .mood-environment-layer.mood-animations-paused * {
+    animation-play-state:paused !important;
+}
+
+html[data-dheere-mood] .forest-leaf,
+html[data-dheere-mood] .ocean-wave,
+html[data-dheere-mood] .ocean-ray,
+html[data-dheere-mood] .ocean-particle,
+html[data-dheere-mood] .ember-glow,
+html[data-dheere-mood] .ember-spark,
+html[data-dheere-mood] .midnight-moon,
+html[data-dheere-mood] .midnight-star,
+html[data-dheere-mood] .midnight-particle,
+html[data-dheere-mood] .prism-light-band,
+html[data-dheere-mood] .prism-refraction,
+html[data-dheere-mood] .prism-atmosphere-particle,
+html[data-dheere-mood] .desert-gusts,
+html[data-dheere-mood] .desert-dust-particle,
+html[data-dheere-mood] .desert-dust-fine,
+html[data-dheere-mood] .monsoon-drop,
+html[data-dheere-mood] .monsoon-drop-foreground,
+html[data-dheere-mood] .monsoon-drop-micro,
+html[data-dheere-mood] .monsoon-ripple,
+html[data-dheere-mood] .winter-ice-particle,
+html[data-dheere-mood] .winter-ice-dust,
+html[data-dheere-mood] .winter-snowflake {
+    will-change:transform,opacity;
+    backface-visibility:hidden;
 }
 html[data-dheere-mood] .mood-environment-layer>* {
     pointer-events:none;
@@ -708,21 +741,21 @@ html[data-dheere-mood] .prism-atmosphere-particle {
 }
 @keyframes moodPrismBand {
     from {
-        margin-left:-18px;
+        transform:translate3d(-18px,0,0);
         opacity:.42;
     }
     to {
-        margin-left:28px;
+        transform:translate3d(28px,0,0);
         opacity:1;
     }
 }
 @keyframes moodPrismRefraction {
     from {
-        margin-left:-14px;
+        transform:translate3d(-14px,0,0);
         opacity:.28;
     }
     to {
-        margin-left:21px;
+        transform:translate3d(21px,0,0);
         opacity:.83;
     }
 }
@@ -3204,4 +3237,63 @@ html[data-dheere-mood="desert"] .desert-dust-fine {
 }
 html[data-dheere-mood="desert"] .desert-haze {
     opacity:.70 !important;
+}
+
+
+/* ============================================================
+   PERFORMANCE TUNING — SMALL SCREENS
+   ------------------------------------------------------------
+   Keeps the same visual language while reducing GPU/compositor
+   cost on phones and low-power browsers.
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    html[data-dheere-mood] .forest-mist,
+    html[data-dheere-mood] .desert-haze,
+    html[data-dheere-mood] .desert-gusts {
+        filter:blur(10px);
+    }
+
+    html[data-dheere-mood] .ocean-ray {
+        filter:blur(9px);
+    }
+
+    html[data-dheere-mood] .ember-glow {
+        filter:blur(12px);
+    }
+
+    html[data-dheere-mood] .prism-spectrum-field {
+        filter:blur(34px) saturate(110%);
+    }
+
+    html[data-dheere-mood] .prism-light-band {
+        filter:blur(18px);
+    }
+
+    html[data-dheere-mood] .prism-refraction {
+        filter:blur(10px);
+    }
+
+    html[data-dheere-mood] .mood-card::after {
+        filter:blur(20px);
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    html[data-dheere-mood] .prism-spectrum-field {
+        filter:blur(27px) saturate(108%);
+    }
+
+    html[data-dheere-mood] .prism-light-band {
+        filter:blur(14px);
+        opacity:.13;
+    }
+
+    html[data-dheere-mood] .ember-glow {
+        filter:blur(9px);
+    }
+
 }
