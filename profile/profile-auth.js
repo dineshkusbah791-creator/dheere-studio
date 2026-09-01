@@ -169,7 +169,7 @@ function handleAuthError(
 
 
     window.location.href =
-        "index.html";
+        "../index.html";
 
 }
 
@@ -502,7 +502,7 @@ function logout() {
 
 
     window.location.href =
-        "index.html";
+        "../index.html";
 
 }
 
