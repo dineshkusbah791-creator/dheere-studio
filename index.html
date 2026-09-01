@@ -1501,7 +1501,178 @@
             }
         }
 
-    </style>
+    
+        /* =====================================================
+           LOGGED-IN HOMEPAGE PERSONALIZATION
+           Same homepage. Only identity + subtle atmosphere change.
+           ===================================================== */
+
+        #personalizedGreeting {
+
+            display:
+                none;
+
+            align-items:
+                center;
+
+            width:
+                fit-content;
+
+            min-height:
+                30px;
+
+            margin:
+                0 0 18px;
+
+            padding:
+                6px 11px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            color:
+                #aeb6c2;
+
+            font-size:
+                0.68rem;
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                0.10em;
+
+            text-transform:
+                uppercase;
+
+            backdrop-filter:
+                blur(12px);
+
+            -webkit-backdrop-filter:
+                blur(12px);
+
+        }
+
+
+        #homepage.personalized-mode
+        #personalizedGreeting {
+
+            display:
+                inline-flex;
+
+            animation:
+                personalizedGreetingReveal
+                0.65s
+                cubic-bezier(.22, 1, .36, 1)
+                both;
+
+        }
+
+
+        #homepage.personalized-mode
+        .hero-section::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                460px;
+
+            height:
+                460px;
+
+            right:
+                -190px;
+
+            top:
+                50%;
+
+            transform:
+                translateY(-50%);
+
+            border-radius:
+                50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(160, 145, 255, 0.10),
+                    transparent 68%
+                );
+
+            filter:
+                blur(18px);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        #homepage.personalized-mode
+        .hero-content h1 {
+
+            letter-spacing:
+                -0.060em;
+
+        }
+
+
+        #homepage.personalized-mode
+        .hero-content p {
+
+            max-width:
+                650px;
+
+        }
+
+
+        #homepage.personalized-mode
+        .hero-content .button {
+
+            box-shadow:
+                0 14px 36px
+                rgba(110, 95, 190, 0.10);
+
+        }
+
+
+        @keyframes personalizedGreetingReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(10px);
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+</style>
 
 </head>
 
@@ -1890,6 +2061,12 @@
             >
 
                 <div class="hero-content">
+
+                    <span
+                        id="personalizedGreeting"
+                        aria-live="polite"
+                    ></span>
+
 
                     <h1 id="hero-title">
                         Welcome to Dheere Studio
@@ -3160,6 +3337,305 @@
                     observer.observe(
                         element
                     )
+            );
+
+        })();
+
+    </script>
+
+
+    
+    <!-- ====================================================
+         HOMEPAGE PERSONALIZATION
+         Logged out: original Dheere Studio homepage.
+         Logged in: same homepage + personalized greeting.
+         ==================================================== -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            const USER_STORAGE_KEY =
+                "dheereStudioUser";
+
+
+            const TOKEN_STORAGE_KEY =
+                "dheereStudioToken";
+
+
+            const homepage =
+                document.getElementById(
+                    "homepage"
+                );
+
+
+            const heroTitle =
+                document.getElementById(
+                    "hero-title"
+                );
+
+
+            const personalizedGreeting =
+                document.getElementById(
+                    "personalizedGreeting"
+                );
+
+
+            if (
+                !homepage ||
+                !heroTitle ||
+                !personalizedGreeting
+            ) {
+
+                return;
+
+            }
+
+
+            const publicTitle =
+                heroTitle.textContent.trim();
+
+
+            const publicDescription =
+                document
+                    .querySelector(
+                        ".hero-content p"
+                    );
+
+
+            const originalDescription =
+                publicDescription
+                    ? publicDescription.textContent.trim()
+                    : "";
+
+
+            function readStoredUser() {
+
+                try {
+
+                    const savedUser =
+                        localStorage.getItem(
+                            USER_STORAGE_KEY
+                        );
+
+
+                    const savedToken =
+                        localStorage.getItem(
+                            TOKEN_STORAGE_KEY
+                        );
+
+
+                    if (
+                        !savedUser ||
+                        !savedToken
+                    ) {
+
+                        return null;
+
+                    }
+
+
+                    const user =
+                        JSON.parse(
+                            savedUser
+                        );
+
+
+                    if (
+                        !user ||
+                        typeof user !==
+                            "object"
+                    ) {
+
+                        return null;
+
+                    }
+
+
+                    return user;
+
+                } catch {
+
+                    return null;
+
+                }
+
+            }
+
+
+            function getUserName(
+                user
+            ) {
+
+                return String(
+
+                    user?.name ||
+
+                    user?.user?.name ||
+
+                    user?.username ||
+
+                    user?.user?.username ||
+
+                    "User"
+
+                ).trim();
+
+            }
+
+
+            function updateHomepageMode() {
+
+                const user =
+                    readStoredUser();
+
+
+                if (
+                    !user
+                ) {
+
+                    homepage.classList.remove(
+                        "personalized-mode"
+                    );
+
+
+                    personalizedGreeting.textContent =
+                        "";
+
+
+                    heroTitle.textContent =
+                        publicTitle;
+
+
+                    if (
+                        publicDescription
+                    ) {
+
+                        publicDescription.textContent =
+                            originalDescription;
+
+                    }
+
+
+                    return;
+
+                }
+
+
+                const name =
+                    getUserName(
+                        user
+                    );
+
+
+                homepage.classList.add(
+                    "personalized-mode"
+                );
+
+
+                personalizedGreeting.textContent =
+                    "Your Dheere Home";
+
+
+                heroTitle.textContent =
+                    `Welcome back, ${name}.`;
+
+
+                if (
+                    publicDescription
+                ) {
+
+                    publicDescription.textContent =
+                        "Welcome back to Dheere Studio. Your place for stories, worlds, ideas, and the work we are building together.";
+
+                }
+
+            }
+
+
+            updateHomepageMode();
+
+
+            /*
+             * script.js currently writes the login user/token
+             * into localStorage and then reveals #homepage.
+             *
+             * This small watcher lets the same index.html react
+             * immediately after login without duplicating or
+             * rewriting the existing authentication logic.
+             */
+
+            let lastAuthState =
+                "";
+
+
+            function authStateSnapshot() {
+
+                return (
+
+                    localStorage.getItem(
+                        USER_STORAGE_KEY
+                    ) ||
+
+                    ""
+
+                ) + "::" + (
+
+                    localStorage.getItem(
+                        TOKEN_STORAGE_KEY
+                    ) ||
+
+                    ""
+
+                );
+
+            }
+
+
+            lastAuthState =
+                authStateSnapshot();
+
+
+            window.setInterval(
+                function () {
+
+                    const nextState =
+                        authStateSnapshot();
+
+
+                    if (
+                        nextState ===
+                        lastAuthState
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    lastAuthState =
+                        nextState;
+
+
+                    updateHomepageMode();
+
+                },
+                400
+            );
+
+
+            window.addEventListener(
+                "storage",
+                updateHomepageMode
+            );
+
+
+            window.addEventListener(
+                "pageshow",
+                updateHomepageMode
             );
 
         })();

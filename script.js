@@ -226,6 +226,270 @@ function restoreUserFromStorage() {
 restoreUserFromStorage();
 
 
+/* ======================================================
+   HOMEPAGE PERSONALIZATION
+   ------------------------------------------------------
+   Logged out:
+   - Original Dheere Studio homepage
+
+   Logged in:
+   - Same homepage
+   - Personalized greeting
+   - Very subtle visual mode
+
+   No sections are replaced.
+   No existing authentication logic is duplicated.
+   ====================================================== */
+
+function updateHomepagePersonalization() {
+
+    const homepage =
+        document.getElementById(
+            'homepage'
+        );
+
+
+    const heroTitle =
+        document.getElementById(
+            'hero-title'
+        );
+
+
+    const greeting =
+        document.getElementById(
+            'personalizedGreeting'
+        );
+
+
+    const heroDescription =
+        document.querySelector(
+            '.hero-content p'
+        );
+
+
+    if (
+        !homepage ||
+        !heroTitle
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * Keep the original public homepage text in one place.
+     * These values are used whenever the user is logged out.
+     */
+
+    const publicTitle =
+        'Welcome to Dheere Studio';
+
+
+    const publicDescription =
+        'Dheere Studio is an independent creative studio building original stories, worlds, and experiences across different forms of media.';
+
+
+    /*
+     * Logged out state.
+     */
+
+    if (!currentUser) {
+
+        homepage.classList.remove(
+            'personalized-mode'
+        );
+
+
+        if (greeting) {
+
+            greeting.textContent =
+                '';
+
+        }
+
+
+        heroTitle.textContent =
+            publicTitle;
+
+
+        if (heroDescription) {
+
+            heroDescription.textContent =
+                publicDescription;
+
+        }
+
+
+        return;
+
+    }
+
+
+    /*
+     * Logged in state.
+     */
+
+    const name =
+        String(
+
+            currentUser?.name ||
+
+            currentUser?.user?.name ||
+
+            currentUser?.username ||
+
+            currentUser?.user?.username ||
+
+            'User'
+
+        ).trim();
+
+
+    homepage.classList.add(
+        'personalized-mode'
+    );
+
+
+    if (greeting) {
+
+        greeting.textContent =
+            'Your Dheere Home';
+
+    }
+
+
+    heroTitle.textContent =
+        `Welcome back, ${name}.`;
+
+
+    if (heroDescription) {
+
+        heroDescription.textContent =
+            'Welcome back to Dheere Studio. Your place for stories, worlds, ideas, and the work we are building together.';
+
+    }
+
+}
+
+
+/*
+ * Personalization watcher.
+ *
+ * The existing login system stores the user and JWT in
+ * localStorage. We simply react to that existing state.
+ */
+
+let homepageAuthSnapshot =
+    '';
+
+
+function getHomepageAuthSnapshot() {
+
+    return (
+
+        localStorage.getItem(
+            USER_STORAGE_KEY
+        ) ||
+
+        ''
+
+    ) + '::' + (
+
+        localStorage.getItem(
+            TOKEN_STORAGE_KEY
+        ) ||
+
+        ''
+
+    );
+
+}
+
+
+function watchHomepageAuthentication() {
+
+    const nextSnapshot =
+        getHomepageAuthSnapshot();
+
+
+    if (
+        nextSnapshot ===
+        homepageAuthSnapshot
+    ) {
+
+        return;
+
+    }
+
+
+    homepageAuthSnapshot =
+        nextSnapshot;
+
+
+    restoreUserFromStorage();
+
+
+    updateHomepagePersonalization();
+
+    updateNavbar();
+
+}
+
+
+homepageAuthSnapshot =
+    getHomepageAuthSnapshot();
+
+
+updateHomepagePersonalization();
+
+
+window.addEventListener(
+    'storage',
+    () => {
+
+        restoreUserFromStorage();
+
+        updateHomepagePersonalization();
+
+        updateNavbar();
+
+    }
+);
+
+
+window.addEventListener(
+    'pageshow',
+    () => {
+
+        restoreUserFromStorage();
+
+        updateHomepagePersonalization();
+
+        updateNavbar();
+
+    }
+);
+
+
+window.setInterval(
+    watchHomepageAuthentication,
+    400
+);
+
+
+window.addEventListener(
+    'dheere:homepage-personalization-refresh',
+    updateHomepagePersonalization
+);
+
+
+/* ======================================================
+   END HOMEPAGE PERSONALIZATION
+   ====================================================== */
+
+
+
 // ======================================================
 // USER HELPERS
 // ======================================================
@@ -2215,6 +2479,9 @@ if (loginForm) {
                         result.user;
 
 
+                    updateHomepagePersonalization();
+
+
                     localStorage.setItem(
                         USER_STORAGE_KEY,
                         JSON.stringify(
@@ -2231,6 +2498,9 @@ if (loginForm) {
                         TOKEN_STORAGE_KEY,
                         result.token
                     );
+
+
+                    updateHomepagePersonalization();
 
 
                     // ------------------------------------------
@@ -3121,6 +3391,9 @@ if (logoutBtn) {
 
             currentUser =
                 null;
+
+
+            updateHomepagePersonalization();
 
 
             window.location.href =
