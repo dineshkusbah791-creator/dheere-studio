@@ -225,20 +225,29 @@ function restoreUserFromStorage() {
 
 restoreUserFromStorage();
 
+
 /* ======================================================
    HOMEPAGE PERSONALIZATION
    ------------------------------------------------------
    Logged out:
-   Welcome to Dheere Studio
+   - Original Dheere Studio homepage
 
    Logged in:
-   Welcome back, <name>.
+   - Same homepage
+   - Personalized greeting
+   - Very subtle visual mode
 
-   The existing hero title is reused.
-   No extra badge, box, class, or duplicate auth system.
+   No sections are replaced.
+   No existing authentication logic is duplicated.
    ====================================================== */
 
 function updateHomepagePersonalization() {
+
+    const homepage =
+        document.getElementById(
+            'homepage'
+        );
+
 
     const heroTitle =
         document.getElementById(
@@ -246,22 +255,80 @@ function updateHomepagePersonalization() {
         );
 
 
-    if (!heroTitle) {
+    const greeting =
+        document.getElementById(
+            'personalizedGreeting'
+        );
+
+
+    const heroDescription =
+        document.querySelector(
+            '.hero-content p'
+        );
+
+
+    if (
+        !homepage ||
+        !heroTitle
+    ) {
 
         return;
 
     }
 
+
+    /*
+     * Keep the original public homepage text in one place.
+     * These values are used whenever the user is logged out.
+     */
+
+    const publicTitle =
+        'Welcome to Dheere Studio';
+
+
+    const publicDescription =
+        'Dheere Studio is an independent creative studio building original stories, worlds, and experiences across different forms of media.';
+
+
+    /*
+     * Logged out state.
+     */
 
     if (!currentUser) {
 
+        homepage.classList.remove(
+            'personalized-mode'
+        );
+
+
+        if (greeting) {
+
+            greeting.textContent =
+                '';
+
+        }
+
+
         heroTitle.textContent =
-            'Welcome to Dheere Studio';
+            publicTitle;
+
+
+        if (heroDescription) {
+
+            heroDescription.textContent =
+                publicDescription;
+
+        }
+
 
         return;
 
     }
 
+
+    /*
+     * Logged in state.
+     */
 
     const name =
         String(
@@ -279,10 +346,99 @@ function updateHomepagePersonalization() {
         ).trim();
 
 
+    homepage.classList.add(
+        'personalized-mode'
+    );
+
+
+    if (greeting) {
+
+        greeting.textContent =
+            'Your Dheere Home';
+
+    }
+
+
     heroTitle.textContent =
         `Welcome back, ${name}.`;
 
+
+    if (heroDescription) {
+
+        heroDescription.textContent =
+            'Welcome back to Dheere Studio. Your place for stories, worlds, ideas, and the work we are building together.';
+
+    }
+
 }
+
+
+/*
+ * Personalization watcher.
+ *
+ * The existing login system stores the user and JWT in
+ * localStorage. We simply react to that existing state.
+ */
+
+let homepageAuthSnapshot =
+    '';
+
+
+function getHomepageAuthSnapshot() {
+
+    return (
+
+        localStorage.getItem(
+            USER_STORAGE_KEY
+        ) ||
+
+        ''
+
+    ) + '::' + (
+
+        localStorage.getItem(
+            TOKEN_STORAGE_KEY
+        ) ||
+
+        ''
+
+    );
+
+}
+
+
+function watchHomepageAuthentication() {
+
+    const nextSnapshot =
+        getHomepageAuthSnapshot();
+
+
+    if (
+        nextSnapshot ===
+        homepageAuthSnapshot
+    ) {
+
+        return;
+
+    }
+
+
+    homepageAuthSnapshot =
+        nextSnapshot;
+
+
+    restoreUserFromStorage();
+
+
+    updateHomepagePersonalization();
+
+    updateNavbar();
+
+}
+
+
+homepageAuthSnapshot =
+    getHomepageAuthSnapshot();
 
 
 updateHomepagePersonalization();
@@ -290,20 +446,13 @@ updateHomepagePersonalization();
 
 window.addEventListener(
     'storage',
-    (event) => {
+    () => {
 
-        if (
-            event.key === USER_STORAGE_KEY ||
-            event.key === TOKEN_STORAGE_KEY
-        ) {
+        restoreUserFromStorage();
 
-            restoreUserFromStorage();
+        updateHomepagePersonalization();
 
-            updateHomepagePersonalization();
-
-            updateNavbar();
-
-        }
+        updateNavbar();
 
     }
 );
@@ -323,14 +472,21 @@ window.addEventListener(
 );
 
 
+window.setInterval(
+    watchHomepageAuthentication,
+    400
+);
+
+
+window.addEventListener(
+    'dheere:homepage-personalization-refresh',
+    updateHomepagePersonalization
+);
+
+
 /* ======================================================
    END HOMEPAGE PERSONALIZATION
    ====================================================== */
-
-
-
-
-
 
 
 
@@ -415,19 +571,9 @@ async function getFreshProfile() {
     try {
 
         const response =
-                await fetch(
-                    `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`,
-                    {
-                        method:
-                            'GET',
-
-                        headers:
-                            getAuthHeaders(),
-
-                        cache:
-                            'no-store'
-                    }
-                );
+            await fetch(
+                `${API_BASE_URL}/profile/${encodeURIComponent(userId)}`
+            );
 
 
         const result =
@@ -2236,20 +2382,6 @@ if (loginForm) {
             e.preventDefault();
 
 
-            if (
-                loginForm.dataset.submitting ===
-                'true'
-            ) {
-
-                return;
-
-            }
-
-
-            loginForm.dataset.submitting =
-                'true';
-
-
             const emailInput =
                 document.getElementById(
                     'loginEmail'
@@ -2372,41 +2504,13 @@ if (loginForm) {
 
 
                     // ------------------------------------------
-                    // UPDATE HOMEPAGE IMMEDIATELY
+                    // REFRESH PROFILE
                     // ------------------------------------------
 
-                    updateHomepagePersonalization();
+                    await refreshCurrentProfile();
 
-
-                    // ------------------------------------------
-                    // RESET LOGIN FORM
-                    // ------------------------------------------
 
                     loginForm.reset();
-
-
-                    // ------------------------------------------
-                    // REFRESH PROFILE IN BACKGROUND
-                    // ------------------------------------------
-
-                    refreshCurrentProfile()
-                        .then(
-                            () => {
-
-                                updateHomepagePersonalization();
-
-                            }
-                        )
-                        .catch(
-                            (error) => {
-
-                                console.warn(
-                                    'Background profile refresh failed:',
-                                    error
-                                );
-
-                            }
-                        );
 
 
                     alert(
@@ -2469,11 +2573,6 @@ if (loginForm) {
                 alert(
                     'Backend server se connect nahi ho paya. Please try again.'
                 );
-
-            } finally {
-
-                loginForm.dataset.submitting =
-                    'false';
 
             }
 
