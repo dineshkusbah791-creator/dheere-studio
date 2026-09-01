@@ -3821,27 +3821,18 @@ html[data-dheere-mood] .auth-card {
 
 #personalizedGreeting {
     display: none;
-    align-items: center;
-    width: fit-content;
-    min-height: 30px;
-    margin: 0 0 18px;
-    padding: 6px 11px;
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 999px;
-    background: rgba(255,255,255,.035);
-    color: #aeb6c2;
-    font-size: .68rem;
-    font-weight: 600;
-    letter-spacing: .10em;
-    line-height: 1.3;
+    margin: 0 0 14px;
+    color: rgba(203, 213, 225, 0.52);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    line-height: 1.4;
     text-transform: uppercase;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 }
 
 #homepage.personalized-mode #personalizedGreeting {
-    display: inline-flex;
-    animation: personalizedGreetingReveal .65s cubic-bezier(.22,1,.36,1) both;
+    display: block;
+    animation: personalizedGreetingReveal .55s cubic-bezier(.22,1,.36,1) both;
 }
 
 #homepage.personalized-mode .hero-section::after {
@@ -3856,15 +3847,15 @@ html[data-dheere-mood] .auth-card {
     background:
         radial-gradient(
             circle,
-            rgba(160,145,255,.10),
-            transparent 68%
+            rgba(160,145,255,.065),
+            transparent 70%
         );
-    filter: blur(18px);
+    filter: blur(24px);
     pointer-events: none;
 }
 
 #homepage.personalized-mode .hero-content h1 {
-    letter-spacing: -.06em;
+    letter-spacing: -.055em;
 }
 
 #homepage.personalized-mode .hero-content p {
@@ -3872,13 +3863,13 @@ html[data-dheere-mood] .auth-card {
 }
 
 #homepage.personalized-mode .hero-content .button {
-    box-shadow: 0 14px 36px rgba(110,95,190,.10);
+    box-shadow: 0 14px 34px rgba(110,95,190,.08);
 }
 
 @keyframes personalizedGreetingReveal {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(7px);
     }
 
     to {
@@ -3893,6 +3884,11 @@ html[data-dheere-mood] .auth-card {
         width: 320px;
         height: 320px;
         right: -160px;
+    }
+
+    #personalizedGreeting {
+        margin-bottom: 12px;
+        font-size: .65rem;
     }
 
 }
