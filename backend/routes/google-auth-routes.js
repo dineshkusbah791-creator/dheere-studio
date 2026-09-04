@@ -1,13 +1,55 @@
 // ============================================================
 // DHEERE STUDIO — GOOGLE OAUTH ROUTES
+// ------------------------------------------------------------
+// Google flow:
+//
+// 1. /auth/google
+// 2. Google consent
+// 3. /auth/google/callback
+//
+// Existing Google/email user:
+//     -> create normal Dheere JWT
+//     -> redirect to login.html with auth fragment
+//
+// New Google user:
+//     -> DO NOT create account yet
+//     -> create short-lived signed setup token
+//     -> redirect to google-user.html
+//     -> user chooses username + password
+//     -> POST /auth/google/complete
+//     -> create account + normal Dheere JWT
+//
+// Security:
+// - GOOGLE_CLIENT_SECRET stays server-side.
+// - JWT_SECRET stays server-side.
+// - New-user setup token expires quickly.
+// - Google email must be verified.
+// - Username/email uniqueness is rechecked server-side.
 // ============================================================
 
-const express = require("express");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const rateLimit = require("express-rate-limit");
-const { google } = require("googleapis");
+"use strict";
+
+const express =
+    require("express");
+
+const crypto =
+    require("crypto");
+
+const bcrypt =
+    require("bcryptjs");
+
+const jwt =
+    require("jsonwebtoken");
+
+const rateLimit =
+    require("express-rate-limit");
+
+const { google } =
+    require("googleapis");
+
+/* ============================================================
+   1. CONSTANTS
+   ============================================================ */
 
 const GOOGLE_SCOPES = [
     "openid",
@@ -15,11 +57,34 @@ const GOOGLE_SCOPES = [
     "profile"
 ];
 
-const GOOGLE_STATE_EXPIRY = "10m";
-const JWT_EXPIRES_IN = "7d";
-const GOOGLE_PROVIDER = "google";
+const GOOGLE_STATE_EXPIRY =
+    "10m";
 
-function requiredEnv(name) {
+const GOOGLE_SETUP_EXPIRY =
+    "10m";
+
+const JWT_EXPIRES_IN =
+    "7d";
+
+const GOOGLE_PROVIDER =
+    "google";
+
+const MIN_PASSWORD_LENGTH =
+    8;
+
+const MAX_PASSWORD_LENGTH =
+    128;
+
+const USERNAME_REGEX =
+    /^[a-z0-9_]{3,20}$/;
+
+/* ============================================================
+   2. ENVIRONMENT HELPERS
+   ============================================================ */
+
+function requiredEnv(
+    name
+) {
     const value =
         String(
             process.env[name] || ""
@@ -34,23 +99,6 @@ function requiredEnv(name) {
     return value;
 }
 
-function normalizeEmail(value) {
-    return String(
-        value || ""
-    )
-        .trim()
-        .toLowerCase();
-}
-
-function cleanName(value) {
-    return String(
-        value || ""
-    )
-        .trim()
-        .replace(/\s+/g, " ")
-        .slice(0, 80);
-}
-
 function safeFrontendUrl() {
     const value =
         String(
@@ -59,7 +107,10 @@ function safeFrontendUrl() {
             ""
         )
             .trim()
-            .replace(/\/$/, "");
+            .replace(
+                /\/$/,
+                ""
+            );
 
     if (!value) {
         throw new Error(
@@ -70,15 +121,75 @@ function safeFrontendUrl() {
     return value;
 }
 
+/* ============================================================
+   3. NORMALIZATION
+   ============================================================ */
+
+function normalizeEmail(
+    value
+) {
+    return String(
+        value || ""
+    )
+        .trim()
+        .toLowerCase();
+}
+
+function cleanName(
+    value
+) {
+    return String(
+        value || ""
+    )
+        .trim()
+        .replace(
+            /\s+/g,
+            " "
+        )
+        .slice(
+            0,
+            80
+        );
+}
+
+function cleanUsername(
+    value
+) {
+    return String(
+        value || ""
+    )
+        .trim()
+        .toLowerCase();
+}
+
+/* ============================================================
+   4. GOOGLE CLIENT
+   ============================================================ */
+
 function createOAuthClient() {
     return new google.auth.OAuth2(
-        requiredEnv("GOOGLE_CLIENT_ID"),
-        requiredEnv("GOOGLE_CLIENT_SECRET"),
-        requiredEnv("GOOGLE_REDIRECT_URI")
+        requiredEnv(
+            "GOOGLE_CLIENT_ID"
+        ),
+
+        requiredEnv(
+            "GOOGLE_CLIENT_SECRET"
+        ),
+
+        requiredEnv(
+            "GOOGLE_REDIRECT_URI"
+        )
     );
 }
 
-function createStateToken(flow, returnTo) {
+/* ============================================================
+   5. STATE TOKEN
+   ============================================================ */
+
+function createStateToken(
+    flow,
+    returnTo
+) {
     return jwt.sign(
         {
             type:
@@ -86,8 +197,12 @@ function createStateToken(flow, returnTo) {
 
             nonce:
                 crypto
-                    .randomBytes(24)
-                    .toString("hex"),
+                    .randomBytes(
+                        24
+                    )
+                    .toString(
+                        "hex"
+                    ),
 
             flow:
                 flow === "register"
@@ -95,11 +210,15 @@ function createStateToken(flow, returnTo) {
                     : "login",
 
             returnTo:
-                typeof returnTo === "string"
-                    ? returnTo
-                    : "/index.html"
+                safeReturnTo(
+                    returnTo
+                )
         },
-        requiredEnv("JWT_SECRET"),
+
+        requiredEnv(
+            "JWT_SECRET"
+        ),
+
         {
             expiresIn:
                 GOOGLE_STATE_EXPIRY
@@ -107,16 +226,21 @@ function createStateToken(flow, returnTo) {
     );
 }
 
-function verifyStateToken(token) {
+function verifyStateToken(
+    token
+) {
     const payload =
         jwt.verify(
             token,
-            requiredEnv("JWT_SECRET")
+            requiredEnv(
+                "JWT_SECRET"
+            )
         );
 
     if (
         !payload ||
-        payload.type !== "google-oauth-state" ||
+        payload.type !==
+            "google-oauth-state" ||
         !payload.nonce
     ) {
         throw new Error(
@@ -127,13 +251,105 @@ function verifyStateToken(token) {
     return payload;
 }
 
-function createAuthToken(userId) {
+/* ============================================================
+   6. GOOGLE SETUP TOKEN
+   ------------------------------------------------------------
+   Contains only verified Google identity data needed to finish
+   account creation. It is short-lived and signed server-side.
+   ============================================================ */
+
+function createGoogleSetupToken({
+    googleId,
+    email,
+    name
+}) {
+    return jwt.sign(
+        {
+            type:
+                "google-registration-setup",
+
+            nonce:
+                crypto
+                    .randomBytes(
+                        24
+                    )
+                    .toString(
+                        "hex"
+                    ),
+
+            googleId:
+                String(
+                    googleId
+                ),
+
+            email:
+                normalizeEmail(
+                    email
+                ),
+
+            name:
+                cleanName(
+                    name
+                )
+        },
+
+        requiredEnv(
+            "JWT_SECRET"
+        ),
+
+        {
+            expiresIn:
+                GOOGLE_SETUP_EXPIRY
+        }
+    );
+}
+
+function verifyGoogleSetupToken(
+    token
+) {
+    const payload =
+        jwt.verify(
+            token,
+            requiredEnv(
+                "JWT_SECRET"
+            )
+        );
+
+    if (
+        !payload ||
+        payload.type !==
+            "google-registration-setup" ||
+        !payload.nonce ||
+        !payload.googleId ||
+        !payload.email
+    ) {
+        throw new Error(
+            "Invalid or expired Google registration session."
+        );
+    }
+
+    return payload;
+}
+
+/* ============================================================
+   7. AUTH JWT
+   ============================================================ */
+
+function createAuthToken(
+    userId
+) {
     return jwt.sign(
         {
             userId:
-                String(userId)
+                String(
+                    userId
+                )
         },
-        requiredEnv("JWT_SECRET"),
+
+        requiredEnv(
+            "JWT_SECRET"
+        ),
+
         {
             expiresIn:
                 JWT_EXPIRES_IN
@@ -141,9 +357,16 @@ function createAuthToken(userId) {
     );
 }
 
-function safeReturnTo(value) {
+/* ============================================================
+   8. SAFE REDIRECTS
+   ============================================================ */
+
+function safeReturnTo(
+    value
+) {
     if (
-        typeof value !== "string" ||
+        typeof value !==
+            "string" ||
         !value
     ) {
         return "/index.html";
@@ -152,8 +375,12 @@ function safeReturnTo(value) {
     if (
         !value.startsWith("/") ||
         value.startsWith("//") ||
-        value.includes("\r") ||
-        value.includes("\n")
+        value.includes(
+            "\r"
+        ) ||
+        value.includes(
+            "\n"
+        )
     ) {
         return "/index.html";
     }
@@ -176,26 +403,65 @@ function redirectWithAuth(
             `${frontendUrl}/`
         );
 
-    const safe =
-        safeReturnTo(returnTo);
-
-    if (safe) {
-        target.searchParams.set(
-            "redirect",
-            safe
-        );
-    }
+    target.searchParams.set(
+        "redirect",
+        safeReturnTo(
+            returnTo
+        )
+    );
 
     target.hash =
-        new URLSearchParams({
-            dheere_auth:
-                token,
+        new URLSearchParams(
+            {
+                dheere_auth:
+                    token,
 
-            flow:
-                flow === "register"
-                    ? "register"
-                    : "login"
-        }).toString();
+                flow:
+                    flow ===
+                    "register"
+                        ? "register"
+                        : "login"
+            }
+        ).toString();
+
+    return res.redirect(
+        target.toString()
+    );
+}
+
+function redirectWithGoogleSetup(
+    res,
+    {
+        frontendUrl,
+        returnTo,
+        setupToken
+    }
+) {
+    const target =
+        new URL(
+            "/auth/google-user.html",
+            `${frontendUrl}/`
+        );
+
+    target.searchParams.set(
+        "redirect",
+        safeReturnTo(
+            returnTo
+        )
+    );
+
+    /*
+     * Fragment is not sent as part of the HTTP request and therefore
+     * is preferable here to putting the short-lived setup token in
+     * the query string.
+     */
+    target.hash =
+        new URLSearchParams(
+            {
+                google_setup:
+                    setupToken
+            }
+        ).toString();
 
     return res.redirect(
         target.toString()
@@ -219,93 +485,64 @@ function redirectWithError(
 
     target.searchParams.set(
         "redirect",
-        safeReturnTo(returnTo)
+        safeReturnTo(
+            returnTo
+        )
     );
 
     target.hash =
-        new URLSearchParams({
-            dheere_auth_error:
-                error || "oauth_error",
+        new URLSearchParams(
+            {
+                dheere_auth_error:
+                    error ||
+                    "oauth_error",
 
-            flow:
-                flow === "register"
-                    ? "register"
-                    : "login"
-        }).toString();
+                flow:
+                    flow ===
+                    "register"
+                        ? "register"
+                        : "login"
+            }
+        ).toString();
 
     return res.redirect(
         target.toString()
     );
 }
 
-async function generateUniqueUsername(
-    usersCollection,
-    email,
-    displayName
+/* ============================================================
+   9. PASSWORD VALIDATION
+   ============================================================ */
+
+function isValidPassword(
+    password
 ) {
-    const source =
-        String(
-            displayName ||
-            email.split("@")[0] ||
-            "user"
-        )
-            .toLowerCase()
-            .replace(/[^a-z0-9_]/g, "")
-            .slice(0, 14);
-
-    const base =
-        source || "user";
-
-    for (
-        let attempt = 0;
-        attempt < 30;
-        attempt += 1
-    ) {
-        const suffix =
-            crypto
-                .randomBytes(3)
-                .toString("hex");
-
-        const username =
-            `${base}_${suffix}`.slice(
-                0,
-                20
-            );
-
-        const existing =
-            await usersCollection.findOne(
-                {
-                    username
-                },
-                {
-                    projection: {
-                        _id: 1
-                    }
-                }
-            );
-
-        if (!existing) {
-            return username;
-        }
-    }
-
-    throw new Error(
-        "Could not generate a unique username"
+    return (
+        typeof password ===
+            "string" &&
+        password.length >=
+            MIN_PASSWORD_LENGTH &&
+        password.length <=
+            MAX_PASSWORD_LENGTH
     );
 }
 
-function createGoogleAuthRouter(
-    {
-        usersCollection
-    }
-) {
+/* ============================================================
+   10. ROUTER
+   ============================================================ */
+
+function createGoogleAuthRouter({
+    usersCollection
+}) {
     const router =
         express.Router();
 
     const googleLimiter =
         rateLimit({
             windowMs:
-                15 * 60 * 1000,
+                15 *
+                60 *
+                1000,
 
             max:
                 20,
@@ -325,13 +562,46 @@ function createGoogleAuthRouter(
             }
         });
 
+    const completeRegistrationLimiter =
+        rateLimit({
+            windowMs:
+                15 *
+                60 *
+                1000,
+
+            max:
+                10,
+
+            standardHeaders:
+                true,
+
+            legacyHeaders:
+                false,
+
+            message: {
+                success:
+                    false,
+
+                error:
+                    "Too many Google registration attempts. Please try again later."
+            }
+        });
+
+    /* ========================================================
+       10A. START GOOGLE AUTH
+       ======================================================== */
+
     router.get(
         "/auth/google",
         googleLimiter,
-        (req, res) => {
+        (
+            req,
+            res
+        ) => {
             try {
                 const flow =
-                    req.query.flow === "register"
+                    req.query.flow ===
+                        "register"
                         ? "register"
                         : "login";
 
@@ -350,44 +620,60 @@ function createGoogleAuthRouter(
                     createOAuthClient();
 
                 const url =
-                    client.generateAuthUrl({
-                        access_type:
-                            "online",
+                    client.generateAuthUrl(
+                        {
+                            access_type:
+                                "online",
 
-                        scope:
-                            GOOGLE_SCOPES,
+                            scope:
+                                GOOGLE_SCOPES,
 
-                        state,
+                            state,
 
-                        include_granted_scopes:
-                            true,
+                            include_granted_scopes:
+                                true,
 
-                        prompt:
-                            "select_account"
-                    });
+                            prompt:
+                                "select_account"
+                        }
+                    );
 
-                return res.redirect(url);
+                return res.redirect(
+                    url
+                );
             } catch (error) {
                 console.error(
                     "Google OAuth start error:",
                     error
                 );
 
-                return res.status(500).json({
-                    success: false,
-                    error:
-                        "Google sign-in is not configured correctly on the server."
-                });
+                return res
+                    .status(
+                        500
+                    )
+                    .json({
+                        success:
+                            false,
+
+                        error:
+                            "Google sign-in is not configured correctly on the server."
+                    });
             }
         }
     );
 
+    /* ========================================================
+       10B. GOOGLE CALLBACK
+       ======================================================== */
+
     router.get(
         "/auth/google/callback",
         googleLimiter,
-        async (req, res) => {
-            const frontendUrl =
-                safeFrontendUrl();
+        async (
+            req,
+            res
+        ) => {
+            let frontendUrl = "";
 
             let statePayload = {
                 flow:
@@ -398,19 +684,41 @@ function createGoogleAuthRouter(
             };
 
             try {
+                frontendUrl =
+                    safeFrontendUrl();
+
                 const state =
                     String(
-                        req.query.state || ""
+                        req.query.state ||
+                        ""
                     );
 
-                if (state) {
-                    statePayload =
-                        verifyStateToken(
-                            state
-                        );
+                if (!state) {
+                    return redirectWithError(
+                        res,
+                        {
+                            frontendUrl,
+
+                            returnTo:
+                                "/index.html",
+
+                            flow:
+                                "login",
+
+                            error:
+                                "missing_oauth_state"
+                        }
+                    );
                 }
 
-                if (req.query.error) {
+                statePayload =
+                    verifyStateToken(
+                        state
+                    );
+
+                if (
+                    req.query.error
+                ) {
                     return redirectWithError(
                         res,
                         {
@@ -432,10 +740,11 @@ function createGoogleAuthRouter(
 
                 const code =
                     String(
-                        req.query.code || ""
+                        req.query.code ||
+                        ""
                     );
 
-                if (!code || !state) {
+                if (!code) {
                     return redirectWithError(
                         res,
                         {
@@ -456,7 +765,9 @@ function createGoogleAuthRouter(
                 const client =
                     createOAuthClient();
 
-                const { tokens } =
+                const {
+                    tokens
+                } =
                     await client.getToken(
                         code
                     );
@@ -466,7 +777,7 @@ function createGoogleAuthRouter(
                     !tokens.access_token
                 ) {
                     throw new Error(
-                        "Google did not return an access token"
+                        "Google did not return an access token."
                     );
                 }
 
@@ -475,18 +786,22 @@ function createGoogleAuthRouter(
                 );
 
                 const oauth2 =
-                    google.oauth2({
-                        auth:
-                            client,
+                    google.oauth2(
+                        {
+                            auth:
+                                client,
 
-                        version:
-                            "v2"
-                    });
+                            version:
+                                "v2"
+                        }
+                    );
 
                 const {
                     data: profile
                 } =
-                    await oauth2.userinfo.get();
+                    await oauth2
+                        .userinfo
+                        .get();
 
                 const email =
                     normalizeEmail(
@@ -495,21 +810,23 @@ function createGoogleAuthRouter(
 
                 if (
                     !email ||
-                    profile.email_verified !== true
+                    profile.email_verified !==
+                        true
                 ) {
                     throw new Error(
-                        "Google account email is missing or not verified"
+                        "Google account email is missing or not verified."
                     );
                 }
 
                 const googleId =
                     String(
-                        profile.id || ""
+                        profile.id ||
+                        ""
                     ).trim();
 
                 if (!googleId) {
                     throw new Error(
-                        "Google account ID was not returned"
+                        "Google account ID was not returned."
                     );
                 }
 
@@ -517,18 +834,29 @@ function createGoogleAuthRouter(
                     cleanName(
                         profile.name ||
                         profile.given_name ||
-                        email.split("@")[0]
+                        email.split(
+                            "@"
+                        )[0]
                     );
 
-                let user =
-                    await usersCollection.findOne({
-                        email
-                    });
+                const user =
+                    await usersCollection
+                        .findOne(
+                            {
+                                email
+                            }
+                        );
+
+                /* ====================================================
+                   EXISTING USER
+                   ==================================================== */
 
                 if (user) {
                     if (
                         user.googleId &&
-                        String(user.googleId) !==
+                        String(
+                            user.googleId
+                        ) !==
                             googleId
                     ) {
                         throw new Error(
@@ -536,107 +864,73 @@ function createGoogleAuthRouter(
                         );
                     }
 
-                    await usersCollection.updateOne(
-                        {
-                            _id:
-                                user._id
-                        },
-                        {
-                            $set: {
-                                googleId,
+                    /*
+                     * A pre-existing email/password account can be
+                     * upgraded to Google sign-in by linking the
+                     * verified Google identity to it.
+                     */
+                    await usersCollection
+                        .updateOne(
+                            {
+                                _id:
+                                    user._id
+                            },
+                            {
+                                $set: {
+                                    googleId,
 
-                                authProvider:
-                                    GOOGLE_PROVIDER,
+                                    authProvider:
+                                        GOOGLE_PROVIDER,
 
-                                googleEmail:
-                                    email,
+                                    googleEmail:
+                                        email,
 
-                                googleEmailVerified:
-                                    true,
+                                    googleEmailVerified:
+                                        true,
 
-                                updatedAt:
-                                    new Date()
+                                    updatedAt:
+                                        new Date()
+                                }
                             }
+                        );
+
+                    const token =
+                        createAuthToken(
+                            user._id
+                        );
+
+                    return redirectWithAuth(
+                        res,
+                        {
+                            frontendUrl,
+
+                            returnTo:
+                                statePayload.returnTo,
+
+                            token,
+
+                            flow:
+                                statePayload.flow
+                        }
+                    );
+                }
+
+                /* ====================================================
+                   NEW USER — SETUP PAGE
+                   ==================================================== */
+
+                const setupToken =
+                    createGoogleSetupToken(
+                        {
+                            googleId,
+
+                            email,
+
+                            name
                         }
                     );
 
-                    user =
-                        await usersCollection.findOne({
-                            _id:
-                                user._id
-                        });
-                } else {
-                    const username =
-                        await generateUniqueUsername(
-                            usersCollection,
-                            email,
-                            name
-                        );
-
-                    const randomPassword =
-                        crypto
-                            .randomBytes(48)
-                            .toString("base64url");
-
-                    const passwordHash =
-                        await bcrypt.hash(
-                            randomPassword,
-                            12
-                        );
-
-                    const newUser = {
-                        name,
-
-                        username,
-
-                        email,
-
-                        password:
-                            passwordHash,
-
-                        mobile:
-                            "",
-
-                        mobileVerified:
-                            false,
-
-                        googleId,
-
-                        authProvider:
-                            GOOGLE_PROVIDER,
-
-                        googleEmail:
-                            email,
-
-                        googleEmailVerified:
-                            true,
-
-                        createdAt:
-                            new Date(),
-
-                        updatedAt:
-                            new Date()
-                    };
-
-                    const insertResult =
-                        await usersCollection.insertOne(
-                            newUser
-                        );
-
-                    user = {
-                        ...newUser,
-
-                        _id:
-                            insertResult.insertedId
-                    };
-                }
-
-                const token =
-                    createAuthToken(
-                        user._id
-                    );
-
-                return redirectWithAuth(
+                return redirectWithGoogleSetup(
                     res,
                     {
                         frontendUrl,
@@ -644,10 +938,7 @@ function createGoogleAuthRouter(
                         returnTo:
                             statePayload.returnTo,
 
-                        token,
-
-                        flow:
-                            statePayload.flow
+                        setupToken
                     }
                 );
             } catch (error) {
@@ -655,6 +946,24 @@ function createGoogleAuthRouter(
                     "Google OAuth callback error:",
                     error
                 );
+
+                /*
+                 * If frontend URL itself cannot be resolved, return a
+                 * plain server error rather than masking the root cause.
+                 */
+                if (!frontendUrl) {
+                    return res
+                        .status(
+                            500
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "Google authentication could not be completed."
+                        });
+                }
 
                 return redirectWithError(
                     res,
@@ -675,8 +984,346 @@ function createGoogleAuthRouter(
         }
     );
 
+    /* ========================================================
+       10C. COMPLETE GOOGLE REGISTRATION
+       ======================================================== */
+
+    router.post(
+        "/auth/google/complete",
+        completeRegistrationLimiter,
+        async (
+            req,
+            res
+        ) => {
+            try {
+                const setupToken =
+                    String(
+                        req.body?.setupToken ||
+                        ""
+                    ).trim();
+
+                const username =
+                    cleanUsername(
+                        req.body?.username
+                    );
+
+                const password =
+                    typeof req.body?.password ===
+                        "string"
+                        ? req.body.password
+                        : "";
+
+                if (!setupToken) {
+                    return res
+                        .status(
+                            400
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "Your Google registration session is missing or expired. Please start again with Google."
+                        });
+                }
+
+                if (
+                    !USERNAME_REGEX.test(
+                        username
+                    )
+                ) {
+                    return res
+                        .status(
+                            400
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "Username must be 3–20 characters and contain only lowercase letters, numbers, and underscores."
+                        });
+                }
+
+                if (
+                    !isValidPassword(
+                        password
+                    )
+                ) {
+                    return res
+                        .status(
+                            400
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters long.`
+                        });
+                }
+
+                const setup =
+                    verifyGoogleSetupToken(
+                        setupToken
+                    );
+
+                const email =
+                    normalizeEmail(
+                        setup.email
+                    );
+
+                const googleId =
+                    String(
+                        setup.googleId ||
+                        ""
+                    ).trim();
+
+                const name =
+                    cleanName(
+                        setup.name
+                    );
+
+                if (
+                    !email ||
+                    !googleId
+                ) {
+                    return res
+                        .status(
+                            400
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "Your Google registration session is invalid. Please start again."
+                        });
+                }
+
+                /*
+                 * Re-check both identities immediately before insertion.
+                 * This handles accounts created after the setup page was
+                 * opened and prevents duplicate registrations.
+                 */
+                const existingEmail =
+                    await usersCollection.findOne(
+                        {
+                            email
+                        },
+                        {
+                            projection: {
+                                _id: 1
+                            }
+                        }
+                    );
+
+                if (existingEmail) {
+                    return res
+                        .status(
+                            409
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "An account with this Google email already exists. Please sign in with Google."
+                        });
+                }
+
+                const existingUsername =
+                    await usersCollection.findOne(
+                        {
+                            username
+                        },
+                        {
+                            projection: {
+                                _id: 1
+                            }
+                        }
+                    );
+
+                if (existingUsername) {
+                    return res
+                        .status(
+                            409
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "That username is already taken. Please choose another username."
+                        });
+                }
+
+                const passwordHash =
+                    await bcrypt.hash(
+                        password,
+                        12
+                    );
+
+                const newUser = {
+                    name:
+                        name ||
+                        "Dheere User",
+
+                    username,
+
+                    email,
+
+                    password:
+                        passwordHash,
+
+                    mobile:
+                        "",
+
+                    mobileVerified:
+                        false,
+
+                    googleId,
+
+                    authProvider:
+                        GOOGLE_PROVIDER,
+
+                    googleEmail:
+                        email,
+
+                    googleEmailVerified:
+                        true,
+
+                    bio:
+                        "",
+
+                    avatarUrl:
+                        "",
+
+                    createdAt:
+                        new Date(),
+
+                    updatedAt:
+                        new Date()
+                };
+
+                let insertResult;
+
+                try {
+                    insertResult =
+                        await usersCollection
+                            .insertOne(
+                                newUser
+                            );
+                } catch (error) {
+                    if (
+                        error?.code ===
+                        11000
+                    ) {
+                        return res
+                            .status(
+                                409
+                            )
+                            .json({
+                                success:
+                                    false,
+
+                                error:
+                                    "That email or username is already registered. Please try again."
+                            });
+                    }
+
+                    throw error;
+                }
+
+                const token =
+                    createAuthToken(
+                        insertResult.insertedId
+                    );
+
+                return res
+                    .status(
+                        201
+                    )
+                    .json({
+                        success:
+                            true,
+
+                        message:
+                            "Google account registration completed.",
+
+                        token,
+
+                        user: {
+                            id:
+                                insertResult
+                                    .insertedId
+                                    .toString(),
+
+                            name:
+                                newUser.name,
+
+                            username:
+                                newUser.username,
+
+                            email:
+                                newUser.email,
+
+                            mobile:
+                                "",
+
+                            bio:
+                                newUser.bio,
+
+                            avatarUrl:
+                                newUser.avatarUrl
+                        }
+                    });
+            } catch (error) {
+                console.error(
+                    "Google registration completion error:",
+                    error
+                );
+
+                if (
+                    error?.name ===
+                    "JsonWebTokenError" ||
+                    error?.name ===
+                    "TokenExpiredError"
+                ) {
+                    return res
+                        .status(
+                            401
+                        )
+                        .json({
+                            success:
+                                false,
+
+                            error:
+                                "Your Google registration session has expired. Please start again with Google."
+                        });
+                }
+
+                return res
+                    .status(
+                        500
+                    )
+                    .json({
+                        success:
+                            false,
+
+                        error:
+                            "Could not complete Google registration."
+                    });
+            }
+        }
+    );
+
     return router;
 }
+
+/* ============================================================
+   11. EXPORT
+   ============================================================ */
 
 module.exports =
     createGoogleAuthRouter;

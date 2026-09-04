@@ -54,7 +54,9 @@
 
             OTP_RETRY: "/auth/otp/retry",
 
-            OTP_VERIFY: "/auth/otp/verify"
+            OTP_VERIFY: "/auth/otp/verify",
+
+            GOOGLE_COMPLETE: "/auth/google/complete"
         }),
 
         MSG91: Object.freeze({
@@ -3838,6 +3840,622 @@
        The fragment is consumed immediately and removed from the URL.
        ============================================================ */
 
+    /* ============================================================
+       GOOGLE NEW-USER SETUP
+       ------------------------------------------------------------
+       New Google users are redirected to google-user.html with a
+       short-lived setup token in the URL fragment:
+       #google_setup=<TOKEN>
+
+       This token is NOT an authenticated session token. It is sent
+       to /auth/google/complete together with the chosen username
+       and password.
+       ============================================================ */
+
+    function decodeJwtPayload(token) {
+        try {
+            const parts = text(token).split(".");
+
+            if (parts.length !== 3) {
+                return null;
+            }
+
+            const normalizedPayload =
+                parts[1]
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/");
+
+            const paddedPayload =
+                normalizedPayload.padEnd(
+                    Math.ceil(
+                        normalizedPayload.length / 4
+                    ) * 4,
+                    "="
+                );
+
+            return JSON.parse(
+                atob(paddedPayload)
+            );
+        } catch {
+            return null;
+        }
+    }
+
+    function consumeGoogleSetupFragment() {
+        const hash =
+            window.location.hash || "";
+
+        if (!hash) {
+            return null;
+        }
+
+        const params =
+            new URLSearchParams(
+                hash.replace(/^#/, "")
+            );
+
+        const setupToken =
+            text(
+                params.get("google_setup")
+            );
+
+        if (!setupToken) {
+            return null;
+        }
+
+        /*
+         * Remove the setup token from the address bar immediately.
+         * The token is short-lived and should not remain exposed in
+         * browser history / copied URLs longer than necessary.
+         */
+        window.history.replaceState(
+            {},
+            document.title,
+            `${window.location.pathname}${window.location.search}`
+        );
+
+        const payload =
+            decodeJwtPayload(
+                setupToken
+            );
+
+        if (
+            !payload ||
+            payload.type !==
+                "google-registration-setup"
+        ) {
+            showMessage(
+                "googleUserMessage",
+                "This Google account setup link is invalid or expired."
+            );
+
+            return null;
+        }
+
+        if (
+            payload.exp &&
+            Number(payload.exp) * 1000 <=
+                Date.now()
+        ) {
+            showMessage(
+                "googleUserMessage",
+                "This Google account setup link has expired. Please start Google sign-in again."
+            );
+
+            return null;
+        }
+
+        const email =
+            normalizedEmail(
+                payload.email
+            );
+
+        if (!isValidEmail(email)) {
+            showMessage(
+                "googleUserMessage",
+                "Google did not return a valid email address. Please start again."
+            );
+
+            return null;
+        }
+
+        return {
+            setupToken,
+            email,
+            name:
+                text(payload.name),
+            redirect:
+                getQueryParam("redirect") ||
+                AUTH_CONFIG.DEFAULT_REDIRECT
+        };
+    }
+
+    function setupGoogleUserPage() {
+        const form =
+            document.getElementById(
+                "googleUserForm"
+            );
+
+        if (!form) {
+            return;
+        }
+
+        const setup =
+            consumeGoogleSetupFragment();
+
+        if (!setup) {
+            const submitButton =
+                document.getElementById(
+                    "googleUserSubmitButton"
+                );
+
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            return;
+        }
+
+        const emailInput =
+            document.getElementById(
+                "googleUserEmail"
+            );
+
+        const usernameInput =
+            document.getElementById(
+                "googleUsername"
+            );
+
+        const passwordInput =
+            document.getElementById(
+                "googlePassword"
+            );
+
+        const confirmInput =
+            document.getElementById(
+                "googleConfirmPassword"
+            );
+
+        const submitButton =
+            document.getElementById(
+                "googleUserSubmitButton"
+            );
+
+        if (emailInput) {
+            emailInput.value = setup.email;
+            emailInput.readOnly = true;
+        }
+
+        const usernameStatus =
+            document.getElementById(
+                "googleUsernameStatus"
+            );
+
+        let usernameTimer = null;
+        let lastCheckedUsername = "";
+        let lastUsernameAvailable = false;
+
+        const checkGoogleUsername =
+            async () => {
+                const username =
+                    text(usernameInput?.value)
+                        .toLowerCase();
+
+                if (!usernameInput) {
+                    return false;
+                }
+
+                lastCheckedUsername =
+                    username;
+
+                if (!username) {
+                    lastUsernameAvailable =
+                        false;
+
+                    if (usernameStatus) {
+                        usernameStatus.textContent = "";
+                        usernameStatus.className =
+                            "auth-field-status";
+                    }
+
+                    setFieldInvalid(
+                        usernameInput,
+                        false
+                    );
+
+                    return false;
+                }
+
+                if (!isValidUsername(username)) {
+                    lastUsernameAvailable = false;
+
+                    if (usernameStatus) {
+                        usernameStatus.textContent =
+                            "Use 3–20 lowercase letters, numbers, or underscores.";
+                        usernameStatus.className =
+                            "auth-field-status error";
+                    }
+
+                    setFieldInvalid(
+                        usernameInput,
+                        true
+                    );
+
+                    return false;
+                }
+
+                if (usernameStatus) {
+                    usernameStatus.textContent =
+                        "Checking…";
+                    usernameStatus.className =
+                        "auth-field-status loading";
+                }
+
+                try {
+                    const result =
+                        await apiRequest(
+                            AUTH_CONFIG.ENDPOINTS
+                                .CHECK_USERNAME(
+                                    username
+                                )
+                        );
+
+                    if (
+                        lastCheckedUsername !==
+                        username
+                    ) {
+                        return false;
+                    }
+
+                    lastUsernameAvailable =
+                        result?.available === true;
+
+                    if (usernameStatus) {
+                        usernameStatus.textContent =
+                            lastUsernameAvailable
+                                ? (
+                                    result?.message ||
+                                    "Username is available."
+                                )
+                                : (
+                                    result?.message ||
+                                    "Username is already taken."
+                                );
+
+                        usernameStatus.className =
+                            `auth-field-status ${
+                                lastUsernameAvailable
+                                    ? "success"
+                                    : "error"
+                            }`;
+                    }
+
+                    setFieldInvalid(
+                        usernameInput,
+                        !lastUsernameAvailable
+                    );
+
+                    return lastUsernameAvailable;
+                } catch (error) {
+                    console.error(
+                        "Google username availability error:",
+                        error
+                    );
+
+                    lastUsernameAvailable = false;
+
+                    if (usernameStatus) {
+                        usernameStatus.textContent =
+                            "Could not check username right now.";
+                        usernameStatus.className =
+                            "auth-field-status error";
+                    }
+
+                    setFieldInvalid(
+                        usernameInput,
+                        true
+                    );
+
+                    return false;
+                }
+            };
+
+        usernameInput?.addEventListener(
+            "input",
+            () => {
+                lastUsernameAvailable = false;
+
+                if (usernameStatus) {
+                    usernameStatus.textContent = "";
+                    usernameStatus.className =
+                        "auth-field-status";
+                }
+
+                window.clearTimeout(
+                    usernameTimer
+                );
+
+                usernameTimer =
+                    window.setTimeout(
+                        checkGoogleUsername,
+                        450
+                    );
+            }
+        );
+
+        usernameInput?.addEventListener(
+            "blur",
+            () => {
+                window.clearTimeout(
+                    usernameTimer
+                );
+
+                checkGoogleUsername();
+            }
+        );
+
+        const updateGooglePasswordUI = () => {
+            updateStrengthUI(
+                passwordInput,
+                document.getElementById(
+                    "googlePasswordStrength"
+                ),
+                document.getElementById(
+                    "googlePasswordStrengthValue"
+                )
+            );
+        };
+
+        passwordInput?.addEventListener(
+            "input",
+            updateGooglePasswordUI
+        );
+
+        setupPasswordMatchWatcher(
+            "googlePassword",
+            "googleConfirmPassword",
+            "googlePasswordMatchHint"
+        );
+
+        form.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                hideMessage(
+                    "googleUserMessage"
+                );
+
+                const username =
+                    text(usernameInput?.value)
+                        .toLowerCase();
+
+                const password =
+                    passwordInput?.value || "";
+
+                const confirm =
+                    confirmInput?.value || "";
+
+                setFieldInvalid(
+                    usernameInput,
+                    false
+                );
+
+                setFieldInvalid(
+                    passwordInput,
+                    false
+                );
+
+                setFieldInvalid(
+                    confirmInput,
+                    false
+                );
+
+                try {
+                    if (
+                        !isValidUsername(
+                            username
+                        )
+                    ) {
+                        setFieldInvalid(
+                            usernameInput,
+                            true
+                        );
+
+                        throw new Error(
+                            "Choose a username using 3–20 lowercase letters, numbers, or underscores."
+                        );
+                    }
+
+                    if (
+                        password.length < 8 ||
+                        password.length > 128
+                    ) {
+                        setFieldInvalid(
+                            passwordInput,
+                            true
+                        );
+
+                        throw new Error(
+                            "Password must be between 8 and 128 characters."
+                        );
+                    }
+
+                    if (
+                        passwordScore(
+                            password
+                        ) < 3
+                    ) {
+                        setFieldInvalid(
+                            passwordInput,
+                            true
+                        );
+
+                        throw new Error(
+                            "Choose a stronger password with letters, numbers, and symbols."
+                        );
+                    }
+
+                    if (
+                        password !==
+                        confirm
+                    ) {
+                        setFieldInvalid(
+                            confirmInput,
+                            true
+                        );
+
+                        throw new Error(
+                            "Passwords do not match."
+                        );
+                    }
+
+                    /*
+                     * Always confirm availability immediately before
+                     * account creation so a stale availability result
+                     * cannot be trusted.
+                     */
+                    setLoading(
+                        submitButton,
+                        true,
+                        "Checking username…"
+                    );
+
+                    const available =
+                        await checkGoogleUsername();
+
+                    if (!available) {
+                        throw new Error(
+                            "Please choose an available username."
+                        );
+                    }
+
+                    setLoading(
+                        submitButton,
+                        true,
+                        "Creating account…"
+                    );
+
+                    const result =
+                        await apiRequest(
+                            AUTH_CONFIG.ENDPOINTS
+                                .GOOGLE_COMPLETE,
+                            {
+                                method: "POST",
+
+                                body:
+                                    JSON.stringify({
+                                        setupToken:
+                                            setup.setupToken,
+
+                                        username,
+
+                                        password
+                                    })
+                            }
+                        );
+
+                    const token =
+                        extractToken(result);
+
+                    const user =
+                        extractUser(result);
+
+                    if (
+                        !token ||
+                        !user
+                    ) {
+                        throw new Error(
+                            result?.message ||
+                            "Your Google account was created, but the server did not return a login session."
+                        );
+                    }
+
+                    clearGuestMode();
+
+                    saveSession(
+                        user,
+                        token
+                    );
+
+                    showMessage(
+                        "googleUserMessage",
+                        "Google account created successfully.",
+                        "success"
+                    );
+
+                    setLoading(
+                        submitButton,
+                        true,
+                        "Opening Dheere Studio…"
+                    );
+
+                    await sleep(400);
+
+                    const redirect =
+                        setup.redirect;
+
+                    if (
+                        redirect &&
+                        redirect.startsWith("/") &&
+                        !redirect.startsWith("//") &&
+                        !redirect.includes("\r") &&
+                        !redirect.includes("\n")
+                    ) {
+                        window.location.assign(
+                            redirect
+                        );
+                    } else {
+                        window.location.assign(
+                            AUTH_CONFIG.DEFAULT_REDIRECT
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        "Google account completion error:",
+                        error
+                    );
+
+                    if (
+                        error?.status === 409
+                    ) {
+                        showMessage(
+                            "googleUserMessage",
+                            error?.message ||
+                                "That username or account is already registered."
+                        );
+                    } else if (
+                        error?.status === 429
+                    ) {
+                        showMessage(
+                            "googleUserMessage",
+                            "Too many attempts. Please wait a little and try again."
+                        );
+                    } else if (
+                        error?.status === 401
+                    ) {
+                        showMessage(
+                            "googleUserMessage",
+                            "This Google account setup session has expired. Please start Google sign-in again."
+                        );
+                    } else {
+                        showMessage(
+                            "googleUserMessage",
+                            error?.message ||
+                                "Unable to complete your Google account right now."
+                        );
+                    }
+
+                    setLoading(
+                        submitButton,
+                        false,
+                        "Create Account"
+                    );
+                }
+            }
+        );
+    }
+
     function consumeGoogleAuthFragment() {
         const hash =
             window.location.hash || "";
@@ -4352,6 +4970,8 @@
             setupPasswordStrength();
 
             setupGoogleButtons();
+
+            setupGoogleUserPage();
 
             setupGuestModeLinks();
 
