@@ -609,17 +609,89 @@
         );
     }
 
+    function findNestedMsg91Value(
+        value,
+        keys,
+        maxDepth = 6,
+        seen = new WeakSet()
+    ) {
+        if (
+            value === null ||
+            value === undefined ||
+            maxDepth < 0 ||
+            typeof value !== "object"
+        ) {
+            return "";
+        }
+
+        if (seen.has(value)) {
+            return "";
+        }
+
+        seen.add(value);
+
+        for (const key of keys) {
+            const candidate = value?.[key];
+
+            if (
+                typeof candidate === "string" &&
+                candidate.trim()
+            ) {
+                return candidate.trim();
+            }
+
+            if (
+                typeof candidate === "number" &&
+                Number.isFinite(candidate)
+            ) {
+                return String(candidate);
+            }
+        }
+
+        if (maxDepth === 0) {
+            return "";
+        }
+
+        for (const nested of Object.values(value)) {
+            const found = findNestedMsg91Value(
+                nested,
+                keys,
+                maxDepth - 1,
+                seen
+            );
+
+            if (found) {
+                return found;
+            }
+        }
+
+        return "";
+    }
+
+    function extractMsg91RequestId(
+        response
+    ) {
+        return findNestedMsg91Value(
+            response,
+            [
+                "reqId",
+                "req_id",
+                "requestId",
+                "request_id"
+            ]
+        );
+    }
+
     function extractMsg91AccessToken(
         response
     ) {
-        return (
-            response?.accessToken ||
-            response?.["access-token"] ||
-            response?.data?.accessToken ||
-            response?.data?.["access-token"] ||
-            response?.data?.token ||
-            response?.token ||
-            ""
+        return findNestedMsg91Value(
+            response,
+            [
+                "accessToken",
+                "access-token",
+                "token"
+            ]
         );
     }
 
@@ -1845,11 +1917,30 @@
                 const success =
                     (response) => {
                         const reqId =
-                            response?.reqId ||
-                            response?.req_id ||
-                            response?.data?.reqId ||
-                            response?.data?.req_id ||
-                            "";
+                            extractMsg91RequestId(
+                                response
+                            );
+
+                        /*
+                         * MSG91 requires the Send OTP request ID
+                         * for VerifyOTP/RetryOTP. Do not let the UI
+                         * enter a broken "sent" state when the SDK
+                         * callback does not expose it.
+                         */
+                        if (!reqId) {
+                            console.error(
+                                "MSG91 Send OTP response did not contain a request ID.",
+                                response
+                            );
+
+                            reject(
+                                new Error(
+                                    "OTP was sent, but MSG91 did not return the request ID required for verification. Please refresh the page and try once."
+                                )
+                            );
+
+                            return;
+                        }
 
                         onSuccess?.(
                             response
@@ -2081,6 +2172,15 @@
         const identifier =
             `${AUTH_CONFIG.MSG91.COUNTRY_CODE}${normalized}`;
 
+        OTP_STATE.registerMobile =
+            "";
+
+        OTP_STATE.registerReqId =
+            "";
+
+        OTP_STATE.registerAccessToken =
+            "";
+
         const result =
             await sendMsg91Otp(
                 identifier
@@ -2090,7 +2190,17 @@
             normalized;
 
         OTP_STATE.registerReqId =
-            result.reqId || "";
+            text(
+                result.reqId
+            );
+
+        if (
+            !OTP_STATE.registerReqId
+        ) {
+            throw new Error(
+                "OTP was sent, but the verification request ID was not returned by MSG91."
+            );
+        }
 
         OTP_STATE.registerAccessToken =
             "";
@@ -2599,7 +2709,17 @@
                 mobile;
 
             OTP_STATE.registerReqId =
-                result.reqId || "";
+                text(
+                    result.reqId
+                );
+
+            if (
+                !OTP_STATE.registerReqId
+            ) {
+                throw new Error(
+                    "OTP was sent, but the verification request ID was not returned by MSG91."
+                );
+            }
 
             OTP_STATE.registerAccessToken =
                 "";
@@ -3624,7 +3744,17 @@
                 mobile;
 
             OTP_STATE.recoveryReqId =
-                result.reqId || "";
+                text(
+                    result.reqId
+                );
+
+            if (
+                !OTP_STATE.recoveryReqId
+            ) {
+                throw new Error(
+                    "OTP was sent, but the verification request ID was not returned by MSG91."
+                );
+            }
 
             OTP_STATE.recoveryAccessToken =
                 "";
