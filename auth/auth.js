@@ -3090,11 +3090,17 @@
             const formStep =
                 document.getElementById(
                     "resetFormStep"
+                ) ||
+                document.getElementById(
+                    "resetPasswordStep"
                 );
 
             const successStep =
                 document.getElementById(
                     "resetSuccessStep"
+                ) ||
+                document.getElementById(
+                    "recoverySuccessStep"
                 );
 
             if (
@@ -3982,12 +3988,211 @@
     }
 
     /* ============================================================
-       21. GOOGLE BUTTONS
+       21. GOOGLE OAUTH
        ------------------------------------------------------------
-       Google OAuth backend is not yet implemented in the current
-       auth-routes.js. Therefore these buttons remain honest
-       placeholders instead of pretending authentication works.
+       Backend endpoints:
+       GET /auth/google
+       GET /auth/google/callback
+
+       The backend redirects back to login.html with a JWT in the
+       URL fragment:
+       #dheere_auth=<JWT>
+
+       The fragment is consumed immediately and removed from the URL.
        ============================================================ */
+
+    function consumeGoogleAuthFragment() {
+        const hash =
+            window.location.hash || "";
+
+        if (!hash) {
+            return false;
+        }
+
+        const params =
+            new URLSearchParams(
+                hash.replace(/^#/, "")
+            );
+
+        const token =
+            text(
+                params.get(
+                    "dheere_auth"
+                )
+            );
+
+        const errorCode =
+            text(
+                params.get(
+                    "dheere_auth_error"
+                )
+            );
+
+        const flow =
+            text(
+                params.get(
+                    "flow"
+                )
+            );
+
+        if (
+            !token &&
+            !errorCode
+        ) {
+            return false;
+        }
+
+        /*
+         * Remove the sensitive fragment immediately.
+         */
+        window.history.replaceState(
+            {},
+            document.title,
+            `${window.location.pathname}${window.location.search}`
+        );
+
+        if (errorCode) {
+            const message =
+                errorCode ===
+                    "access_denied"
+                    ? "Google sign-in was cancelled."
+                    : "Google sign-in could not be completed.";
+
+            if (
+                flow ===
+                "register"
+            ) {
+                showRegisterMessage(
+                    message
+                );
+            } else {
+                showLoginMessage(
+                    message
+                );
+            }
+
+            return false;
+        }
+
+        try {
+            const parts =
+                token.split(".");
+
+            if (
+                parts.length !== 3
+            ) {
+                throw new Error(
+                    "Invalid Google authentication token."
+                );
+            }
+
+            const normalizedPayload =
+                parts[1]
+                    .replace(
+                        /-/g,
+                        "+"
+                    )
+                    .replace(
+                        /_/g,
+                        "/"
+                    );
+
+            const paddedPayload =
+                normalizedPayload.padEnd(
+                    Math.ceil(
+                        normalizedPayload.length /
+                            4
+                    ) * 4,
+                    "="
+                );
+
+            const payload =
+                JSON.parse(
+                    atob(
+                        paddedPayload
+                    )
+                );
+
+            if (
+                !payload?.userId
+            ) {
+                throw new Error(
+                    "Google authentication token is invalid."
+                );
+            }
+
+            /*
+             * The current backend JWT contains userId.
+             * Existing Dheere APIs use the stored JWT for the
+             * authenticated session, so a minimal user object is
+             * sufficient here.
+             */
+            const user = {
+                _id:
+                    String(
+                        payload.userId
+                    )
+            };
+
+            clearGuestMode();
+
+            saveSession(
+                user,
+                token
+            );
+
+            return true;
+        } catch (error) {
+            console.error(
+                "Google authentication fragment error:",
+                error
+            );
+
+            clearSession();
+
+            if (
+                flow ===
+                "register"
+            ) {
+                showRegisterMessage(
+                    "Google authentication returned an invalid session."
+                );
+            } else {
+                showLoginMessage(
+                    "Google authentication returned an invalid session."
+                );
+            }
+
+            return false;
+        }
+    }
+
+    function startGoogleOAuth(
+        flow = "login"
+    ) {
+        const cleanFlow =
+            flow ===
+                "register"
+                ? "register"
+                : "login";
+
+        clearGuestMode();
+
+        const returnTo =
+            getSafeRedirect();
+
+        const query =
+            new URLSearchParams({
+                flow:
+                    cleanFlow,
+
+                returnTo
+            });
+
+        window.location.assign(
+            `${AUTH_CONFIG.API_BASE_URL}/auth/google?${query.toString()}`
+        );
+    }
 
     function setupGoogleButtons() {
         const loginButton =
@@ -4000,23 +4205,43 @@
                 "googleRegisterButton"
             );
 
-        loginButton?.addEventListener(
-            "click",
-            () => {
-                showLoginMessage(
-                    "Google sign-in is not connected yet. The backend OAuth route must be added first."
-                );
-            }
-        );
+        if (loginButton) {
+            loginButton.addEventListener(
+                "click",
+                (event) => {
+                    event.preventDefault();
 
-        registerButton?.addEventListener(
-            "click",
-            () => {
-                showRegisterMessage(
-                    "Google registration is not connected yet. The backend OAuth route must be added first."
-                );
-            }
-        );
+                    setLoading(
+                        loginButton,
+                        true,
+                        "Opening Google…"
+                    );
+
+                    startGoogleOAuth(
+                        "login"
+                    );
+                }
+            );
+        }
+
+        if (registerButton) {
+            registerButton.addEventListener(
+                "click",
+                (event) => {
+                    event.preventDefault();
+
+                    setLoading(
+                        registerButton,
+                        true,
+                        "Opening Google…"
+                    );
+
+                    startGoogleOAuth(
+                        "register"
+                    );
+                }
+            );
+        }
     }
 
     /* ============================================================
@@ -4302,6 +4527,8 @@
             initRegisterPage();
 
             setupForgotPage();
+
+            setupResetPasswordPage();
 
             setupVerifyPage();
 
