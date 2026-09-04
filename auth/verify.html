@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0d"
+    >
+
+    <meta
+        name="color-scheme"
+        content="dark"
+    >
+
+    <meta
+        name="description"
+        content="Account verification is currently not connected in Dheere Studio."
+    >
+
+    <!-- Verification pages contain account-specific state and should not be indexed. -->
+    <meta
+        name="robots"
+        content="noindex, nofollow, noarchive, nosnippet"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <title>Account Verification — Dheere Studio</title>
+
+    <link
+        rel="stylesheet"
+        href="./auth.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../mood.css"
+    >
+
+    <script
+        src="../mood-engine.js"
+        defer
+    ></script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Account Verification — Dheere Studio",
+        "description": "Account verification is currently not connected in Dheere Studio.",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Dheere Studio"
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Global mood / atmosphere layer -->
+    <div
+        id="dheereEnvironment"
+        aria-hidden="true"
+    ></div>
+
+    <main
+        class="auth-page"
+        id="main-content"
+        data-verification-available="false"
+    >
+        <!-- Return path -->
+        <a
+            class="auth-back-link"
+            href="login.html"
+            aria-label="Back to Dheere Studio login"
+        >
+            <span aria-hidden="true">&larr;</span>
+            <span>Back to Login</span>
+        </a>
+
+        <section
+            class="auth-shell"
+            aria-labelledby="verify-title"
+        >
+            <!-- Brand -->
+            <div class="auth-brand">
+                <a
+                    href="../index.html"
+                    class="auth-brand-name"
+                    aria-label="Dheere Studio homepage"
+                >
+                    Dheere Studio
+                </a>
+
+                <span
+                    class="auth-brand-label"
+                    aria-hidden="true"
+                >
+                    Account verification
+                </span>
+            </div>
+
+            <div class="auth-card">
+
+                <!-- ==================================================
+                     VERIFICATION STATUS
+                     ================================================== -->
+                <section
+                    id="verifyStep"
+                    class="auth-step"
+                    aria-labelledby="verify-title"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <header class="auth-header">
+                        <p
+                            class="auth-eyebrow"
+                            id="verifyStatusEyebrow"
+                        >
+                            Account verification
+                        </p>
+
+                        <h1 id="verify-title">
+                            Verify your account
+                        </h1>
+
+                        <p
+                            class="auth-subtitle"
+                            id="verifySubtitle"
+                        >
+                            This page is reserved for account verification, but the current backend does not expose a verification endpoint yet.
+                        </p>
+                    </header>
+
+                    <div class="auth-success-state">
+                        <div
+                            class="auth-success-mark"
+                            id="verifyStatusIcon"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </div>
+
+                        <p
+                            class="auth-eyebrow"
+                            id="verifyStatusLabel"
+                        >
+                            Not connected
+                        </p>
+
+                        <h2
+                            id="verifyStatusTitle"
+                        >
+                            Verification is not connected yet
+                        </h2>
+
+                        <p
+                            class="auth-subtitle"
+                            id="verifyStatusMessage"
+                        >
+                            No verification request was sent. The current Dheere Studio backend supports registration, login, password reset, and session authentication, but not account verification.
+                        </p>
+
+                        <!-- Shared auth.js status message -->
+                        <p
+                            id="verifyMessage"
+                            class="auth-message"
+                            role="status"
+                            aria-live="polite"
+                            aria-atomic="true"
+                            hidden
+                        ></p>
+
+                        <div class="auth-form-actions">
+                            <a
+                                href="login.html"
+                                class="auth-primary-button auth-success-link"
+                                id="verifyAccountButton"
+                            >
+                                Continue to Login
+                            </a>
+
+                            <a
+                                href="login.html"
+                                class="auth-secondary-button auth-success-link"
+                                id="verifyLoginLink"
+                                hidden
+                            >
+                                Continue to Login
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ==================================================
+                     SUCCESS
+                     ================================================== -->
+                <section
+                    id="verifySuccessStep"
+                    class="auth-step"
+                    hidden
+                    aria-labelledby="verifySuccessTitle"
+                >
+                    <div class="auth-success-state">
+                        <div
+                            class="auth-success-mark"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </div>
+
+                        <p class="auth-eyebrow">
+                            Verified
+                        </p>
+
+                        <h1 id="verifySuccessTitle">
+                            Account verification is unavailable
+                        </h1>
+
+                        <p class="auth-subtitle">
+                            The current Dheere Studio authentication system does not provide an account-verification endpoint yet. You can continue to the login page.
+                        </p>
+
+                        <a
+                            href="login.html"
+                            class="auth-primary-button auth-success-link"
+                        >
+                            Continue to Login
+                        </a>
+                    </div>
+                </section>
+
+
+                <!-- ==================================================
+                     ERROR / UNAVAILABLE
+                     ================================================== -->
+                <section
+                    id="verifyErrorStep"
+                    class="auth-step"
+                    hidden
+                    aria-labelledby="verifyErrorTitle"
+                >
+                    <div class="auth-success-state">
+                        <div
+                            class="auth-success-mark"
+                            aria-hidden="true"
+                        >
+                            !
+                        </div>
+
+                        <p class="auth-eyebrow">
+                            Verification issue
+                        </p>
+
+                        <h1 id="verifyErrorTitle">
+                            Verification is not connected
+                        </h1>
+
+                        <p
+                            class="auth-subtitle"
+                            id="verifyErrorMessage"
+                        >
+                            There is currently no account-verification endpoint connected to this page.
+                        </p>
+
+                        <a
+                            href="login.html"
+                            class="auth-primary-button auth-success-link"
+                        >
+                            Back to Login
+                        </a>
+                    </div>
+                </section>
+
+
+                <!-- ==================================================
+                     GUEST
+                     ================================================== -->
+                <div
+                    class="auth-guest"
+                    id="verifyGuest"
+                >
+                    <div class="auth-guest-copy">
+                        <strong>
+                            Just exploring?
+                        </strong>
+
+                        <span>
+                            Continue without creating an account.
+                        </span>
+                    </div>
+
+                    <a
+                        href="../index.html"
+                        class="auth-guest-link"
+                    >
+                        <span>Skip &amp; Explore</span>
+
+                        <span aria-hidden="true">
+                            &rarr;
+                        </span>
+                    </a>
+                </div>
+
+
+                <!-- ==================================================
+                     MOOD
+                     ================================================== -->
+                <div class="auth-mood-link">
+                    <a
+                        href="../mood.html"
+                        class="auth-link"
+                    >
+                        Dheere Mood
+                    </a>
+                </div>
+
+
+                <!-- ==================================================
+                     LEGAL / SECURITY
+                     ================================================== -->
+                <div class="auth-legal">
+                    <span>
+                        Account authentication is protected by
+                    </span>
+
+                    <a
+                        href="../security.html"
+                        class="auth-legal-link"
+                    >
+                        Dheere Security
+                    </a>
+
+                    <span aria-hidden="true">
+                        &middot;
+                    </span>
+
+                    <a
+                        href="../privacy.html"
+                        class="auth-legal-link"
+                    >
+                        Privacy
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shared authentication controller -->
+    <script
+        src="./auth.js"
+        defer
+    ></script>
+</body>
+</html>

@@ -142,6 +142,74 @@
         href="mood.css"
     >
 
+
+    <script>
+        (function () {
+            "use strict";
+
+            const USER_KEY = "dheereStudioUser";
+            const TOKEN_KEY = "dheereStudioToken";
+            const GUEST_KEY = "dheereStudioGuest";
+
+            function hasValidStoredSession() {
+                try {
+                    const token =
+                        localStorage.getItem(TOKEN_KEY);
+
+                    const rawUser =
+                        localStorage.getItem(USER_KEY);
+
+                    if (!token || !rawUser) {
+                        return false;
+                    }
+
+                    const user =
+                        JSON.parse(rawUser);
+
+                    return Boolean(user);
+                } catch {
+                    return false;
+                }
+            }
+
+            function isGuestSession() {
+                try {
+                    return (
+                        sessionStorage.getItem(GUEST_KEY) ===
+                        "true"
+                    );
+                } catch {
+                    return false;
+                }
+            }
+
+            function goToLogin() {
+                window.location.replace(
+                    "auth/login.html?from=index"
+                );
+            }
+
+            try {
+                if (
+                    !hasValidStoredSession() &&
+                    !isGuestSession()
+                ) {
+                    document.documentElement.classList.add(
+                        "auth-gate-pending"
+                    );
+
+                    goToLogin();
+                    return;
+                }
+            } catch (error) {
+                console.error(
+                    "Authentication entry gate error:",
+                    error
+                );
+            }
+        })();
+    </script>
+
     <script
         src="mood-engine.js"
         defer
@@ -1502,6 +1570,17 @@
         }
 
 
+
+        /* ====================================================
+           AUTH ENTRY GATE
+           Logged-out visitors are sent to the canonical auth page.
+           A deliberate guest flag allows Skip & Explore.
+           ==================================================== */
+
+        html.auth-gate-pending body {
+            visibility: hidden;
+        }
+
 </style>
 
 </head>
@@ -1804,14 +1883,14 @@
 
                 <div class="nav-login">
 
-                    <button
+                    <a
                         id="goToLoginBtn"
                         class="button"
-                        type="button"
+                        href="auth/login.html"
                         aria-label="Open login and registration"
                     >
                         Login
-                    </button>
+                    </a>
 
 
                     <!--
@@ -2388,390 +2467,6 @@
             </div>
 
         </footer>
-
-
-    </div>
-
-
-    <!-- ====================================================
-         PAGE 2: LOGIN / REGISTER
-         ==================================================== -->
-
-    <div
-        id="loginPage"
-        class="page-view hidden-page"
-    >
-
-
-        <button
-            id="backToHomeBtn"
-            class="back-home-link"
-            type="button"
-        >
-
-            &larr; Back to Dheere Studio
-
-        </button>
-
-
-        <div class="auth-page-container">
-
-
-            <div class="auth-card">
-
-
-                <!-- ====================================================
-                     LOGIN / REGISTER TABS
-                     ==================================================== -->
-
-                <div class="auth-tabs">
-
-                    <button
-                        class="tab-btn active"
-                        id="loginTabBtn"
-                        type="button"
-                    >
-                        Login
-                    </button>
-
-
-                    <button
-                        class="tab-btn"
-                        id="registerTabBtn"
-                        type="button"
-                    >
-                        Register
-                    </button>
-
-                </div>
-
-
-                <!-- ====================================================
-                     LOGIN FORM
-                     ==================================================== -->
-
-                <form
-                    class="auth-form"
-                    id="loginForm"
-                >
-
-                    <h2>
-                        Welcome Back
-                    </h2>
-
-
-                    <p class="auth-subtext">
-                        Enter your credentials to access your account.
-                    </p>
-
-
-                    <div class="input-group">
-
-                        <label for="loginEmail">
-                            Email
-                        </label>
-
-
-                        <input
-                            type="email"
-                            id="loginEmail"
-                            placeholder="name@example.com"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="input-group password-group">
-
-                        <label for="loginPassword">
-                            Password
-                        </label>
-
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                placeholder="••••••••"
-                                autocomplete="current-password"
-                                required
-                            >
-
-
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="loginPassword"
-                                aria-label="Show password"
-                                title="Show password"
-                            >
-
-                                <svg
-                                    class="eye-icon"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    aria-hidden="true"
-                                >
-
-                                    <path
-                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
-                                    ></path>
-
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="3"
-                                    ></circle>
-
-                                </svg>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-options">
-
-                        <a
-                            href="forget.html"
-                            class="forgot-pass"
-                        >
-                            Forgot Password?
-                        </a>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="button full-width"
-                    >
-                        Sign In
-                    </button>
-
-                </form>
-
-
-                <!-- ====================================================
-                     REGISTER FORM
-                     ==================================================== -->
-
-                <form
-                    class="auth-form hidden-form"
-                    id="registerForm"
-                >
-
-                    <h2>
-                        Create Account
-                    </h2>
-
-
-                    <p class="auth-subtext">
-                        Join Dheere Studio community today.
-                    </p>
-
-
-                    <div class="input-group">
-
-                        <label for="registerName">
-                            Name
-                        </label>
-
-
-                        <input
-                            type="text"
-                            id="registerName"
-                            placeholder="Your name"
-                            autocomplete="name"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label for="registerUsername">
-                            Username
-                        </label>
-
-
-                        <input
-                            type="text"
-                            id="registerUsername"
-                            placeholder="Choose a username"
-                            autocomplete="username"
-                            minlength="3"
-                            maxlength="20"
-                            pattern="[a-z0-9_]{3,20}"
-                            required
-                        >
-
-
-                        <div
-                            id="usernameStatus"
-                            class="username-status"
-                            aria-live="polite"
-                        ></div>
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label for="registerEmail">
-                            Email Address
-                        </label>
-
-
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            placeholder="name@example.com"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="input-group password-group">
-
-                        <label for="registerPassword">
-                            Password
-                        </label>
-
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="registerPassword"
-                                placeholder="Create a password"
-                                autocomplete="new-password"
-                                required
-                            >
-
-
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="registerPassword"
-                                aria-label="Show password"
-                                title="Show password"
-                            >
-
-                                <svg
-                                    class="eye-icon"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    aria-hidden="true"
-                                >
-
-                                    <path
-                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
-                                    ></path>
-
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="3"
-                                    ></circle>
-
-                                </svg>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="input-group password-group">
-
-                        <label for="confirmPassword">
-                            Confirm Password
-                        </label>
-
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Confirm your password"
-                                autocomplete="new-password"
-                                required
-                            >
-
-
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-target="confirmPassword"
-                                aria-label="Show password"
-                                title="Show password"
-                            >
-
-                                <svg
-                                    class="eye-icon"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    aria-hidden="true"
-                                >
-
-                                    <path
-                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
-                                    ></path>
-
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="3"
-                                    ></circle>
-
-                                </svg>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="button full-width"
-                    >
-                        Create Account
-                    </button>
-
-                </form>
-
-
-            </div>
-
-        </div>
 
 
     </div>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0d"
+    >
+
+    <meta
+        name="color-scheme"
+        content="dark"
+    >
+
+    <meta
+        name="description"
+        content="Securely recover your Dheere Studio account and create a new password."
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow, noarchive, nosnippet"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <title>Reset Password — Dheere Studio</title>
+
+    <link
+        rel="stylesheet"
+        href="./auth.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../mood.css"
+    >
+
+    <script
+        src="../mood-engine.js"
+        defer
+    ></script>
+
+    <!-- MSG91 Custom UI OTP -->
+    <!--
+        Replace the two placeholders below with the values from your
+        MSG91 OTP Widget dashboard.
+
+        widgetId  = actual MSG91 widget ID
+        tokenAuth = MSG91 widget/client token
+
+        Never place MSG91 AuthKey in this HTML.
+        AuthKey remains backend-only.
+    -->
+    <script type="text/javascript">
+        var dheereMsg91Configuration = {
+            widgetId: "REPLACE_WITH_MSG91_WIDGET_ID",
+            tokenAuth: "REPLACE_WITH_MSG91_WIDGET_TOKEN",
+            identifier: "",
+            exposeMethods: true,
+            captchaRenderId: "",
+            success: function (data) {
+                console.log("MSG91 OTP success:", data);
+            },
+            failure: function (error) {
+                console.error("MSG91 OTP failure:", error);
+            }
+        };
+    </script>
+
+    <script
+        type="text/javascript"
+        src="https://verify.msg91.com/otp-provider.js"
+        onload="initSendOTP(dheereMsg91Configuration)"
+    ></script>
+</head>
+
+<body>
+    <div
+        id="dheereEnvironment"
+        aria-hidden="true"
+    ></div>
+
+    <main
+        class="auth-page"
+        id="main-content"
+    >
+        <a
+            class="auth-back-link"
+            href="login.html"
+            aria-label="Back to Dheere Studio login"
+        >
+            <span aria-hidden="true">&larr;</span>
+            <span>Back to Login</span>
+        </a>
+
+        <section
+            class="auth-shell"
+            aria-labelledby="recovery-title"
+        >
+            <div class="auth-brand">
+                <a
+                    href="../index.html"
+                    class="auth-brand-name"
+                    aria-label="Dheere Studio homepage"
+                >
+                    Dheere Studio
+                </a>
+
+                <span
+                    class="auth-brand-label"
+                    aria-hidden="true"
+                >
+                    Account recovery
+                </span>
+            </div>
+
+            <div class="auth-card">
+
+                <!-- ==================================================
+                     STEP 1 — RECOVERY DETAIL
+                     ================================================== -->
+                <section
+                    id="recoveryStartStep"
+                    class="auth-step"
+                    aria-labelledby="recovery-title"
+                >
+                    <header class="auth-header">
+                        <p class="auth-eyebrow">
+                            Account recovery
+                        </p>
+
+                        <h1 id="recovery-title">
+                            Reset your password
+                        </h1>
+
+                        <p class="auth-subtitle">
+                            Recover your account using the email address
+                            or mobile number registered with Dheere Studio.
+                        </p>
+                    </header>
+
+                    <form
+                        id="forgotForm"
+                        class="auth-form"
+                        novalidate
+                        autocomplete="on"
+                    >
+                        <div class="auth-field">
+                            <label for="forgotIdentifier">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="forgotIdentifier"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                autocapitalize="none"
+                                autocorrect="off"
+                                spellcheck="false"
+                                inputmode="email"
+                                maxlength="254"
+                                aria-describedby="forgotIdentifierHint"
+                                enterkeyhint="send"
+                                required
+                            >
+
+                            <p
+                                class="auth-field-hint"
+                                id="forgotIdentifierHint"
+                            >
+                                Email recovery sends a secure password-reset link.
+                            </p>
+                        </div>
+
+                        <div class="auth-switch auth-recovery-switch">
+                            <span>Prefer mobile recovery?</span>
+
+                            <button
+                                type="button"
+                                class="auth-link auth-link-button"
+                                id="useMobileRecoveryButton"
+                            >
+                                Use mobile OTP
+                            </button>
+                        </div>
+
+                        <div
+                            class="auth-field"
+                            id="forgotMobileGroup"
+                            hidden
+                        >
+                            <label for="forgotMobile">
+                                Mobile Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="forgotMobile"
+                                name="mobile"
+                                placeholder="10-digit mobile number"
+                                autocomplete="tel"
+                                inputmode="numeric"
+                                maxlength="10"
+                                minlength="10"
+                                pattern="[0-9]{10}"
+                                aria-describedby="forgotMobileHint"
+                                enterkeyhint="go"
+                            >
+
+                            <p
+                                class="auth-field-hint"
+                                id="forgotMobileHint"
+                            >
+                                We’ll send a verification code by SMS. WhatsApp can be used when available.
+                            </p>
+                        </div>
+
+                        <p
+                            id="forgotMessage"
+                            class="auth-message"
+                            aria-live="polite"
+                            aria-atomic="true"
+                            role="status"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="auth-primary-button"
+                            id="sendRecoveryButton"
+                        >
+                            Send Reset Link
+                        </button>
+
+                        <button
+                            type="button"
+                            class="auth-primary-button"
+                            id="sendRecoveryOtpButton"
+                            hidden
+                        >
+                            Send OTP
+                        </button>
+                    </form>
+
+                    <div class="auth-switch">
+                        <span>Remembered your password?</span>
+
+                        <a
+                            href="login.html"
+                            class="auth-link"
+                        >
+                            Sign in
+                        </a>
+                    </div>
+                </section>
+
+
+                <!-- ==================================================
+                     STEP 2 — OTP VERIFICATION
+                     ================================================== -->
+                <section
+                    id="recoveryOtpStep"
+                    class="auth-step"
+                    hidden
+                    aria-labelledby="recoveryOtpTitle"
+                >
+                    <header class="auth-header">
+                        <p class="auth-eyebrow">
+                            Verification
+                        </p>
+
+                        <h1 id="recoveryOtpTitle">
+                            Enter your code
+                        </h1>
+
+                        <p
+                            class="auth-subtitle"
+                            id="recoveryOtpSubtitle"
+                        >
+                            Enter the verification code sent to your registered mobile number.
+                        </p>
+                    </header>
+
+                    <div
+                        class="auth-otp-panel"
+                        data-msg91-otp-panel
+                    >
+                        <div class="auth-otp-header">
+                            <div>
+                                <strong id="recoveryOtpStatus">
+                                    Verification code sent
+                                </strong>
+
+                                <span id="recoveryOtpDestination">
+                                    Enter the code you received by SMS or WhatsApp.
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="auth-otp-change"
+                                id="changeRecoveryIdentifier"
+                            >
+                                Change
+                            </button>
+                        </div>
+
+                        <div class="auth-otp-row">
+                            <input
+                                type="text"
+                                id="recoveryOtp"
+                                name="recoveryOtp"
+                                class="auth-otp-input"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                                maxlength="8"
+                                minlength="4"
+                                pattern="[0-9]{4,8}"
+                                placeholder="0000"
+                                aria-label="Recovery verification code"
+                                aria-describedby="recoveryOtpFeedback recoveryOtpMessage"
+                                enterkeyhint="done"
+                            >
+
+                            <button
+                                type="button"
+                                class="auth-otp-verify"
+                                id="verifyRecoveryOtpButton"
+                            >
+                                Verify
+                            </button>
+                        </div>
+
+                        <div class="auth-otp-footer">
+                            <span
+                                id="recoveryOtpCountdown"
+                                aria-live="polite"
+                            >
+                                Resend available in 60s
+                            </span>
+
+                            <button
+                                type="button"
+                                class="auth-otp-resend"
+                                id="resendRecoveryOtpButton"
+                                disabled
+                            >
+                                Resend OTP
+                            </button>
+                        </div>
+
+                        <p
+                            class="auth-otp-feedback"
+                            id="recoveryOtpFeedback"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+                    </div>
+
+                    <p
+                        id="recoveryOtpMessage"
+                        class="auth-message"
+                        aria-live="polite"
+                        aria-atomic="true"
+                        role="status"
+                        hidden
+                    ></p>
+
+                    <div class="auth-switch">
+                        <span>Need another recovery method?</span>
+
+                        <button
+                            type="button"
+                            class="auth-link auth-link-button"
+                            id="recoveryUseEmailButton"
+                        >
+                            Use email recovery
+                        </button>
+                    </div>
+                </section>
+
+
+                <!-- ==================================================
+                     STEP 3 — NEW PASSWORD
+                     ================================================== -->
+                <section
+                    id="resetPasswordStep"
+                    class="auth-step"
+                    hidden
+                    aria-labelledby="resetPasswordTitle"
+                >
+                    <header class="auth-header">
+                        <p class="auth-eyebrow">
+                            Almost there
+                        </p>
+
+                        <h1 id="resetPasswordTitle">
+                            Create a new password
+                        </h1>
+
+                        <p class="auth-subtitle">
+                            Choose a strong password for your Dheere Studio account.
+                        </p>
+                    </header>
+
+                    <form
+                        id="resetPasswordForm"
+                        class="auth-form"
+                        novalidate
+                        autocomplete="on"
+                    >
+                        <div class="auth-field">
+                            <label for="newPassword">
+                                New Password
+                            </label>
+
+                            <div class="auth-password-wrap">
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    name="password"
+                                    placeholder="Create a strong password"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    maxlength="128"
+                                    aria-describedby="passwordHint passwordStrengthValue"
+                                    data-strength-target="passwordStrength"
+                                    enterkeyhint="next"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="auth-password-toggle"
+                                    data-target="newPassword"
+                                    data-password-state="hidden"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                >
+                                    <svg
+                                        class="password-icon password-icon-show"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    >
+                                        <path
+                                            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        ></path>
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="2.7"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        ></circle>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p
+                                class="auth-field-hint auth-password-hint"
+                                id="passwordHint"
+                            >
+                                Use at least 8 characters with uppercase, lowercase, number and special character.
+                            </p>
+
+                            <p
+                                class="auth-password-strength"
+                                id="passwordStrength"
+                                data-score="0"
+                                hidden
+                            >
+                                <span id="passwordStrengthValue"></span>
+                            </p>
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="confirmNewPassword">
+                                Confirm New Password
+                            </label>
+
+                            <div class="auth-password-wrap">
+                                <input
+                                    type="password"
+                                    id="confirmNewPassword"
+                                    name="confirmPassword"
+                                    placeholder="Confirm your new password"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    maxlength="128"
+                                    aria-describedby="passwordMatchHint"
+                                    enterkeyhint="done"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="auth-password-toggle"
+                                    data-target="confirmNewPassword"
+                                    data-password-state="hidden"
+                                    aria-label="Show password"
+                                    title="Show password"
+                                >
+                                    <svg
+                                        class="password-icon password-icon-show"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    >
+                                        <path
+                                            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        ></path>
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="2.7"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        ></circle>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p
+                                class="auth-field-hint"
+                                id="passwordMatchHint"
+                                aria-live="polite"
+                                role="status"
+                                hidden
+                            ></p>
+                        </div>
+
+                        <p
+                            id="resetMessage"
+                            class="auth-message"
+                            aria-live="polite"
+                            aria-atomic="true"
+                            role="status"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="auth-primary-button"
+                            id="resetPasswordButton"
+                        >
+                            Update Password
+                        </button>
+                    </form>
+                </section>
+
+
+                <!-- ==================================================
+                     STEP 4 — SUCCESS
+                     ================================================== -->
+                <section
+                    id="recoverySuccessStep"
+                    class="auth-step"
+                    hidden
+                    aria-labelledby="recoverySuccessTitle"
+                >
+                    <div class="auth-success-state">
+                        <div
+                            class="auth-success-mark"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </div>
+
+                        <p class="auth-eyebrow">
+                            All set
+                        </p>
+
+                        <h1 id="recoverySuccessTitle">
+                            Password updated
+                        </h1>
+
+                        <p class="auth-subtitle">
+                            Your password has been changed successfully.
+                            You can now sign in with your new password.
+                        </p>
+
+                        <a
+                            href="login.html"
+                            class="auth-primary-button auth-success-link"
+                        >
+                            Continue to Login
+                        </a>
+                    </div>
+                </section>
+
+
+                <div class="auth-guest">
+                    <div class="auth-guest-copy">
+                        <strong>
+                            Just exploring?
+                        </strong>
+
+                        <span>
+                            Continue without creating an account.
+                        </span>
+                    </div>
+
+                    <a
+                        href="../index.html"
+                        class="auth-guest-link"
+                    >
+                        <span>Skip &amp; Explore</span>
+
+                        <span aria-hidden="true">
+                            &rarr;
+                        </span>
+                    </a>
+                </div>
+
+                <div class="auth-mood-link">
+                    <a
+                        href="../mood.html"
+                        class="auth-link"
+                    >
+                        Dheere Mood
+                    </a>
+                </div>
+
+                <div class="auth-legal">
+                    <span>
+                        Account recovery is protected by
+                    </span>
+
+                    <a
+                        href="../security.html"
+                        class="auth-legal-link"
+                    >
+                        Dheere Security
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="auth.js" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileButton =
+                document.getElementById("useMobileRecoveryButton");
+
+            const emailGroup =
+                document.querySelector(
+                    "#forgotIdentifier"
+                )?.closest(".auth-field");
+
+            const mobileGroup =
+                document.getElementById("forgotMobileGroup");
+
+            const emailButton =
+                document.getElementById("sendRecoveryButton");
+
+            const mobileSendButton =
+                document.getElementById("sendRecoveryOtpButton");
+
+            const emailSwitchButton =
+                document.getElementById("recoveryUseEmailButton");
+
+            if (
+                !mobileButton ||
+                !mobileGroup ||
+                !emailButton ||
+                !mobileSendButton
+            ) {
+                return;
+            }
+
+            mobileButton.addEventListener("click", function () {
+                if (emailGroup) {
+                    emailGroup.hidden = true;
+                }
+
+                mobileGroup.hidden = false;
+
+                emailButton.hidden = true;
+                mobileSendButton.hidden = false;
+
+                mobileButton.hidden = true;
+
+                document
+                    .getElementById("forgotMobile")
+                    ?.focus();
+            });
+
+            emailSwitchButton?.addEventListener(
+                "click",
+                function () {
+                    document
+                        .getElementById("changeRecoveryIdentifier")
+                        ?.click();
+
+                    if (emailGroup) {
+                        emailGroup.hidden = false;
+                    }
+
+                    mobileGroup.hidden = true;
+
+                    emailButton.hidden = false;
+                    mobileSendButton.hidden = true;
+
+                    mobileButton.hidden = false;
+                }
+            );
+        });
+    </script>
+</body>
+</html>

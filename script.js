@@ -71,8 +71,6 @@ function clearAuthStorage() {
 
 
 // ======================================================
-// PAGES
-// ======================================================
 
 const homePage =
     document.getElementById('homepage');
@@ -81,8 +79,6 @@ const loginPage =
     document.getElementById('loginPage');
 
 
-// ======================================================
-// NAVIGATION
 // ======================================================
 
 let goToLoginBtn =
@@ -93,7 +89,27 @@ const backToHomeBtn =
 
 
 // ======================================================
-// AUTH FORMS
+// CANONICAL AUTH NAVIGATION
+// ======================================================
+
+function openCanonicalLogin() {
+
+    window.location.href =
+        'auth/login.html';
+
+}
+
+
+if (goToLoginBtn) {
+
+    goToLoginBtn.addEventListener(
+        'click',
+        openCanonicalLogin
+    );
+
+}
+
+
 // ======================================================
 
 const loginTabBtn =
@@ -138,8 +154,6 @@ let searchTimer = null;
 let searchRequestId = 0;
 
 
-// ======================================================
-// LOGIN STATE
 // ======================================================
 
 let currentUser = null;
@@ -318,7 +332,7 @@ function updateHomepagePersonalization() {
 /*
  * Personalization watcher.
  *
- * The existing login system stores the user and JWT in
+ * The canonical auth system stores the user and JWT in
  * localStorage. We simply react to that existing state.
  */
 
@@ -821,64 +835,12 @@ function escapeHTML(value) {
 // OPEN LOGIN
 // ======================================================
 
-function openLoginPage() {
-
-    if (
-        !homePage ||
-        !loginPage
-    ) {
-        return;
-    }
-
-
-    homePage.classList.add(
-        'hidden-page'
-    );
-
-
-    loginPage.classList.remove(
-        'hidden-page'
-    );
-
-
-    window.scrollTo(
-        0,
-        0
-    );
-
-}
 
 
 // ======================================================
 // BACK TO HOME
 // ======================================================
 
-function backToHome() {
-
-    if (
-        !homePage ||
-        !loginPage
-    ) {
-        return;
-    }
-
-
-    loginPage.classList.add(
-        'hidden-page'
-    );
-
-
-    homePage.classList.remove(
-        'hidden-page'
-    );
-
-
-    window.scrollTo(
-        0,
-        0
-    );
-
-}
 
 
 // ======================================================
@@ -1667,21 +1629,10 @@ document.addEventListener(
 
 
 // ======================================================
-// LOGIN BUTTON
-// ======================================================
-
-if (goToLoginBtn) {
-
-    goToLoginBtn.addEventListener(
-        'click',
-        openLoginPage
-    );
-
-}
 
 
-// ======================================================
-// BACK HOME BUTTON
+
+
 // ======================================================
 
 if (backToHomeBtn) {
@@ -1694,8 +1645,6 @@ if (backToHomeBtn) {
 }
 
 
-// ======================================================
-// LOGIN / REGISTER TABS
 // ======================================================
 
 if (
@@ -1756,7 +1705,26 @@ if (
 
 
 // ======================================================
+// CANONICAL AUTH NAVIGATION
+// ------------------------------------------------------
+// Authentication UI now lives under /auth.
+// This helper is intentionally small so the root script
+// does not recreate a second authentication system.
+// ======================================================
+
+function openCanonicalLogin() {
+    window.location.href = 'auth/login.html';
+}
+
+function openCanonicalRegister() {
+    window.location.href = 'auth/register.html';
+}
+
+
+// ======================================================
 // FEEDBACK FORM
+// ======================================================
+
 // ======================================================
 
 const feedbackForm =
@@ -1872,8 +1840,6 @@ if (feedbackForm) {
 }
 
 
-// ======================================================
-// USERNAME AVAILABILITY
 // ======================================================
 
 const usernameInput =
@@ -2073,8 +2039,6 @@ if (usernameInput) {
 }
 
 
-// ======================================================
-// REGISTER
 // ======================================================
 
 if (registerForm) {
@@ -2534,8 +2498,6 @@ if (loginForm) {
 }
 
 
-// ======================================================
-// PASSWORD SHOW / HIDE
 // ======================================================
 
 const passwordToggleButtons =

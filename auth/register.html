@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0d"
+    >
+
+    <meta
+        name="color-scheme"
+        content="dark"
+    >
+
+    <meta
+        name="description"
+        content="Create your Dheere Studio account and join the community."
+    >
+
+    <!-- Authentication pages are intentionally excluded from search indexing. -->
+    <meta
+        name="robots"
+        content="noindex, nofollow, noarchive, nosnippet"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <meta
+        name="dheere-msg91-widget-id"
+        content="REPLACE_WITH_MSG91_WIDGET_ID"
+    >
+
+    <meta
+        name="dheere-msg91-widget-token"
+        content="REPLACE_WITH_MSG91_WIDGET_TOKEN"
+    >
+
+
+    <title>Create Account — Dheere Studio</title>
+
+    <link
+        rel="stylesheet"
+        href="./auth.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../mood.css"
+    >
+
+    <script
+        src="../mood-engine.js"
+        defer
+    ></script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Create Account — Dheere Studio",
+        "description": "Create a Dheere Studio account.",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Dheere Studio"
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Global mood / atmosphere layer -->
+    <div
+        id="dheereEnvironment"
+        aria-hidden="true"
+    ></div>
+
+    <main
+        class="auth-page"
+        id="main-content"
+    >
+        <!-- Back to studio -->
+        <a
+            class="auth-back-link"
+            href="../index.html"
+            aria-label="Back to Dheere Studio homepage"
+        >
+            <span aria-hidden="true">&larr;</span>
+            <span>Dheere Studio</span>
+        </a>
+
+        <section
+            class="auth-shell"
+            aria-labelledby="register-title"
+        >
+            <!-- Brand -->
+            <div class="auth-brand">
+                <a
+                    href="../index.html"
+                    class="auth-brand-name"
+                    aria-label="Dheere Studio homepage"
+                >
+                    Dheere Studio
+                </a>
+
+                <span
+                    class="auth-brand-label"
+                    aria-hidden="true"
+                >
+                    Create account
+                </span>
+            </div>
+
+            <div class="auth-card">
+                <!-- Header -->
+                <header class="auth-header">
+                    <p class="auth-eyebrow">
+                        Welcome to Dheere
+                    </p>
+
+                    <h1 id="register-title">
+                        Create your account
+                    </h1>
+
+                    <p class="auth-subtitle">
+                        Set up your Dheere Studio profile and join the community.
+                    </p>
+                </header>
+
+                <!-- Registration form -->
+                <form
+                    id="registerForm"
+                    class="auth-form"
+                    novalidate
+                    autocomplete="on"
+                >
+                    <!-- Full name -->
+                    <div class="auth-field">
+                        <label for="registerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            name="name"
+                            placeholder="Your name"
+                            autocomplete="name"
+                            autocapitalize="words"
+                            maxlength="80"
+                            enterkeyhint="next"
+                            aria-describedby="registerNameHint"
+                            required
+                        >
+
+                        <span
+                            id="registerNameHint"
+                            class="auth-field-hint"
+                            hidden
+                        >
+                            Use the name you would like to show on your profile.
+                        </span>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="auth-field">
+                        <label for="registerUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerUsername"
+                            name="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            autocorrect="off"
+                            spellcheck="false"
+                            inputmode="text"
+                            maxlength="20"
+                            minlength="3"
+                            pattern="[a-z0-9_]{3,20}"
+                            enterkeyhint="next"
+                            aria-describedby="usernameHint usernameStatus"
+                            required
+                        >
+
+                        <span
+                            id="usernameHint"
+                            class="auth-field-hint"
+                        >
+                            3–20 lowercase letters, numbers, or underscores.
+                        </span>
+
+                        <span
+                            id="usernameStatus"
+                            class="auth-field-status"
+                            role="status"
+                            aria-live="polite"
+                        ></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="auth-field">
+                        <label for="registerEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            name="email"
+                            placeholder="name@example.com"
+                            autocomplete="email"
+                            inputmode="email"
+                            autocapitalize="none"
+                            autocorrect="off"
+                            spellcheck="false"
+                            maxlength="254"
+                            enterkeyhint="next"
+                            required
+                        >
+                    </div>
+
+                    <!-- Mobile + OTP -->
+                    <div class="auth-field">
+                        <label for="registerMobile">
+                            Mobile Number
+                        </label>
+
+                        <div class="auth-input-action">
+                            <input
+                                type="tel"
+                                id="registerMobile"
+                                name="mobile"
+                                placeholder="10-digit mobile number"
+                                autocomplete="tel"
+                                inputmode="numeric"
+                                maxlength="10"
+                                minlength="10"
+                                pattern="[0-9]{10}"
+                                enterkeyhint="next"
+                                aria-describedby="mobileOtpHint"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="auth-field-action"
+                                id="sendMobileOtpButton"
+                            >
+                                Send OTP
+                            </button>
+                        </div>
+
+                        <p
+                            class="auth-field-hint"
+                            id="mobileOtpHint"
+                        >
+                            We'll verify your mobile number with a one-time code by SMS or WhatsApp.
+                        </p>
+                    </div>
+
+                    <div
+                        class="auth-otp-panel"
+                        id="mobileOtpPanel"
+                        data-msg91-otp-panel
+                        hidden
+                    >
+                        <div class="auth-otp-header">
+                            <div>
+                                <strong>
+                                    Verify your mobile number
+                                </strong>
+
+                                <span id="mobileOtpStatus">
+                                    OTP sent. Enter the code received by SMS or WhatsApp.
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="auth-otp-change"
+                                id="changeMobileButton"
+                            >
+                                Change
+                            </button>
+                        </div>
+
+                        <div class="auth-otp-row">
+                            <input
+                                type="text"
+                                id="mobileOtp"
+                                name="mobileOtp"
+                                class="auth-otp-input"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                                aria-describedby="mobileOtpStatus mobileOtpFeedback"
+                                maxlength="8"
+                                pattern="[0-9]{4,8}"
+                                placeholder="0000"
+                                aria-label="Mobile OTP"
+                                enterkeyhint="done"
+                            >
+
+                            <button
+                                type="button"
+                                class="auth-otp-verify"
+                                id="verifyMobileOtpButton"
+                            >
+                                Verify
+                            </button>
+                        </div>
+
+                        <div class="auth-otp-footer">
+                            <span
+                                id="mobileOtpCountdown"
+                                aria-live="polite"
+                            >
+                                Resend available in 60s
+                            </span>
+
+                            <button
+                                type="button"
+                                class="auth-otp-resend"
+                                id="resendMobileOtpButton"
+                                disabled
+                            >
+                                Resend OTP
+                            </button>
+                        </div>
+
+                        <p
+                            class="auth-otp-feedback"
+                            id="mobileOtpFeedback"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="auth-field">
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <div class="auth-password-wrap">
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                name="password"
+                                data-strength-target="registerPasswordStrength"
+                                placeholder="Create a strong password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                aria-describedby="registerPasswordHint registerPasswordStrengthValue"
+                                enterkeyhint="next"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="auth-password-toggle"
+                                data-target="registerPassword"
+                                data-password-state="hidden"
+                                aria-label="Show password"
+                                title="Show password"
+                            >
+                                <!-- Show password -->
+                                <svg
+                                    class="password-icon password-icon-show"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2.7"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    ></circle>
+                                </svg>
+
+                                <!-- Hide password -->
+                                <svg
+                                    class="password-icon password-icon-hide"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="m3 3 18 18"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    ></path>
+
+                                    <path
+                                        d="M10.6 6.2A10.5 10.5 0 0 1 12 6c6.5 0 10 6 10 6a18.2 18.2 0 0 1-3.1 3.5M6.2 6.2C3.4 8 2 12 2 12s3.5 6 10 6a10.7 10.7 0 0 0 4-.8"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    ></path>
+
+                                    <path
+                                        d="M9.9 9.9a3 3 0 0 0 4.2 4.2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p
+                            class="auth-field-hint"
+                            id="registerPasswordHint"
+                        >
+                            Use at least 8 characters. A mix of uppercase, lowercase, numbers, and symbols is recommended.
+                        </p>
+
+                        <div
+                            class="auth-password-strength"
+                            id="registerPasswordStrength"
+                            data-score="0"
+                            aria-live="polite"
+                        >
+                            <div class="auth-strength-top">
+                                <span class="auth-password-strength-label">
+                                    Password strength
+                                </span>
+
+                                <span
+                                    class="auth-password-strength-value"
+                                    id="registerPasswordStrengthValue"
+                                ></span>
+                            </div>
+
+                            <div
+                                class="auth-strength-meter"
+                                aria-hidden="true"
+                            >
+                                <span
+                                    class="auth-strength-segment"
+                                    data-strength="1"
+                                ></span>
+
+                                <span
+                                    class="auth-strength-segment"
+                                    data-strength="2"
+                                ></span>
+
+                                <span
+                                    class="auth-strength-segment"
+                                    data-strength="3"
+                                ></span>
+
+                                <span
+                                    class="auth-strength-segment"
+                                    data-strength="4"
+                                ></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm password -->
+                    <div class="auth-field">
+                        <label for="registerConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="auth-password-wrap">
+                            <input
+                                type="password"
+                                id="registerConfirmPassword"
+                                name="confirmPassword"
+                                placeholder="Re-enter your password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                aria-describedby="passwordMatchHint"
+                                enterkeyhint="done"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="auth-password-toggle"
+                                data-target="registerConfirmPassword"
+                                data-password-state="hidden"
+                                aria-label="Show password"
+                                title="Show password"
+                            >
+                                <!-- Show password -->
+                                <svg
+                                    class="password-icon password-icon-show"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2.7"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    ></circle>
+                                </svg>
+
+                                <!-- Hide password -->
+                                <svg
+                                    class="password-icon password-icon-hide"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path
+                                        d="m3 3 18 18"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    ></path>
+
+                                    <path
+                                        d="M10.6 6.2A10.5 10.5 0 0 1 12 6c6.5 0 10 6 10 6a18.2 18.2 0 0 1-3.1 3.5M6.2 6.2C3.4 8 2 12 2 12s3.5 6 10 6a10.7 10.7 0 0 0 4-.8"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    ></path>
+
+                                    <path
+                                        d="M9.9 9.9a3 3 0 0 0 4.2 4.2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p
+                            class="auth-field-hint"
+                            id="passwordMatchHint"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+                    </div>
+
+                    <!-- Consent -->
+                    <div class="auth-consent">
+                        <label class="auth-checkbox">
+                            <input
+                                type="checkbox"
+                                id="registerTerms"
+                                name="terms"
+                                required
+                            >
+
+                            <span>
+                                I agree to the Dheere Studio
+                                <a
+                                    href="../privacy.html"
+                                    class="auth-link"
+                                >
+                                    Privacy
+                                </a>
+                                and
+                                <a
+                                    href="../terms.html"
+                                    class="auth-link"
+                                >
+                                    Terms
+                                </a>.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- CAPTCHA is not part of the current backend contract. -->
+
+                    <p class="auth-field-hint" aria-live="polite">
+                        Your account is created after your mobile number is verified and the server accepts the registration details.
+                    </p>
+
+                    <!-- Status -->
+                    <p
+                        id="registerMessage"
+                        class="auth-message"
+                        aria-live="polite"
+                        aria-atomic="true"
+                        role="status"
+                        hidden
+                    ></p>
+
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        class="auth-primary-button"
+                        id="registerSubmitButton"
+                    >
+                        Create Account
+                    </button>
+                </form>
+
+                <!-- Provider alternative -->
+                <div
+                    class="auth-divider"
+                    aria-hidden="true"
+                >
+                    <span>or</span>
+                </div>
+
+                <button
+                    type="button"
+                    class="auth-secondary-button auth-google-button"
+                    id="googleRegisterButton"
+                >
+                    <span
+                        class="auth-provider-icon"
+                        aria-hidden="true"
+                    >
+                        G
+                    </span>
+
+                    <span>
+                        Continue with Google
+                    </span>
+                </button>
+
+                <!-- Login -->
+                <div class="auth-switch">
+                    <span>
+                        Already have an account?
+                    </span>
+
+                    <a
+                        href="login.html"
+                        class="auth-link"
+                    >
+                        Sign in
+                    </a>
+                </div>
+
+                <!-- Guest path -->
+                <div class="auth-guest">
+                    <div class="auth-guest-copy">
+                        <strong>
+                            Just exploring?
+                        </strong>
+
+                        <span>
+                            Continue without creating an account.
+                        </span>
+                    </div>
+
+                    <a
+                        href="../index.html"
+                        class="auth-guest-link"
+                    >
+                        <span>Skip &amp; Explore</span>
+
+                        <span aria-hidden="true">
+                            &rarr;
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Mood -->
+                <div class="auth-mood-link">
+                    <a
+                        href="../mood.html"
+                        class="auth-link"
+                    >
+                        Dheere Mood
+                    </a>
+                </div>
+
+                <!-- Legal -->
+                <div class="auth-legal">
+                    <span>
+                        Your account data is handled according to Dheere Studio's
+                    </span>
+
+                    <a
+                        href="../privacy.html"
+                        class="auth-legal-link"
+                    >
+                        Privacy
+                    </a>
+
+                    <span aria-hidden="true">
+                        &middot;
+                    </span>
+
+                    <a
+                        href="../security.html"
+                        class="auth-legal-link"
+                    >
+                        Security
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shared auth controller -->
+    <script
+        src="./auth.js"
+        defer
+    ></script>
+</body>
+</html>

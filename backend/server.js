@@ -60,6 +60,12 @@ const createAuthRouter =
     );
 
 
+const createGoogleAuthRouter =
+    require(
+        "./routes/google-auth-routes"
+    );
+
+
 const createProfileRouter =
     require(
         "./routes/profile-routes"
@@ -771,6 +777,24 @@ async function startServer() {
             "/",
 
             createAuthRouter({
+
+                usersCollection
+
+            })
+
+        );
+
+
+
+        // ====================================================
+        // GOOGLE AUTH ROUTES
+        // ====================================================
+
+        app.use(
+
+            "/",
+
+            createGoogleAuthRouter({
 
                 usersCollection
 
