@@ -33,6 +33,16 @@
         content="strict-origin-when-cross-origin"
     >
 
+    <meta
+        name="dheere-msg91-widget-id"
+        content="366964646874353836333533"
+    >
+
+    <meta
+        name="dheere-msg91-widget-token"
+        content="567459TunhVfVO6a9a45aaP1"
+    >
+
     <title>Reset Password — Dheere Studio</title>
 
     <link
@@ -50,38 +60,6 @@
         defer
     ></script>
 
-    <!-- MSG91 Custom UI OTP -->
-    <!--
-        Replace the two placeholders below with the values from your
-        MSG91 OTP Widget dashboard.
-
-        widgetId  = actual MSG91 widget ID
-        tokenAuth = MSG91 widget/client token
-
-        Never place MSG91 AuthKey in this HTML.
-        AuthKey remains backend-only.
-    -->
-    <script type="text/javascript">
-        var dheereMsg91Configuration = {
-            widgetId: "REPLACE_WITH_MSG91_WIDGET_ID",
-            tokenAuth: "REPLACE_WITH_MSG91_WIDGET_TOKEN",
-            identifier: "",
-            exposeMethods: true,
-            captchaRenderId: "",
-            success: function (data) {
-                console.log("MSG91 OTP success:", data);
-            },
-            failure: function (error) {
-                console.error("MSG91 OTP failure:", error);
-            }
-        };
-    </script>
-
-    <script
-        type="text/javascript"
-        src="https://verify.msg91.com/otp-provider.js"
-        onload="initSendOTP(dheereMsg91Configuration)"
-    ></script>
 </head>
 
 <body>
