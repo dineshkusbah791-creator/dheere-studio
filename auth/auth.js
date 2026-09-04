@@ -48,7 +48,13 @@
 
             RESET_PASSWORD: "/reset-password",
 
-            MOBILE_RECOVERY: "/forgot-password-mobile"
+            MOBILE_RECOVERY: "/forgot-password-mobile",
+
+            OTP_SEND: "/auth/otp/send",
+
+            OTP_RETRY: "/auth/otp/retry",
+
+            OTP_VERIFY: "/auth/otp/verify"
         }),
 
         MSG91: Object.freeze({
@@ -1696,301 +1702,49 @@
     }
 
     /* ============================================================
-       15. MSG91 OTP WIDGET
+       15. OTP API
+       ------------------------------------------------------------
+       MSG91 Send / Retry / Verify now run through the Dheere
+       backend. MSG91_AUTH_KEY remains server-side only.
        ============================================================ */
 
-    function readMsg91Config() {
-        const widgetId =
-            document.querySelector(
-                `meta[name="${AUTH_CONFIG.MSG91.WIDGET_ID_META}"]`
-            )?.getAttribute("content") ||
-            "";
+    async function sendMsg91Otp(
+        identifier
+    ) {
+        const result =
+            await apiRequest(
+                AUTH_CONFIG.ENDPOINTS.OTP_SEND,
+                {
+                    method: "POST",
 
-        const tokenAuth =
-            document.querySelector(
-                `meta[name="${AUTH_CONFIG.MSG91.WIDGET_TOKEN_META}"]`
-            )?.getAttribute("content") ||
-            "";
+                    body:
+                        JSON.stringify({
+                            identifier:
+                                text(identifier)
+                        })
+                }
+            );
+
+        const reqId =
+            text(
+                result?.reqId
+            );
+
+        if (!reqId) {
+            throw new Error(
+                "OTP was sent, but the server did not return the verification request ID."
+            );
+        }
 
         return {
-            widgetId: text(widgetId),
-            tokenAuth: text(tokenAuth)
-        };
-    }
-
-    function loadScriptOnce(
-        src
-    ) {
-        return new Promise(
-            (
-                resolve,
-                reject
-            ) => {
-                const existing =
-                    document.querySelector(
-                        `script[src="${src}"]`
-                    );
-
-                if (existing) {
-                    if (
-                        typeof window.initSendOTP ===
-                        "function"
-                    ) {
-                        resolve();
-                        return;
-                    }
-
-                    existing.addEventListener(
-                        "load",
-                        resolve,
-                        {
-                            once: true
-                        }
-                    );
-
-                    existing.addEventListener(
-                        "error",
-                        () =>
-                            reject(
-                                new Error(
-                                    "MSG91 OTP SDK could not be loaded."
-                                )
-                            ),
-                        {
-                            once: true
-                        }
-                    );
-
-                    return;
-                }
-
-                const script =
-                    document.createElement(
-                        "script"
-                    );
-
-                script.type =
-                    "text/javascript";
-
-                script.src = src;
-
-                script.onload =
-                    resolve;
-
-                script.onerror =
-                    () =>
-                        reject(
-                            new Error(
-                                "MSG91 OTP SDK could not be loaded."
-                            )
-                        );
-
-                document.head.appendChild(
-                    script
-                );
-            }
-        );
-    }
-
-    async function loadMsg91Widget() {
-        if (
-            typeof window.sendOtp ===
-                "function" &&
-            typeof window.verifyOtp ===
-                "function" &&
-            typeof window.retryOtp ===
-                "function"
-        ) {
-            return true;
-        }
-
-        const config =
-            readMsg91Config();
-
-        if (!config.widgetId) {
-            throw new Error(
-                "MSG91 widget ID is not configured on this page."
-            );
-        }
-
-        if (!config.tokenAuth) {
-            throw new Error(
-                "MSG91 widget token is not configured on this page."
-            );
-        }
-
-        if (
-            typeof window.initSendOTP !==
-            "function"
-        ) {
-            await loadScriptOnce(
-                AUTH_CONFIG.MSG91.SDK_URL
-            );
-        }
-
-        if (
-            typeof window.initSendOTP !==
-            "function"
-        ) {
-            throw new Error(
-                "MSG91 Custom UI SDK loaded, but initSendOTP is unavailable."
-            );
-        }
-
-        const configuration = {
-            widgetId:
-                config.widgetId,
-
-            tokenAuth:
-                config.tokenAuth,
-
-            identifier:
-                "",
-
-            exposeMethods:
+            success:
                 true,
 
-            captchaRenderId:
-                "",
+            reqId,
 
-            success:
-                () => {},
-
-            failure:
-                () => {}
+            data:
+                result
         };
-
-        try {
-            window.initSendOTP(
-                configuration
-            );
-        } catch (error) {
-            console.error(
-                "MSG91 initialization error:",
-                error
-            );
-
-            throw new Error(
-                error?.message ||
-                    "Unable to initialize MSG91 OTP."
-            );
-        }
-
-        for (
-            let attempt = 0;
-            attempt < 30;
-            attempt += 1
-        ) {
-            if (
-                typeof window.sendOtp ===
-                    "function" &&
-                typeof window.verifyOtp ===
-                    "function" &&
-                typeof window.retryOtp ===
-                    "function"
-            ) {
-                return true;
-            }
-
-            await sleep(100);
-        }
-
-        throw new Error(
-            "MSG91 OTP methods were not exposed after widget initialization."
-        );
-    }
-
-    async function sendMsg91Otp(
-        identifier,
-        {
-            onSuccess,
-            onFailure
-        } = {}
-    ) {
-        await loadMsg91Widget();
-
-        return new Promise(
-            (
-                resolve,
-                reject
-            ) => {
-                const success =
-                    (response) => {
-                        const reqId =
-                            extractMsg91RequestId(
-                                response
-                            );
-
-                        /*
-                         * MSG91 requires the Send OTP request ID
-                         * for VerifyOTP/RetryOTP. Do not let the UI
-                         * enter a broken "sent" state when the SDK
-                         * callback does not expose it.
-                         */
-                        if (!reqId) {
-                            console.error(
-                                "MSG91 Send OTP response did not contain a request ID.",
-                                response
-                            );
-
-                            reject(
-                                new Error(
-                                    "OTP was sent, but MSG91 did not return the request ID required for verification. Please refresh the page and try once."
-                                )
-                            );
-
-                            return;
-                        }
-
-                        onSuccess?.(
-                            response
-                        );
-
-                        resolve({
-                            success:
-                                true,
-
-                            reqId,
-
-                            data:
-                                response
-                        });
-                    };
-
-                const failure =
-                    (error) => {
-                        onFailure?.(
-                            error
-                        );
-
-                        const normalized =
-                            new Error(
-                                error?.message ||
-                                    error?.error ||
-                                    "Unable to send OTP."
-                            );
-
-                        normalized.data =
-                            error;
-
-                        reject(
-                            normalized
-                        );
-                    };
-
-                try {
-                    window.sendOtp(
-                        text(identifier),
-                        success,
-                        failure
-                    );
-                } catch (error) {
-                    failure(
-                        error
-                    );
-                }
-            }
-        );
     }
 
     async function verifyMsg91Otp(
@@ -2000,151 +1754,105 @@
         const cleanOtp =
             text(otp);
 
+        const cleanReqId =
+            text(reqId);
+
         if (!isValidOtp(cleanOtp)) {
             throw new Error(
                 "Enter the OTP sent to your mobile number."
             );
         }
 
-        await loadMsg91Widget();
+        if (!cleanReqId) {
+            throw new Error(
+                "Please send a new OTP before verifying."
+            );
+        }
 
-        return new Promise(
-            (
-                resolve,
-                reject
-            ) => {
-                const success =
-                    (response) => {
-                        resolve({
-                            success:
-                                true,
+        const result =
+            await apiRequest(
+                AUTH_CONFIG.ENDPOINTS.OTP_VERIFY,
+                {
+                    method: "POST",
 
-                            data:
-                                response
-                        });
-                    };
+                    body:
+                        JSON.stringify({
+                            reqId:
+                                cleanReqId,
 
-                const failure =
-                    (error) => {
-                        const normalized =
-                            new Error(
-                                error?.message ||
-                                    error?.error ||
-                                    "Invalid or expired OTP."
-                            );
-
-                        normalized.data =
-                            error;
-
-                        reject(
-                            normalized
-                        );
-                    };
-
-                try {
-                    window.verifyOtp(
-                        cleanOtp,
-                        success,
-                        failure,
-                        reqId || undefined
-                    );
-                } catch (error) {
-                    failure(
-                        error
-                    );
+                            otp:
+                                cleanOtp
+                        })
                 }
-            }
-        );
+            );
+
+        const accessToken =
+            extractMsg91AccessToken(
+                result
+            );
+
+        if (!accessToken) {
+            throw new Error(
+                "OTP was verified, but the server did not return a verification token."
+            );
+        }
+
+        return {
+            success:
+                true,
+
+            reqId:
+                cleanReqId,
+
+            accessToken,
+
+            data:
+                result
+        };
     }
 
     async function retryMsg91Otp(
         channel = "11",
         reqId = ""
     ) {
-        await loadMsg91Widget();
+        const cleanReqId =
+            text(reqId);
 
-        return new Promise(
-            (
-                resolve,
-                reject
-            ) => {
-                const success =
-                    (response) => {
-                        resolve({
-                            success:
-                                true,
+        if (!cleanReqId) {
+            throw new Error(
+                "Please send an OTP first."
+            );
+        }
 
-                            data:
-                                response
-                        });
-                    };
+        const result =
+            await apiRequest(
+                AUTH_CONFIG.ENDPOINTS.OTP_RETRY,
+                {
+                    method: "POST",
 
-                const failure =
-                    (error) => {
-                        const normalized =
-                            new Error(
-                                error?.message ||
-                                    error?.error ||
-                                    "Unable to resend OTP."
-                            );
+                    body:
+                        JSON.stringify({
+                            reqId:
+                                cleanReqId,
 
-                        normalized.data =
-                            error;
-
-                        reject(
-                            normalized
-                        );
-                    };
-
-                try {
-                    window.retryOtp(
-                        channel,
-                        success,
-                        failure,
-                        reqId || undefined
-                    );
-                } catch (error) {
-                    failure(
-                        error
-                    );
+                            retryChannel:
+                                channel
+                        })
                 }
-            }
-        );
-    }
-
-    function setOtpUiState(
-        root,
-        visible
-    ) {
-        const panel =
-            root?.querySelector(
-                "[data-msg91-otp-panel]"
             );
 
-        if (!panel) {
-            return;
-        }
+        return {
+            success:
+                true,
 
-        panel.hidden =
-            !visible;
-    }
+            reqId:
+                text(
+                    result?.reqId
+                ) || cleanReqId,
 
-    function setOtpMessage(
-        id,
-        message,
-        type = "error"
-    ) {
-        if (
-            !document.getElementById(id)
-        ) {
-            return;
-        }
-
-        showMessage(
-            id,
-            message,
-            type
-        );
+            data:
+                result
+        };
     }
 
     /* ============================================================
@@ -2701,8 +2409,9 @@
 
         try {
             const result =
-                await sendMsg91Otp(
-                    `91${mobile}`
+                await retryMsg91Otp(
+                    "11",
+                    OTP_STATE.registerReqId
                 );
 
             OTP_STATE.registerMobile =
@@ -2711,13 +2420,13 @@
             OTP_STATE.registerReqId =
                 text(
                     result.reqId
-                );
+                ) || OTP_STATE.registerReqId;
 
             if (
                 !OTP_STATE.registerReqId
             ) {
                 throw new Error(
-                    "OTP was sent, but the verification request ID was not returned by MSG91."
+                    "The server did not return a valid OTP request ID."
                 );
             }
 
@@ -3733,8 +3442,6 @@
         }
 
         try {
-            await loadMsg91Widget();
-
             const result =
                 await sendMsg91Otp(
                     `91${mobile}`
