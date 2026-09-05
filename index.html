@@ -189,24 +189,213 @@
                 );
             }
 
-            try {
-                if (
-                    !hasValidStoredSession() &&
-                    !isGuestSession()
-                ) {
-                    document.documentElement.classList.add(
-                        "auth-gate-pending"
+            function getGoogleAuthTokenFromFragment() {
+                try {
+                    const hash =
+                        window.location.hash.replace(
+                            /^#/,
+                            ""
+                        );
+
+                    if (!hash) {
+                        return "";
+                    }
+
+                    const params =
+                        new URLSearchParams(
+                            hash
+                        );
+
+                    return (
+                        params.get(
+                            "dheere_auth"
+                        ) || ""
+                    );
+                } catch (error) {
+                    console.error(
+                        "Unable to read Google authentication fragment:",
+                        error
                     );
 
-                    goToLogin();
-                    return;
+                    return "";
                 }
-            } catch (error) {
-                console.error(
-                    "Authentication entry gate error:",
-                    error
-                );
             }
+
+            async function resolveGoogleCallback() {
+                const token =
+                    getGoogleAuthTokenFromFragment();
+
+                if (!token) {
+                    return false;
+                }
+
+                /*
+                 * The backend has already authenticated the Google account
+                 * and placed the normal Dheere JWT in the URL fragment.
+                 *
+                 * The JWT payload contains only the userId, so the homepage
+                 * fetches the current authenticated profile before accepting
+                 * the session as complete.
+                 */
+                try {
+                    const parts =
+                        token.split(".");
+
+                    if (parts.length !== 3) {
+                        return false;
+                    }
+
+                    const payload =
+                        JSON.parse(
+                            decodeURIComponent(
+                                atob(
+                                    parts[1]
+                                        .replace(
+                                            /-/g,
+                                            "+"
+                                        )
+                                        .replace(
+                                            /_/g,
+                                            "/"
+                                        )
+                                )
+                                    .split("")
+                                    .map(
+                                        character =>
+                                            "%"
+                                            +
+                                            (
+                                                "00" +
+                                                character
+                                                    .charCodeAt(
+                                                        0
+                                                    )
+                                                    .toString(
+                                                        16
+                                                    )
+                                            ).slice(
+                                                -2
+                                            )
+                                    )
+                                    .join("")
+                            )
+                        );
+
+                    const userId =
+                        String(
+                            payload?.userId || ""
+                        );
+
+                    if (!userId) {
+                        return false;
+                    }
+
+                    const response =
+                        await fetch(
+                            "https://dheere-studio.onrender.com/profile/me",
+                            {
+                                method: "GET",
+                                headers: {
+                                    Accept:
+                                        "application/json",
+
+                                    Authorization:
+                                        `Bearer ${token}`
+                                },
+                                credentials:
+                                    "omit"
+                            }
+                        );
+
+                    if (!response.ok) {
+                        return false;
+                    }
+
+                    const data =
+                        await response.json();
+
+                    const user =
+                        data?.user ||
+                        data?.profile ||
+                        data?.account ||
+                        data?.data?.user ||
+                        data?.data?.profile ||
+                        null;
+
+                    if (!user) {
+                        return false;
+                    }
+
+                    localStorage.setItem(
+                        TOKEN_KEY,
+                        token
+                    );
+
+                    localStorage.setItem(
+                        USER_KEY,
+                        JSON.stringify(user)
+                    );
+
+                    /*
+                     * Remove the JWT from the address bar after the session
+                     * has been safely stored.
+                     */
+                    window.history.replaceState(
+                        null,
+                        "",
+                        window.location.pathname +
+                            window.location.search
+                    );
+
+                    return true;
+                } catch (error) {
+                    console.error(
+                        "Google callback session setup failed:",
+                        error
+                    );
+
+                    return false;
+                }
+            }
+
+            (async function initializeAuthentication() {
+                try {
+                    const googleAuthenticated =
+                        await resolveGoogleCallback();
+
+                    if (googleAuthenticated) {
+                        return;
+                    }
+
+                    if (
+                        !hasValidStoredSession() &&
+                        !isGuestSession()
+                    ) {
+                        document.documentElement.classList.add(
+                            "auth-gate-pending"
+                        );
+
+                        goToLogin();
+                        return;
+                    }
+                } catch (error) {
+                    console.error(
+                        "Authentication entry gate error:",
+                        error
+                    );
+
+                    if (
+                        !hasValidStoredSession() &&
+                        !isGuestSession()
+                    ) {
+                        document.documentElement.classList.add(
+                            "auth-gate-pending"
+                        );
+
+                        goToLogin();
+                    }
+                }
+            })();
         })();
     </script>
 
