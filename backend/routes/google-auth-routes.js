@@ -9,7 +9,8 @@
 //
 // Existing Google/email user:
 //     -> create normal Dheere JWT
-//     -> redirect to login.html with auth fragment
+//     -> redirect directly to the safe frontend destination
+//        with an auth fragment (no login-page bounce)
 //
 // New Google user:
 //     -> DO NOT create account yet
@@ -392,35 +393,37 @@ function redirectWithAuth(
     res,
     {
         frontendUrl,
-        returnTo,
-        token,
-        flow
+        returnTo
     }
 ) {
-    const target =
-        new URL(
-            "/auth/login.html",
-            `${frontendUrl}/`
-        );
-
-    target.searchParams.set(
-        "redirect",
+    /*
+     * Existing Google users are already authenticated by the
+     * backend at this point. Do not bounce them through login.html
+     * with a JWT fragment. Redirect directly to the requested safe
+     * frontend path and hand the token to the frontend through a
+     * short-lived fragment.
+     *
+     * The token is consumed by the homepage/auth bootstrap and then
+     * removed from the URL. This avoids the previous:
+     * Google -> login.html -> login page stuck
+     * flow.
+     */
+    const safePath =
         safeReturnTo(
             returnTo
-        )
-    );
+        );
+
+    const target =
+        new URL(
+            safePath,
+            `${frontendUrl}/`
+        );
 
     target.hash =
         new URLSearchParams(
             {
                 dheere_auth:
-                    token,
-
-                flow:
-                    flow ===
-                    "register"
-                        ? "register"
-                        : "login"
+                    token
             }
         ).toString();
 
@@ -907,10 +910,7 @@ function createGoogleAuthRouter({
                             returnTo:
                                 statePayload.returnTo,
 
-                            token,
-
-                            flow:
-                                statePayload.flow
+                            token
                         }
                     );
                 }
