@@ -393,7 +393,8 @@ function redirectWithAuth(
     res,
     {
         frontendUrl,
-        returnTo
+        returnTo,
+        token
     }
 ) {
     /*
