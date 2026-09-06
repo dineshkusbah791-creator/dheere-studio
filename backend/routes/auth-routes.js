@@ -60,14 +60,6 @@ const {
     );
 
 
-const {
-    verifyAccessToken,
-    extractVerifiedIdentifier
-
-} =
-    require(
-        "../services/otp-service"
-    );
 
 
 // ============================================================
@@ -96,12 +88,6 @@ const MAX_PASSWORD_LENGTH =
 
 const JWT_EXPIRES_IN =
     "7d";
-
-const MOBILE_REGEX =
-    /^91[0-9]{10}$/;
-
-const MAX_MOBILE_LENGTH =
-    12;
 
 
 
@@ -386,161 +372,7 @@ function isValidEmail(
 
 
 // ============================================================
-// NORMALIZE MOBILE
-// ============================================================
-
-function normalizeMobile(
-    value
-) {
-
-    if (
-        typeof value !==
-        "string"
-    ) {
-
-        return "";
-
-    }
-
-    const digits =
-        value
-            .trim()
-            .replace(/\D/g, "");
-
-    if (
-        digits.length ===
-        10
-    ) {
-
-        return `91${digits}`;
-
-    }
-
-    return digits;
-}
-
-
-
-// ============================================================
-// VALIDATE MOBILE
-// ============================================================
-
-function isValidMobile(
-    mobile
-) {
-
-    return (
-
-        typeof mobile ===
-        "string"
-
-        &&
-
-        mobile.length ===
-        MAX_MOBILE_LENGTH
-
-        &&
-
-        MOBILE_REGEX.test(
-            mobile
-        )
-
-    );
-
-}
-
-
-
-// ============================================================
-// VERIFY MSG91 MOBILE ACCESS TOKEN
-// ============================================================
-
-async function verifyMobileAccessToken(
-    {
-        mobile,
-        accessToken
-    }
-) {
-
-    const cleanMobile =
-        normalizeMobile(
-            mobile
-        );
-
-    if (
-        !isValidMobile(
-            cleanMobile
-        )
-    ) {
-
-        const error =
-            new Error(
-                "Invalid mobile number"
-            );
-
-        error.status =
-            400;
-
-        throw error;
-
-    }
-
-    if (
-        typeof accessToken !==
-        "string" ||
-        !accessToken.trim()
-    ) {
-
-        const error =
-            new Error(
-                "Mobile OTP verification is required"
-            );
-
-        error.status =
-            400;
-
-        throw error;
-
-    }
-
-    const verification =
-        await verifyAccessToken(
-            accessToken
-        );
-
-    const verifiedIdentifier =
-        normalizeMobile(
-            extractVerifiedIdentifier(
-                verification
-            )
-        );
-
-    if (
-        !isValidMobile(
-            verifiedIdentifier
-        ) ||
-        verifiedIdentifier !==
-        cleanMobile
-    ) {
-
-        const error =
-            new Error(
-                "Mobile OTP verification could not be confirmed"
-            );
-
-        error.status =
-            401;
-
-        throw error;
-
-    }
-
-    return cleanMobile;
-
-}
-
-
-
+// CREATE RESET TOKEN HASH
 // ============================================================
 // CREATE RESET TOKEN HASH
 // ============================================================
@@ -603,9 +435,7 @@ function createAuthRouter(
                     name,
                     username,
                     email,
-                    password,
-                    mobile,
-                    mobileAccessToken
+                    password
                 } =
                     req.body ||
                     {};
@@ -803,104 +633,6 @@ function createAuthRouter(
 
 
 
-                // ============================================
-                // MOBILE OTP VALIDATION
-                // ============================================
-
-                const cleanMobile =
-                    normalizeMobile(
-                        mobile || ""
-                    );
-
-                if (
-                    cleanMobile
-                ) {
-
-                    try {
-
-                        await verifyMobileAccessToken({
-
-                            mobile:
-                                cleanMobile,
-
-                            accessToken:
-                                mobileAccessToken
-
-                        });
-
-                    } catch (error) {
-
-                        if (
-                            error?.status === 400 ||
-                            error?.status === 401
-                        ) {
-
-                            return res.status(
-                                error.status
-                            ).json({
-
-                                success:
-                                    false,
-
-                                error:
-                                    error.message ||
-                                    "Please verify your mobile number with OTP."
-
-                            });
-
-                        }
-
-                        throw error;
-
-                    }
-
-                }
-
-
-
-                // ============================================
-                // MOBILE DUPLICATE CHECK
-                // ============================================
-
-                if (
-                    cleanMobile
-                ) {
-
-                    const mobileUser =
-                        await usersCollection.findOne(
-
-                            {
-                                mobile:
-                                    cleanMobile
-                            },
-
-                            {
-                                projection: {
-                                    _id: 1
-                                }
-                            }
-
-                        );
-
-                    if (
-                        mobileUser
-                    ) {
-
-                        return res.status(409).json({
-
-                            success:
-                                false,
-
-                            error:
-                                "Mobile number is already registered"
-
-                        });
-
-                    }
-
-                }
-
-
 
                 // ============================================
                 // HASH PASSWORD
@@ -933,16 +665,6 @@ function createAuthRouter(
 
                     email:
                         cleanEmail,
-
-
-                    mobile:
-                        cleanMobile,
-
-
-                    mobileVerified:
-                        Boolean(
-                            cleanMobile
-                        ),
 
 
                     password:
@@ -1025,10 +747,6 @@ function createAuthRouter(
 
                         email:
                             newUser.email,
-
-
-                        mobile:
-                            newUser.mobile || "",
 
 
                         bio:
@@ -1377,181 +1095,7 @@ function createAuthRouter(
 
 
     // ========================================================
-    // FORGOT PASSWORD VIA MOBILE OTP
-    // ========================================================
-
-    router.post(
-
-        "/forgot-password-mobile",
-
-        forgotPasswordLimiter,
-
-        async (
-            req,
-            res
-        ) => {
-
-            try {
-
-                const {
-                    mobile,
-                    accessToken
-                } =
-                    req.body ||
-                    {};
-
-                const cleanMobile =
-                    normalizeMobile(
-                        mobile || ""
-                    );
-
-                await verifyMobileAccessToken({
-
-                    mobile:
-                        cleanMobile,
-
-                    accessToken:
-                        accessToken
-
-                });
-
-                const user =
-                    await usersCollection.findOne(
-
-                        {
-                            mobile:
-                                cleanMobile
-                        },
-
-                        {
-                            projection: {
-                                _id: 1
-                            }
-                        }
-
-                    );
-
-                if (
-                    !user
-                ) {
-
-                    return res.status(404).json({
-
-                        success:
-                            false,
-
-                        error:
-                            "No account is associated with this mobile number"
-
-                    });
-
-                }
-
-                const rawToken =
-                    crypto
-                        .randomBytes(
-                            32
-                        )
-                        .toString(
-                            "hex"
-                        );
-
-                const tokenHash =
-                    hashResetToken(
-                        rawToken
-                    );
-
-                const tokenExpiresAt =
-                    new Date(
-
-                        Date.now()
-                        +
-                        RESET_TOKEN_EXPIRY_MINUTES *
-                        60 *
-                        1000
-
-                    );
-
-                await usersCollection.updateOne(
-
-                    {
-                        _id:
-                            user._id
-                    },
-
-                    {
-                        $set: {
-
-                            resetTokenHash:
-                                tokenHash,
-
-                            resetTokenExpiresAt:
-                                tokenExpiresAt
-
-                        }
-                    }
-
-                );
-
-                return res.json({
-
-                    success:
-                        true,
-
-                    message:
-                        "Mobile OTP verified successfully.",
-
-                    resetToken:
-                        rawToken,
-
-                    expiresInMinutes:
-                        RESET_TOKEN_EXPIRY_MINUTES
-
-                });
-
-            } catch (error) {
-
-                console.error(
-                    "Mobile password recovery error:",
-                    error
-                );
-
-                if (
-                    error?.status === 400 ||
-                    error?.status === 401
-                ) {
-
-                    return res.status(
-                        error.status
-                    ).json({
-
-                        success:
-                            false,
-
-                        error:
-                            error.message ||
-                            "Mobile OTP verification failed"
-
-                    });
-
-                }
-
-                return res.status(500).json({
-
-                    success:
-                        false,
-
-                    error:
-                        "Could not process mobile password recovery"
-
-                });
-
-            }
-
-        }
-
-    );
-
+    // FORGOT PASSWORD
 
 
     // ========================================================

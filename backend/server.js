@@ -60,18 +60,6 @@ const createAuthRouter =
     );
 
 
-const createGoogleAuthRouter =
-    require(
-        "./routes/google-auth-routes"
-    );
-
-
-const createOtpRouter =
-    require(
-        "./routes/otp-routes"
-    );
-
-
 const createProfileRouter =
     require(
         "./routes/profile-routes"
@@ -787,38 +775,6 @@ async function startServer() {
                 usersCollection
 
             })
-
-        );
-
-
-
-        // ====================================================
-        // GOOGLE AUTH ROUTES
-        // ====================================================
-
-        app.use(
-
-            "/",
-
-            createGoogleAuthRouter({
-
-                usersCollection
-
-            })
-
-        );
-
-
-
-        // ====================================================
-        // MSG91 OTP ROUTES
-        // ====================================================
-
-        app.use(
-
-            "/",
-
-            createOtpRouter()
 
         );
 
