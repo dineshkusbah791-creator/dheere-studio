@@ -4649,6 +4649,68 @@
         );
     }
 
+    function handleGoogleButtonClick(
+        event,
+        button,
+        flow
+    ) {
+        event.preventDefault();
+
+        /*
+         * IMPORTANT:
+         * If the user already has a valid local Dheere session,
+         * do not start Google OAuth again.
+         *
+         * Previous behavior:
+         * Google button -> /auth/google -> Google -> callback
+         * -> login/auth bounce
+         *
+         * Desired behavior:
+         * Existing Dheere session + Google button
+         * -> direct Dheere destination
+         *
+         * A stale session is still handled by the normal homepage
+         * auth gate, so we do not create a second OAuth flow here.
+         */
+        const token =
+            getStoredToken();
+
+        const user =
+            getStoredUser();
+
+        if (
+            token &&
+            user
+        ) {
+            clearGuestMode();
+
+            setLoading(
+                button,
+                true,
+                "Opening Dheere…"
+            );
+
+            window.setTimeout(
+                () => {
+                    redirectAfterAuth();
+                },
+                80
+            );
+
+            return;
+        }
+
+        setLoading(
+            button,
+            true,
+            "Opening Google…"
+        );
+
+        startGoogleOAuth(
+            flow
+        );
+    }
+
     function setupGoogleButtons() {
         const loginButton =
             document.getElementById(
@@ -4664,15 +4726,9 @@
             loginButton.addEventListener(
                 "click",
                 (event) => {
-                    event.preventDefault();
-
-                    setLoading(
+                    handleGoogleButtonClick(
+                        event,
                         loginButton,
-                        true,
-                        "Opening Google…"
-                    );
-
-                    startGoogleOAuth(
                         "login"
                     );
                 }
@@ -4683,15 +4739,9 @@
             registerButton.addEventListener(
                 "click",
                 (event) => {
-                    event.preventDefault();
-
-                    setLoading(
+                    handleGoogleButtonClick(
+                        event,
                         registerButton,
-                        true,
-                        "Opening Google…"
-                    );
-
-                    startGoogleOAuth(
                         "register"
                     );
                 }
