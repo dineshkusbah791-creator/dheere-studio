@@ -66,41 +66,27 @@
 
             function hasStoredSession() {
                 try {
-                    const token =
-                        localStorage.getItem(TOKEN_KEY);
-
-                    const rawUser =
-                        localStorage.getItem(USER_KEY);
+                    const token = localStorage.getItem(TOKEN_KEY);
+                    const rawUser = localStorage.getItem(USER_KEY);
 
                     if (!token || !rawUser) {
                         return false;
                     }
 
-                    const user = JSON.parse(rawUser);
-                    return Boolean(user);
+                    return Boolean(JSON.parse(rawUser));
                 } catch {
                     return false;
                 }
             }
 
-            function clearGuestMode() {
-                try {
-                    sessionStorage.removeItem(GUEST_KEY);
-                } catch (error) {
-                    console.error(
-                        "Unable to clear guest mode:",
-                        error
-                    );
-                }
-            }
-
             function enterGuestMode(event) {
-                if (event) {
-                    event.preventDefault();
-                }
+                event?.preventDefault();
 
                 try {
-                    sessionStorage.setItem(GUEST_KEY, "true");
+                    sessionStorage.setItem(
+                        GUEST_KEY,
+                        "true"
+                    );
                 } catch (error) {
                     console.error(
                         "Unable to save guest mode:",
@@ -113,25 +99,19 @@
 
             function bindGuestLink() {
                 const link =
-                    document.getElementById(
-                        "skipExploreLink"
-                    );
+                    document.getElementById("skipExploreLink");
 
-                if (!link) return;
-
-                link.addEventListener(
+                link?.addEventListener(
                     "click",
                     enterGuestMode
                 );
             }
 
             try {
-                clearGuestMode();
+                sessionStorage.removeItem(GUEST_KEY);
 
                 if (hasStoredSession()) {
-                    window.location.replace(
-                        "../index.html"
-                    );
+                    window.location.replace("../index.html");
                     return;
                 }
             } catch (error) {
@@ -380,31 +360,6 @@
                         Sign In
                     </button>
                 </form>
-
-                <!-- Alternative provider -->
-                <div
-                    class="auth-divider"
-                    aria-hidden="true"
-                >
-                    <span>or</span>
-                </div>
-
-                <button
-                    type="button"
-                    class="auth-secondary-button auth-google-button"
-                    id="googleLoginButton"
-                >
-                    <span
-                        class="auth-provider-icon"
-                        aria-hidden="true"
-                    >
-                        G
-                    </span>
-
-                    <span>
-                        Continue with Google
-                    </span>
-                </button>
 
                 <!-- Registration -->
                 <div class="auth-switch">

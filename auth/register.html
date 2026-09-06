@@ -33,19 +33,7 @@
         name="referrer"
         content="strict-origin-when-cross-origin"
     >
-
-    <meta
-        name="dheere-msg91-widget-id"
-        content="366964646874353836333533"
-    >
-
-    <meta
-        name="dheere-msg91-widget-token"
-        content="567459TunhVfVO6a9a45aaP1"
-    >
-
-
-    <title>Create Account — Dheere Studio</title>
+<title>Create Account — Dheere Studio</title>
 
     <link
         rel="stylesheet"
@@ -231,123 +219,6 @@
                         >
                     </div>
 
-                    <!-- Mobile + OTP -->
-                    <div class="auth-field">
-                        <label for="registerMobile">
-                            Mobile Number
-                        </label>
-
-                        <div class="auth-input-action">
-                            <input
-                                type="tel"
-                                id="registerMobile"
-                                name="mobile"
-                                placeholder="10-digit mobile number"
-                                autocomplete="tel"
-                                inputmode="numeric"
-                                maxlength="10"
-                                minlength="10"
-                                pattern="[0-9]{10}"
-                                enterkeyhint="next"
-                                aria-describedby="mobileOtpHint"
-                                required
-                            >
-
-                            <button
-                                type="button"
-                                class="auth-field-action"
-                                id="sendMobileOtpButton"
-                            >
-                                Send OTP
-                            </button>
-                        </div>
-
-                        <p
-                            class="auth-field-hint"
-                            id="mobileOtpHint"
-                        >
-                            We'll verify your mobile number with a one-time code by SMS or WhatsApp.
-                        </p>
-                    </div>
-
-                    <div
-                        class="auth-otp-panel"
-                        id="mobileOtpPanel"
-                        data-msg91-otp-panel
-                        hidden
-                    >
-                        <div class="auth-otp-header">
-                            <div>
-                                <strong>
-                                    Verify your mobile number
-                                </strong>
-
-                                <span id="mobileOtpStatus">
-                                    OTP sent. Enter the code received by SMS or WhatsApp.
-                                </span>
-                            </div>
-
-                            <button
-                                type="button"
-                                class="auth-otp-change"
-                                id="changeMobileButton"
-                            >
-                                Change
-                            </button>
-                        </div>
-
-                        <div class="auth-otp-row">
-                            <input
-                                type="text"
-                                id="mobileOtp"
-                                name="mobileOtp"
-                                class="auth-otp-input"
-                                inputmode="numeric"
-                                autocomplete="one-time-code"
-                                aria-describedby="mobileOtpStatus mobileOtpFeedback"
-                                maxlength="8"
-                                pattern="[0-9]{4,8}"
-                                placeholder="0000"
-                                aria-label="Mobile OTP"
-                                enterkeyhint="done"
-                            >
-
-                            <button
-                                type="button"
-                                class="auth-otp-verify"
-                                id="verifyMobileOtpButton"
-                            >
-                                Verify
-                            </button>
-                        </div>
-
-                        <div class="auth-otp-footer">
-                            <span
-                                id="mobileOtpCountdown"
-                                aria-live="polite"
-                            >
-                                Resend available in 60s
-                            </span>
-
-                            <button
-                                type="button"
-                                class="auth-otp-resend"
-                                id="resendMobileOtpButton"
-                                disabled
-                            >
-                                Resend OTP
-                            </button>
-                        </div>
-
-                        <p
-                            class="auth-otp-feedback"
-                            id="mobileOtpFeedback"
-                            aria-live="polite"
-                            hidden
-                        ></p>
-                    </div>
-
-                    <!-- Password -->
                     <div class="auth-field">
                         <label for="registerPassword">
                             Password
@@ -618,7 +489,7 @@
                     <!-- CAPTCHA is not part of the current backend contract. -->
 
                     <p class="auth-field-hint" aria-live="polite">
-                        Your account is created after your mobile number is verified and the server accepts the registration details.
+                        Your account is created after the server accepts the registration details.
                     </p>
 
                     <!-- Status -->
@@ -641,30 +512,6 @@
                     </button>
                 </form>
 
-                <!-- Provider alternative -->
-                <div
-                    class="auth-divider"
-                    aria-hidden="true"
-                >
-                    <span>or</span>
-                </div>
-
-                <button
-                    type="button"
-                    class="auth-secondary-button auth-google-button"
-                    id="googleRegisterButton"
-                >
-                    <span
-                        class="auth-provider-icon"
-                        aria-hidden="true"
-                    >
-                        G
-                    </span>
-
-                    <span>
-                        Continue with Google
-                    </span>
-                </button>
 
                 <!-- Login -->
                 <div class="auth-switch">
