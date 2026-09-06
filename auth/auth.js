@@ -521,6 +521,26 @@
        8. RESPONSE EXTRACTION
        ============================================================ */
 
+    function extractToken(data) {
+        return (
+            data?.token ||
+            data?.accessToken ||
+            data?.data?.token ||
+            data?.data?.accessToken ||
+            ""
+        );
+    }
+
+    function extractUser(data) {
+        return (
+            data?.user ||
+            data?.account ||
+            data?.data?.user ||
+            data?.profile ||
+            null
+        );
+    }
+
     function extractRecoveryToken(
         data
     ) {
