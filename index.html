@@ -141,85 +141,6 @@
         rel="stylesheet"
         href="mood.css"
     >
-    <script>
-        (function () {
-            "use strict";
-
-            const USER_KEY = "dheereStudioUser";
-            const TOKEN_KEY = "dheereStudioToken";
-            const GUEST_KEY = "dheereStudioGuest";
-
-            function hasValidStoredSession() {
-                try {
-                    const token =
-                        localStorage.getItem(TOKEN_KEY);
-
-                    const rawUser =
-                        localStorage.getItem(USER_KEY);
-
-                    if (!token || !rawUser) {
-                        return false;
-                    }
-
-                    const user =
-                        JSON.parse(rawUser);
-
-                    return Boolean(user);
-                } catch {
-                    return false;
-                }
-            }
-
-            function isGuestSession() {
-                try {
-                    return (
-                        sessionStorage.getItem(GUEST_KEY) ===
-                        "true"
-                    );
-                } catch {
-                    return false;
-                }
-            }
-
-            function goToLogin() {
-                window.location.replace(
-                    "auth/login.html?from=index"
-                );
-            }
-
-            (function initializeAuthentication() {
-                try {
-                    if (
-                        !hasValidStoredSession() &&
-                        !isGuestSession()
-                    ) {
-                        document.documentElement.classList.add(
-                            "auth-gate-pending"
-                        );
-
-                        goToLogin();
-                    }
-                } catch (error) {
-                    console.error(
-                        "Authentication entry gate error:",
-                        error
-                    );
-
-                    if (
-                        !hasValidStoredSession() &&
-                        !isGuestSession()
-                    ) {
-                        document.documentElement.classList.add(
-                            "auth-gate-pending"
-                        );
-
-                        goToLogin();
-                    }
-                }
-            })();
-        })();
-    </script>
-
     <script
         src="mood-engine.js"
         defer
@@ -1593,6 +1514,11 @@
 
 </style>
 
+    <link
+        rel="stylesheet"
+        href="homepage-redesign.css"
+    >
+
 </head>
 
 
@@ -1981,25 +1907,52 @@
 
                 <div class="hero-content">
 
+                    <p class="hero-eyebrow">
+                        Independent creative studio · India
+                    </p>
+
                     <h1 id="hero-title">
-                        Welcome to Dheere Studio
+                        Worlds made slowly.<br>
+                        Stories that outlast the moment.
                     </h1>
 
 
                     <p>
-                        Dheere Studio is an independent creative
-                        studio building original stories, worlds,
-                        and experiences across different forms
-                        of media.
+                        Dheere Studio is a home for original fiction,
+                        worldbuilding, and experiences built with patience—
+                        beginning with Shunyavas.
                     </p>
 
+                    <div class="hero-actions">
+                        <a
+                            href="shunyavas.html"
+                            class="button hero-primary"
+                        >
+                            Enter Shunyavas <span aria-hidden="true">↗</span>
+                        </a>
 
-                    <a
-                        href="#projects"
-                        class="button"
-                    >
-                        Explore Work
-                    </a>
+                        <a
+                            href="#projects"
+                            class="hero-secondary"
+                        >
+                            Explore the studio <span aria-hidden="true">↓</span>
+                        </a>
+                    </div>
+
+                    <ul class="hero-meta" aria-label="Dheere Studio highlights">
+                        <li>
+                            <span>Flagship universe</span>
+                            <strong>Shunyavas</strong>
+                        </li>
+                        <li>
+                            <span>In development</span>
+                            <strong>Web novel</strong>
+                        </li>
+                        <li>
+                            <span>Long view</span>
+                            <strong>Multi-format world</strong>
+                        </li>
+                    </ul>
 
                 </div>
 
@@ -2016,16 +1969,18 @@
                 aria-labelledby="founder-title"
             >
 
-                <h2 id="founder-title">
-                    Meet the Founder
-                </h2>
+                    <p class="section-kicker">The human behind the worlds</p>
+
+                    <h2 id="founder-title">
+                        Made with patience, not content churn.
+                    </h2>
 
 
                 <div class="founder-card">
 
 
                     <span class="category">
-                        The Person Behind Dheere Studio
+                        Founder’s note
                     </span>
 
 
@@ -2035,18 +1990,16 @@
 
 
                     <p>
-                        Dheere Studio was founded with a long-term vision:
-                        to build original stories, develop their worlds
-                        carefully, and eventually take them across
-                        different creative forms.
+                        Dheere Studio began with a long-term ambition:
+                        build original stories, let their worlds grow with care,
+                        and give them room to become more than a single format.
                     </p>
 
 
                     <p>
-                        The goal isn't to chase short-term attention.
-                        It is to create something that can grow over time—
-                        from stories and worlds to larger creative
-                        experiences.
+                        The aim is not to chase the next scroll. It is to make
+                        worlds people can return to—through stories, characters,
+                        art, and eventually larger creative experiences.
                     </p>
 
 
@@ -2099,12 +2052,12 @@
                          ================================================= -->
 
                     <article
-                        class="project-card"
+                        class="project-card project-card--shunyavas"
                         aria-labelledby="project-shunyavas-title"
                     >
 
                         <span class="category">
-                            Major Original IP
+                            Flagship universe · 01
                         </span>
 
 
@@ -2114,16 +2067,22 @@
 
 
                         <p>
-                            An original fantasy universe currently
-                            in development.
+                            An original fantasy universe of myth, power,
+                            memory, civilization, and the unknown spaces
+                            between existence and the void.
                         </p>
+
+                        <div class="project-card__meta" aria-label="Shunyavas details">
+                            <span>Web novel</span>
+                            <span>World architecture</span>
+                        </div>
 
 
                         <a
                             href="shunyavas.html"
                             aria-label="View details about Shunyavas"
                         >
-                            View Details &rarr;
+                            Enter the world <span aria-hidden="true">↗</span>
                         </a>
 
                     </article>
@@ -2134,12 +2093,12 @@
                          ================================================= -->
 
                     <article
-                        class="project-card"
+                        class="project-card project-card--owlman"
                         aria-labelledby="project-owlman-title"
                     >
 
                         <span class="category">
-                            Second Major Original IP
+                            Original IP · 02
                         </span>
 
 
@@ -2149,16 +2108,22 @@
 
 
                         <p>
-                            A second major original IP currently
-                            in development at Dheere Studio.
+                            A second original universe taking shape at
+                            Dheere Studio—built for a story, a world,
+                            and everything that might follow.
                         </p>
+
+                        <div class="project-card__meta" aria-label="OWLMAN details">
+                            <span>Original IP</span>
+                            <span>In development</span>
+                        </div>
 
 
                         <a
                             href="owlman.html"
                             aria-label="View details about OWLMAN"
                         >
-                            View Details &rarr;
+                            Discover OWLMAN <span aria-hidden="true">↗</span>
                         </a>
 
                     </article>

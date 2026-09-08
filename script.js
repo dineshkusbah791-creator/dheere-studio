@@ -285,7 +285,7 @@ function updateHomepagePersonalization() {
      */
 
     const publicTitle =
-        'Welcome to Dheere Studio';
+        'Worlds made slowly. Stories that outlast the moment.';
 
 
     /*
