@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-dheere-mood-page="advanced">
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" >
@@ -5737,20 +5737,55 @@
                 Back to Dheere Studio
             </a>
 <!-- ================================================= HEADER ================================================= -->
-            <header class="mood-header">
-                <span class="mood-eyebrow">
-                    Dheere Studio
-                </span>
-                <h1>
-                    Dheere Mood
-                </h1>
-                <p>
-                    Choose the atmosphere of the studio.
-                    Each mood changes the visual character
-                    of Dheere Studio while preserving its
-                    core identity.
-                </p>
+            <header class="mood-header mood-header-advanced">
+                <div class="mood-header-topline">
+                    <span class="mood-eyebrow">
+                        Dheere Studio / Atmosphere System
+                    </span>
+                    <span class="mood-header-count" aria-label="Nine atmospheres available">
+                        09 atmospheres
+                    </span>
+                </div>
+                <h1>Dheere Mood</h1>
+                <div class="mood-header-grid">
+                    <p>
+                        Choose the atmosphere of the studio.
+                        Each mood changes the visual character
+                        of Dheere Studio while preserving its
+                        core identity.
+                    </p>
+                    <div class="mood-header-note" aria-hidden="true">
+                        <span class="mood-header-note-line"></span>
+                        <span>Same identity. Different atmosphere.</span>
+                    </div>
+                </div>
             </header>
+<section class="mood-hero-cinematic" aria-label="Dheere Mood hero">
+  <div class="mood-hero-copy">
+    <div class="mood-hero-kicker-row"><span class="mood-hero-kicker">DHEERE MOOD</span><span class="mood-hero-rule" aria-hidden="true"></span><span class="mood-hero-mode">LIVE ATMOSPHERE</span></div>
+    <div class="mood-hero-title-row"><div><span class="mood-hero-overline">The atmosphere you are in</span><h2 id="moodHeroTitle">Original</h2></div><span class="mood-hero-index" id="moodHeroIndex">01</span></div>
+    <p class="mood-hero-description" id="moodHeroDescription">Quiet, precise and deliberately minimal.</p>
+    <div class="mood-hero-tags" id="moodHeroTags" aria-label="Atmosphere qualities"><span>Quiet</span><span>Precise</span><span>Minimal</span></div>
+    <div class="mood-hero-footer"><span class="mood-hero-prompt"><span class="mood-hero-dot" aria-hidden="true"></span><span id="moodHeroPrompt">Your studio begins here.</span></span><span class="mood-hero-control"><kbd>↑</kbd><kbd>↓</kbd> change <kbd>Enter</kbd> select</span></div>
+  </div>
+  <div class="mood-hero-stage" id="moodHeroStage" aria-hidden="true"><div class="mood-hero-stage-glow"></div><div class="mood-hero-stage-frame"><div class="mood-hero-stage-inner" id="moodHeroPreview"></div><div class="mood-hero-stage-caption"><span id="moodHeroCaption">01 / ORIGINAL</span><span>ATMOSPHERE STUDY</span></div></div></div>
+</section>
+<!-- ================================================= MOOD STATUS ================================================= -->
+            <section class="mood-status" aria-live="polite" aria-label="Current mood status">
+                <div class="mood-status-main">
+                    <span class="mood-status-label">Active atmosphere</span>
+                    <strong id="moodLiveName">Original</strong>
+                </div>
+                <div class="mood-status-detail">
+                    <span id="moodLiveIndex">01 / ORIGINAL</span>
+                    <span class="mood-status-separator" aria-hidden="true"></span>
+                    <span id="moodLiveHint">Quiet, precise and deliberately minimal.</span>
+                </div>
+                <div class="mood-status-key">
+                    <span>Enter</span>
+                    <span>Select</span>
+                </div>
+            </section>
 <!-- ================================================= MOOD GRID ================================================= -->
 <section class="mood-grid" aria-label="Choose a mood" >
 <!-- ================================================= 01 — ORIGINAL ================================================= -->
@@ -5775,6 +5810,7 @@
                             The core Dheere atmosphere.
                             Quiet, precise and deliberately minimal.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Quiet</span><span>Precise</span><span>Minimal</span></div>
                     </div>
                 </button>
 <!-- ================================================= 02 — FOREST ================================================= -->
@@ -5803,6 +5839,7 @@
                             Deep foliage, soft mist and slow
                             organic movement through the scene.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Organic</span><span>Mist</span><span>Slow</span></div>
                     </div>
                 </button>
 <!-- ================================================= 03 — OCEAN ================================================= -->
@@ -5831,6 +5868,7 @@
                             Blue depth, shifting light and slow
                             movement beneath a quiet surface.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Fluid</span><span>Deep</span><span>Calm</span></div>
                     </div>
                 </button>
 <!-- ================================================= 04 — EMBER ================================================= -->
@@ -5858,6 +5896,7 @@
                             Low warm light, restrained heat and
                             sparse sparks rising into darkness.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Warm</span><span>Low light</span><span>Ember</span></div>
                     </div>
                 </button>
 <!-- ================================================= 05 — MIDNIGHT ================================================= -->
@@ -5883,6 +5922,7 @@
                             Deep indigo night, soft moonlight and
                             distant stars in a quiet atmosphere.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Cinematic</span><span>Moonlight</span><span>Still</span></div>
                     </div>
                 </button>
 <!-- ================================================= 06 — PRISM ================================================= -->
@@ -5910,6 +5950,7 @@
                             Refracted light moving quietly through
                             a restrained and luminous spectrum.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Spectrum</span><span>Refraction</span><span>Luminous</span></div>
                     </div>
                 </button>
 <!-- ================================================= 07 — DESERT ================================================= -->
@@ -5958,6 +5999,7 @@
                             Layered dunes, dry wind and drifting
                             sand moving across a vast desert horizon.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Registaan</span><span>Horizon</span><span>Dry wind</span></div>
                     </div>
                 </button>
 <!-- ================================================= 08 — MONSOON ================================================= -->
@@ -5995,6 +6037,7 @@
                             Heavy rain, storm wind, wet ground and
                             countless drops moving through the atmosphere.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Storm</span><span>Rain</span><span>Atmosphere</span></div>
                     </div>
                 </button>
 <!-- ================================================= 09 — WINTER ================================================= -->
@@ -6036,23 +6079,60 @@
                             Falling snow, visible ice crystals, cold wind
                             and a frozen atmosphere in constant motion.
                         </p>
+                        <div class="mood-card-meta" aria-hidden="true"><span>Ice storm</span><span>Frost</span><span>Cold</span></div>
                     </div>
                 </button>
             </section>
 <!-- ================================================= FOOTER ================================================= -->
-            <footer class="mood-footer">
-                <span>
-                    Dheere Mood changes the visual atmosphere
-                    of Dheere Studio.
-                </span>
-                <span>
-                    <strong>
-                        Your choice is saved.
-                    </strong>
+            <footer class="mood-footer mood-footer-advanced">
+                <span>Dheere Mood changes the visual atmosphere of Dheere Studio.</span>
+                <span class="mood-footer-right">
+                    <span class="mood-footer-dot" aria-hidden="true"></span>
+                    <strong id="moodFooterState">Your choice is saved.</strong>
                 </span>
             </footer>
         </div>
     </main>
+    <style>
+
+        /* =====================================================
+           DHEERE MOOD — ADVANCED UI POLISH
+           UI-only layer. Existing preview animation/keyframes and
+           existing mood runtime remain unchanged.
+           ===================================================== */
+        .mood-header-advanced{position:relative}
+        .mood-header-topline{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:18px}
+        .mood-header-count{color:#555e6b;font-size:.58rem;font-weight:650;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+        .mood-header-grid{display:grid;grid-template-columns:minmax(0,1fr) 220px;align-items:end;gap:42px}
+        .mood-header-note{display:flex;align-items:center;gap:12px;align-self:end;padding-bottom:4px;color:#5f6875;font-size:.62rem;line-height:1.45;letter-spacing:.015em}
+        .mood-header-note-line{flex:0 0 28px;height:1px;background:rgba(255,255,255,.18)}
+        .mood-status{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:22px;min-height:66px;margin:0 0 18px;padding:0 18px;border:1px solid rgba(255,255,255,.055);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.026),rgba(255,255,255,.012));box-shadow:inset 0 1px 0 rgba(255,255,255,.026)}
+        .mood-status-main,.mood-status-detail{display:flex;align-items:center;min-width:0}
+        .mood-status-main{gap:12px}
+        .mood-status-label{color:#596270;font-size:.54rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;white-space:nowrap}
+        #moodLiveName{color:#eef1f4;font-size:.84rem;font-weight:600;letter-spacing:-.012em;white-space:nowrap}
+        .mood-status-detail{gap:12px;overflow:hidden;color:#6c7582;font-size:.62rem;letter-spacing:.01em}
+        #moodLiveIndex{flex:0 0 auto;color:#858e9b;font-weight:650;letter-spacing:.1em;white-space:nowrap}
+        #moodLiveHint{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .mood-status-separator{width:1px;height:13px;flex:0 0 auto;background:rgba(255,255,255,.09)}
+        .mood-status-key{display:inline-flex;align-items:center;gap:7px;color:#596270;font-size:.55rem;white-space:nowrap}
+        .mood-status-key span:first-child{display:inline-flex;align-items:center;justify-content:center;min-width:39px;height:22px;padding:0 7px;border:1px solid rgba(255,255,255,.07);border-bottom-color:rgba(255,255,255,.12);border-radius:6px;background:rgba(255,255,255,.024);color:#7d8794;font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+        .mood-card-content{display:flex;flex-direction:column;min-height:104px}
+        .mood-card-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.045);opacity:.88}
+        .mood-card-meta span{color:color-mix(in srgb,var(--copy,#9da6b1) 78%,#fff 22%);font-size:.51rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+        .mood-card-meta span+span::before{content:"·";margin-right:7px;color:rgba(255,255,255,.18)}
+        .mood-card{transition:transform .62s cubic-bezier(.22,1,.36,1),border-color .58s ease,box-shadow .75s cubic-bezier(.22,1,.36,1),background .75s ease,filter .75s cubic-bezier(.22,1,.36,1)}
+        .mood-card:hover{filter:saturate(1.025) brightness(1.012)}
+        .mood-card.active .mood-card-meta{opacity:1}
+        .mood-card.active .mood-card-meta span{color:color-mix(in srgb,var(--accent,#edf0f3) 76%,#fff 24%)}
+        .mood-card:active{transform:translate3d(0,-2px,0) scale(.998)}
+        .mood-footer-advanced{align-items:center;gap:16px}
+        .mood-footer-right{display:inline-flex;align-items:center;gap:8px}
+        .mood-footer-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.28);box-shadow:0 0 10px rgba(255,255,255,.08)}
+        @media (max-width:840px){.mood-header-grid{grid-template-columns:1fr;gap:16px}.mood-header-note{display:none}.mood-status{grid-template-columns:auto minmax(0,1fr)}.mood-status-key{display:none}}
+        @media (max-width:600px){.mood-header-topline{margin-bottom:14px}.mood-header-count{font-size:.50rem}.mood-status{gap:10px;min-height:60px;padding:0 14px}.mood-status-main{gap:9px}.mood-status-detail{gap:8px}.mood-status-separator{display:none}#moodLiveHint{display:none}.mood-card-meta{margin-top:12px;padding-top:9px}.mood-footer-advanced{align-items:flex-start}}
+        @media (prefers-reduced-motion:reduce){.mood-card,.mood-card:hover,.mood-card:active{filter:none !important}}
+    </style>
     <script>
         /* =====================================================
            DHEERE MOOD — PERFORMANCE PROFILE
@@ -6320,5 +6400,769 @@
             }
         );
     </script>
+
+    <script>
+        /* =====================================================
+           DHEERE MOOD — ADVANCED UI SYNC
+           UI-only companion; existing animation engine is untouched.
+           ===================================================== */
+        (function(){
+            "use strict";
+            const names={original:"Original",forest:"Forest",ocean:"Ocean",ember:"Ember",midnight:"Midnight",prism:"Prism",desert:"Desert",monsoon:"Monsoon",winter:"Winter"};
+            const indexes={original:"01 / ORIGINAL",forest:"02 / ORGANIC",ocean:"03 / FLUID",ember:"04 / WARM",midnight:"05 / CINEMATIC",prism:"06 / SPECTRUM",desert:"07 / REGISTAAN",monsoon:"09 / STORM",winter:"10 / ICE STORM"};
+            const hints={original:"Quiet, precise and deliberately minimal.",forest:"Deep foliage, soft mist and slow organic movement.",ocean:"Blue depth, shifting light and slow surface movement.",ember:"Low warm light, restrained heat and sparse sparks.",midnight:"Deep indigo night, soft moonlight and distant stars.",prism:"Refracted light moving quietly through a luminous spectrum.",desert:"Layered dunes, dry wind and a vast desert horizon.",monsoon:"Heavy rain, storm wind and a wet atmospheric surface.",winter:"Falling snow, ice crystals, cold wind and frozen depth."};
+            const liveName=document.getElementById("moodLiveName");
+            const liveIndex=document.getElementById("moodLiveIndex");
+            const liveHint=document.getElementById("moodLiveHint");
+            const footerState=document.getElementById("moodFooterState");
+            function readMood(){try{const saved=localStorage.getItem("dheereMood");return names[saved]?saved:"original"}catch(error){return "original"}}
+            function update(mood){const safe=names[mood]?mood:"original";if(liveName)liveName.textContent=names[safe];if(liveIndex)liveIndex.textContent=indexes[safe];if(liveHint)liveHint.textContent=hints[safe];if(footerState)footerState.textContent="Your choice is saved."}
+            function sync(){const active=document.querySelector('.mood-card[aria-pressed="true"]');update(active&&active.dataset.mood?active.dataset.mood:readMood())}
+            document.querySelectorAll(".mood-card").forEach(function(card){card.addEventListener("click",function(){const mood=card.dataset.mood;if(!mood)return;window.setTimeout(function(){update(mood)},20)})});
+            update(readMood());
+            document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")window.setTimeout(sync,30)});
+        })();
+    </script>
+
+<style id="dheere-mood-grand-overrides">
+/* =========================================================
+   DHEERE MOOD — GRAND POLISH PASS
+   Existing animation keyframes are intentionally untouched.
+   This layer improves scale, depth, lighting and hierarchy.
+   ========================================================= */
+
+.mood-page{
+  padding-top: clamp(78px, 8vw, 118px) !important;
+  padding-bottom: clamp(72px, 8vw, 110px) !important;
+  background:
+    radial-gradient(circle at 50% -12%, rgba(255,255,255,.045), transparent 34%),
+    radial-gradient(circle at 4% 72%, rgba(255,255,255,.012), transparent 28%),
+    linear-gradient(180deg,#07080a 0%,#090b0e 48%,#07080a 100%) !important;
+}
+
+.mood-container{width:min(100%,1180px) !important}
+
+.mood-back{
+  margin-bottom:clamp(54px,7vw,92px) !important;
+  color:#707987 !important;
+}
+
+.mood-header{
+  max-width:930px !important;
+  margin-bottom:38px !important;
+}
+
+.mood-header-topline{
+  margin-bottom:22px !important;
+}
+
+.mood-header h1{
+  font-size:clamp(4.4rem,9.4vw,8.5rem) !important;
+  line-height:.79 !important;
+  letter-spacing:-.082em !important;
+  font-weight:480 !important;
+  text-shadow:0 18px 55px rgba(0,0,0,.28);
+}
+
+.mood-header-grid{
+  margin-top:28px !important;
+  grid-template-columns:minmax(0,1.35fr) minmax(210px,.65fr) !important;
+  gap:44px !important;
+  align-items:end !important;
+}
+
+.mood-header-grid p{
+  max-width:720px !important;
+  font-size:1rem !important;
+  line-height:1.9 !important;
+  color:#9da6b3 !important;
+}
+
+.mood-header-note{
+  justify-self:end;
+  max-width:260px;
+  color:#6d7784 !important;
+  line-height:1.6 !important;
+}
+
+.mood-header-note-line{
+  width:100%;
+  margin-bottom:10px !important;
+  background:linear-gradient(90deg,rgba(255,255,255,.20),transparent) !important;
+}
+
+.mood-status{
+  min-height:68px !important;
+  margin-bottom:30px !important;
+  padding:0 18px !important;
+  border-color:rgba(255,255,255,.095) !important;
+  background:
+    linear-gradient(120deg,rgba(255,255,255,.048),rgba(255,255,255,.015) 58%,rgba(0,0,0,.07)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 18px 55px rgba(0,0,0,.14) !important;
+}
+
+.mood-grid{
+  gap:20px !important;
+}
+
+.mood-card{
+  min-height:392px !important;
+  padding:27px !important;
+  border-radius:22px !important;
+  border-color:rgba(255,255,255,.072) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.028),
+    inset 0 -1px 0 rgba(0,0,0,.11),
+    0 22px 60px rgba(0,0,0,.16) !important;
+  background:
+    linear-gradient(155deg,rgba(255,255,255,.025),rgba(255,255,255,.008) 55%,rgba(0,0,0,.12)) !important;
+}
+
+.mood-card.wide{
+  min-height:430px !important;
+}
+
+.mood-card::before{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.045),transparent 25%,transparent 72%,rgba(255,255,255,.006)) !important;
+  opacity:.92 !important;
+}
+
+.mood-card::after{
+  width:520px !important;
+  height:340px !important;
+  top:-245px !important;
+  right:-185px !important;
+  opacity:.30 !important;
+  filter:blur(42px) !important;
+}
+
+.mood-card:hover::after{
+  opacity:.54 !important;
+}
+
+.mood-card:hover{
+  transform:translate3d(0,-6px,0) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 34px 90px rgba(0,0,0,.22) !important;
+}
+
+.mood-preview{
+  height:196px !important;
+  margin:18px 0 25px !important;
+  border-radius:16px !important;
+  border-color:rgba(255,255,255,.05) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.026),
+    inset 0 -18px 34px rgba(0,0,0,.10),
+    0 12px 34px rgba(0,0,0,.13) !important;
+}
+
+/* ---------- 01 ORIGINAL ---------- */
+.mood-original .mood-preview{
+  background:
+    radial-gradient(ellipse at 73% 31%, rgba(255,255,255,.13), transparent 19%),
+    radial-gradient(ellipse at 22% 83%, rgba(255,255,255,.025), transparent 32%),
+    linear-gradient(180deg,#17191c 0%,#111316 48%,#0b0d10 100%) !important;
+}
+.mood-original .mood-preview::before{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 34%,transparent 65%,rgba(0,0,0,.23)),
+    linear-gradient(90deg,transparent 0 11%,rgba(255,255,255,.025) 31%,transparent 54%,rgba(255,255,255,.018) 74%,transparent 90%) !important;
+}
+.mood-original .mood-preview::after{
+  background:
+    radial-gradient(ellipse at 68% 42%,transparent 0 15%,rgba(0,0,0,.03) 37%,rgba(0,0,0,.42) 100%) !important;
+}
+.mood-original .original-horizon{
+  top:61% !important;
+  left:8% !important;
+  right:8% !important;
+  opacity:.75 !important;
+  box-shadow:0 0 24px rgba(255,255,255,.055) !important;
+}
+.mood-original .original-orb{
+  width:62px !important;
+  height:62px !important;
+  right:16% !important;
+  box-shadow:
+    0 0 35px rgba(255,255,255,.07),
+    0 0 85px rgba(255,255,255,.035) !important;
+}
+
+/* ---------- 02 FOREST ---------- */
+.mood-forest .mood-preview{
+  background:
+    radial-gradient(ellipse at 51% 39%,rgba(111,173,118,.16),transparent 25%),
+    linear-gradient(180deg,#0b1a10 0%,#07130c 47%,#040b07 100%) !important;
+}
+.mood-forest .mood-preview::before{
+  background:
+    radial-gradient(ellipse at 50% 42%,rgba(190,225,190,.09),transparent 27%),
+    linear-gradient(180deg,rgba(255,255,255,.018),transparent 30%,rgba(0,0,0,.28) 100%) !important;
+}
+.mood-forest .mood-preview::after{
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.34),transparent 20%,transparent 77%,rgba(0,0,0,.38)),
+    radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.23) 100%) !important;
+}
+.mood-forest .forest-canopy{
+  height:105px !important;
+  opacity:.92 !important;
+  filter:blur(.25px) !important;
+  transform:scale(1.12) !important;
+}
+.mood-forest .forest-depth{
+  left:4% !important;
+  right:4% !important;
+  bottom:18px !important;
+  height:72px !important;
+  opacity:.95 !important;
+  filter:blur(5px) !important;
+}
+.mood-forest .forest-haze{
+  height:82px !important;
+  bottom:0 !important;
+  opacity:.82 !important;
+  filter:blur(13px) !important;
+}
+.mood-forest .forest-leaf{
+  opacity:.48 !important;
+  filter:blur(.1px) !important;
+}
+
+/* ---------- 03 OCEAN ---------- */
+.mood-ocean .mood-preview{
+  background:
+    linear-gradient(180deg,#0a1c2d 0%,#07131f 43%,#041019 64%,#030b12 100%) !important;
+}
+.mood-ocean .mood-preview::before{
+  background:
+    linear-gradient(180deg,rgba(153,212,255,.055),transparent 28%,transparent 63%,rgba(0,0,0,.30)),
+    linear-gradient(90deg,transparent 0 14%,rgba(255,255,255,.015) 45%,transparent 78%) !important;
+}
+.mood-ocean .mood-preview::after{
+  background:
+    radial-gradient(ellipse at 52% 42%,transparent 0 18%,rgba(0,0,0,.10) 47%,rgba(0,0,0,.38) 100%) !important;
+}
+.mood-ocean .ocean-depth{
+  opacity:.88 !important;
+  background:
+    linear-gradient(180deg,rgba(118,190,241,.08),rgba(24,77,117,.05) 38%,transparent 56%,rgba(0,0,0,.30) 100%) !important;
+}
+.mood-ocean .ocean-light{
+  width:125px !important;
+  height:235px !important;
+  top:-34% !important;
+  opacity:.80 !important;
+  filter:blur(18px) !important;
+}
+.mood-ocean .ocean-wave{
+  height:44px !important;
+  border-top-width:1.5px !important;
+  box-shadow:0 -5px 24px rgba(95,176,240,.035) !important;
+}
+.mood-ocean .ocean-glow{
+  width:330px !important;
+  height:145px !important;
+  filter:blur(22px) !important;
+  opacity:.82 !important;
+}
+
+/* ---------- 04 EMBER ---------- */
+.mood-ember .mood-preview{
+  background:
+    radial-gradient(ellipse at 50% 88%,rgba(232,84,54,.18),transparent 33%),
+    linear-gradient(180deg,#170b09 0%,#100706 54%,#090403 100%) !important;
+}
+.mood-ember .mood-preview::before{
+  background:
+    linear-gradient(180deg,rgba(255,193,148,.025),transparent 28%,transparent 60%,rgba(0,0,0,.28)),
+    radial-gradient(ellipse at 50% 88%,rgba(255,122,77,.055),transparent 34%) !important;
+}
+.mood-ember .mood-preview::after{
+  background:
+    radial-gradient(ellipse at 50% 86%,transparent 0 15%,rgba(0,0,0,.08) 38%,rgba(0,0,0,.42) 100%) !important;
+}
+.mood-ember .ember-heat{
+  width:420px !important;
+  height:235px !important;
+  bottom:-142px !important;
+  filter:blur(24px) !important;
+  opacity:.96 !important;
+}
+.mood-ember .ember-line{
+  left:10% !important;
+  right:10% !important;
+  bottom:23% !important;
+  box-shadow:0 0 25px rgba(247,116,75,.06) !important;
+}
+.mood-ember .ember-spark{
+  box-shadow:
+    0 0 8px rgba(244,95,60,.72),
+    0 0 22px rgba(244,95,60,.12) !important;
+}
+
+/* ---------- 05 MIDNIGHT ---------- */
+.mood-midnight .mood-preview{
+  background:
+    radial-gradient(ellipse at 61% 34%,rgba(101,91,178,.15),transparent 25%),
+    linear-gradient(180deg,#0b0a17 0%,#090813 42%,#05050b 100%) !important;
+}
+.mood-midnight .mood-preview::before{
+  background:
+    radial-gradient(ellipse at 70% 29%,rgba(220,216,255,.035),transparent 23%),
+    linear-gradient(180deg,rgba(255,255,255,.02),transparent 27%,rgba(0,0,0,.24) 100%) !important;
+}
+.mood-midnight .mood-preview::after{
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.30),transparent 25%,transparent 72%,rgba(0,0,0,.34)),
+    radial-gradient(ellipse at 67% 35%,transparent 0 18%,rgba(0,0,0,.08) 44%,rgba(0,0,0,.40) 100%) !important;
+}
+.mood-midnight .midnight-sky{
+  opacity:.95 !important;
+  transform:scale(1.08) !important;
+}
+.mood-midnight .midnight-haze{
+  width:470px !important;
+  height:125px !important;
+  bottom:-36px !important;
+  filter:blur(18px) !important;
+  opacity:.72 !important;
+}
+.mood-midnight .midnight-moon{
+  width:76px !important;
+  height:76px !important;
+  top:40% !important;
+  right:15% !important;
+  box-shadow:
+    0 0 45px rgba(184,175,248,.20),
+    0 0 110px rgba(127,112,220,.11) !important;
+}
+
+/* Make the lower, already-rich seasonal previews feel like the same
+   premium system without changing their animation behavior. */
+.mood-card:nth-child(n+6) .mood-preview{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -22px 38px rgba(0,0,0,.12),
+    0 12px 34px rgba(0,0,0,.13) !important;
+}
+
+.mood-card-meta{
+  opacity:.82 !important;
+}
+
+.mood-card-meta span{
+  border-color:rgba(255,255,255,.07) !important;
+  background:rgba(255,255,255,.018) !important;
+}
+
+.mood-footer{
+  margin-top:34px !important;
+  padding-top:23px !important;
+  border-top-color:rgba(255,255,255,.055) !important;
+}
+
+@media (max-width:840px){
+  .mood-header-grid{grid-template-columns:1fr !important;gap:18px !important}
+  .mood-header-note{justify-self:start !important}
+  .mood-card{min-height:340px !important}
+  .mood-preview{height:170px !important}
+}
+
+@media (max-width:600px){
+  .mood-page{padding-top:62px !important}
+  .mood-header h1{font-size:clamp(3.8rem,17vw,5.8rem) !important}
+  .mood-header-grid{margin-top:20px !important}
+  .mood-status{min-height:62px !important}
+  .mood-card{min-height:316px !important;padding:21px !important;border-radius:18px !important}
+  .mood-preview{height:138px !important}
+}
+</style>
+
+<style id="dheere-mood-hero-v3">
+.mood-hero-cinematic{position:relative;display:grid;grid-template-columns:minmax(0,.94fr) minmax(420px,1.06fr);min-height:560px;margin:0 0 34px;overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:30px;background:radial-gradient(circle at 78% 18%,rgba(255,255,255,.055),transparent 25%),linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012) 50%,rgba(0,0,0,.18));box-shadow:0 42px 110px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.045),inset 0 -1px 0 rgba(0,0,0,.24);isolation:isolate}
+.mood-hero-cinematic::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(90deg,rgba(6,7,9,.98) 0%,rgba(6,7,9,.88) 39%,rgba(6,7,9,.18) 71%,rgba(6,7,9,0) 100%),linear-gradient(180deg,rgba(255,255,255,.018),transparent 25%,rgba(0,0,0,.2) 100%)}
+.mood-hero-copy{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:42px 40px 34px}
+.mood-hero-kicker-row{display:flex;align-items:center;gap:12px;color:#69727e;font-size:.54rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.mood-hero-rule{width:42px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.24),transparent)}.mood-hero-mode{color:#4f5864}
+.mood-hero-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:64px}.mood-hero-overline{display:block;margin-bottom:12px;color:#626b77;font-size:.57rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.mood-hero-title-row h2{margin:0;color:#f2f0ea;font-family:Georgia,"Times New Roman",serif;font-size:clamp(4rem,6vw,6.6rem);font-weight:400;line-height:.84;letter-spacing:-.065em}.mood-hero-index{padding-bottom:5px;color:#808894;font-size:.64rem;font-weight:700;letter-spacing:.16em}
+.mood-hero-description{max-width:520px;margin:30px 0 16px;color:#a8afb8;font-size:1rem;line-height:1.8}.mood-hero-tags{display:flex;flex-wrap:wrap;gap:8px}.mood-hero-tags span{padding:7px 10px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:rgba(255,255,255,.02);color:#7f8792;font-size:.52rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+.mood-hero-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:40px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);color:#58616d}.mood-hero-prompt{display:inline-flex;align-items:center;gap:9px;font-size:.58rem;letter-spacing:.06em}.mood-hero-dot{width:6px;height:6px;border-radius:50%;background:#d2c093;box-shadow:0 0 0 5px rgba(210,192,147,.06),0 0 14px rgba(210,192,147,.16)}.mood-hero-control{font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}.mood-hero-control kbd{display:inline-flex;align-items:center;justify-content:center;min-width:21px;height:21px;margin:0 2px;border:1px solid rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.14);border-radius:5px;background:rgba(255,255,255,.025);color:#78818c;font-size:.50rem;font-family:inherit}
+.mood-hero-stage{position:relative;min-width:0;display:flex;align-items:stretch;padding:18px 18px 18px 0}.mood-hero-stage-glow{position:absolute;inset:5% 4% 6% 0;pointer-events:none;background:radial-gradient(ellipse at 55% 48%,rgba(255,255,255,.06),transparent 46%);filter:blur(28px);opacity:.9}.mood-hero-stage-frame{position:relative;width:100%;min-width:0;overflow:hidden;border:1px solid rgba(255,255,255,.075);border-radius:24px;background:#08090b;box-shadow:0 32px 80px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04)}.mood-hero-stage-frame::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.035),transparent 18%,transparent 78%,rgba(0,0,0,.22)),linear-gradient(90deg,rgba(0,0,0,.22),transparent 18%,transparent 80%,rgba(0,0,0,.16))}.mood-hero-stage-inner{position:absolute;inset:0;overflow:hidden}.mood-hero-stage-inner > .mood-preview{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important}.mood-hero-stage-caption{position:absolute;left:22px;right:22px;bottom:18px;z-index:6;display:flex;justify-content:space-between;gap:15px;color:rgba(240,238,232,.62);font-size:.48rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase}.mood-hero-stage-caption span:last-child{color:rgba(255,255,255,.25)}
+.mood-hero-cinematic[data-mood="forest"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 44% 45%,rgba(93,128,91,.14),transparent 52%)}.mood-hero-cinematic[data-mood="ocean"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 52% 42%,rgba(74,145,173,.13),transparent 52%)}.mood-hero-cinematic[data-mood="ember"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 52% 58%,rgba(220,83,55,.15),transparent 50%)}.mood-hero-cinematic[data-mood="midnight"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 62% 38%,rgba(106,94,190,.13),transparent 52%)}.mood-hero-cinematic[data-mood="prism"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 55% 44%,rgba(180,163,220,.10),transparent 52%)}.mood-hero-cinematic[data-mood="desert"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 56% 60%,rgba(190,151,88,.13),transparent 52%)}.mood-hero-cinematic[data-mood="monsoon"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 55% 45%,rgba(97,119,145,.12),transparent 52%)}.mood-hero-cinematic[data-mood="winter"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 52% 42%,rgba(150,171,190,.12),transparent 52%)}.mood-hero-cinematic[data-mood="original"] .mood-hero-stage-glow{background:radial-gradient(ellipse at 60% 46%,rgba(212,193,142,.10),transparent 52%)}
+@media (max-width:900px){.mood-hero-cinematic{grid-template-columns:1fr;min-height:0}.mood-hero-copy{padding:34px 30px 26px}.mood-hero-title-row{margin-top:42px}.mood-hero-stage{height:min(62vw,430px);padding:0 18px 18px}.mood-hero-stage-frame{min-height:360px}.mood-hero-cinematic::before{background:linear-gradient(180deg,rgba(6,7,9,.96),rgba(6,7,9,.74) 30%,rgba(6,7,9,.1) 68%,rgba(6,7,9,0) 100%)}}
+@media (max-width:600px){.mood-hero-cinematic{margin-bottom:24px;border-radius:22px}.mood-hero-copy{padding:25px 22px 20px}.mood-hero-title-row{margin-top:34px}.mood-hero-title-row h2{font-size:clamp(3.2rem,16vw,4.9rem)}.mood-hero-description{font-size:.9rem;line-height:1.65;margin-top:22px}.mood-hero-footer{align-items:flex-start;flex-direction:column;gap:10px;margin-top:30px}.mood-hero-control{white-space:normal}.mood-hero-stage{height:58vw;min-height:250px;padding:0 12px 12px}.mood-hero-stage-frame{min-height:0;border-radius:18px}.mood-hero-stage-caption{left:14px;right:14px;bottom:12px}}
+</style>
+<script id="dheere-mood-hero-v3-js">
+(function(){
+  const root=document.querySelector('.mood-hero-cinematic'); const host=document.getElementById('moodHeroPreview'); if(!root||!host)return;
+  const data={original:['Original','Quiet, precise and deliberately minimal.',['Quiet','Precise','Minimal'],'Your studio begins here.'],forest:['Forest','Organic, grounded and quietly alive.',['Organic','Grounded','Alive'],'A slower, greener point of view.'],ocean:['Ocean','Open, fluid and expansive without noise.',['Open','Fluid','Expansive'],'Let the visual field breathe.'],ember:['Ember','Warm, intimate and quietly intense.',['Warm','Intimate','Intense'],'Keep the light close.'],midnight:['Midnight','Deep, reflective and built for stillness.',['Deep','Reflective','Still'],'Some ideas arrive after dark.'],prism:['Prism','Luminous, refracted and slightly unexpected.',['Luminous','Refracted','Curious'],'See the same world at another angle.'],desert:['Desert','Sparse, warm and shaped by distance.',['Sparse','Warm','Wide'],'Space can be a design language.'],monsoon:['Monsoon','Dense, atmospheric and alive with movement.',['Dense','Atmospheric','Alive'],'Listen to the weather between ideas.'],winter:['Winter','Cool, clear and quietly precise.',['Cool','Clear','Precise'],'Keep only what matters.']};
+  const nums={original:'01',forest:'02',ocean:'03',ember:'04',midnight:'05',prism:'06',desert:'07',monsoon:'08',winter:'09'};
+  function update(m){const source=document.querySelector('.mood-card[data-mood="'+m+'"] .mood-preview');if(!source)return;host.replaceChildren(source.cloneNode(true));const d=data[m]||data.original;root.dataset.mood=m;document.getElementById('moodHeroTitle').textContent=d[0];document.getElementById('moodHeroDescription').textContent=d[1];document.getElementById('moodHeroIndex').textContent=nums[m]||'01';document.getElementById('moodHeroPrompt').textContent=d[3];document.getElementById('moodHeroCaption').textContent=(nums[m]||'01')+' / '+d[0].toUpperCase();document.getElementById('moodHeroTags').innerHTML=d[2].map(x=>'<span>'+x+'</span>').join('')}
+  update(localStorage.getItem('dheereMood')||'original');
+  document.addEventListener('click',e=>{const card=e.target.closest('.mood-card[data-mood]');if(card)setTimeout(()=>update(card.dataset.mood),30)},true);
+  addEventListener('storage',e=>{if(e.key==='dheereMood')update(e.newValue||'original')});
+})();
+</script>
+<style id="dheere-mood-hero-v4">
+/* =========================================================
+   DHEERE MOOD — HERO V4 / QUIET CINEMA
+   Compact, editorial, animation-preserving.
+   Existing mood-engine keyframes remain untouched.
+   ========================================================= */
+
+/* ---- PAGE TITLE: smaller, sharper, more authored ---- */
+.mood-page{
+  padding-top:clamp(48px,5vw,72px) !important;
+  padding-bottom:clamp(58px,7vw,88px) !important;
+}
+.mood-back{
+  margin-bottom:clamp(28px,3vw,42px) !important;
+}
+.mood-header{
+  max-width:1060px !important;
+  margin-bottom:22px !important;
+}
+.mood-header-topline{
+  margin-bottom:12px !important;
+}
+.mood-header-eyebrow,
+.mood-eyebrow{
+  letter-spacing:.19em !important;
+}
+.mood-header h1{
+  margin:0 !important;
+  font-size:clamp(3.35rem,7vw,5.45rem) !important;
+  line-height:.86 !important;
+  letter-spacing:-.082em !important;
+  font-weight:500 !important;
+  color:#f1efe9 !important;
+  text-wrap:balance;
+  text-shadow:0 18px 50px rgba(0,0,0,.22) !important;
+}
+.mood-header-grid{
+  margin-top:15px !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  gap:24px !important;
+  align-items:end !important;
+}
+.mood-header-grid p{
+  max-width:590px !important;
+  margin:0 !important;
+  font-size:.82rem !important;
+  line-height:1.72 !important;
+  color:#89929e !important;
+}
+.mood-header-note{
+  max-width:205px !important;
+  padding-bottom:2px;
+  font-size:.5rem !important;
+  letter-spacing:.07em;
+}
+.mood-header-note-line{
+  margin-bottom:7px !important;
+}
+
+/* ---- THE HERO: one restrained cinematic strip, not a giant card ---- */
+.mood-hero-cinematic{
+  position:relative !important;
+  display:grid !important;
+  grid-template-columns:minmax(280px,.82fr) minmax(360px,1.18fr) !important;
+  height:342px !important;
+  min-height:342px !important;
+  margin:0 0 22px !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,255,255,.085) !important;
+  border-radius:20px !important;
+  background:
+    radial-gradient(ellipse at 78% 20%,rgba(255,255,255,.045),transparent 28%),
+    linear-gradient(118deg,rgba(255,255,255,.025),rgba(255,255,255,.01) 52%,rgba(0,0,0,.16)) !important;
+  box-shadow:
+    0 26px 80px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.045),
+    inset 0 -1px 0 rgba(0,0,0,.22) !important;
+  isolation:isolate !important;
+}
+.mood-hero-cinematic::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+  background:
+    linear-gradient(90deg,rgba(6,7,9,.98) 0%,rgba(6,7,9,.89) 32%,rgba(6,7,9,.34) 58%,rgba(6,7,9,.04) 100%),
+    linear-gradient(180deg,rgba(255,255,255,.015),transparent 38%,rgba(0,0,0,.2)) !important;
+}
+.mood-hero-cinematic::after{
+  content:"" !important;
+  position:absolute !important;
+  inset:auto 0 0 !important;
+  height:46px !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.28)) !important;
+}
+
+/* ---- left column ---- */
+.mood-hero-copy{
+  position:relative !important;
+  z-index:3 !important;
+  min-width:0 !important;
+  display:grid !important;
+  grid-template-rows:auto 1fr auto !important;
+  padding:26px 28px 20px !important;
+}
+.mood-hero-kicker-row{
+  gap:9px !important;
+  color:#68717d !important;
+  font-size:.48rem !important;
+  letter-spacing:.19em !important;
+}
+.mood-hero-rule{
+  width:30px !important;
+  opacity:.8;
+}
+.mood-hero-mode{color:#454d58 !important}
+.mood-hero-title-row{
+  align-items:flex-end !important;
+  margin-top:0 !important;
+  padding-bottom:6px !important;
+}
+.mood-hero-overline{
+  margin-bottom:7px !important;
+  color:#565f6b !important;
+  font-size:.47rem !important;
+  letter-spacing:.16em !important;
+}
+.mood-hero-title-row h2{
+  margin:0 !important;
+  font-size:clamp(3rem,4.6vw,4.9rem) !important;
+  line-height:.86 !important;
+  letter-spacing:-.065em !important;
+  color:#f0eee8 !important;
+  text-wrap:balance;
+}
+.mood-hero-index{
+  padding-bottom:3px !important;
+  color:#737c87 !important;
+  font-size:.56rem !important;
+  letter-spacing:.16em !important;
+}
+.mood-hero-description{
+  max-width:410px !important;
+  margin:0 !important;
+  align-self:end !important;
+  padding-bottom:8px !important;
+  color:#949da8 !important;
+  font-size:.74rem !important;
+  line-height:1.6 !important;
+}
+.mood-hero-tags{
+  display:none !important;
+}
+.mood-hero-footer{
+  margin-top:9px !important;
+  padding-top:11px !important;
+  border-top-color:rgba(255,255,255,.055) !important;
+}
+.mood-hero-prompt{
+  max-width:60% !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+  text-overflow:ellipsis !important;
+  font-size:.5rem !important;
+  letter-spacing:.05em !important;
+  color:#606976 !important;
+}
+.mood-hero-dot{
+  width:5px !important;
+  height:5px !important;
+}
+.mood-hero-control{
+  font-size:.46rem !important;
+  letter-spacing:.07em !important;
+  color:#4f5864 !important;
+}
+.mood-hero-control kbd{
+  min-width:19px !important;
+  height:19px !important;
+  font-size:.45rem !important;
+  margin:0 1px !important;
+}
+
+/* ---- right visual: flatter, wider, more cinematic ---- */
+.mood-hero-stage{
+  position:relative !important;
+  min-width:0 !important;
+  padding:12px 12px 12px 0 !important;
+}
+.mood-hero-stage-glow{
+  inset:5% 3% 5% 0 !important;
+  filter:blur(34px) !important;
+  opacity:.72 !important;
+}
+.mood-hero-stage-frame{
+  position:relative !important;
+  width:100% !important;
+  min-width:0 !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+  border-radius:16px !important;
+  background:#08090b !important;
+  box-shadow:
+    0 24px 65px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+.mood-hero-stage-frame::before{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 18%,transparent 72%,rgba(0,0,0,.26)),
+    linear-gradient(90deg,rgba(0,0,0,.18),transparent 18%,transparent 82%,rgba(0,0,0,.11)) !important;
+}
+.mood-hero-stage-inner{
+  position:absolute !important;
+  inset:0 !important;
+  overflow:hidden !important;
+  transition:
+    opacity .46s cubic-bezier(.22,1,.36,1),
+    transform .7s cubic-bezier(.22,1,.36,1),
+    filter .55s cubic-bezier(.22,1,.36,1) !important;
+  will-change:opacity,transform,filter !important;
+}
+.mood-hero-stage-inner.is-switching{
+  opacity:0 !important;
+  transform:scale(1.018) !important;
+  filter:blur(4px) !important;
+}
+.mood-hero-stage-inner > .mood-preview{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  transform:none !important;
+}
+.mood-hero-stage-caption{
+  left:16px !important;
+  right:16px !important;
+  bottom:12px !important;
+  font-size:.43rem !important;
+  letter-spacing:.15em !important;
+}
+
+/* quiet atmospheric lift; no new animation/keyframe */
+.mood-hero-cinematic[data-mood="forest"] .mood-hero-stage-frame{box-shadow:0 24px 65px rgba(0,0,0,.24), inset 0 1px 0 rgba(130,170,125,.05)}
+.mood-hero-cinematic[data-mood="ocean"] .mood-hero-stage-frame{box-shadow:0 24px 65px rgba(0,0,0,.24), inset 0 1px 0 rgba(100,150,180,.06)}
+.mood-hero-cinematic[data-mood="ember"] .mood-hero-stage-frame{box-shadow:0 24px 65px rgba(0,0,0,.24), inset 0 1px 0 rgba(220,125,90,.06)}
+.mood-hero-cinematic[data-mood="midnight"] .mood-hero-stage-frame{box-shadow:0 24px 65px rgba(0,0,0,.24), inset 0 1px 0 rgba(130,120,210,.06)}
+
+/* ---- status becomes a slim signature line ---- */
+.mood-status{
+  min-height:48px !important;
+  margin-bottom:22px !important;
+  padding:0 14px !important;
+  border-radius:11px !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.026) !important;
+  background:rgba(255,255,255,.012) !important;
+}
+.mood-status-label{font-size:.48rem !important}
+.mood-status-detail{font-size:.54rem !important}
+.mood-status-key{font-size:.48rem !important}
+.mood-status-key span:first-child{min-width:34px !important;height:20px !important;font-size:.45rem !important}
+
+@media (max-width:900px){
+  .mood-hero-cinematic{
+    grid-template-columns:minmax(0,.9fr) minmax(300px,1.1fr) !important;
+    height:320px !important;
+    min-height:320px !important;
+  }
+}
+@media (max-width:720px){
+  .mood-header-grid{grid-template-columns:1fr !important;gap:7px !important}
+  .mood-header-note{display:none !important}
+  .mood-hero-cinematic{grid-template-columns:1fr !important;height:420px !important;min-height:420px !important}
+  .mood-hero-copy{padding:22px 22px 14px !important}
+  .mood-hero-stage{padding:0 10px 10px !important;height:auto !important}
+  .mood-hero-title-row h2{font-size:clamp(3rem,13vw,4.3rem) !important}
+}
+@media (max-width:600px){
+  .mood-page{padding-top:44px !important}
+  .mood-header h1{font-size:clamp(3rem,14vw,4rem) !important}
+  .mood-header-grid p{font-size:.76rem !important;line-height:1.62 !important}
+  .mood-hero-cinematic{height:405px !important;min-height:405px !important;border-radius:17px !important}
+  .mood-hero-copy{padding:19px 18px 12px !important}
+  .mood-hero-description{font-size:.69rem !important}
+  .mood-hero-footer{margin-top:6px !important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mood-hero-stage-inner{transition:none !important}
+}
+</style>
+<script id="dheere-mood-hero-v4-js">
+(function(){
+  const root=document.querySelector('.mood-hero-cinematic');
+  const host=document.getElementById('moodHeroPreview');
+  if(!root||!host)return;
+  const data={
+    original:['Original','Quiet, precise and deliberately minimal.',['Quiet','Precise','Minimal'],'Your studio begins here.'],
+    forest:['Forest','Organic, grounded and quietly alive.',['Organic','Grounded','Alive'],'A slower, greener point of view.'],
+    ocean:['Ocean','Open, fluid and expansive without noise.',['Open','Fluid','Expansive'],'Let the visual field breathe.'],
+    ember:['Ember','Warm, intimate and quietly intense.',['Warm','Intimate','Intense'],'Keep the light close.'],
+    midnight:['Midnight','Deep, reflective and built for stillness.',['Deep','Reflective','Still'],'Some ideas arrive after dark.'],
+    prism:['Prism','Luminous, refracted and slightly unexpected.',['Luminous','Refracted','Curious'],'See the same world at another angle.'],
+    desert:['Desert','Sparse, warm and shaped by distance.',['Sparse','Warm','Wide'],'Space can be a design language.'],
+    monsoon:['Monsoon','Dense, atmospheric and alive with movement.',['Dense','Atmospheric','Alive'],'Listen to the weather between ideas.'],
+    winter:['Winter','Cool, clear and quietly precise.',['Cool','Clear','Precise'],'Keep only what matters.']
+  };
+  const nums={original:'01',forest:'02',ocean:'03',ember:'04',midnight:'05',prism:'06',desert:'07',monsoon:'08',winter:'09'};
+  let current='';
+  let token=0;
+  function setText(m){
+    const d=data[m]||data.original, n=nums[m]||'01';
+    root.dataset.mood=m;
+    document.getElementById('moodHeroTitle').textContent=d[0];
+    document.getElementById('moodHeroDescription').textContent=d[1];
+    document.getElementById('moodHeroIndex').textContent=n;
+    document.getElementById('moodHeroPrompt').textContent=d[3];
+    document.getElementById('moodHeroCaption').textContent=n+' / '+d[0].toUpperCase();
+  }
+  function update(m,instant){
+    m=(data[m]?m:'original');
+    if(m===current&&!instant)return;
+    current=m;
+    const source=document.querySelector('.mood-card[data-mood="'+m+'"] .mood-preview');
+    if(!source)return;
+    const serial=++token;
+    setText(m);
+    if(instant){
+      host.replaceChildren(source.cloneNode(true));
+      return;
+    }
+    host.classList.add('is-switching');
+    window.setTimeout(function(){
+      if(serial!==token)return;
+      host.replaceChildren(source.cloneNode(true));
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){host.classList.remove('is-switching')});
+      });
+    },220);
+  }
+  update(localStorage.getItem('dheereMood')||'original',true);
+  document.addEventListener('click',function(e){
+    const card=e.target.closest('.mood-card[data-mood]');
+    if(card)update(card.dataset.mood,false);
+  },true);
+  addEventListener('storage',function(e){if(e.key==='dheereMood')update(e.newValue||'original',false)});
+  addEventListener('pageshow',function(){update(localStorage.getItem('dheereMood')||'original',true)});
+})();
+</script>
+
 </body>
 </html>
