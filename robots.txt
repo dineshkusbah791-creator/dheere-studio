@@ -1,36 +1,84 @@
-# ==================================================
+# ============================================================================
 # DHEERE STUDIO — ROBOTS.TXT
 # https://dheerestudio.com/
-# ==================================================
+#
+# Purpose:
+#   Define a clean, crawler-friendly crawl policy for public Dheere Studio
+#   content while keeping account/private utility paths out of crawling.
+#
+# Standards:
+#   Robots Exclusion Protocol (REP / RFC 9309)
+#   Sitemap declaration supported by major search engines.
+#
+# Important:
+#   robots.txt controls crawling, not guaranteed indexing. Pages that must
+#   never appear in search should use an appropriate noindex mechanism.
+# ============================================================================
 
-# Default rule:
-# Allow compliant crawlers to access public site content.
+# ----------------------------------------------------------------------------
+# GLOBAL CRAWL POLICY
+# ----------------------------------------------------------------------------
+
 User-agent: *
 Allow: /
 
-# ==================================================
-# OPENAI SEARCH
-# ==================================================
+# Private / utility surfaces are not public editorial content.
+# Keep public assets, CSS, JS, images and pages crawlable.
+Disallow: /auth/
+Disallow: /profile/
 
-User-agent: OAI-SearchBot
-Allow: /
-
-# ==================================================
+# ----------------------------------------------------------------------------
 # GOOGLE SEARCH
-# ==================================================
+# ----------------------------------------------------------------------------
 
+# Google Search crawler: full access to public content.
 User-agent: Googlebot
 Allow: /
+Disallow: /auth/
+Disallow: /profile/
 
-# ==================================================
-# GOOGLE AI
-# ==================================================
+# Google image crawler: public images remain crawlable.
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /auth/
+Disallow: /profile/
 
+# Google News crawler: only relevant if eligible news content is published.
+# Keeping the public site crawlable avoids accidentally blocking future content.
+User-agent: Googlebot-News
+Allow: /
+Disallow: /auth/
+Disallow: /profile/
+
+# Google-Extended is a robots.txt control token used with Google's existing
+# crawlers for certain generative-AI use cases. Public site access is allowed.
 User-agent: Google-Extended
 Allow: /
 
-# ==================================================
+# ----------------------------------------------------------------------------
+# OTHER MAJOR SEARCH CRAWLERS
+# ----------------------------------------------------------------------------
+
+User-agent: Bingbot
+Allow: /
+Disallow: /auth/
+Disallow: /profile/
+
+User-agent: Applebot
+Allow: /
+Disallow: /auth/
+Disallow: /profile/
+
+# ----------------------------------------------------------------------------
 # SITEMAP
-# ==================================================
+# ----------------------------------------------------------------------------
 
 Sitemap: https://dheerestudio.com/sitemap.xml
+
+# ----------------------------------------------------------------------------
+# POLICY NOTES
+# ----------------------------------------------------------------------------
+# Do not add unsupported directives such as Crawl-delay or Noindex here.
+# Use HTML meta robots / HTTP headers for indexing controls where required.
+# Keep the sitemap limited to canonical, public, indexable URLs.
+# ============================================================================

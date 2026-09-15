@@ -1,84 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<urlset
-    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
->
+<!--
+================================================================================
+DHEERE STUDIO — XML SITEMAP
+================================================================================
+Canonical host:
+    https://dheerestudio.com/
 
-    <!-- ==================================================
-         HOME
-         ================================================== -->
+Purpose:
+    This file declares the public, canonical URLs that belong in Dheere Studio's
+    search-engine discovery surface.
 
+Scope:
+    • Public studio pages
+    • Public creative-content pages
+    • Public major-IP pages
+    • Public community page
+    • Public Dheere Mood experience
+
+Deliberately excluded:
+    • Authentication / login / signup utilities
+    • Private profile or account surfaces
+    • Internal tools
+    • Duplicate URL variants
+    • Query-string variants
+    • Non-canonical test pages
+    • Development-only pages
+
+Metadata policy:
+    No artificial <lastmod> dates are supplied because no trustworthy source
+    date was provided in the current sitemap source.
+
+    <changefreq> and <priority> are also intentionally omitted. The URL list
+    itself is the important canonical discovery layer; unsupported or guessed
+    scheduling metadata would add noise rather than reliable information.
+
+Maintenance policy:
+    1. Keep only public, canonical, indexable URLs here.
+    2. Add a URL when a new public canonical page becomes part of the website.
+    3. Remove a URL when that page is permanently removed or should no longer
+       be indexed.
+    4. Preserve the exact canonical path used by the live website.
+    5. Do not add fabricated pages merely because they may exist in the future.
+
+Project separation:
+    Shunyavas, OWLMAN, and Shantu are listed as separate public project URLs.
+    This sitemap is a discovery index only; it does not imply that the projects
+    belong to one shared fictional universe.
+
+Source inventory represented by this file:
+    Home
+    About
+    Founder
+    Worlds
+    Stories
+    Experiences
+    Articles
+    Shunyavas
+    OWLMAN
+    Shantu
+    Community
+    Dheere Mood
+================================================================================
+-->
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- ====================================================================
+         01 — HOME
+         ==================================================================== -->
+
+    <!--
+        Canonical homepage.
+        Primary public entry point for the Dheere Studio website.
+    -->
     <url>
         <loc>https://dheerestudio.com/</loc>
     </url>
 
 
-    <!-- ==================================================
-         CORE STUDIO PAGES
-         ================================================== -->
+    <!-- ====================================================================
+         02 — CORE STUDIO PAGES
+         ==================================================================== -->
 
+    <!--
+        Studio overview.
+        Public About page.
+    -->
     <url>
         <loc>https://dheerestudio.com/about.html</loc>
     </url>
 
+    <!--
+        Founder information.
+        Public Founder page.
+    -->
     <url>
         <loc>https://dheerestudio.com/founder.html</loc>
     </url>
 
 
-    <!-- ==================================================
-         CREATIVE CONTENT
-         ================================================== -->
+    <!-- ====================================================================
+         03 — CREATIVE CONTENT
+         ==================================================================== -->
 
+    <!--
+        Public directory / overview for original fictional worlds.
+    -->
     <url>
         <loc>https://dheerestudio.com/worlds.html</loc>
     </url>
 
+    <!--
+        Public directory / overview for original stories.
+    -->
     <url>
         <loc>https://dheerestudio.com/stories.html</loc>
     </url>
 
+    <!--
+        Public directory / overview for creative experiences.
+    -->
     <url>
         <loc>https://dheerestudio.com/experiences.html</loc>
     </url>
 
+    <!--
+        Public written-content / article hub.
+    -->
     <url>
         <loc>https://dheerestudio.com/article.html</loc>
     </url>
 
 
-    <!-- ==================================================
-         MAJOR ORIGINAL IPS
-         ================================================== -->
+    <!-- ====================================================================
+         04 — MAJOR ORIGINAL INTELLECTUAL PROPERTIES
+         ==================================================================== -->
 
+    <!--
+        Shunyavas.
+        Major original fantasy universe under development.
+    -->
     <url>
         <loc>https://dheerestudio.com/shunyavas.html</loc>
     </url>
 
+    <!--
+        OWLMAN.
+        Separate major original intellectual property under development.
+    -->
     <url>
         <loc>https://dheerestudio.com/owlman.html</loc>
     </url>
 
+    <!--
+        Shantu.
+        Separate major original science-fiction techno-thriller IP under
+        development.
+    -->
     <url>
         <loc>https://dheerestudio.com/shantu.html</loc>
     </url>
 
 
-    <!-- ==================================================
-         COMMUNITY
-         ================================================== -->
+    <!-- ====================================================================
+         05 — COMMUNITY
+         ==================================================================== -->
 
+    <!--
+        Public community surface.
+        Existing canonical path and capitalization are preserved exactly.
+    -->
     <url>
         <loc>https://dheerestudio.com/Community/community.html</loc>
     </url>
 
 
-    <!-- ==================================================
-         OTHER PUBLIC PAGES
-         ================================================== -->
+    <!-- ====================================================================
+         06 — OTHER PUBLIC CREATIVE EXPERIENCE
+         ==================================================================== -->
 
+    <!--
+        Dheere Mood.
+        Separate creative experience within the public Dheere Studio website.
+    -->
     <url>
         <loc>https://dheerestudio.com/mood.html</loc>
     </url>
+
+
+    <!-- ====================================================================
+         CANONICAL URL INVENTORY — QUICK AUDIT
+         ====================================================================
+
+         01  https://dheerestudio.com/
+         02  https://dheerestudio.com/about.html
+         03  https://dheerestudio.com/founder.html
+         04  https://dheerestudio.com/worlds.html
+         05  https://dheerestudio.com/stories.html
+         06  https://dheerestudio.com/experiences.html
+         07  https://dheerestudio.com/article.html
+         08  https://dheerestudio.com/shunyavas.html
+         09  https://dheerestudio.com/owlman.html
+         10  https://dheerestudio.com/shantu.html
+         11  https://dheerestudio.com/Community/community.html
+         12  https://dheerestudio.com/mood.html
+
+         Total canonical URLs: 12
+
+         Duplicate check:
+         None.
+
+         Query-string variants:
+         None.
+
+         Artificial dates:
+         None.
+
+         Unsupported sitemap directives:
+         None.
+
+         ==================================================================== -->
 
 </urlset>
