@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 
 <head>
 
@@ -11,21 +11,44 @@
     >
 
     <!-- ====================================================
-         PRIMARY SEO
+         PRIMARY SEO / INDEXING
          ==================================================== -->
 
-    <title>
-        Dheere Studio — Independent Creative Studio
-    </title>
+    <title>Dheere Studio — Original Stories, Worlds &amp; Creative Experiences</title>
 
     <meta
         name="description"
-        content="Dheere Studio is an independent creative studio building original stories, worlds, and experiences across different forms of media."
+        content="Dheere Studio is an independent creative studio from India building original stories, fictional worlds, characters, worldbuilding systems, and interactive creative experiences."
     >
 
     <meta
         name="robots"
-        content="index, follow"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    >
+
+    <meta
+        name="googlebot"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    >
+
+    <meta
+        name="author"
+        content="Dheere Studio"
+    >
+
+    <meta
+        name="application-name"
+        content="Dheere Studio"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0c0e"
+    >
+
+    <meta
+        name="color-scheme"
+        content="dark"
     >
 
     <link
@@ -33,9 +56,15 @@
         href="https://dheerestudio.com/"
     >
 
-    <meta
-        name="theme-color"
-        content="#0b0c0e"
+    <link
+        rel="icon"
+        href="assets/apna.png"
+        type="image/png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="assets/apna.png"
     >
 
 
@@ -49,13 +78,18 @@
     >
 
     <meta
+        property="og:locale"
+        content="en_IN"
+    >
+
+    <meta
         property="og:title"
-        content="Dheere Studio — Independent Creative Studio"
+        content="Dheere Studio — Original Stories, Worlds &amp; Creative Experiences"
     >
 
     <meta
         property="og:description"
-        content="Dheere Studio builds original stories, worlds, and experiences across different forms of media."
+        content="An independent creative studio from India building original stories, fictional worlds, characters, and interactive creative experiences."
     >
 
     <meta
@@ -68,24 +102,44 @@
         content="Dheere Studio"
     >
 
+    <meta
+        property="og:image"
+        content="https://dheerestudio.com/assets/shunyavas-hero-v1.png"
+    >
+
+    <meta
+        property="og:image:alt"
+        content="Cinematic artwork from the Shunyavas universe, a flagship original world by Dheere Studio"
+    >
+
 
     <!-- ====================================================
-         TWITTER / SOCIAL PREVIEW
+         X / TWITTER PREVIEW
          ==================================================== -->
 
     <meta
         name="twitter:card"
-        content="summary"
+        content="summary_large_image"
     >
 
     <meta
         name="twitter:title"
-        content="Dheere Studio — Independent Creative Studio"
+        content="Dheere Studio — Original Stories, Worlds &amp; Creative Experiences"
     >
 
     <meta
         name="twitter:description"
-        content="An independent creative studio building original stories, worlds, and experiences."
+        content="An independent creative studio from India building original stories, fictional worlds, characters, and interactive creative experiences."
+    >
+
+    <meta
+        name="twitter:image"
+        content="https://dheerestudio.com/assets/shunyavas-hero-v1.png"
+    >
+
+    <meta
+        name="twitter:image:alt"
+        content="Cinematic artwork from the Shunyavas universe"
     >
 
 
@@ -94,33 +148,121 @@
          ==================================================== -->
 
     <script type="application/ld+json">
-
     {
         "@context": "https://schema.org",
         "@graph": [
-
             {
                 "@type": "Organization",
                 "@id": "https://dheerestudio.com/#organization",
                 "name": "Dheere Studio",
+                "alternateName": "Dheere",
                 "url": "https://dheerestudio.com/",
-                "description": "An independent creative studio building original stories, worlds, and experiences across different forms of media."
+                "logo": {
+                    "@type": "ImageObject",
+                    "@id": "https://dheerestudio.com/#logo",
+                    "url": "https://dheerestudio.com/assets/apna.png"
+                },
+                "image": "https://dheerestudio.com/assets/apna.png",
+                "description": "An independent creative studio from India building original stories, fictional worlds, characters, worldbuilding systems, and interactive creative experiences.",
+                "founder": {
+                    "@id": "https://dheerestudio.com/#founder"
+                },
+                "knowsAbout": [
+                    "Original storytelling",
+                    "Fictional worldbuilding",
+                    "Original intellectual property",
+                    "Character development",
+                    "Visual development",
+                    "Interactive experiences",
+                    "Animation",
+                    "Games",
+                    "Creative technology"
+                ]
             },
-
+            {
+                "@type": "Person",
+                "@id": "https://dheerestudio.com/#founder",
+                "name": "Harsh Kushwah",
+                "url": "https://dheerestudio.com/founder.html",
+                "jobTitle": "Founder",
+                "worksFor": {
+                    "@id": "https://dheerestudio.com/#organization"
+                }
+            },
             {
                 "@type": "WebSite",
                 "@id": "https://dheerestudio.com/#website",
-                "name": "Dheere Studio",
                 "url": "https://dheerestudio.com/",
-                "description": "Dheere Studio is an independent creative studio building original stories, worlds, and experiences.",
+                "name": "Dheere Studio",
+                "alternateName": "Dheere",
+                "description": "Dheere Studio builds original stories, fictional worlds, characters, and creative experiences.",
+                "inLanguage": "en-IN",
                 "publisher": {
                     "@id": "https://dheerestudio.com/#organization"
                 }
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://dheerestudio.com/#webpage",
+                "url": "https://dheerestudio.com/",
+                "name": "Dheere Studio — Original Stories, Worlds & Creative Experiences",
+                "description": "Dheere Studio is an independent creative studio from India building original stories, fictional worlds, characters, worldbuilding systems, and interactive creative experiences.",
+                "inLanguage": "en-IN",
+                "isPartOf": {
+                    "@id": "https://dheerestudio.com/#website"
+                },
+                "about": {
+                    "@id": "https://dheerestudio.com/#organization"
+                },
+                "primaryImageOfPage": {
+                    "@type": "ImageObject",
+                    "url": "https://dheerestudio.com/assets/shunyavas-hero-v1.png"
+                },
+                "breadcrumb": {
+                    "@id": "https://dheerestudio.com/#breadcrumb"
+                }
+            },
+            {
+                "@type": "ItemList",
+                "@id": "https://dheerestudio.com/#featured-work",
+                "name": "Featured Dheere Studio projects",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Shunyavas",
+                        "url": "https://dheerestudio.com/shunyavas.html"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "OWLMAN",
+                        "url": "https://dheerestudio.com/owlman.html"
+                    }
+                ]
+            },
+            {
+                "@type": "CreativeWork",
+                "@id": "https://dheerestudio.com/#shunyavas",
+                "name": "Shunyavas",
+                "url": "https://dheerestudio.com/shunyavas.html",
+                "creator": {
+                    "@id": "https://dheerestudio.com/#organization"
+                },
+                "description": "An original fantasy universe currently in development at Dheere Studio."
+            },
+            {
+                "@type": "CreativeWork",
+                "@id": "https://dheerestudio.com/#owlman",
+                "name": "OWLMAN",
+                "url": "https://dheerestudio.com/owlman.html",
+                "creator": {
+                    "@id": "https://dheerestudio.com/#organization"
+                },
+                "description": "An original intellectual property in development at Dheere Studio with its own identity and visual language."
             }
-
         ]
     }
-
     </script>
 
 
@@ -1894,20 +2036,17 @@
 
         <main>
 
-
             <!-- ====================================================
-                 HERO
+                 HERO / FIRST IMPRESSION
                  ==================================================== -->
-
             <section
                 id="hero"
-                class="hero-section"
+                class="hero-section hero-section--flagship"
                 aria-labelledby="hero-title"
+                data-personalizable-section="home"
             >
-
                 <div class="hero-content">
-
-                    <p class="hero-eyebrow">
+                    <p class="hero-eyebrow" id="visitorGreeting">
                         Independent creative studio · India
                     </p>
 
@@ -1916,26 +2055,27 @@
                         Stories that outlast the moment.
                     </h1>
 
-
-                    <p>
-                        Dheere Studio is a home for original fiction,
-                        worldbuilding, and experiences built with patience—
-                        beginning with Shunyavas.
+                    <p class="hero-lead">
+                        Dheere Studio builds original stories, fictional worlds,
+                        characters, and creative experiences with enough time to
+                        become specific, memorable, and worth returning to.
                     </p>
 
                     <div class="hero-actions">
                         <a
                             href="shunyavas.html"
                             class="button hero-primary"
+                            data-memory-target="shunyavas"
                         >
                             Enter Shunyavas <span aria-hidden="true">↗</span>
                         </a>
 
                         <a
-                            href="#projects"
+                            href="#studio-intro"
                             class="hero-secondary"
+                            data-memory-target="studio"
                         >
-                            Explore the studio <span aria-hidden="true">↓</span>
+                            Discover Dheere <span aria-hidden="true">↓</span>
                         </a>
                     </div>
 
@@ -1945,435 +2085,727 @@
                             <strong>Shunyavas</strong>
                         </li>
                         <li>
-                            <span>In development</span>
-                            <strong>Web novel</strong>
+                            <span>Second original IP</span>
+                            <strong>OWLMAN</strong>
                         </li>
                         <li>
-                            <span>Long view</span>
-                            <strong>Multi-format world</strong>
+                            <span>Creative direction</span>
+                            <strong>Story → World → Experience</strong>
                         </li>
                     </ul>
 
+                    <div class="hero-returning" id="continueExploring" hidden>
+                        <span class="hero-returning__label">Continue exploring</span>
+                        <a id="continueExploringLink" href="#studio-intro">
+                            Return to where you left off <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
                 </div>
-
             </section>
 
 
             <!-- ====================================================
-     FOUNDER
-     ==================================================== -->
+                 WHAT IS DHEERE
+                 ==================================================== -->
+            <section
+                id="studio-intro"
+                class="studio-intro-section"
+                aria-labelledby="studio-intro-title"
+                data-personalizable-section="studio"
+            >
+                <div class="section-index" aria-hidden="true">01</div>
+                <div class="section-intro">
+                    <span class="section-kicker">What is Dheere Studio?</span>
+                    <h2 id="studio-intro-title">
+                        A small studio building worlds with a long view.
+                    </h2>
+                    <p class="lead-copy">
+                        Dheere Studio is an independent creative studio focused on
+                        original intellectual property. The work begins with stories,
+                        but it is designed to grow naturally into characters, visual
+                        identities, interactive experiences, games, animation, and
+                        other forms of media when the idea calls for them.
+                    </p>
+                    <p>
+                        The point is not to make more things. It is to make fewer ideas
+                        more specific—then give the strongest ones enough depth to feel
+                        like places, histories, and experiences rather than passing content.
+                    </p>
+                </div>
+            </section>
 
+
+            <!-- ====================================================
+                 STUDIO PRINCIPLES
+                 ==================================================== -->
+            <section
+                id="studio-principles"
+                class="principles-section"
+                aria-labelledby="principles-title"
+            >
+                <div class="section-heading section-heading--split">
+                    <div>
+                        <span class="section-kicker">How we think</span>
+                        <h2 id="principles-title">Three principles shape the work.</h2>
+                    </div>
+                    <p>
+                        The studio is still young. These are the ideas we use to decide
+                        what deserves more time, what needs to change, and what should stay.
+                    </p>
+                </div>
+
+                <div class="principles-grid">
+                    <article class="principle-card">
+                        <span class="principle-card__number">01</span>
+                        <h3>Built with intention</h3>
+                        <p>
+                            A project should have a reason to exist before it has a release
+                            schedule, feature list, or marketing layer.
+                        </p>
+                    </article>
+
+                    <article class="principle-card">
+                        <span class="principle-card__number">02</span>
+                        <h3>Built to deepen</h3>
+                        <p>
+                            Strong ideas are allowed to gain history, characters, systems,
+                            atmosphere, and meaning as they develop.
+                        </p>
+                    </article>
+
+                    <article class="principle-card">
+                        <span class="principle-card__number">03</span>
+                        <h3>Made for return visits</h3>
+                        <p>
+                            The goal is not a single click. It is a world people remember,
+                            revisit, discuss, and discover differently over time.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 FOUNDER / ORIGIN
+                 ==================================================== -->
             <section
                 id="founder"
-                class="founder-section"
+                class="founder-section founder-section--editorial"
                 aria-labelledby="founder-title"
+                data-personalizable-section="founder"
             >
-
+                <div class="founder-aside">
                     <p class="section-kicker">The human behind the worlds</p>
+                    <span class="founder-aside__mark" aria-hidden="true">D</span>
+                    <p class="founder-aside__caption">
+                        A small studio with a long view.
+                    </p>
+                </div>
 
+                <div class="founder-card founder-card--manifesto">
+                    <span class="category">Founder’s note</span>
                     <h2 id="founder-title">
-                        Made with patience, not content churn.
+                        Make something<br>
+                        people can live inside.
                     </h2>
 
-
-                <div class="founder-card">
-
-
-                    <span class="category">
-                        Founder’s note
-                    </span>
-
-
-                    <h3>
-                        Harsh Kushwah
-                    </h3>
-
-
                     <p>
-                        Dheere Studio began with a long-term ambition:
-                        build original stories, let their worlds grow with care,
-                        and give them room to become more than a single format.
+                        Dheere Studio began with a simple ambition: create original
+                        stories and give them enough room to become something larger than
+                        a single format.
                     </p>
 
-
                     <p>
-                        The aim is not to chase the next scroll. It is to make
-                        worlds people can return to—through stories, characters,
-                        art, and eventually larger creative experiences.
+                        The studio is intentionally small, but the ambition is not. The
+                        work is being developed patiently across worldbuilding,
+                        storytelling, art direction, interactive experiences, and future media.
                     </p>
 
+                    <div class="founder-signature">
+                        <strong>Harsh Kushwah</strong>
+                        <span>Founder · Dheere Studio</span>
+                    </div>
 
                     <a
                         href="founder.html"
-                        aria-label="Learn more about the founder"
+                        data-memory-target="founder"
+                        aria-label="Read more about Harsh Kushwah and Dheere Studio"
                     >
-                        Meet the Founder &rarr;
+                        Meet the founder <span aria-hidden="true">↗</span>
                     </a>
-
-
                 </div>
-
             </section>
 
 
             <!-- ====================================================
-                 FEATURED PROJECTS
+                 ORIGINAL IP / PROJECTS
                  ==================================================== -->
-
             <section
                 id="projects"
-                class="projects-section"
+                class="projects-section projects-section--flagship"
                 aria-labelledby="projects-title"
+                data-personalizable-section="projects"
             >
-
-                <div class="section-heading">
-
-                    <span class="category">
-                        Original IP
-                    </span>
-
-                    <h2 id="projects-title">
-                        Projects
-                    </h2>
-
+                <div class="section-heading section-heading--worlds">
+                    <div>
+                        <span class="category">Original IP</span>
+                        <h2 id="projects-title">Worlds in progress.</h2>
+                    </div>
                     <p>
-                        Original worlds and characters being developed
-                        as part of Dheere Studio's long-term creative vision.
+                        Two original properties currently define the public horizon of
+                        Dheere Studio. They live in different tones, but share the same
+                        long-term approach: build the world first, then let the story find its scale.
                     </p>
-
                 </div>
 
-
-                <div class="projects-grid">
-
-
-                    <!-- =================================================
-                         SHUNYAVAS
-                         ================================================= -->
-
+                <div class="world-grid">
                     <article
-                        class="project-card project-card--shunyavas"
+                        class="world-card world-card--shunyavas"
                         aria-labelledby="project-shunyavas-title"
                     >
-
-                        <span class="category">
-                            Flagship universe · 01
-                        </span>
-
-
-                        <h3 id="project-shunyavas-title">
-                            Shunyavas
-                        </h3>
-
-
-                        <p>
-                            An original fantasy universe of myth, power,
-                            memory, civilization, and the unknown spaces
-                            between existence and the void.
-                        </p>
-
-                        <div class="project-card__meta" aria-label="Shunyavas details">
-                            <span>Web novel</span>
-                            <span>World architecture</span>
-                        </div>
-
-
-                        <a
-                            href="shunyavas.html"
-                            aria-label="View details about Shunyavas"
+                        <img
+                            src="assets/shunyavas-hero-v1.png"
+                            alt="Cinematic landscape from the Shunyavas universe"
+                            loading="lazy"
+                            decoding="async"
                         >
-                            Enter the world <span aria-hidden="true">↗</span>
-                        </a>
-
+                        <div class="world-card__shade" aria-hidden="true"></div>
+                        <div class="world-card__body">
+                            <div class="world-card__topline">
+                                <span>01</span>
+                                <span>Flagship universe</span>
+                            </div>
+                            <span class="category">Shunyavas</span>
+                            <h3 id="project-shunyavas-title">SHUNYAVAS</h3>
+                            <p>
+                                An original fantasy universe built around story,
+                                civilisation, memory, power, mythology, and the unknown.
+                            </p>
+                            <div class="world-card__meta">
+                                <span>Web novel</span>
+                                <span>World architecture</span>
+                            </div>
+                            <a
+                                href="shunyavas.html"
+                                data-memory-target="shunyavas"
+                                aria-label="Enter the Shunyavas world"
+                            >
+                                Enter the world <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
                     </article>
-
-
-                    <!-- =================================================
-                         OWLMAN
-                         ================================================= -->
 
                     <article
-                        class="project-card project-card--owlman"
+                        class="world-card world-card--owlman"
                         aria-labelledby="project-owlman-title"
                     >
+                        <img
+                            src="assets/owlman.png"
+                            alt="Cinematic OWLMAN visual"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <div class="world-card__shade" aria-hidden="true"></div>
+                        <div class="world-card__body">
+                            <div class="world-card__topline">
+                                <span>02</span>
+                                <span>Original IP</span>
+                            </div>
+                            <span class="category">OWLMAN</span>
+                            <h3 id="project-owlman-title">OWLMAN</h3>
+                            <p>
+                                A second original universe taking shape at Dheere Studio,
+                                built for a different story and visual language.
+                            </p>
+                            <div class="world-card__meta">
+                                <span>Original IP</span>
+                                <span>In development</span>
+                            </div>
+                            <a
+                                href="owlman.html"
+                                data-memory-target="owlman"
+                                aria-label="Discover the OWLMAN project"
+                            >
+                                Discover OWLMAN <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+                    </article>
+                </div>
 
-                        <span class="category">
-                            Original IP · 02
-                        </span>
+                <div class="worlds-note">
+                    <span class="worlds-note__line"></span>
+                    <p>
+                        The projects are the first visible doors into a larger creative
+                        system. There is more to the studio than what has been published so far.
+                    </p>
+                </div>
+            </section>
 
 
-                        <h3 id="project-owlman-title">
-                            OWLMAN
+            <!-- ====================================================
+                 HOW WE BUILD WORLDS
+                 ==================================================== -->
+            <section
+                id="worldbuilding"
+                class="worldbuilding-section"
+                aria-labelledby="worldbuilding-title"
+            >
+                <div class="worldbuilding-visual" aria-hidden="true">
+                    <img
+                        src="assets/apna1.png"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                    >
+                    <span class="worldbuilding-visual__veil"></span>
+                    <span class="worldbuilding-visual__label">D / 02 · WORLD SYSTEM</span>
+                </div>
+
+                <div class="worldbuilding-content">
+                    <span class="section-kicker">How we build worlds</span>
+                    <h2 id="worldbuilding-title">
+                        A story is only<br>
+                        the beginning.
+                    </h2>
+                    <p class="lead-copy">
+                        Original IP works best when its parts strengthen one another.
+                        Story gives the world purpose. The world gives characters context.
+                        Visual language gives it identity. Experience gives people a way inside.
+                    </p>
+
+                    <div class="system-list" aria-label="Dheere Studio creative system">
+                        <div class="system-row">
+                            <span>01</span>
+                            <strong>Story</strong>
+                            <em>Why the world exists</em>
+                        </div>
+                        <div class="system-row">
+                            <span>02</span>
+                            <strong>World</strong>
+                            <em>Where it lives</em>
+                        </div>
+                        <div class="system-row">
+                            <span>03</span>
+                            <strong>Character</strong>
+                            <em>Who makes it matter</em>
+                        </div>
+                        <div class="system-row">
+                            <span>04</span>
+                            <strong>Experience</strong>
+                            <em>How people enter it</em>
+                        </div>
+                    </div>
+
+                    <a href="worlds.html" class="text-link" data-memory-target="worlds">
+                        Explore the worldbuilding direction <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 DHEERE MOOD
+                 ==================================================== -->
+            <section
+                id="dheere-mood"
+                class="mood-preview-section"
+                aria-labelledby="mood-preview-title"
+                data-personalizable-section="mood"
+            >
+                <div class="mood-preview-header">
+                    <div>
+                        <span class="category">Atmosphere system</span>
+                        <h2 id="mood-preview-title">Dheere Mood</h2>
+                    </div>
+                    <p>
+                        The atmosphere changes. The studio remains.
+                    </p>
+                </div>
+
+                <div class="mood-preview-shell">
+                    <div class="mood-preview-art" aria-hidden="true">
+                        <img
+                            src="assets/apna1.png"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <span class="mood-preview-art__veil"></span>
+                    </div>
+
+                    <div class="mood-preview-content">
+                        <span class="section-kicker">09 atmospheric states</span>
+                        <h3>
+                            One studio.<br>
+                            Many ways to feel it.
                         </h3>
-
-
                         <p>
-                            A second original universe taking shape at
-                            Dheere Studio—built for a story, a world,
-                            and everything that might follow.
+                            Dheere Mood is the atmospheric layer of the studio—an
+                            environment system that can shift the feeling of the site
+                            without losing the identity of the work.
                         </p>
 
-                        <div class="project-card__meta" aria-label="OWLMAN details">
-                            <span>Original IP</span>
-                            <span>In development</span>
+                        <div class="mood-current" aria-live="polite">
+                            <span>Your current atmosphere</span>
+                            <strong id="currentMoodLabel">Original</strong>
                         </div>
 
+                        <div class="mood-chip-row" aria-label="Available Dheere Mood states">
+                            <span>Original</span>
+                            <span>Forest</span>
+                            <span>Ocean</span>
+                            <span>Ember</span>
+                            <span>Midnight</span>
+                            <span>Prism</span>
+                            <span>Desert</span>
+                            <span>Monsoon</span>
+                            <span>Winter</span>
+                        </div>
 
-                        <a
-                            href="owlman.html"
-                            aria-label="View details about OWLMAN"
-                        >
-                            Discover OWLMAN <span aria-hidden="true">↗</span>
+                        <a href="mood.html" class="text-link" data-memory-target="mood">
+                            Enter Dheere Mood <span aria-hidden="true">↗</span>
                         </a>
-
-                    </article>
-
-
+                    </div>
                 </div>
-
-
-                <!-- =================================================
-                     PROJECTS FOOTNOTE
-                     ================================================= -->
-
-                <div class="projects-footer">
-
-                    <p>
-                        Dheere Studio is building original IPs with
-                        a long-term approach to stories, worlds,
-                        characters, and future creative experiences.
-                    </p>
-
-                </div>
-
             </section>
 
 
             <!-- ====================================================
-                 LATEST ARTICLE
+                 STUDIO JOURNAL
                  ==================================================== -->
-
             <section
                 id="articles"
-                class="articles-section"
+                class="articles-section articles-section--editorial"
                 aria-labelledby="articles-title"
+                data-personalizable-section="articles"
             >
+                <div class="article-index" aria-hidden="true">
+                    <span>03</span>
+                    <span>FROM THE STUDIO</span>
+                </div>
 
-                <h2 id="articles-title">
-                    Latest Article
-                </h2>
+                <div class="articles-main">
+                    <div class="section-heading section-heading--compact">
+                        <span class="category">Studio Journal</span>
+                        <h2 id="articles-title">Ideas behind the work.</h2>
+                        <p>
+                            Notes on why the studio exists, how worlds are built,
+                            what we are learning, and what comes next.
+                        </p>
+                    </div>
 
+                    <article class="article-card article-card--feature">
+                        <div class="article-card__meta">
+                            <span>01</span>
+                            <span>Studio Journal</span>
+                        </div>
+                        <div>
+                            <h3>Why Dheere Studio Exists</h3>
+                            <p>
+                                The idea behind Dheere Studio, the worlds we want to build,
+                                and why beginning slowly can be more useful than publishing quickly.
+                            </p>
+                        </div>
+                        <a href="article.html" data-memory-target="articles" aria-label="Read Why Dheere Studio Exists">
+                            Read the article <span aria-hidden="true">↗</span>
+                        </a>
+                    </article>
 
-                <article class="article-card">
-
-                    <span class="category">
-                        Studio Journal
-                    </span>
-
-
-                    <h3>
-                        Why Dheere Studio Exists
-                    </h3>
-
-
-                    <p>
-                        The idea behind Dheere Studio, the worlds
-                        we want to build, and where we're beginning.
-                    </p>
-
-
-                    <a
-                        href="article.html"
-                        aria-label="Read Why Dheere Studio Exists"
-                    >
-                        Read Article &rarr;
-                    </a>
-
-                </article>
-
+                    <div class="article-strip" aria-label="Editorial themes">
+                        <span>Worldbuilding</span>
+                        <span>Creative process</span>
+                        <span>Storytelling</span>
+                        <span>Experiments</span>
+                    </div>
+                </div>
             </section>
 
 
             <!-- ====================================================
-                 COMMUNITY
+                 CREATIVE AREAS
                  ==================================================== -->
+            <section
+                id="creative-library"
+                class="library-section"
+                aria-labelledby="library-title"
+            >
+                <div class="section-heading section-heading--split">
+                    <div>
+                        <span class="category">Creative areas</span>
+                        <h2 id="library-title">The studio is larger than its current projects.</h2>
+                    </div>
+                    <p>
+                        These are the disciplines and directions around the core IP work.
+                        Not every area is active at the same intensity today—but together
+                        they describe the kind of studio Dheere is becoming.
+                    </p>
+                </div>
 
+                <div class="library-grid">
+                    <article><span>01</span><h3>Original fiction</h3><p>Stories, narrative experiments, characters, themes, and long-form creative development.</p></article>
+                    <article><span>02</span><h3>Worldbuilding</h3><p>Geography, history, systems, cultures, institutions, environments, and the details that make places feel lived-in.</p></article>
+                    <article><span>03</span><h3>Characters</h3><p>People who can carry stories across scenes, formats, worlds, and future experiences.</p></article>
+                    <article><span>04</span><h3>Visual development</h3><p>Composition, atmosphere, typography, material, light, identity, and visual language.</p></article>
+                    <article><span>05</span><h3>Interactive experiences</h3><p>Websites and digital spaces where discovery, navigation, motion, and atmosphere become part of the story.</p></article>
+                    <article><span>06</span><h3>Games</h3><p>Experiences where audiences can make choices inside the world rather than only watch it from outside.</p></article>
+                    <article><span>07</span><h3>Animation &amp; motion</h3><p>Movement, timing, transitions, environments, and visual rhythm used with intent.</p></article>
+                    <article><span>08</span><h3>Creative technology</h3><p>Tools, prototypes, workflows, and technical systems that help ideas become experiences.</p></article>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 COMMUNITY / ECOSYSTEM
+                 ==================================================== -->
             <section
                 id="community"
-                class="community-section"
+                class="community-section community-section--ecosystem"
                 aria-labelledby="community-title"
             >
+                <div class="community-grid">
+                    <div>
+                        <span class="section-kicker">The wider ecosystem</span>
+                        <h2 id="community-title">
+                            Creative work is better<br>
+                            when there is somewhere to belong.
+                        </h2>
+                        <p>
+                            A space for people interested in stories, worldbuilding,
+                            animation, games, visual art, experiments, and creative work.
+                        </p>
+                        <a
+                            href="Community/community.html"
+                            class="button community-cta"
+                            data-memory-target="community"
+                        >
+                            Explore Community <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
 
-                <h2 id="community-title">
-                    Community
-                </h2>
-
-
-                <p>
-                    A space for people interested in stories,
-                    worldbuilding, animation, games and creative work.
-                </p>
-
-
-                <a
-                    href="Community/community.html"
-                    class="button"
-                    style="margin-top: 12px;"
-                >
-                    Explore Community &rarr;
-                </a>
-
+                    <div class="community-pillars" aria-label="Community interests">
+                        <div><span>01</span><strong>Stories</strong><em>Ideas worth sharing</em></div>
+                        <div><span>02</span><strong>Worldbuilding</strong><em>Systems worth exploring</em></div>
+                        <div><span>03</span><strong>Visual work</strong><em>Images with intention</em></div>
+                        <div><span>04</span><strong>Games</strong><em>Worlds you can enter</em></div>
+                    </div>
+                </div>
             </section>
 
 
             <!-- ====================================================
-                 ABOUT
+                 STUDIO QUESTIONS
                  ==================================================== -->
+            <section
+                id="studio-questions"
+                class="questions-section"
+                aria-labelledby="questions-title"
+            >
+                <div class="questions-intro">
+                    <span class="section-kicker">Questions we keep asking</span>
+                    <h2 id="questions-title">Good work begins with better questions.</h2>
+                    <p>
+                        The studio is still being built. That means some of its best direction
+                        comes from the questions underneath the projects.
+                    </p>
+                </div>
 
+                <div class="question-stack">
+                    <article><span>01</span><strong>What makes a world feel specific?</strong><p>Not the number of details, but the consistency of those details and the sense that they belong to one place.</p></article>
+                    <article><span>02</span><strong>What makes a character worth following?</strong><p>Contradiction, desire, consequence, relationships, and something recognizable beneath the surface.</p></article>
+                    <article><span>03</span><strong>When should an idea become interactive?</strong><p>When interaction adds presence, choice, discovery, exploration, or consequence that the original form cannot.</p></article>
+                    <article><span>04</span><strong>How much should a homepage reveal?</strong><p>Enough to create curiosity. Never so much that the dedicated project experience becomes unnecessary.</p></article>
+                    <article><span>05</span><strong>What should remain private while it is becoming?</strong><p>The unfinished parts that still need room to fail, change, merge, split, or become stronger.</p></article>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 ABOUT / MANIFESTO
+                 ==================================================== -->
             <section
                 id="about"
-                class="about-section"
+                class="about-section about-section--manifesto"
                 aria-labelledby="about-title"
             >
-
-                <h2 id="about-title">
-                    About Dheere Studio
-                </h2>
-
-
-                <p>
-                    Dheere Studio is an independent creative studio
-                    focused on building original stories, worlds,
-                    and experiences across different forms of media.
-                </p>
-
-
-                <br>
-
-
-                <a
-                    href="about.html"
-                    class="button"
-                    style="margin-top: 12px;"
-                >
-                    Learn More &rarr;
-                </a>
-
+                <div class="manifesto-index">04</div>
+                <div class="manifesto-content">
+                    <span class="section-kicker">About the studio</span>
+                    <h2 id="about-title">
+                        Take the long way.<br>
+                        Make it worth it.
+                    </h2>
+                    <p class="manifesto-lead">
+                        Dheere Studio is an independent creative studio focused on original
+                        stories, fictional worlds, and creative experiences across different forms of media.
+                    </p>
+                    <div class="manifesto-columns">
+                        <p>
+                            We care about ideas that gain strength with time—not because slow
+                            work is automatically better, but because some worlds need room to become specific.
+                        </p>
+                        <p>
+                            The studio is building from original intellectual property outward,
+                            with the ambition to move naturally between fiction, visual development,
+                            interactive work, games, animation, and future experiences.
+                        </p>
+                    </div>
+                    <a href="about.html" class="text-link" data-memory-target="about">
+                        Read the studio vision <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
             </section>
 
 
             <!-- ====================================================
-                 FEEDBACK
+                 FAQ / DISCOVERY
                  ==================================================== -->
+            <section
+                id="faq"
+                class="faq-section"
+                aria-labelledby="faq-title"
+            >
+                <div class="faq-heading">
+                    <span class="section-kicker">Studio questions</span>
+                    <h2 id="faq-title">A few useful answers.</h2>
+                    <p>For visitors discovering Dheere Studio for the first time.</p>
+                </div>
 
+                <div class="faq-list">
+                    <details>
+                        <summary>What is Dheere Studio?</summary>
+                        <p>Dheere Studio is an independent creative studio focused on original stories, fictional worlds, characters, worldbuilding, visual development, interactive experiences, and future media.</p>
+                    </details>
+                    <details>
+                        <summary>What is Shunyavas?</summary>
+                        <p>Shunyavas is the first major original fantasy universe being developed by Dheere Studio. The homepage intentionally keeps deeper narrative details for the dedicated experience.</p>
+                    </details>
+                    <details>
+                        <summary>What is OWLMAN?</summary>
+                        <p>OWLMAN is a separate original IP in development at Dheere Studio with its own identity, character direction, and visual language.</p>
+                    </details>
+                    <details>
+                        <summary>What is Dheere Mood?</summary>
+                        <p>Dheere Mood is the studio's atmospheric environment system, allowing the website experience to shift between distinct moods while retaining a consistent underlying identity.</p>
+                    </details>
+                    <details>
+                        <summary>Why focus on original IP?</summary>
+                        <p>Original IP gives the studio continuity across stories, characters, worlds, visual identity, and future experiences.</p>
+                    </details>
+                </div>
+            </section>
+
+
+            <!-- ====================================================
+                 FEEDBACK / OPEN DOOR
+                 ==================================================== -->
             <section
                 id="feedback"
-                class="feedback-section"
+                class="feedback-section feedback-section--open-door"
                 aria-labelledby="feedback-title"
+                data-personalizable-section="feedback"
             >
-
-                <h2 id="feedback-title">
-                    Give Us Feedback
-                </h2>
-
+                <div class="feedback-intro">
+                    <span class="section-kicker">Keep the studio honest</span>
+                    <h2 id="feedback-title">Tell us what you think.</h2>
+                    <p>
+                        A thoughtful reaction, criticism, question, or idea is part of
+                        the creative process. This is an open door, not a survey.
+                    </p>
+                </div>
 
                 <form
-                    class="feedback-form"
+                    class="feedback-form feedback-form--premium"
                     aria-label="Dheere Studio feedback form"
                 >
+                    <div class="feedback-form__header">
+                        <span>Studio feedback</span>
+                        <span aria-hidden="true">—</span>
+                    </div>
 
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Your Name"
-                        autocomplete="name"
-                        aria-label="Your Name"
-                        required
-                    >
+                    <label>
+                        <span>Your name</span>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Your Name"
+                            autocomplete="name"
+                            aria-label="Your Name"
+                            required
+                        >
+                    </label>
 
+                    <label>
+                        <span>Your email</span>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            aria-label="Your Email"
+                            required
+                        >
+                    </label>
 
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Your Email"
-                        autocomplete="email"
-                        aria-label="Your Email"
-                        required
-                    >
+                    <label>
+                        <span>Your thoughts</span>
+                        <textarea
+                            name="feedback"
+                            rows="6"
+                            placeholder="What should we build, improve, rethink, or explore?"
+                            aria-label="Your thoughts or suggestions"
+                            required
+                        ></textarea>
+                    </label>
 
-
-                    <textarea
-                        name="feedback"
-                        rows="4"
-                        placeholder="Your thoughts or suggestions..."
-                        aria-label="Your thoughts or suggestions"
-                        required
-                    ></textarea>
-
-
-                    <button
-                        type="submit"
-                        class="button"
-                    >
-                        Submit Feedback
+                    <button type="submit" class="button">
+                        Send feedback <span aria-hidden="true">↗</span>
                     </button>
-
                 </form>
-
             </section>
-            <!-- ====================================================
-     ABOUT DHEERE STUDIO
-     SEO CONTENT
-     ==================================================== -->
 
+
+            <!-- ====================================================
+                 STUDIO PROFILE / DISCOVERY
+                 ==================================================== -->
             <section
                 id="studio-information"
-                class="studio-information-section"
+                class="studio-information-section studio-information-section--seo"
                 aria-labelledby="studio-information-title"
             >
+                <div class="seo-heading">
+                    <span class="section-kicker">Dheere Studio</span>
+                    <h2 id="studio-information-title">
+                        Original stories. Fictional worlds. Creative experiences.
+                    </h2>
+                </div>
 
-                <h2 id="studio-information-title">
-                    Summary
-                </h2>
+                <div class="seo-copy">
+                    <p>
+                        Dheere Studio is an independent creative studio founded by Harsh Kushwah.
+                        The studio focuses on developing original stories, fictional worlds,
+                        characters, worldbuilding systems, and creative experiences with a long-term approach to craft.
+                    </p>
+                    <p>
+                        Shunyavas is the first major original fantasy universe currently being developed
+                        by Dheere Studio. OWLMAN is a separate original IP developing its own identity and visual language.
+                    </p>
+                    <p>
+                        The broader creative direction includes original fiction, worldbuilding, visual
+                        development, animation, games, interactive experiences, creative technology, community, and future media.
+                    </p>
 
-                <p>
-                    Dheere Studio is an independent creative studio founded by
-                    Harsh Kushwah. The studio focuses on building original stories,
-                    fictional worlds, and creative experiences with a long-term
-                    approach to storytelling and worldbuilding.
-                </p>
-
-                <br>
-
-                <p>
-                    Shunyavas is the first major original fantasy universe currently
-                    being developed by Dheere Studio. The project explores story,
-                    mythology, characters, lore, and the foundations of a larger
-                    fictional world.
-                </p>
-
-                <br>
-
-                <p>
-                    The broader creative direction of Dheere Studio includes original
-                    stories, fantasy worlds, worldbuilding, animation, games,
-                    interactive experiences, and creative technology.
-                </p>
-
-                <br>
-
-                <p>
-                    Explore more about
-                    <a href="founder.html">Harsh Kushwah</a>,
-                    <a href="shunyavas.html">Shunyavas</a>,
-                    <a href="worlds.html">Worlds</a>,
-                    <a href="stories.html">Stories</a>,
-                    and the
-                    <a href="about.html">Dheere Studio vision</a>.
-                </p>
-
+                    <nav class="seo-link-grid" aria-label="Dheere Studio discovery links">
+                        <a href="founder.html"><span>Founder</span><small>Who is building the studio</small></a>
+                        <a href="shunyavas.html"><span>Shunyavas</span><small>Explore the flagship universe</small></a>
+                        <a href="owlman.html"><span>OWLMAN</span><small>Discover the second original IP</small></a>
+                        <a href="worlds.html"><span>Worlds</span><small>Explore worldbuilding work</small></a>
+                        <a href="stories.html"><span>Stories</span><small>Follow the storytelling direction</small></a>
+                        <a href="experiences.html"><span>Experiences</span><small>See the wider creative ambition</small></a>
+                        <a href="mood.html"><span>Dheere Mood</span><small>Enter the atmosphere system</small></a>
+                        <a href="about.html"><span>About</span><small>Read the studio vision</small></a>
+                    </nav>
+                </div>
             </section>
-
 
         </main>
 
@@ -2451,6 +2883,114 @@
          JAVASCRIPT
          ==================================================== -->
 
+
+    <!-- ====================================================
+         LIGHTWEIGHT PERSONALIZATION
+         Local-device memory only. No analytics or location tracking.
+         ==================================================== -->
+    <script>
+        (function () {
+            "use strict";
+
+            const STORAGE_KEY = "dheereHomepageMemory";
+            const state = {
+                visits: 0,
+                lastDestination: "",
+                lastVisitedAt: 0
+            };
+
+            const DESTINATIONS = {
+                studio: { href: "#studio-intro", label: "Start with what Dheere is" },
+                founder: { href: "#founder", label: "Return to the founder's story" },
+                shunyavas: { href: "shunyavas.html", label: "Continue with Shunyavas" },
+                owlman: { href: "owlman.html", label: "Continue with OWLMAN" },
+                worlds: { href: "worlds.html", label: "Continue exploring worldbuilding" },
+                mood: { href: "mood.html", label: "Return to Dheere Mood" },
+                articles: { href: "#articles", label: "Return to the Studio Journal" },
+                community: { href: "Community/community.html", label: "Return to Community" },
+                about: { href: "about.html", label: "Return to the studio vision" }
+            };
+
+            function readMemory() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+                    state.visits = Number.isFinite(saved.visits) ? saved.visits : 0;
+                    state.lastDestination = typeof saved.lastDestination === "string" ? saved.lastDestination : "";
+                    state.lastVisitedAt = Number.isFinite(saved.lastVisitedAt) ? saved.lastVisitedAt : 0;
+                } catch (error) {
+                    // Personalization is optional; the page works without storage.
+                }
+            }
+
+            function saveMemory() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                } catch (error) {
+                    // Ignore storage failures.
+                }
+            }
+
+            function updateGreeting() {
+                const greeting = document.getElementById("visitorGreeting");
+                if (!greeting) return;
+
+                if (state.visits > 0) {
+                    greeting.textContent = "Welcome back · Dheere Studio";
+                } else {
+                    greeting.textContent = "Independent creative studio · India";
+                }
+            }
+
+            function updateContinueCard() {
+                const card = document.getElementById("continueExploring");
+                const link = document.getElementById("continueExploringLink");
+                const destination = DESTINATIONS[state.lastDestination];
+
+                if (!card || !link || !destination || state.visits < 2) return;
+
+                link.href = destination.href;
+                link.innerHTML = destination.label + ' <span aria-hidden="true">↗</span>';
+                card.hidden = false;
+            }
+
+            function rememberDestination(destination) {
+                if (!DESTINATIONS[destination]) return;
+                state.lastDestination = destination;
+                state.lastVisitedAt = Date.now();
+                saveMemory();
+            }
+
+            function updateMoodLabel() {
+                const target = document.getElementById("currentMoodLabel");
+                if (!target) return;
+
+                const mood = document.documentElement.getAttribute("data-dheere-mood") || "original";
+                const label = mood.charAt(0).toUpperCase() + mood.slice(1);
+                target.textContent = label;
+            }
+
+            readMemory();
+            state.visits += 1;
+            saveMemory();
+            updateGreeting();
+            updateContinueCard();
+            updateMoodLabel();
+
+            document.querySelectorAll("[data-memory-target]").forEach(function (element) {
+                element.addEventListener("click", function () {
+                    const destination = element.getAttribute("data-memory-target");
+                    rememberDestination(destination);
+                });
+            });
+
+            const moodObserver = new MutationObserver(updateMoodLabel);
+            moodObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ["data-dheere-mood"]
+            });
+
+        })();
+    </script>
 
     <!-- ====================================================
          NOTIFICATION FRONTEND
