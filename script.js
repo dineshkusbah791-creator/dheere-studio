@@ -1,3 +1,17 @@
+/*
+ * Dheere Studio — Homepage / Profile Script
+ * ------------------------------------------------------------
+ * Responsibilities:
+ *   • Authentication state and canonical auth navigation
+ *   • Homepage personalization
+ *   • Profile menu, avatar, and profile data sync
+ *   • User search and public profile navigation
+ *   • Feedback, registration, login, and password UI helpers
+ *   • Profile posts and session-aware UI
+ *
+ * Route/API contracts are intentionally preserved.
+ */
+
 // ======================================================
 // CONFIG
 // ======================================================
@@ -15,6 +29,15 @@ const USER_STORAGE_KEY =
 
 const TOKEN_STORAGE_KEY =
     'dheereStudioToken';
+
+const PROFILE_POSTS_PATH =
+    'profile/profile.html#postsSection';
+
+const AUTH_CHANGED_EVENT =
+    'dheere:auth-changed';
+
+const HOMEPAGE_REFRESH_EVENT =
+    'dheere:homepage-personalization-refresh';
 
 
 // ======================================================
@@ -66,6 +89,44 @@ function clearAuthStorage() {
     localStorage.removeItem(
         TOKEN_STORAGE_KEY
     );
+
+}
+
+
+async function parseJSONResponse(response) {
+
+    const text =
+        await response.text();
+
+
+    if (!text) {
+
+        return {};
+
+    }
+
+
+    try {
+
+        return JSON.parse(text);
+
+    } catch (error) {
+
+        console.error(
+            'Invalid JSON response:',
+            error
+        );
+
+
+        return {
+
+            success: false,
+
+            error: 'The server returned an invalid response.'
+
+        };
+
+    }
 
 }
 
@@ -131,6 +192,24 @@ const registerForm =
 
 let profileBtn =
     document.getElementById('profileBtn');
+
+let profileMenuWrapper =
+    document.getElementById('profileMenuWrapper');
+
+let profileDropdown =
+    document.getElementById('profileDropdown');
+
+let profileMenuProfile =
+    document.getElementById('profileMenuProfile');
+
+let profileMenuPosts =
+    document.getElementById('profileMenuPosts');
+
+let profileMenuSettings =
+    document.getElementById('profileMenuSettings');
+
+let profileMenuLogout =
+    document.getElementById('profileMenuLogout');
 
 let navUsername =
     document.getElementById('navUsername');
@@ -285,7 +364,7 @@ function updateHomepagePersonalization() {
      */
 
     const publicTitle =
-        'Worlds made slowly. Stories that outlast the moment.';
+        'Welcome to Dheere Studio.A Studio of Stories & World.';
 
 
     /*
@@ -363,7 +442,7 @@ function getHomepageAuthSnapshot() {
 }
 
 
-function watchHomepageAuthentication() {
+function syncHomepageAuthentication() {
 
     const nextSnapshot =
         getHomepageAuthSnapshot();
@@ -385,6 +464,20 @@ function watchHomepageAuthentication() {
 
     restoreUserFromStorage();
 
+    updateHomepagePersonalization();
+
+    updateNavbar();
+
+}
+
+
+function refreshHomepageAuthenticationUI() {
+
+    homepageAuthSnapshot =
+        getHomepageAuthSnapshot();
+
+
+    restoreUserFromStorage();
 
     updateHomepagePersonalization();
 
@@ -402,40 +495,24 @@ updateHomepagePersonalization();
 
 window.addEventListener(
     'storage',
-    () => {
-
-        restoreUserFromStorage();
-
-        updateHomepagePersonalization();
-
-        updateNavbar();
-
-    }
+    refreshHomepageAuthenticationUI
 );
 
 
 window.addEventListener(
     'pageshow',
-    () => {
-
-        restoreUserFromStorage();
-
-        updateHomepagePersonalization();
-
-        updateNavbar();
-
-    }
-);
-
-
-window.setInterval(
-    watchHomepageAuthentication,
-    400
+    refreshHomepageAuthenticationUI
 );
 
 
 window.addEventListener(
-    'dheere:homepage-personalization-refresh',
+    AUTH_CHANGED_EVENT,
+    refreshHomepageAuthenticationUI
+);
+
+
+window.addEventListener(
+    HOMEPAGE_REFRESH_EVENT,
     updateHomepagePersonalization
 );
 
@@ -543,7 +620,7 @@ async function getFreshProfile() {
 
 
         const result =
-            await response.json();
+            await parseJSONResponse(response);
 
 
         if (
@@ -855,10 +932,7 @@ function updateNavbar() {
         );
 
 
-    profileBtn =
-        document.getElementById(
-            'profileBtn'
-        );
+    syncProfileMenuElements();
 
 
     navUsername =
@@ -891,13 +965,24 @@ function updateNavbar() {
             '';
 
 
-        profileBtn.style.display =
-            'none';
+        if (profileMenuWrapper) {
+
+            profileMenuWrapper.style.display =
+                'none';
+
+            profileMenuWrapper.classList.add(
+                'hidden-profile'
+            );
+
+        } else {
+
+            profileBtn.style.display =
+                'none';
+
+        }
 
 
-        profileBtn.classList.add(
-            'hidden-profile'
-        );
+        closeProfileMenu();
 
 
         if (
@@ -931,6 +1016,18 @@ function updateNavbar() {
 
     goToLoginBtn.style.display =
         'none';
+
+
+    if (profileMenuWrapper) {
+
+        profileMenuWrapper.style.display =
+            'flex';
+
+        profileMenuWrapper.classList.remove(
+            'hidden-profile'
+        );
+
+    }
 
 
     profileBtn.style.display =
@@ -995,6 +1092,535 @@ function updateNavbar() {
         startNotificationRefresh();
 
     }
+
+}
+
+
+// ======================================================
+// PROFILE DROPDOWN
+// ======================================================
+
+let profileMenuReady = false;
+
+
+function syncProfileMenuElements() {
+
+    profileMenuWrapper =
+        document.getElementById(
+            'profileMenuWrapper'
+        );
+
+    profileBtn =
+        document.getElementById(
+            'profileBtn'
+        );
+
+    profileDropdown =
+        document.getElementById(
+            'profileDropdown'
+        );
+
+    profileMenuProfile =
+        document.getElementById(
+            'profileMenuProfile'
+        );
+
+    profileMenuPosts =
+        document.getElementById(
+            'profileMenuPosts'
+        );
+
+    profileMenuSettings =
+        document.getElementById(
+            'profileMenuSettings'
+        );
+
+    profileMenuLogout =
+        document.getElementById(
+            'profileMenuLogout'
+        );
+
+}
+
+
+function isProfileMenuOpen() {
+
+    return Boolean(
+        profileDropdown &&
+        !profileDropdown.hidden
+    );
+
+}
+
+
+function closeProfileMenu(
+    restoreFocus = false
+) {
+
+    if (
+        !profileDropdown ||
+        !profileBtn
+    ) {
+
+        return;
+
+    }
+
+
+    profileDropdown.hidden =
+        true;
+
+
+    profileBtn.setAttribute(
+        'aria-expanded',
+        'false'
+    );
+
+
+    if (
+        restoreFocus
+    ) {
+
+        profileBtn.focus();
+
+    }
+
+}
+
+
+function openProfileMenu() {
+
+    if (
+        !profileDropdown ||
+        !profileBtn ||
+        !currentUser
+    ) {
+
+        return;
+
+    }
+
+
+    profileDropdown.hidden =
+        false;
+
+
+    profileBtn.setAttribute(
+        'aria-expanded',
+        'true'
+    );
+
+}
+
+
+function toggleProfileMenu() {
+
+    if (
+        isProfileMenuOpen()
+    ) {
+
+        closeProfileMenu();
+
+    } else {
+
+        openProfileMenu();
+
+    }
+
+}
+
+
+function handleProfileMenuClick(
+    event
+) {
+
+    if (
+        !profileBtn
+    ) {
+
+        return;
+
+    }
+
+
+    event.preventDefault();
+
+    toggleProfileMenu();
+
+}
+
+
+function handleProfileMenuKeydown(
+    event
+) {
+
+    if (
+        !profileBtn
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'Escape'
+    ) {
+
+        if (
+            isProfileMenuOpen()
+        ) {
+
+            event.preventDefault();
+
+            closeProfileMenu(
+                true
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'ArrowDown' ||
+        event.key ===
+        'Enter' ||
+        event.key ===
+        ' '
+    ) {
+
+        event.preventDefault();
+
+        if (
+            !isProfileMenuOpen()
+        ) {
+
+            openProfileMenu();
+
+        }
+
+
+        profileDropdown
+            ?.querySelector(
+                '[role="menuitem"]'
+            )
+            ?.focus();
+
+    }
+
+}
+
+
+function handleProfileDropdownKeydown(
+    event
+) {
+
+    if (
+        !profileDropdown
+    ) {
+
+        return;
+
+    }
+
+
+    const items =
+        Array.from(
+            profileDropdown.querySelectorAll(
+                '[role="menuitem"]:not([disabled])'
+            )
+        );
+
+
+    if (
+        !items.length
+    ) {
+
+        return;
+
+    }
+
+
+    const currentIndex =
+        items.indexOf(
+            document.activeElement
+        );
+
+
+    if (
+        event.key ===
+        'Escape'
+    ) {
+
+        event.preventDefault();
+
+        closeProfileMenu(
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'ArrowDown'
+    ) {
+
+        event.preventDefault();
+
+        items[
+            currentIndex < 0
+                ? 0
+                : (currentIndex + 1) % items.length
+        ].focus();
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'ArrowUp'
+    ) {
+
+        event.preventDefault();
+
+        items[
+            currentIndex <= 0
+                ? items.length - 1
+                : currentIndex - 1
+        ].focus();
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'Home'
+    ) {
+
+        event.preventDefault();
+
+        items[0].focus();
+
+        return;
+
+    }
+
+
+    if (
+        event.key ===
+        'End'
+    ) {
+
+        event.preventDefault();
+
+        items[
+            items.length - 1
+        ].focus();
+
+    }
+
+}
+
+
+function logoutHomepageUser() {
+
+    closeProfileMenu();
+
+
+    if (
+        typeof stopNotificationRefresh ===
+        'function'
+    ) {
+
+        stopNotificationRefresh();
+
+    }
+
+
+    if (
+        typeof resetNotificationsUI ===
+        'function'
+    ) {
+
+        resetNotificationsUI();
+
+    }
+
+
+    clearAuthStorage();
+
+
+    currentUser =
+        null;
+
+
+    updateHomepagePersonalization();
+
+    updateNavbar();
+
+
+    try {
+
+        window.dispatchEvent(
+            new CustomEvent(
+                AUTH_CHANGED_EVENT,
+                {
+                    detail: {
+                        authenticated:
+                            false
+                    }
+                }
+            )
+        );
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            'Could not dispatch auth change event:',
+            error
+        );
+
+    }
+
+}
+
+
+function initializeProfileMenu() {
+
+    syncProfileMenuElements();
+
+
+    if (
+        !profileMenuWrapper ||
+        !profileBtn ||
+        !profileDropdown
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        profileMenuReady
+    ) {
+
+        return;
+
+    }
+
+
+    profileMenuReady =
+        true;
+
+
+    profileBtn.addEventListener(
+        'click',
+        handleProfileMenuClick
+    );
+
+
+    profileBtn.addEventListener(
+        'keydown',
+        handleProfileMenuKeydown
+    );
+
+
+    profileDropdown.addEventListener(
+        'keydown',
+        handleProfileDropdownKeydown
+    );
+
+
+    profileMenuLogout?.addEventListener(
+        'click',
+        logoutHomepageUser
+    );
+
+
+    /*
+     * My Posts reuses the existing profile page and
+     * opens the existing posts section when available.
+     */
+    if (profileMenuPosts) {
+
+        profileMenuPosts.href =
+            PROFILE_POSTS_PATH;
+
+        profileMenuPosts.addEventListener(
+            'click',
+            closeProfileMenu
+        );
+
+    }
+
+
+    /*
+     * My Profile and Settings remain normal links.
+     * No URL replacement is performed here.
+     */
+    profileMenuProfile?.addEventListener(
+        'click',
+        closeProfileMenu
+    );
+
+
+    profileMenuSettings?.addEventListener(
+        'click',
+        closeProfileMenu
+    );
+
+
+    document.addEventListener(
+        'click',
+        (event) => {
+
+            if (
+                !profileMenuWrapper ||
+                profileMenuWrapper.contains(
+                    event.target
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            closeProfileMenu();
+
+        }
+    );
+
+
+    window.addEventListener(
+        'resize',
+        () => {
+
+            if (
+                window.innerWidth <= 650
+            ) {
+
+                closeProfileMenu();
+
+            }
+
+        }
+    );
 
 }
 
@@ -1429,7 +2055,7 @@ async function searchUsers(query) {
 
 
         const result =
-            await response.json();
+            await parseJSONResponse(response);
 
 
         if (
@@ -1707,17 +2333,15 @@ if (
 // ======================================================
 // CANONICAL AUTH NAVIGATION
 // ------------------------------------------------------
-// Authentication UI now lives under /auth.
-// This helper is intentionally small so the root script
-// does not recreate a second authentication system.
+// Authentication UI lives under /auth.
+// Keep the navigation paths explicit and stable.
 // ======================================================
 
-function openCanonicalLogin() {
-    window.location.href = 'auth/login.html';
-}
-
 function openCanonicalRegister() {
-    window.location.href = 'auth/register.html';
+
+    window.location.href =
+        'auth/register.html';
+
 }
 
 
@@ -1801,7 +2425,7 @@ if (feedbackForm) {
 
 
                 const result =
-                    await response.json();
+                    await parseJSONResponse(response);
 
 
                 if (result.success) {
@@ -1940,7 +2564,7 @@ async function checkUsernameAvailability() {
 
 
         const result =
-            await response.json();
+            await parseJSONResponse(response);
 
 
         if (
@@ -2200,7 +2824,7 @@ if (registerForm) {
 
 
                 const result =
-                    await response.json();
+                    await parseJSONResponse(response);
 
 
                 if (result.success) {
@@ -2358,7 +2982,7 @@ if (loginForm) {
 
 
                 const result =
-                    await response.json();
+                    await parseJSONResponse(response);
 
 
                 if (result.success) {
@@ -2971,7 +3595,7 @@ async function loadUserPosts() {
 
 
         const result =
-            await response.json();
+            await parseJSONResponse(response);
 
 
         if (
@@ -3166,7 +3790,7 @@ if (createPostBtn) {
 
 
                 const result =
-                    await response.json();
+                    await parseJSONResponse(response);
 
 
                 // ------------------------------------------
@@ -3378,6 +4002,8 @@ window.addEventListener(
 // ======================================================
 // INITIALIZE
 // ======================================================
+
+initializeProfileMenu();
 
 updateNavbar();
 
