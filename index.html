@@ -676,8 +676,7 @@
            PROJECT DESCRIPTION
            ========================================== */
 
-        .project-card a,
-        .article-card a {
+        .project-card a {
 
             position: relative;
 
@@ -1247,7 +1246,6 @@
 
         /* Premium glass cards */
         .project-card,
-        .article-card,
         .feedback-form,
         .auth-card,
         .notification-panel,
@@ -1268,7 +1266,6 @@
         }
 
         .project-card,
-        .article-card,
         .auth-card {
             position: relative;
             overflow: hidden;
@@ -1279,7 +1276,6 @@
         }
 
         .project-card::before,
-        .article-card::before,
         .auth-card::before {
             content: "";
             position: absolute;
@@ -1295,7 +1291,6 @@
         }
 
         .project-card:hover,
-        .article-card:hover,
         .auth-card:hover {
             transform: translateY(-8px);
             border-color: rgba(255,255,255,.22) !important;
@@ -1555,7 +1550,6 @@
         /* Mood engine compatibility */
         html[data-dheere-mood] header,
         html[data-dheere-mood] .project-card,
-        html[data-dheere-mood] .article-card,
         html[data-dheere-mood] .feedback-form,
         html[data-dheere-mood] .auth-card {
             transition:
@@ -1616,7 +1610,6 @@
             }
 
             .project-card:hover,
-            .article-card:hover,
             .auth-card:hover {
                 transform: translateY(-4px);
             }
@@ -1725,13 +1718,6 @@
                         </li>
 
 
-                        <li>
-
-                            <a href="article.html">
-                                Articles
-                            </a>
-
-                        </li>
 
 
                         <li>
@@ -2557,56 +2543,7 @@
             </section>
 
 
-            <!-- ====================================================
-                 STUDIO JOURNAL
-                 ==================================================== -->
-            <section
-                id="articles"
-                class="articles-section articles-section--editorial"
-                aria-labelledby="articles-title"
-                data-personalizable-section="articles"
-            >
-                <div class="article-index" aria-hidden="true">
-                    <span>03</span>
-                    <span>FROM THE STUDIO</span>
-                </div>
-
-                <div class="articles-main">
-                    <div class="section-heading section-heading--compact">
-                        <span class="category">Studio Journal</span>
-                        <h2 id="articles-title">Ideas behind the work.</h2>
-                        <p>
-                            Notes on why the studio exists, how worlds are built,
-                            what we are learning, and what comes next.
-                        </p>
-                    </div>
-
-                    <article class="article-card article-card--feature">
-                        <div class="article-card__meta">
-                            <span>01</span>
-                            <span>Studio Journal</span>
-                        </div>
-                        <div>
-                            <h3>Why Dheere Studio Exists</h3>
-                            <p>
-                                The idea behind Dheere Studio, the worlds we want to build,
-                                and why beginning slowly can be more useful than publishing quickly.
-                            </p>
-                        </div>
-                        <a href="article.html" data-memory-target="articles" aria-label="Read Why Dheere Studio Exists">
-                            Read the article <span aria-hidden="true">↗</span>
-                        </a>
-                    </article>
-
-                    <div class="article-strip" aria-label="Editorial themes">
-                        <span>Worldbuilding</span>
-                        <span>Creative process</span>
-                        <span>Storytelling</span>
-                        <span>Experiments</span>
-                    </div>
-                </div>
-            </section>
-
+            
 
             <!-- ====================================================
                  CREATIVE AREAS
@@ -2714,7 +2651,7 @@
                 class="about-section about-section--manifesto"
                 aria-labelledby="about-title"
             >
-                <div class="manifesto-index">04</div>
+                <div class="manifesto-index">03</div>
                 <div class="manifesto-content">
                     <span class="section-kicker">About the studio</span>
                     <h2 id="about-title">
@@ -2922,14 +2859,7 @@
                     <a href="shunyavas.html">
                         Shunyavas
                     </a>
-
-
-                    <a href="article.html">
-                        Articles
-                    </a>
-
-
-                    <a href="Community/community.html">
+<a href="Community/community.html">
                         Community
                     </a>
 
@@ -2991,7 +2921,6 @@
                 shunyavas: { href: "shunyavas.html", label: "Continue with Shunyavas" },
                 owlman: { href: "owlman.html", label: "Continue with OWLMAN" },
                 mood: { href: "mood.html", label: "Return to Dheere Mood" },
-                articles: { href: "#articles", label: "Return to the Studio Journal" },
                 community: { href: "Community/community.html", label: "Return to Community" },
                 about: { href: "about.html", label: "About" }
             };

@@ -213,7 +213,6 @@ p {
    ==================================================== */
 
 .project-card,
-.article-card,
 .feedback-form,
 .auth-card {
 
@@ -1314,13 +1313,7 @@ header {
 
 }
 
-
-/* ====================================================
-   8. PROJECT & ARTICLE CARDS
-   ==================================================== */
-
-.project-card,
-.article-card {
+.project-card {
 
     position:
         relative;
@@ -1348,8 +1341,7 @@ header {
 }
 
 
-.project-card::before,
-.article-card::before {
+.project-card::before {
 
     content:
         "";
@@ -1377,8 +1369,7 @@ header {
 }
 
 
-.project-card:hover,
-.article-card:hover {
+.project-card:hover {
 
     transform:
         translateY(-5px);
@@ -1398,8 +1389,7 @@ header {
 }
 
 
-.project-card h3,
-.article-card h3 {
+.project-card h3 {
 
     position:
         relative;
@@ -1422,8 +1412,7 @@ header {
 }
 
 
-.project-card p,
-.article-card p {
+.project-card p {
 
     position:
         relative;
@@ -1437,8 +1426,7 @@ header {
 }
 
 
-.project-card a,
-.article-card a {
+.project-card a {
 
     position:
         relative;
@@ -1470,56 +1458,13 @@ header {
 }
 
 
-.project-card a:hover,
-.article-card a:hover {
+.project-card a:hover {
 
     color:
         #ffffff;
 
     transform:
         translateX(4px);
-
-}
-
-
-.article-card .category {
-
-    display:
-        inline-block;
-
-    position:
-        relative;
-
-    margin-bottom:
-        13px;
-
-    padding:
-        5px 10px;
-
-    border-radius:
-        999px;
-
-    background:
-        rgba(255, 255, 255, 0.045);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-
-    color:
-        #9da7b8;
-
-    font-size:
-        0.7rem;
-
-    font-weight:
-        600;
-
-    letter-spacing:
-        0.05em;
-
-    text-transform:
-        uppercase;
 
 }
 
@@ -3363,7 +3308,6 @@ footer {
 html[data-dheere-mood] header,
 html[data-dheere-mood] .founder-card,
 html[data-dheere-mood] .project-card,
-html[data-dheere-mood] .article-card,
 html[data-dheere-mood] .feedback-form,
 html[data-dheere-mood] .auth-card {
 
@@ -3395,7 +3339,6 @@ html[data-dheere-mood] .auth-card {
 .projects-section--flagship,
 .worldbuilding-section,
 .mood-preview-section,
-.articles-section--editorial,
 .library-section,
 .community-section--ecosystem,
 .questions-section,
@@ -3986,49 +3929,6 @@ html[data-dheere-mood] .auth-card {
    34. JOURNAL
    ---------------------------------------------------------------------------- */
 
-.articles-section--editorial{
-  display:grid;
-  grid-template-columns:90px minmax(0,1fr);
-  gap:28px;
-}
-
-.article-index{
-  padding-top:5px;
-  color:#697381;
-  font-size:.72rem;
-  font-weight:600;
-  letter-spacing:.08em;
-}
-
-.articles-main{
-  min-width:0;
-}
-
-.article-card--feature{
-  padding:36px;
-}
-
-.article-card__meta{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#6f7988;
-  font-size:.7rem;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.article-strip{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-  margin-top:14px;
-}
-
-.article-strip .article-card{
-  min-height:180px;
-}
-
 /* ----------------------------------------------------------------------------
    35. CREATIVE LIBRARY
    ---------------------------------------------------------------------------- */
@@ -4384,10 +4284,9 @@ html[data-dheere-mood] .auth-card {
 
 @media (max-width:900px){
   .studio-intro-section,
-  .founder-section--editorial,
-  .articles-section--editorial,
-  .questions-section,
-  .about-section--manifesto{
+.founder-section--editorial,
+.questions-section,
+.about-section--manifesto{
     grid-template-columns:1fr;
     gap:24px;
   }
@@ -4481,9 +4380,8 @@ html[data-dheere-mood] .auth-card {
     padding:28px 24px;
   }
 
-  .article-strip,
   .manifesto-columns,
-  .community-pillars{
+.community-pillars{
     grid-template-columns:1fr;
   }
 
@@ -4572,12 +4470,11 @@ html[data-dheere-mood] .auth-card {
 /* Keep cards from becoming too animated or toy-like on touch devices. */
 @media (hover:none){
   .project-card:hover,
-  .article-card:hover,
-  .founder-card:hover,
-  .principle-card:hover,
-  .world-card:hover img,
-  .library-item:hover,
-  .seo-link-grid a:hover{
+.founder-card:hover,
+.principle-card:hover,
+.world-card:hover img,
+.library-item:hover,
+.seo-link-grid a:hover{
     transform:none;
   }
 }
@@ -4674,7 +4571,6 @@ header{
    -------------------------------------------------------------------------- */
 
 .founder-card,
-.article-card,
 .feedback-form,
 .auth-card,
 .principle-card,
@@ -4825,7 +4721,6 @@ footer{
 
 .world-card,
 .project-card,
-.article-card,
 .principle-card,
 .library-item,
 .seo-link-grid a{
@@ -4913,10 +4808,9 @@ footer{
 
 @media (hover:none){
   .project-card:hover,
-  .article-card:hover,
-  .founder-card:hover,
-  .principle-card:hover,
-  .library-item:hover{
+.founder-card:hover,
+.principle-card:hover,
+.library-item:hover{
     transform:none;
   }
 }
@@ -5481,7 +5375,6 @@ section h2 {
    ---------------------------------------------------------------------------- */
 
 .project-card,
-.article-card,
 .founder-card,
 .principle-card,
 .world-card,
@@ -5496,7 +5389,6 @@ section h2 {
 }
 
 .project-card,
-.article-card,
 .founder-card,
 .feedback-form,
 .community-cta {
@@ -5506,7 +5398,6 @@ section h2 {
 }
 
 .project-card:hover,
-.article-card:hover,
 .founder-card:hover,
 .feedback-form:hover,
 .community-cta:hover {
@@ -5519,14 +5410,12 @@ section h2 {
 }
 
 .project-card h3,
-.article-card h3,
 .founder-card h3,
 .library-item strong {
     letter-spacing: -.03em;
 }
 
 .project-card a,
-.article-card a,
 .founder-card a,
 .footer-nav a,
 .seo-link-grid a {
@@ -5537,7 +5426,6 @@ section h2 {
 }
 
 .project-card a:hover,
-.article-card a:hover,
 .founder-card a:hover,
 .footer-nav a:hover,
 .seo-link-grid a:hover {
@@ -5779,13 +5667,8 @@ footer::before {
     }
 
     .community-grid,
-    .questions-section,
-    .articles-section--editorial {
+.questions-section {
         grid-template-columns: 1fr;
-    }
-
-    .article-index {
-        padding-top: 0;
     }
 
     .mood-preview-shell {
@@ -5826,11 +5709,10 @@ footer::before {
     }
 
     .project-card:hover,
-    .article-card:hover,
-    .founder-card:hover,
-    .feedback-form:hover,
-    .community-cta:hover,
-    .world-card:hover {
+.founder-card:hover,
+.feedback-form:hover,
+.community-cta:hover,
+.world-card:hover {
         transform: none;
     }
 }
@@ -6165,7 +6047,6 @@ button:not(.mood-card),
    ---------------------------------------------------------------------------- */
 
 .project-card,
-.article-card,
 .founder-card,
 .principle-card,
 .world-card,
@@ -6179,7 +6060,6 @@ button:not(.mood-card),
 }
 
 .project-card::after,
-.article-card::after,
 .founder-card::after,
 .world-card::after,
 .community-cta::after,
@@ -6197,7 +6077,6 @@ button:not(.mood-card),
 }
 
 .project-card:hover::after,
-.article-card:hover::after,
 .founder-card:hover::after,
 .world-card:hover::after,
 .community-cta:hover::after,
@@ -6207,16 +6086,14 @@ button:not(.mood-card),
 }
 
 .project-card img,
-.world-card img,
-.article-card img {
+.world-card img {
     transition:
         transform .85s var(--cinema-spring),
         filter .65s ease;
 }
 
 .project-card:hover img,
-.world-card:hover img,
-.article-card:hover img {
+.world-card:hover img {
     transform: scale(1.035);
     filter: saturate(1.03) contrast(1.02);
 }
@@ -6226,7 +6103,6 @@ button:not(.mood-card),
    ---------------------------------------------------------------------------- */
 
 .project-card a,
-.article-card a,
 .founder-card a,
 .footer-nav a,
 .seo-link-grid a {
@@ -6234,7 +6110,6 @@ button:not(.mood-card),
 }
 
 .project-card a::after,
-.article-card a::after,
 .founder-card a::after,
 .footer-nav a::after,
 .seo-link-grid a::after {
@@ -6251,7 +6126,6 @@ button:not(.mood-card),
 }
 
 .project-card a:hover::after,
-.article-card a:hover::after,
 .founder-card a:hover::after,
 .footer-nav a:hover::after,
 .seo-link-grid a:hover::after {
@@ -6261,7 +6135,6 @@ button:not(.mood-card),
 .section-kicker,
 .category,
 .world-kicker,
-.article-eyebrow,
 .hero-eyebrow {
     letter-spacing: .12em;
 }
@@ -6479,17 +6352,15 @@ footer::after {
     }
 
     .project-card:hover,
-    .article-card:hover,
-    .founder-card:hover,
-    .world-card:hover,
-    .community-cta:hover,
-    .feedback-form:hover {
+.founder-card:hover,
+.world-card:hover,
+.community-cta:hover,
+.feedback-form:hover {
         transform: none;
     }
 
     .project-card:hover img,
-    .world-card:hover img,
-    .article-card:hover img {
+.world-card:hover img {
         transform: none;
     }
 }
@@ -7635,11 +7506,6 @@ html[data-dheere-mood] .hero-secondary:hover {
 .nav-links .dheere-mood-link:hover{
     color:var(--mood-text,#f8fafc);
 }
-
-/* Current Studio Journal wrapper */
-.articles-main{
-    min-width:0;
-}
 .section-heading--compact{
     max-width:760px;
     margin-bottom:30px;
@@ -7730,8 +7596,6 @@ html[data-dheere-mood] .hero-secondary:hover {
 #studio-intro + #founder,
 #founder + #projects,
 #projects + #dheere-mood,
-#dheere-mood + #articles,
-#articles + #creative-library,
 #creative-library + #community,
 #community + #studio-questions,
 #studio-questions + #about,

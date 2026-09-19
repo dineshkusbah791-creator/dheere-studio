@@ -13,7 +13,6 @@ Purpose:
 
 Scope:
     • Public studio pages
-    • Public creative-content pages
     • Public major-IP pages
     • Public community page
     • Public Dheere Mood experience
@@ -27,6 +26,7 @@ Deliberately excluded:
     • Non-canonical test pages
     • Development-only pages
     • Permanently removed pages
+    • Removed article / content-hub page
 
 Metadata policy:
     No artificial <lastmod> dates are supplied because no trustworthy source
@@ -53,7 +53,6 @@ Source inventory represented by this file:
     Home
     About
     Founder
-    Articles
     Shunyavas
     OWLMAN
     Shantu
@@ -99,19 +98,7 @@ Source inventory represented by this file:
 
 
     <!-- ====================================================================
-         03 — CREATIVE CONTENT
-         ==================================================================== -->
-
-    <!--
-        Public written-content / article hub.
-    -->
-    <url>
-        <loc>https://dheerestudio.com/article.html</loc>
-    </url>
-
-
-    <!-- ====================================================================
-         04 — MAJOR ORIGINAL INTELLECTUAL PROPERTIES
+         03 — MAJOR ORIGINAL INTELLECTUAL PROPERTIES
          ==================================================================== -->
 
     <!--
@@ -141,7 +128,7 @@ Source inventory represented by this file:
 
 
     <!-- ====================================================================
-         05 — COMMUNITY
+         04 — COMMUNITY
          ==================================================================== -->
 
     <!--
@@ -154,7 +141,7 @@ Source inventory represented by this file:
 
 
     <!-- ====================================================================
-         06 — OTHER PUBLIC CREATIVE EXPERIENCE
+         05 — OTHER PUBLIC CREATIVE EXPERIENCE
          ==================================================================== -->
 
     <!--
@@ -173,14 +160,13 @@ Source inventory represented by this file:
          01  https://dheerestudio.com/
          02  https://dheerestudio.com/about.html
          03  https://dheerestudio.com/founder.html
-         04  https://dheerestudio.com/article.html
-         05  https://dheerestudio.com/shunyavas.html
-         06  https://dheerestudio.com/owlman.html
-         07  https://dheerestudio.com/shantu.html
-         08  https://dheerestudio.com/Community/community.html
-         09  https://dheerestudio.com/mood.html
+         04  https://dheerestudio.com/shunyavas.html
+         05  https://dheerestudio.com/owlman.html
+         06  https://dheerestudio.com/shantu.html
+         07  https://dheerestudio.com/Community/community.html
+         08  https://dheerestudio.com/mood.html
 
-         Total canonical URLs: 9
+         Total canonical URLs: 8
 
          Duplicate check:
          None.
