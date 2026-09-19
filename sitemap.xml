@@ -26,6 +26,7 @@ Deliberately excluded:
     • Query-string variants
     • Non-canonical test pages
     • Development-only pages
+    • Permanently removed pages
 
 Metadata policy:
     No artificial <lastmod> dates are supplied because no trustworthy source
@@ -52,9 +53,6 @@ Source inventory represented by this file:
     Home
     About
     Founder
-    Worlds
-    Stories
-    Experiences
     Articles
     Shunyavas
     OWLMAN
@@ -103,27 +101,6 @@ Source inventory represented by this file:
     <!-- ====================================================================
          03 — CREATIVE CONTENT
          ==================================================================== -->
-
-    <!--
-        Public directory / overview for original fictional worlds.
-    -->
-    <url>
-        <loc>https://dheerestudio.com/worlds.html</loc>
-    </url>
-
-    <!--
-        Public directory / overview for original stories.
-    -->
-    <url>
-        <loc>https://dheerestudio.com/stories.html</loc>
-    </url>
-
-    <!--
-        Public directory / overview for creative experiences.
-    -->
-    <url>
-        <loc>https://dheerestudio.com/experiences.html</loc>
-    </url>
 
     <!--
         Public written-content / article hub.
@@ -196,17 +173,14 @@ Source inventory represented by this file:
          01  https://dheerestudio.com/
          02  https://dheerestudio.com/about.html
          03  https://dheerestudio.com/founder.html
-         04  https://dheerestudio.com/worlds.html
-         05  https://dheerestudio.com/stories.html
-         06  https://dheerestudio.com/experiences.html
-         07  https://dheerestudio.com/article.html
-         08  https://dheerestudio.com/shunyavas.html
-         09  https://dheerestudio.com/owlman.html
-         10  https://dheerestudio.com/shantu.html
-         11  https://dheerestudio.com/Community/community.html
-         12  https://dheerestudio.com/mood.html
+         04  https://dheerestudio.com/article.html
+         05  https://dheerestudio.com/shunyavas.html
+         06  https://dheerestudio.com/owlman.html
+         07  https://dheerestudio.com/shantu.html
+         08  https://dheerestudio.com/Community/community.html
+         09  https://dheerestudio.com/mood.html
 
-         Total canonical URLs: 12
+         Total canonical URLs: 9
 
          Duplicate check:
          None.
