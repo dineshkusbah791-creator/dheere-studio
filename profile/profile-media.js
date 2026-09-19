@@ -64,6 +64,18 @@ const MAX_IMAGE_DIMENSION =
     900;
 
 
+/* =========================================================
+   DEFAULT PROFILE AVATAR
+   =========================================================
+
+   Used whenever the user has no uploaded profile photo.
+   This file lives in /profile, so the asset is one level up.
+   ========================================================= */
+
+const DEFAULT_AVATAR_URL =
+    "../assets/user.png";
+
+
 const ALLOWED_IMAGE_TYPES = new Set([
     "image/jpeg",
     "image/png",
@@ -185,67 +197,85 @@ function renderAvatar(
     element.replaceChildren();
 
 
-    if (
-        image
-        &&
-        typeof image ===
-        "string"
-    ) {
-
-        const img =
-            document.createElement(
-                "img"
-            );
+    const imageUrl =
+        (
+            typeof image ===
+            "string"
+            &&
+            image.trim()
+        )
+            ? image.trim()
+            : DEFAULT_AVATAR_URL;
 
 
-        img.src =
-            image;
+    const img =
+        document.createElement(
+            "img"
+        );
 
 
-        img.alt =
-            `${name || "Profile"} photo`;
+    img.src =
+        imageUrl;
 
 
-        img.loading =
-            "eager";
+    img.alt =
+        imageUrl === DEFAULT_AVATAR_URL
+            ? "Default profile photo"
+            : `${name || "Profile"} photo`;
 
 
-        img.decoding =
-            "async";
+    img.loading =
+        "eager";
 
 
-        img.addEventListener(
-            "error",
-            () => {
+    img.decoding =
+        "async";
+
+
+    img.addEventListener(
+        "error",
+        () => {
+
+            /*
+             * If a custom uploaded photo fails, retry once with
+             * the default profile image.
+             */
+
+            if (
+                img.src.endsWith(
+                    DEFAULT_AVATAR_URL
+                )
+            ) {
 
                 element.replaceChildren();
-
 
                 element.textContent =
                     getInitials(
                         name
                     );
 
+                return;
+
             }
-        );
 
 
-        element.appendChild(
-            img
-        );
+            img.src =
+                DEFAULT_AVATAR_URL;
 
 
-        return;
+            img.alt =
+                "Default profile photo";
 
-    }
+        }
+    );
 
 
-    element.textContent =
-        getInitials(
-            name
-        );
+    element.appendChild(
+        img
+    );
 
 }
+
 
 
 /* =========================================================
