@@ -534,7 +534,9 @@ function showProfileContent() {
 
 /* ============================================================
    AVATAR
-   ===========function renderAvatar(
+   ============================================================ */
+
+function renderAvatar(
     user
 ) {
 
@@ -607,10 +609,6 @@ function showProfileContent() {
     publicProfileAvatar.appendChild(
         image
     );
-
-}    user.name,
-            user.username
-        );
 
 }
 
