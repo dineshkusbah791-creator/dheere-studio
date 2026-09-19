@@ -15,6 +15,10 @@ const API_BASE =
     "https://dheere-studio.onrender.com";
 
 
+const DEFAULT_AVATAR_URL =
+    "./assets/user.png";
+
+
 const USER_STORAGE_KEY =
     "dheereStudioUser";
 
@@ -530,15 +534,12 @@ function showProfileContent() {
 
 /* ============================================================
    AVATAR
-   ============================================================ */
-
-function renderAvatar(
+   ===========function renderAvatar(
     user
 ) {
 
     publicProfileAvatar.innerHTML =
         "";
-
 
     const avatarUrl =
         typeof user?.avatarUrl ===
@@ -546,38 +547,43 @@ function renderAvatar(
             ? user.avatarUrl.trim()
             : "";
 
+    const imageSource =
+        avatarUrl ||
+        DEFAULT_AVATAR_URL;
 
-    if (avatarUrl) {
+    const image =
+        document.createElement(
+            "img"
+        );
 
-        const image =
-            document.createElement(
-                "img"
-            );
+    image.src =
+        imageSource;
 
-
-        image.src =
-            avatarUrl;
-
-
-        image.alt =
-            `${
+    image.alt =
+        imageSource ===
+        DEFAULT_AVATAR_URL
+            ? "Default profile photo"
+            : `${
                 user.name ||
                 user.username ||
                 "User"
             } profile photo`;
 
+    image.loading =
+        "eager";
 
-        image.loading =
-            "eager";
+    image.decoding =
+        "async";
 
+    image.addEventListener(
+        "error",
+        () => {
 
-        image.decoding =
-            "async";
-
-
-        image.addEventListener(
-            "error",
-            () => {
+            if (
+                image.src.endsWith(
+                    DEFAULT_AVATAR_URL
+                )
+            ) {
 
                 publicProfileAvatar.textContent =
                     getInitial(
@@ -585,23 +591,24 @@ function renderAvatar(
                         user.username
                     );
 
+                return;
+
             }
-        );
 
+            image.src =
+                DEFAULT_AVATAR_URL;
 
-        publicProfileAvatar.appendChild(
-            image
-        );
+            image.alt =
+                "Default profile photo";
 
+        }
+    );
 
-        return;
+    publicProfileAvatar.appendChild(
+        image
+    );
 
-    }
-
-
-    publicProfileAvatar.textContent =
-        getInitial(
-            user.name,
+}    user.name,
             user.username
         );
 
