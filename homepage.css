@@ -7727,3 +7727,62 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
 .profile-dropdown-item--danger:hover {
     color: #fecaca;
 }
+
+
+/* ============================================================================
+   FINAL PROFILE DROPDOWN INTERACTION FIX
+   ----------------------------------------------------------------------------
+   Interaction-only patch.
+   Existing visuals, routes, Mood system, HTML and JavaScript remain unchanged.
+   ============================================================================ */
+
+.nav-profile-menu-wrapper {
+    pointer-events: auto !important;
+}
+
+.profile-dropdown {
+    position: absolute;
+    z-index: 1200 !important;
+    pointer-events: auto !important;
+    isolation: isolate;
+}
+
+.profile-dropdown-section {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
+}
+
+.profile-dropdown-item {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.profile-dropdown-item .profile-dropdown-icon,
+.profile-dropdown-item .profile-dropdown-label {
+    pointer-events: none;
+}
+
+.profile-dropdown-item:hover {
+    cursor: pointer !important;
+}
+
+.profile-dropdown-item:active {
+    transform: translateX(1px) scale(.985) !important;
+}
+
+.profile-dropdown-item--danger {
+    cursor: pointer !important;
+}
+
+.profile-dropdown-item--danger .profile-dropdown-icon,
+.profile-dropdown-item--danger .profile-dropdown-label {
+    pointer-events: none;
+}
