@@ -7628,3 +7628,102 @@ html[data-dheere-mood] .hero-secondary:hover {
         transition:none;
     }
 }
+
+
+/* ============================================================================
+   45. PROFILE DROPDOWN — GLASS + MOOD-AWARE HOVER
+   ----------------------------------------------------------------------------
+   Visual-only patch.
+   No JavaScript, routes, backend calls, or interaction logic are changed.
+   ============================================================================ */
+
+/* Neutral glass surface: remove the previous gold-heavy appearance. */
+.profile-dropdown {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .085),
+            rgba(255, 255, 255, .028) 52%,
+            rgba(10, 12, 17, .58)
+        );
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .42),
+        inset 0 1px 0 rgba(255, 255, 255, .10),
+        inset 0 -1px 0 rgba(255, 255, 255, .025);
+    backdrop-filter: blur(28px) saturate(155%);
+    -webkit-backdrop-filter: blur(28px) saturate(155%);
+}
+
+/* Neutral glass highlight; no fixed gold tint. */
+.profile-dropdown::before {
+    background:
+        radial-gradient(
+            circle at 88% 8%,
+            rgba(255, 255, 255, .085),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .035),
+            transparent 36%
+        );
+}
+
+/* Normal menu text stays neutral. */
+.profile-dropdown-item {
+    color: rgba(244, 246, 250, .84);
+}
+
+/* My Profile / My Posts / My Settings:
+   active Dheere Mood accent on hover/focus. */
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):hover,
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    color: var(--mood-accent, var(--accent));
+    border-color:
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 20%,
+            transparent
+        );
+    background:
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 8%,
+            rgba(255, 255, 255, .035)
+        );
+}
+
+/* Keep the icon in the same active Mood colour. */
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):hover .profile-dropdown-icon,
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible .profile-dropdown-icon {
+    color: var(--mood-accent, var(--accent));
+}
+
+/* Fallback when the Mood attribute is not present. */
+.profile-dropdown-item:not(.profile-dropdown-item--danger):hover,
+.profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    color: var(--accent);
+}
+
+.profile-dropdown-item:not(.profile-dropdown-item--danger):hover .profile-dropdown-icon,
+.profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible .profile-dropdown-icon {
+    color: var(--accent);
+}
+
+/* Accessibility: keyboard focus keeps the same Mood language. */
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    outline:
+        2px solid
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 52%,
+            transparent
+        );
+    outline-offset: 2px;
+}
+
+/* Preserve the red treatment for Logout. */
+.profile-dropdown-item--danger:hover {
+    color: #fecaca;
+}
