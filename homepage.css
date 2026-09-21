@@ -7628,3 +7628,156 @@ html[data-dheere-mood] .hero-secondary:hover {
         transition:none;
     }
 }
+
+
+/* ============================================================
+   50. PROFILE / SEARCH FINAL INTERACTION FIXES
+   ============================================================ */
+
+/* Real search trigger button */
+.search-trigger {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    width: 32px;
+    height: 32px;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    z-index: 2;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.search-trigger:hover {
+    background: rgba(255,255,255,.075);
+    color: #ffffff;
+}
+
+.search-trigger:active {
+    transform: translateY(-50%) scale(.94);
+}
+
+.search-trigger:focus-visible {
+    outline: 2px solid rgba(215,188,122,.52);
+    outline-offset: 2px;
+}
+
+.search-trigger .search-icon {
+    position: static;
+    transform: none;
+    width: 17px;
+    height: 17px;
+    opacity: .82;
+    pointer-events: none;
+}
+
+.nav-search-wrapper {
+    position: relative;
+    z-index: 20;
+}
+
+.search-results {
+    pointer-events: auto;
+    z-index: 12000;
+}
+
+.search-result-item {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+/* Neutral glass dropdown: subtle gold only as an accent */
+.profile-dropdown {
+    border: 1px solid rgba(255,255,255,.14) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.095),
+            rgba(255,255,255,.040) 48%,
+            rgba(255,255,255,.022)
+        ) !important;
+    backdrop-filter: blur(28px) saturate(145%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(145%) !important;
+    box-shadow:
+        0 28px 80px rgba(0,0,0,.38),
+        inset 0 1px 0 rgba(255,255,255,.13),
+        inset 0 -1px 0 rgba(255,255,255,.025) !important;
+}
+
+.profile-dropdown::before {
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.055), transparent 38%),
+        radial-gradient(circle at 88% 8%, rgba(215,188,122,.075), transparent 26%) !important;
+}
+
+.profile-dropdown-item {
+    border-color: transparent !important;
+    color: rgba(248,250,252,.86) !important;
+}
+
+.profile-dropdown-item:hover {
+    background: rgba(255,255,255,.075) !important;
+    border-color: rgba(255,255,255,.08) !important;
+    color: #ffffff !important;
+}
+
+.profile-dropdown-item--danger:hover {
+    background: rgba(239,68,68,.065) !important;
+}
+
+/* Development toast */
+.dheere-development-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translate(-50%, 14px);
+    z-index: 20000;
+    max-width: min(92vw, 440px);
+    padding: 12px 16px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 14px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.045)
+        );
+    backdrop-filter: blur(24px) saturate(145%);
+    -webkit-backdrop-filter: blur(24px) saturate(145%);
+    box-shadow:
+        0 22px 55px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.12);
+    color: #f8fafc;
+    font-size: .84rem;
+    font-weight: 500;
+    line-height: 1.45;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity .22s ease,
+        transform .22s var(--studio-spring, cubic-bezier(.16,1,.3,1));
+}
+
+.dheere-development-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .search-trigger,
+    .dheere-development-toast {
+        transition-duration: .01ms !important;
+    }
+}

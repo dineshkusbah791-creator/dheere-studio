@@ -1794,29 +1794,38 @@
                         >
 
 
-                        <svg
-                            class="search-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
+                        <button
+                            id="userSearchButton"
+                            class="search-trigger"
+                            type="button"
+                            aria-label="Search people"
                         >
 
-                            <circle
-                                cx="11"
-                                cy="11"
-                                r="7"
-                            ></circle>
+                            <svg
+                                class="search-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+
+                                <circle
+                                    cx="11"
+                                    cy="11"
+                                    r="7"
+                                ></circle>
 
 
-                            <path
-                                d="m20 20-4-4"
-                            ></path>
+                                <path
+                                    d="m20 20-4-4"
+                                ></path>
 
-                        </svg>
+                            </svg>
+
+                        </button>
 
 
                         <!--
@@ -2097,10 +2106,10 @@
                                 </a>
 
 
-                                <a
+                                <button
                                     id="profileMenuSettings"
                                     class="profile-dropdown-item"
-                                    href="mood.html"
+                                    type="button"
                                     role="menuitem"
                                     data-profile-action="settings"
                                 >
@@ -2137,7 +2146,7 @@
                                         Settings
                                     </span>
 
-                                </a>
+                                </button>
 
                             </div>
 
