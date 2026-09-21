@@ -7728,13 +7728,20 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
     color: #fecaca;
 }
 
-
 /* ============================================================================
-   FINAL PROFILE DROPDOWN INTERACTION FIX
+   FINAL INTERACTION / HIT-AREA FIX
    ----------------------------------------------------------------------------
-   Interaction-only patch.
-   Existing visuals, routes, Mood system, HTML and JavaScript remain unchanged.
+   Scope:
+   - Profile dropdown rows
+   - User search result rows
+
+   Existing visuals, routes, HTML, JavaScript and Mood behavior remain intact.
+   This layer only makes the existing interactive controls use their full rows.
    ============================================================================ */
+
+/* --------------------------------------------------------------------------
+   PROFILE DROPDOWN
+   -------------------------------------------------------------------------- */
 
 .nav-profile-menu-wrapper {
     pointer-events: auto !important;
@@ -7754,11 +7761,15 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
 }
 
 .profile-dropdown-item {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    width: 100%;
+    position: relative !important;
+    z-index: 3 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+
     pointer-events: auto !important;
     cursor: pointer !important;
     touch-action: manipulation;
@@ -7766,8 +7777,9 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
 }
 
 .profile-dropdown-item .profile-dropdown-icon,
-.profile-dropdown-item .profile-dropdown-label {
-    pointer-events: none;
+.profile-dropdown-item .profile-dropdown-label,
+.profile-dropdown-item .profile-dropdown-icon * {
+    pointer-events: none !important;
 }
 
 .profile-dropdown-item:hover {
@@ -7782,7 +7794,43 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
     cursor: pointer !important;
 }
 
-.profile-dropdown-item--danger .profile-dropdown-icon,
-.profile-dropdown-item--danger .profile-dropdown-label {
-    pointer-events: none;
+
+/* --------------------------------------------------------------------------
+   USER SEARCH RESULT ROWS
+   -------------------------------------------------------------------------- */
+
+.search-results {
+    pointer-events: auto !important;
+}
+
+.search-result-item {
+    position: relative !important;
+    z-index: 2 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+
+    cursor: pointer !important;
+    pointer-events: auto !important;
+
+    text-align: left !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.search-result-item > * {
+    pointer-events: none !important;
+}
+
+.search-result-item:hover {
+    cursor: pointer !important;
+}
+
+.search-result-item:active {
+    cursor: pointer !important;
 }
