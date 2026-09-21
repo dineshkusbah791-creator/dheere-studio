@@ -225,9 +225,6 @@ let navProfileAvatar =
 const userSearchInput =
     document.getElementById('userSearchInput');
 
-const userSearchButton =
-    document.getElementById('userSearchButton');
-
 const searchResults =
     document.getElementById('searchResults');
 
@@ -1437,75 +1434,6 @@ function handleProfileDropdownKeydown(
 }
 
 
-function showDevelopmentToast(message) {
-
-    const existingToast =
-        document.querySelector(
-            '.dheere-development-toast'
-        );
-
-
-    if (existingToast) {
-
-        existingToast.remove();
-
-    }
-
-
-    const toast =
-        document.createElement('div');
-
-
-    toast.className =
-        'dheere-development-toast';
-
-
-    toast.setAttribute(
-        'role',
-        'status'
-    );
-
-
-    toast.textContent =
-        message ||
-        'This function is in development.';
-
-
-    document.body.appendChild(
-        toast
-    );
-
-
-    requestAnimationFrame(
-        () => {
-
-            toast.classList.add(
-                'is-visible'
-            );
-
-        }
-    );
-
-
-    window.setTimeout(
-        () => {
-
-            toast.classList.remove(
-                'is-visible'
-            );
-
-            window.setTimeout(
-                () => toast.remove(),
-                220
-            );
-
-        },
-        2600
-    );
-
-}
-
-
 function logoutHomepageUser() {
 
     closeProfileMenu();
@@ -1653,17 +1581,7 @@ function initializeProfileMenu() {
 
     profileMenuSettings?.addEventListener(
         'click',
-        (event) => {
-
-            event.preventDefault();
-
-            closeProfileMenu();
-
-            showDevelopmentToast(
-                'Settings function is in development.'
-            );
-
-        }
+        closeProfileMenu
     );
 
 
@@ -2203,62 +2121,6 @@ async function searchUsers(query) {
         );
 
     }
-
-}
-
-
-// ======================================================
-// SEARCH BUTTON
-// ======================================================
-
-function handleUserSearchButtonClick() {
-
-    if (!userSearchInput) {
-        return;
-    }
-
-
-    const query =
-        userSearchInput.value.trim();
-
-
-    if (!query) {
-
-        userSearchInput.focus();
-
-        return;
-
-    }
-
-
-    const firstResult =
-        searchResults?.querySelector(
-            '.search-result-item'
-        );
-
-
-    if (firstResult) {
-
-        firstResult.click();
-
-        return;
-
-    }
-
-
-    searchUsers(
-        query
-    );
-
-}
-
-
-if (userSearchButton) {
-
-    userSearchButton.addEventListener(
-        'click',
-        handleUserSearchButtonClick
-    );
 
 }
 
