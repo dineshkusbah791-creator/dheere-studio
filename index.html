@@ -1644,6 +1644,59 @@
             visibility: hidden;
         }
 
+        /* ====================================================
+           NAV INTERACTION STRUCTURE
+           HTML owns semantics; homepage.css owns final visuals.
+           ==================================================== */
+
+        .nav-profile-link {
+            appearance: none;
+            -webkit-appearance: none;
+            border: 0;
+            margin: 0;
+            font: inherit;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .profile-dropdown-item {
+            appearance: none;
+            -webkit-appearance: none;
+            font: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            text-align: left;
+        }
+
+        .mobile-search-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+            background: rgba(255,255,255,.045);
+            color: inherit;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-search-toggle svg {
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+        }
+
+        @media (max-width: 650px) {
+            .mobile-search-toggle {
+                display: inline-flex;
+            }
+        }
+
 </style>
 
 
@@ -1770,7 +1823,30 @@
                 <div
                     class="nav-search"
                     id="userSearch"
+                    data-search-component="users"
                 >
+
+                    <button
+                        id="mobileSearchToggle"
+                        class="mobile-search-toggle"
+                        type="button"
+                        aria-label="Open user search"
+                        aria-expanded="false"
+                        aria-controls="userSearchInput"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m20 20-4-4"></path>
+                        </svg>
+                    </button>
 
                     <div class="nav-search-wrapper">
 
@@ -1967,10 +2043,10 @@
                         class="nav-profile-menu-wrapper hidden-profile"
                     >
 
-                        <a
+                        <button
                             id="profileBtn"
                             class="nav-profile-link"
-                            href="profile/profile.html"
+                            type="button"
                             aria-label="Open profile menu"
                             aria-haspopup="menu"
                             aria-expanded="false"
@@ -1993,7 +2069,7 @@
                                 Profile
                             </span>
 
-                        </a>
+                        </button>
 
 
                         <div
@@ -2097,12 +2173,13 @@
                                 </a>
 
 
-                                <a
+                                <button
                                     id="profileMenuSettings"
                                     class="profile-dropdown-item"
-                                    href="mood.html"
+                                    type="button"
                                     role="menuitem"
                                     data-profile-action="settings"
+                                    aria-label="Settings — feature in development"
                                 >
 
                                     <span
@@ -2137,7 +2214,7 @@
                                         Settings
                                     </span>
 
-                                </a>
+                                </button>
 
                             </div>
 
