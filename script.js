@@ -228,12 +228,6 @@ const userSearchInput =
 const searchResults =
     document.getElementById('searchResults');
 
-const mobileSearchToggle =
-    document.getElementById('mobileSearchToggle');
-
-const searchContainer =
-    document.getElementById('userSearch');
-
 let searchTimer = null;
 
 let searchRequestId = 0;
@@ -970,9 +964,6 @@ function updateNavbar() {
         goToLoginBtn.style.display =
             '';
 
-        clearSearchResults();
-        closeMobileSearchPanel();
-
 
         if (profileMenuWrapper) {
 
@@ -1572,53 +1563,25 @@ function initializeProfileMenu() {
 
         profileMenuPosts.addEventListener(
             'click',
-            () => {
-
-                closeProfileMenu();
-
-            }
+            closeProfileMenu
         );
 
     }
 
 
     /*
-     * My Profile remains a normal navigation link.
+     * My Profile and Settings remain normal links.
+     * No URL replacement is performed here.
      */
     profileMenuProfile?.addEventListener(
         'click',
-        () => {
-
-            closeProfileMenu();
-
-        }
+        closeProfileMenu
     );
 
 
-    /*
-     * Settings is intentionally not routed anywhere yet.
-     * The feature is still in development.
-     */
     profileMenuSettings?.addEventListener(
         'click',
-        (event) => {
-
-            event.preventDefault();
-
-            closeProfileMenu();
-
-            window.setTimeout(
-                () => {
-
-                    window.alert(
-                        'Settings feature is in development.'
-                    );
-
-                },
-                0
-            );
-
-        }
+        closeProfileMenu
     );
 
 
@@ -1706,92 +1669,19 @@ function getSearchResultAvatar(user) {
 // CLEAR SEARCH RESULTS
 // ======================================================
 
-function closeMobileSearchPanel({
-    restoreFocus = false,
-    clearInput = false
-} = {}) {
-
-    if (!searchContainer) {
-        return;
-    }
-
-    searchContainer.classList.remove(
-        'mobile-search-open'
-    );
-
-    mobileSearchToggle?.setAttribute(
-        'aria-expanded',
-        'false'
-    );
-
-    if (clearInput && userSearchInput) {
-        userSearchInput.value = '';
-    }
-
-    if (restoreFocus && mobileSearchToggle) {
-        mobileSearchToggle.focus();
-    }
-
-}
-
-
-function openMobileSearchPanel({
-    focusInput = true
-} = {}) {
-
-    if (!searchContainer) {
-        return;
-    }
-
-    searchContainer.classList.add(
-        'mobile-search-open'
-    );
-
-    mobileSearchToggle?.setAttribute(
-        'aria-expanded',
-        'true'
-    );
-
-    if (focusInput && userSearchInput) {
-        requestAnimationFrame(() => {
-            userSearchInput.focus();
-        });
-    }
-
-}
-
-
-function toggleMobileSearchPanel() {
-
-    if (!searchContainer) {
-        return;
-    }
-
-    const isOpen =
-        searchContainer.classList.contains(
-            'mobile-search-open'
-        );
-
-    if (isOpen) {
-        closeMobileSearchPanel({
-            restoreFocus: true
-        });
-    } else {
-        openMobileSearchPanel();
-    }
-
-}
-
-
 function clearSearchResults() {
 
-    if (searchResults) {
-        searchResults.replaceChildren();
-
-        searchResults.classList.remove(
-            'active'
-        );
+    if (!searchResults) {
+        return;
     }
+
+
+    searchResults.replaceChildren();
+
+
+    searchResults.classList.remove(
+        'active'
+    );
 
 }
 
@@ -2236,48 +2126,10 @@ async function searchUsers(query) {
 
 
 // ======================================================
-// MOBILE SEARCH TOGGLE
-// ======================================================
-
-if (mobileSearchToggle) {
-
-    mobileSearchToggle.addEventListener(
-        'click',
-        () => {
-
-            toggleMobileSearchPanel();
-
-        }
-    );
-
-}
-
-
-// ======================================================
 // SEARCH INPUT
 // ======================================================
 
 if (userSearchInput) {
-
-    userSearchInput.addEventListener(
-        'focus',
-        () => {
-
-            if (
-                window.innerWidth <= 650 &&
-                mobileSearchToggle &&
-                !searchContainer?.classList.contains(
-                    'mobile-search-open'
-                )
-            ) {
-                openMobileSearchPanel({
-                    focusInput: false
-                });
-            }
-
-        }
-    );
-
 
     userSearchInput.addEventListener(
         'input',
@@ -2327,18 +2179,12 @@ if (userSearchInput) {
                 'Escape'
             ) {
 
-                event.preventDefault();
-
                 userSearchInput.value =
                     '';
 
                 clearSearchResults();
 
                 userSearchInput.blur();
-
-                closeMobileSearchPanel();
-
-                return;
 
             }
 
@@ -2379,20 +2225,28 @@ document.addEventListener(
     'click',
     (event) => {
 
-        if (!searchContainer) {
+        if (
+            !searchResults ||
+            !userSearchInput
+        ) {
             return;
         }
 
 
+        const searchContainer =
+            document.getElementById(
+                'userSearch'
+            );
+
+
         if (
+            searchContainer &&
             !searchContainer.contains(
                 event.target
             )
         ) {
 
             clearSearchResults();
-
-            closeMobileSearchPanel();
 
         }
 
@@ -4150,8 +4004,6 @@ window.addEventListener(
 // ======================================================
 
 initializeProfileMenu();
-
-closeMobileSearchPanel();
 
 updateNavbar();
 

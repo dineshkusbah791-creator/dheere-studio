@@ -533,19 +533,161 @@ header {
    PROFILE
    ==================================================== */
 
+.nav-profile-link {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    min-height:
+        42px;
+
+    padding:
+        4px 12px 4px 5px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    color:
+        #e2e8f0;
+
+    text-decoration:
+        none;
+
+    transition:
+
+        transform 0.25s ease,
+
+        background 0.25s ease,
+
+        border-color 0.25s ease;
+
+}
 
 
+.nav-profile-link:hover {
+
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(255, 255, 255, 0.075);
+
+    border-color:
+        rgba(255, 255, 255, 0.18);
+
+}
 
 
+.nav-profile-avatar {
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    flex:
+        0 0 34px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        50%;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.18),
+            rgba(255, 255, 255, 0.04)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    color:
+        #ffffff;
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        700;
+
+}
 
 
+.nav-profile-avatar img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+}
 
 
+.nav-profile-name {
 
+    max-width:
+        120px;
 
+    overflow:
+        hidden;
 
+    text-overflow:
+        ellipsis;
 
+    white-space:
+        nowrap;
 
+    color:
+        #dbe3ee;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        500;
+
+}
 
 
 .hidden-profile {
@@ -4520,7 +4662,7 @@ header{
 }
 
 .library-item:nth-child(4n){border-right:0}
-.library-item:nth-last-child(-n/**/+4){border-bottom:0}
+.library-item:nth-last-child(-n+4){border-bottom:0}
 
 .library-item:hover{
   background:linear-gradient(180deg,rgba(255,255,255,.038),transparent 72%);
@@ -4620,8 +4762,8 @@ footer{
   .library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .library-item:nth-child(4n){border-right:1px solid var(--line-soft)}
   .library-item:nth-child(2n){border-right:0}
-  .library-item:nth-last-child(-n/**/+4){border-bottom:1px solid var(--line-soft)}
-  .library-item:nth-last-child(-n/**/+2){border-bottom:0}
+  .library-item:nth-last-child(-n+4){border-bottom:1px solid var(--line-soft)}
+  .library-item:nth-last-child(-n+2){border-bottom:0}
 
   .studio-information-section--seo{padding:64px 26px 74px}
 }
@@ -4712,43 +4854,158 @@ header, main, footer{
    Existing navigation, search, notifications and profile visuals remain intact.
    ============================================================================ */
 
+.nav-profile-menu-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
 
+.nav-profile-menu-wrapper.hidden-profile {
+    display: none !important;
+}
 
+.nav-profile-menu-wrapper .nav-profile-link {
+    position: relative;
+    z-index: 1;
+}
 
+.nav-profile-menu-wrapper .nav-profile-link[aria-expanded="true"] {
+    border-color: rgba(215, 188, 122, .30);
+    background: rgba(215, 188, 122, .075);
+}
 
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 1100;
+    width: 232px;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, .105);
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 22, 28, .97),
+            rgba(10, 12, 17, .975)
+        );
+    box-shadow:
+        0 26px 70px rgba(0, 0, 0, .38),
+        inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(24px) saturate(135%);
+    -webkit-backdrop-filter: blur(24px) saturate(135%);
+    transform-origin: top right;
+}
 
+.profile-dropdown[hidden] {
+    display: none !important;
+}
 
+.profile-dropdown:not([hidden]) {
+    animation:
+        profileDropdownIn
+        .22s
+        var(--studio-spring, cubic-bezier(.16,1,.3,1))
+        both;
+}
 
+.profile-dropdown-section {
+    display: grid;
+    gap: 2px;
+}
 
+.profile-dropdown-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    gap: 11px;
+    padding: 9px 10px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    background: transparent;
+    color: rgba(239, 242, 248, .84);
+    text-decoration: none;
+    text-align: left;
+    font: inherit;
+    font-size: .82rem;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+        background .22s ease,
+        border-color .22s ease,
+        color .22s ease,
+        transform .28s var(--studio-spring);
+}
 
+.profile-dropdown-item:hover {
+    transform: translateX(2px);
+    border-color: rgba(255,255,255,.07);
+    background: rgba(255,255,255,.055);
+    color: #ffffff;
+}
 
+.profile-dropdown-item:active {
+    transform: translateX(1px) scale(.99);
+}
 
+.profile-dropdown-item:focus-visible {
+    outline: 2px solid rgba(215,188,122,.58);
+    outline-offset: 2px;
+}
 
+.profile-dropdown-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(215,188,122,.74);
+}
 
+.profile-dropdown-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
 
+.profile-dropdown-label {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
+.profile-dropdown-divider {
+    height: 1px;
+    margin: 6px 3px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.085) 18%,
+        rgba(255,255,255,.085) 82%,
+        transparent
+    );
+}
 
+.profile-dropdown-item--danger {
+    color: rgba(252, 165, 165, .82);
+}
 
+.profile-dropdown-item--danger .profile-dropdown-icon {
+    color: rgba(252, 165, 165, .82);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.profile-dropdown-item--danger:hover {
+    border-color: rgba(252,165,165,.10);
+    background: rgba(239,68,68,.065);
+    color: #fecaca;
+}
 
 @keyframes profileDropdownIn {
     from {
@@ -4766,20 +5023,38 @@ header, main, footer{
 
 /* Keep the menu visually attached to the navbar on narrower screens. */
 @media (max-width: 700px) {
-    
+    .profile-dropdown {
+        top: calc(100% + 9px);
+        width: 220px;
+        border-radius: 15px;
+    }
 
-    
+    .profile-dropdown-item {
+        min-height: 45px;
+        padding: 10px 11px;
+    }
 }
 
 /* On very small screens, avoid clipping at the right edge. */
 @media (max-width: 460px) {
-    
+    .nav-profile-menu-wrapper {
+        position: static;
+    }
 
-    
+    .profile-dropdown {
+        position: fixed;
+        top: 72px;
+        right: 14px;
+        width: min(246px, calc(100vw - 28px));
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    
+    .profile-dropdown:not([hidden]),
+    .profile-dropdown-item {
+        animation: none !important;
+        transition-duration: .01ms !important;
+    }
 }
 
 
@@ -4914,31 +5189,99 @@ header {
    Profile personalization
    ---------------------------------------------------------------------------- */
 
+.nav-profile-menu-wrapper:not(.hidden-profile) {
+    animation: profilePresenceIn .55s var(--studio-spring) both;
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link {
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.075),
+        0 8px 24px rgba(0,0,0,.12);
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link:hover {
+    transform: translateY(-1px) scale(1.01);
+    border-color: rgba(215,188,122,.24);
+    background:
+        linear-gradient(135deg, rgba(215,188,122,.09), rgba(255,255,255,.038));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 12px 30px rgba(0,0,0,.18);
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-avatar {
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.19), rgba(215,188,122,.09) 55%, rgba(255,255,255,.045));
+    border-color: rgba(215,188,122,.18);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 0 0 1px rgba(255,255,255,.02);
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-name {
+    color: #eef1f6;
+}
 
+.nav-profile-menu-wrapper .nav-profile-link[aria-expanded="true"] {
+    color: #ffffff;
+    border-color: rgba(215,188,122,.34);
+    background:
+        linear-gradient(135deg, rgba(215,188,122,.13), rgba(255,255,255,.05));
+    box-shadow:
+        0 0 0 1px rgba(215,188,122,.07),
+        0 14px 38px rgba(0,0,0,.20),
+        inset 0 1px 0 rgba(255,255,255,.11);
+}
 
+.profile-dropdown {
+    overflow: hidden;
+    padding: 8px;
+    border-color: rgba(255,255,255,.12);
+    background:
+        linear-gradient(150deg, rgba(20,23,30,.975), rgba(9,11,16,.985));
+    box-shadow:
+        0 34px 90px rgba(0,0,0,.48),
+        0 8px 24px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.075);
+}
 
+.profile-dropdown::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 88% 8%, rgba(215,188,122,.10), transparent 24%),
+        linear-gradient(145deg, rgba(255,255,255,.028), transparent 34%);
+}
 
+.profile-dropdown-section,
+.profile-dropdown-divider {
+    position: relative;
+    z-index: 1;
+}
 
+.profile-dropdown-item {
+    min-height: 46px;
+    padding: 10px 11px;
+    border-radius: 12px;
+    color: rgba(244,246,250,.83);
+}
 
+.profile-dropdown-item:hover {
+    transform: translateX(3px);
+    border-color: rgba(215,188,122,.11);
+    background:
+        linear-gradient(90deg, rgba(215,188,122,.075), rgba(255,255,255,.035));
+}
 
+.profile-dropdown-icon {
+    color: rgba(215,188,122,.82);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.profile-dropdown-item--danger {
+    margin-top: 1px;
+}
 
 @keyframes profilePresenceIn {
     from {
@@ -5179,15 +5522,40 @@ section h2 {
    Search / notification controls — improve touch affordance
    ---------------------------------------------------------------------------- */
 
+#userSearchInput {
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 6px 18px rgba(0,0,0,.08);
+}
 
+#userSearchInput:focus {
+    box-shadow:
+        0 0 0 3px rgba(168,155,255,.045),
+        0 14px 38px rgba(0,0,0,.16),
+        inset 0 1px 0 rgba(255,255,255,.045);
+}
 
+.search-results {
+    border-color: rgba(255,255,255,.12);
+    background:
+        linear-gradient(145deg, rgba(20,22,28,.975), rgba(10,12,17,.985));
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.44),
+        inset 0 1px 0 rgba(255,255,255,.065);
+}
 
+.search-result-item {
+    transition:
+        transform .26s var(--studio-spring),
+        background .22s ease,
+        border-color .22s ease;
+}
 
-
-
-
-
-
+.search-result-item:hover,
+.search-result-item:focus-visible {
+    transform: translateX(2px);
+    background: linear-gradient(90deg, rgba(215,188,122,.065), rgba(255,255,255,.025));
+}
 
 .notification-button {
     box-shadow:
@@ -5219,6 +5587,7 @@ section h2 {
 }
 
 .button:focus-visible,
+.nav-profile-link:focus-visible,
 .notification-button:focus-visible {
     outline: 2px solid rgba(215,188,122,.72);
     outline-offset: 3px;
@@ -5311,15 +5680,26 @@ footer::before {
         border-top: 1px solid rgba(255,255,255,.06);
     }
 
-    
+    .profile-dropdown {
+        box-shadow:
+            0 28px 72px rgba(0,0,0,.48),
+            inset 0 1px 0 rgba(255,255,255,.075);
+    }
 }
 
 @media (max-width: 460px) {
-    
+    .nav-profile-menu-wrapper .nav-profile-name {
+        display: none;
+    }
 
-    
+    .nav-profile-menu-wrapper .nav-profile-link {
+        padding-right: 5px;
+    }
 
-    
+    .profile-dropdown {
+        right: 10px;
+        width: min(250px, calc(100vw - 20px));
+    }
 }
 
 @media (hover: none) {
@@ -5338,7 +5718,10 @@ footer::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    
+    .nav-profile-menu-wrapper:not(.hidden-profile),
+    .profile-dropdown:not([hidden]) {
+        animation: none !important;
+    }
 
     *,
     *::before,
@@ -5459,21 +5842,60 @@ header::before {
    Personalization: make the logged-in state feel like the site recognizes you
    ---------------------------------------------------------------------------- */
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link {
+    position: relative;
+    overflow: hidden;
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%);
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.12), transparent 68%);
+    transition: transform .8s var(--cinema-spring);
+    pointer-events: none;
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link:hover::before {
+    transform: translateX(120%);
+}
 
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-avatar {
+    transition:
+        transform .45s var(--cinema-spring),
+        box-shadow .45s ease,
+        border-color .35s ease;
+}
 
-
-
-
-
-
+.nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link:hover .nav-profile-avatar {
+    transform: scale(1.045);
+    border-color: rgba(215,188,122,.34);
+    box-shadow:
+        0 0 0 4px rgba(215,188,122,.04),
+        0 0 28px rgba(215,188,122,.10),
+        inset 0 1px 0 rgba(255,255,255,.12);
+}
 
 /* A quiet personalization glow around the hero greeting. */
 
+body:has(.nav-profile-menu-wrapper:not(.hidden-profile)) #hero-title {
+    animation: cinemaPersonalizedTitle 1.15s var(--cinema-spring) both;
+}
 
-
-
+body:has(.nav-profile-menu-wrapper:not(.hidden-profile)) .hero-content::after {
+    content: "";
+    position: absolute;
+    left: -5%;
+    top: 26%;
+    width: 42%;
+    height: 42%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(215,188,122,.055), transparent 70%);
+    filter: blur(28px);
+    pointer-events: none;
+    animation: personalizedAmbient 5.5s ease-in-out infinite alternate;
+}
 
 /* ----------------------------------------------------------------------------
    Hero: make the first screen feel like a film opening rather than a webpage
@@ -5723,6 +6145,7 @@ button:not(.mood-card),
 
 .feedback-form input,
 .feedback-form textarea,
+#userSearchInput,
 .auth-card input,
 .auth-card textarea {
     transition:
@@ -5734,6 +6157,7 @@ button:not(.mood-card),
 
 .feedback-form input:hover,
 .feedback-form textarea:hover,
+#userSearchInput:hover,
 .auth-card input:hover,
 .auth-card textarea:hover {
     border-color: rgba(255,255,255,.17);
@@ -5741,6 +6165,7 @@ button:not(.mood-card),
 
 .feedback-form input:focus,
 .feedback-form textarea:focus,
+#userSearchInput:focus,
 .auth-card input:focus,
 .auth-card textarea:focus {
     transform: translateY(-1px);
@@ -5755,23 +6180,27 @@ button:not(.mood-card),
    Search results / notification panels: physical depth + touch feel
    ---------------------------------------------------------------------------- */
 
-
-.notification-panel{
+.search-results,
+.notification-panel,
+.profile-dropdown {
     transform-origin: top right;
 }
 
-
-.notification-panel.active{
+.search-results:not([hidden]),
+.notification-panel.active,
+.profile-dropdown:not([hidden]) {
     animation: cinemaPanelIn .38s var(--cinema-spring) both;
 }
 
-
-.notification-item{
+.search-result-item,
+.notification-item,
+.profile-dropdown-item {
     -webkit-tap-highlight-color: transparent;
 }
 
-
-.notification-item:active{
+.search-result-item:active,
+.notification-item:active,
+.profile-dropdown-item:active {
     transform: scale(.992);
 }
 
@@ -5937,7 +6366,8 @@ footer::after {
 }
 
 @media (hover: none) {
-    .button:hover::before{
+    .button:hover::before,
+    .nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link:hover::before {
         transform: translateX(-72%);
     }
 }
@@ -5950,11 +6380,13 @@ footer::after {
     .hero-content h1,
     .hero-content p,
     .hero-meta,
-    .hero-actions{
+    .hero-actions,
+    body:has(.nav-profile-menu-wrapper:not(.hidden-profile)) #hero-title {
         animation: none !important;
     }
 
-    .button::before{
+    .button::before,
+    .nav-profile-menu-wrapper:not(.hidden-profile) .nav-profile-link::before {
         display: none;
     }
 }
@@ -7206,31 +7638,95 @@ html[data-dheere-mood] .hero-secondary:hover {
    ============================================================================ */
 
 /* Neutral glass surface: remove the previous gold-heavy appearance. */
-
+.profile-dropdown {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .085),
+            rgba(255, 255, 255, .028) 52%,
+            rgba(10, 12, 17, .58)
+        );
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .42),
+        inset 0 1px 0 rgba(255, 255, 255, .10),
+        inset 0 -1px 0 rgba(255, 255, 255, .025);
+    backdrop-filter: blur(28px) saturate(155%);
+    -webkit-backdrop-filter: blur(28px) saturate(155%);
+}
 
 /* Neutral glass highlight; no fixed gold tint. */
-
+.profile-dropdown::before {
+    background:
+        radial-gradient(
+            circle at 88% 8%,
+            rgba(255, 255, 255, .085),
+            transparent 25%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .035),
+            transparent 36%
+        );
+}
 
 /* Normal menu text stays neutral. */
-
+.profile-dropdown-item {
+    color: rgba(244, 246, 250, .84);
+}
 
 /* My Profile / My Posts / My Settings:
    active Dheere Mood accent on hover/focus. */
-
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):hover,
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    color: var(--mood-accent, var(--accent));
+    border-color:
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 20%,
+            transparent
+        );
+    background:
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 8%,
+            rgba(255, 255, 255, .035)
+        );
+}
 
 /* Keep the icon in the same active Mood colour. */
-
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):hover .profile-dropdown-icon,
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible .profile-dropdown-icon {
+    color: var(--mood-accent, var(--accent));
+}
 
 /* Fallback when the Mood attribute is not present. */
+.profile-dropdown-item:not(.profile-dropdown-item--danger):hover,
+.profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    color: var(--accent);
+}
 
-
-
+.profile-dropdown-item:not(.profile-dropdown-item--danger):hover .profile-dropdown-icon,
+.profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible .profile-dropdown-icon {
+    color: var(--accent);
+}
 
 /* Accessibility: keyboard focus keeps the same Mood language. */
-
+html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger):focus-visible {
+    outline:
+        2px solid
+        color-mix(
+            in srgb,
+            var(--mood-accent, var(--accent)) 52%,
+            transparent
+        );
+    outline-offset: 2px;
+}
 
 /* Preserve the red treatment for Logout. */
-
+.profile-dropdown-item--danger:hover {
+    color: #fecaca;
+}
 
 /* ============================================================================
    FINAL INTERACTION / HIT-AREA FIX
@@ -7247,780 +7743,94 @@ html[data-dheere-mood] .hero-secondary:hover {
    PROFILE DROPDOWN
    -------------------------------------------------------------------------- */
 
+.nav-profile-menu-wrapper {
+    pointer-events: auto !important;
+}
 
+.profile-dropdown {
+    position: absolute;
+    z-index: 1200 !important;
+    pointer-events: auto !important;
+    isolation: isolate;
+}
 
+.profile-dropdown-section {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto !important;
+}
 
+.profile-dropdown-item {
+    position: relative !important;
+    z-index: 3 !important;
 
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
 
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
 
+.profile-dropdown-item .profile-dropdown-icon,
+.profile-dropdown-item .profile-dropdown-label,
+.profile-dropdown-item .profile-dropdown-icon * {
+    pointer-events: none !important;
+}
 
+.profile-dropdown-item:hover {
+    cursor: pointer !important;
+}
 
+.profile-dropdown-item:active {
+    transform: translateX(1px) scale(.985) !important;
+}
 
-
-
-
-
-
-
+.profile-dropdown-item--danger {
+    cursor: pointer !important;
+}
 
 
 /* --------------------------------------------------------------------------
    USER SEARCH RESULT ROWS
    -------------------------------------------------------------------------- */
 
-
-
-
-
-
-
-
-
-
-
-
-/* ============================================================================
-   DHEERE STUDIO — NAVBAR INTERACTION SYSTEM
-   Single source of truth for search + authenticated profile controls.
-   ============================================================================ */
-
-/* --------------------------------------------------------------------------
-   PROFILE TRIGGER
-   -------------------------------------------------------------------------- */
-
-.nav-profile-menu-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    flex: 0 0 auto;
-    pointer-events: auto;
-    z-index: 3;
-}
-
-.nav-profile-menu-wrapper.hidden-profile {
-    display: none !important;
-}
-
-.nav-profile-link {
-    appearance: none;
-    -webkit-appearance: none;
-    position: relative;
-    isolation: isolate;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-
-    min-height: 42px;
-    padding: 4px 12px 4px 5px;
-
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 999px;
-
-    background: rgba(255,255,255,.04);
-    color: #e2e8f0;
-
-    font: inherit;
-    font-size: .78rem;
-    font-weight: 500;
-    line-height: 1;
-    text-decoration: none;
-    text-align: left;
-
-    cursor: pointer;
-    pointer-events: auto;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-
-    transition:
-        transform .25s var(--studio-spring, cubic-bezier(.16,1,.3,1)),
-        background .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease,
-        color .25s ease;
-}
-
-.nav-profile-link:hover {
-    transform: translateY(-1px);
-    border-color: rgba(215,188,122,.24);
-    background: linear-gradient(135deg, rgba(215,188,122,.09), rgba(255,255,255,.038));
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.10),
-        0 12px 30px rgba(0,0,0,.18);
-}
-
-.nav-profile-link:active {
-    transform: translateY(0) scale(.985);
-}
-
-.nav-profile-link:focus-visible {
-    outline: 2px solid rgba(215,188,122,.72);
-    outline-offset: 3px;
-}
-
-.nav-profile-menu-wrapper .nav-profile-link[aria-expanded="true"] {
-    color: #ffffff;
-    border-color: rgba(215,188,122,.34);
-    background: linear-gradient(135deg, rgba(215,188,122,.13), rgba(255,255,255,.05));
-    box-shadow:
-        0 0 0 1px rgba(215,188,122,.07),
-        0 14px 38px rgba(0,0,0,.20),
-        inset 0 1px 0 rgba(255,255,255,.11);
-}
-
-.nav-profile-link::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.12), transparent 68%);
-    transform: translateX(-120%);
-    transition: transform .8s var(--studio-spring, cubic-bezier(.16,1,.3,1));
-    pointer-events: none;
-    z-index: -1;
-}
-
-.nav-profile-link:hover::before {
-    transform: translateX(120%);
-}
-
-.nav-profile-avatar {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.15);
-
-    background: linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
-    color: #ffffff;
-
-    font-size: .75rem;
-    font-weight: 700;
-
-    pointer-events: none;
-    transition:
-        transform .45s var(--studio-spring, cubic-bezier(.16,1,.3,1)),
-        box-shadow .45s ease,
-        border-color .35s ease;
-}
-
-.nav-profile-avatar img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.nav-profile-link:hover .nav-profile-avatar {
-    transform: scale(1.045);
-    border-color: rgba(215,188,122,.34);
-    box-shadow:
-        0 0 0 4px rgba(215,188,122,.04),
-        0 0 28px rgba(215,188,122,.10),
-        inset 0 1px 0 rgba(255,255,255,.12);
-}
-
-.nav-profile-name {
-    max-width: 120px;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #dbe3ee;
-    font-size: .78rem;
-    font-weight: 500;
-}
-
-/* --------------------------------------------------------------------------
-   PROFILE DROPDOWN
-   -------------------------------------------------------------------------- */
-
-.profile-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    z-index: 1200;
-    isolation: isolate;
-
-    width: 238px;
-    max-width: calc(100vw - 20px);
-    padding: 8px;
-
-    overflow: hidden;
-
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.085),
-            rgba(255,255,255,.028) 52%,
-            rgba(10,12,17,.58)
-        );
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.42),
-        inset 0 1px 0 rgba(255,255,255,.10),
-        inset 0 -1px 0 rgba(255,255,255,.025);
-
-    backdrop-filter: blur(28px) saturate(155%);
-    -webkit-backdrop-filter: blur(28px) saturate(155%);
-
-    transform-origin: top right;
-    pointer-events: auto;
-}
-
-.profile-dropdown[hidden] {
-    display: none !important;
-}
-
-.profile-dropdown:not([hidden]) {
-    animation: profileDropdownIn .22s var(--studio-spring, cubic-bezier(.16,1,.3,1)) both;
-}
-
-.profile-dropdown::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(circle at 88% 8%, rgba(255,255,255,.085), transparent 25%),
-        linear-gradient(145deg, rgba(255,255,255,.035), transparent 36%);
-}
-
-.profile-dropdown-section {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    gap: 2px;
-}
-
-.profile-dropdown-item {
-    appearance: none;
-    -webkit-appearance: none;
-
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 100%;
-    min-height: 46px;
-
-    gap: 11px;
-    padding: 10px 11px;
-
-    box-sizing: border-box;
-
-    border: 1px solid transparent;
-    border-radius: 12px;
-
-    background: transparent;
-    color: rgba(244,246,250,.84);
-
-    font: inherit;
-    font-size: .82rem;
-    font-weight: 500;
-    line-height: 1.2;
-    text-align: left;
-    text-decoration: none;
-
-    cursor: pointer;
-    pointer-events: auto;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-
-    transition:
-        transform .22s var(--studio-spring, cubic-bezier(.16,1,.3,1)),
-        background .22s ease,
-        border-color .22s ease,
-        color .22s ease;
-}
-
-.profile-dropdown-item > * {
-    pointer-events: none;
-}
-
-.profile-dropdown-item:hover,
-.profile-dropdown-item:focus-visible {
-    transform: translateX(3px);
-    border-color: rgba(255,255,255,.10);
-    background: linear-gradient(90deg, rgba(255,255,255,.065), rgba(255,255,255,.028));
-    color: var(--accent, #d8d4ff);
-}
-
-.profile-dropdown-item:active {
-    transform: translateX(1px) scale(.985);
-}
-
-.profile-dropdown-item:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent, #d8d4ff) 52%, transparent);
-    outline-offset: 2px;
-}
-
-.profile-dropdown-icon {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(215,188,122,.82);
-}
-
-.profile-dropdown-icon svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-}
-
-.profile-dropdown-label {
-    min-width: 0;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.profile-dropdown-divider {
-    position: relative;
-    z-index: 1;
-    height: 1px;
-    margin: 6px 3px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.085) 18%, rgba(255,255,255,.085) 82%, transparent);
-}
-
-.profile-dropdown-item--danger {
-    color: rgba(252,165,165,.82);
-}
-
-.profile-dropdown-item--danger .profile-dropdown-icon {
-    color: rgba(252,165,165,.82);
-}
-
-.profile-dropdown-item--danger:hover,
-.profile-dropdown-item--danger:focus-visible {
-    border-color: rgba(252,165,165,.10);
-    background: rgba(239,68,68,.065);
-    color: #fecaca;
-}
-
-/* --------------------------------------------------------------------------
-   SEARCH — DESKTOP
-   -------------------------------------------------------------------------- */
-
-.nav-search {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto;
-    margin-left: 18px;
-    z-index: 4;
-}
-
-.nav-search-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 190px;
-}
-
-.mobile-search-toggle {
-    display: none;
-}
-
-#userSearchInput {
-    display: block;
-    width: 190px;
-    height: 38px;
-
-    padding: 0 40px 0 14px;
-
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 20px;
-    outline: none;
-
-    background: rgba(255,255,255,.045);
-    color: inherit;
-
-    font: inherit;
-    font-size: .88rem;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.035),
-        0 6px 18px rgba(0,0,0,.08);
-
-    transition:
-        width .2s ease,
-        border-color .2s ease,
-        background .2s ease,
-        box-shadow .25s ease;
-}
-
-#userSearchInput::placeholder {
-    color: inherit;
-    opacity: .5;
-}
-
-#userSearchInput:hover {
-    border-color: rgba(255,255,255,.18);
-}
-
-#userSearchInput:focus {
-    width: 220px;
-    border-color: rgba(255,255,255,.30);
-    background: rgba(255,255,255,.07);
-    box-shadow:
-        0 0 0 3px rgba(168,155,255,.045),
-        0 14px 38px rgba(0,0,0,.16),
-        inset 0 1px 0 rgba(255,255,255,.045);
-}
-
-.search-icon {
-    position: absolute;
-    right: 13px;
-    top: 50%;
-    width: 17px;
-    height: 17px;
-    transform: translateY(-50%);
-    pointer-events: none;
-    opacity: .6;
-}
-
 .search-results {
-    position: absolute;
-    top: calc(100% + 9px);
-    right: 0;
-    width: 320px;
-    max-height: min(390px, 60vh);
-
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-
-    display: none;
-    padding: 7px;
-
-    border: 1px solid rgba(255,255,255,.13);
-    border-radius: 14px;
-
-    background:
-        linear-gradient(145deg, rgba(20,22,28,.975), rgba(10,12,17,.985));
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.44),
-        inset 0 1px 0 rgba(255,255,255,.065);
-
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-
-    z-index: 1200;
-    pointer-events: auto;
-    transform-origin: top right;
-}
-
-.search-results.active {
-    display: block;
-    animation: cinemaPanelIn .24s var(--studio-spring, cubic-bezier(.16,1,.3,1)) both;
+    pointer-events: auto !important;
 }
 
 .search-result-item {
-    appearance: none;
-    -webkit-appearance: none;
+    position: relative !important;
+    z-index: 2 !important;
 
-    position: relative;
-    z-index: 1;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
 
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 100%;
-    min-height: 58px;
+    cursor: pointer !important;
+    pointer-events: auto !important;
 
-    margin: 0;
-    padding: 9px 10px;
-    gap: 11px;
-
-    box-sizing: border-box;
-
-    border: 1px solid transparent;
-    border-radius: 10px;
-
-    background: transparent;
-    color: inherit;
-
-    text-align: left;
-    font: inherit;
-
-    cursor: pointer;
-    pointer-events: auto;
+    text-align: left !important;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     user-select: none;
-
-    transition:
-        transform .22s var(--studio-spring, cubic-bezier(.16,1,.3,1)),
-        background .22s ease,
-        border-color .22s ease;
 }
 
 .search-result-item > * {
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
-.search-result-item:hover,
-.search-result-item:focus-visible {
-    transform: translateX(2px);
-    border-color: rgba(215,188,122,.11);
-    background: linear-gradient(90deg, rgba(215,188,122,.065), rgba(255,255,255,.025));
-}
-
-.search-result-item:focus-visible {
-    outline: 2px solid rgba(215,188,122,.58);
-    outline-offset: -2px;
+.search-result-item:hover {
+    cursor: pointer !important;
 }
 
 .search-result-item:active {
-    transform: translateX(1px) scale(.985);
-}
-
-.search-result-avatar {
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.12);
-
-    background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.045));
-    color: #ffffff;
-
-    font-size: .78rem;
-    font-weight: 700;
-}
-
-.search-result-avatar img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.search-result-info {
-    min-width: 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2px;
-}
-
-.search-result-name,
-.search-result-username {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.search-result-name {
-    color: #f8fafc;
-    font-size: .90rem;
-    font-weight: 600;
-}
-
-.search-result-username {
-    color: #94a3b8;
-    font-size: .78rem;
-}
-
-.search-message {
-    padding: 14px 12px;
-    text-align: center;
-    color: #94a3b8;
-    font-size: .82rem;
-}
-
-/* --------------------------------------------------------------------------
-   RESPONSIVE NAVBAR INTERACTION
-   -------------------------------------------------------------------------- */
-
-@media (max-width: 900px) {
-    .nav-search {
-        margin-left: 8px;
-    }
-
-    .nav-search-wrapper {
-        width: 145px;
-    }
-
-    #userSearchInput {
-        width: 145px;
-    }
-
-    #userSearchInput:focus {
-        width: 175px;
-    }
-
-    .search-results {
-        right: -55px;
-    }
-}
-
-@media (max-width: 650px) {
-    .nav-profile-link {
-        min-height: 42px;
-    }
-
-    .nav-profile-menu-wrapper {
-        z-index: 5;
-    }
-
-    .nav-profile-menu-wrapper .nav-profile-name {
-        display: none;
-    }
-
-    .nav-profile-link {
-        padding-right: 5px;
-    }
-
-    .profile-dropdown {
-        position: fixed;
-        top: 72px;
-        right: 10px;
-        width: min(250px, calc(100vw - 20px));
-        max-height: calc(100vh - 88px);
-        overflow-y: auto;
-    }
-
-    .profile-dropdown-item {
-        min-height: 48px;
-        padding: 11px 12px;
-    }
-
-    .mobile-search-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 42px;
-        height: 42px;
-        flex: 0 0 42px;
-        padding: 0;
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: 50%;
-        background: rgba(255,255,255,.045);
-        color: inherit;
-        cursor: pointer;
-        pointer-events: auto;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-        transition: background .2s ease, border-color .2s ease, transform .2s ease;
-    }
-
-    .mobile-search-toggle:hover {
-        border-color: rgba(255,255,255,.22);
-        background: rgba(255,255,255,.075);
-    }
-
-    .mobile-search-toggle:active {
-        transform: scale(.96);
-    }
-
-    .mobile-search-toggle:focus-visible {
-        outline: 2px solid rgba(215,188,122,.65);
-        outline-offset: 3px;
-    }
-
-    .mobile-search-toggle svg {
-        width: 18px;
-        height: 18px;
-        pointer-events: none;
-    }
-
-    .nav-search {
-        position: static;
-        width: auto;
-        margin: 0;
-    }
-
-    .nav-search-wrapper {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 12px;
-        right: 12px;
-        width: auto;
-        z-index: 1150;
-        display: none;
-    }
-
-    .nav-search.mobile-search-open .nav-search-wrapper {
-        display: block;
-    }
-
-    #userSearchInput,
-    #userSearchInput:focus {
-        width: 100%;
-        height: 44px;
-        padding: 0 42px 0 15px;
-        font-size: .92rem;
-    }
-
-    .search-results {
-        top: calc(100% + 8px);
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-height: min(60vh, 420px);
-        padding: 6px;
-        border-radius: 14px;
-    }
-
-    .search-result-item {
-        min-height: 64px;
-        padding: 10px 11px;
-        gap: 12px;
-        border-radius: 10px;
-    }
-
-    .search-result-avatar {
-        width: 44px;
-        height: 44px;
-        flex-basis: 44px;
-    }
-
-    .search-result-name {
-        font-size: .92rem;
-    }
-
-    .search-result-username {
-        font-size: .80rem;
-    }
-
-    .search-result-item:hover {
-        transform: none;
-    }
-
-    .search-result-item:active {
-        transform: scale(.985);
-        background: rgba(255,255,255,.07);
-    }
-}
-
-@keyframes profileDropdownIn {
-    from { opacity: 0; transform: translateY(-5px) scale(.975); filter: blur(3px); }
-    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    cursor: pointer !important;
 }
