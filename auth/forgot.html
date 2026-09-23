@@ -32,18 +32,7 @@
         name="referrer"
         content="strict-origin-when-cross-origin"
     >
-
-    <meta
-        name="dheere-msg91-widget-id"
-        content="366964646874353836333533"
-    >
-
-    <meta
-        name="dheere-msg91-widget-token"
-        content="567459TunhVfVO6a9a45aaP1"
-    >
-
-    <title>Reset Password — Dheere Studio</title>
+<title>Reset Password — Dheere Studio</title>
 
     <link
         rel="stylesheet"
@@ -107,6 +96,7 @@
                 <!-- ==================================================
                      STEP 1 — RECOVERY DETAIL
                      ================================================== -->
+                <!-- Email recovery only. Mobile/OTP recovery has been removed. -->
                 <section
                     id="recoveryStartStep"
                     class="auth-step"
@@ -122,8 +112,7 @@
                         </h1>
 
                         <p class="auth-subtitle">
-                            Recover your account using the email address
-                            or mobile number registered with Dheere Studio.
+                            Recover your account using the email address registered with Dheere Studio.
                         </p>
                     </header>
 
@@ -161,51 +150,7 @@
                                 Email recovery sends a secure password-reset link.
                             </p>
                         </div>
-
-                        <div class="auth-switch auth-recovery-switch">
-                            <span>Prefer mobile recovery?</span>
-
-                            <button
-                                type="button"
-                                class="auth-link auth-link-button"
-                                id="useMobileRecoveryButton"
-                            >
-                                Use mobile OTP
-                            </button>
-                        </div>
-
-                        <div
-                            class="auth-field"
-                            id="forgotMobileGroup"
-                            hidden
-                        >
-                            <label for="forgotMobile">
-                                Mobile Number
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="forgotMobile"
-                                name="mobile"
-                                placeholder="10-digit mobile number"
-                                autocomplete="tel"
-                                inputmode="numeric"
-                                maxlength="10"
-                                minlength="10"
-                                pattern="[0-9]{10}"
-                                aria-describedby="forgotMobileHint"
-                                enterkeyhint="go"
-                            >
-
-                            <p
-                                class="auth-field-hint"
-                                id="forgotMobileHint"
-                            >
-                                We’ll send a verification code by SMS. WhatsApp can be used when available.
-                            </p>
-                        </div>
-
-                        <p
+<p
                             id="forgotMessage"
                             class="auth-message"
                             aria-live="polite"
@@ -221,16 +166,7 @@
                         >
                             Send Reset Link
                         </button>
-
-                        <button
-                            type="button"
-                            class="auth-primary-button"
-                            id="sendRecoveryOtpButton"
-                            hidden
-                        >
-                            Send OTP
-                        </button>
-                    </form>
+</form>
 
                     <div class="auth-switch">
                         <span>Remembered your password?</span>
@@ -244,134 +180,8 @@
                     </div>
                 </section>
 
-
                 <!-- ==================================================
-                     STEP 2 — OTP VERIFICATION
-                     ================================================== -->
-                <section
-                    id="recoveryOtpStep"
-                    class="auth-step"
-                    hidden
-                    aria-labelledby="recoveryOtpTitle"
-                >
-                    <header class="auth-header">
-                        <p class="auth-eyebrow">
-                            Verification
-                        </p>
-
-                        <h1 id="recoveryOtpTitle">
-                            Enter your code
-                        </h1>
-
-                        <p
-                            class="auth-subtitle"
-                            id="recoveryOtpSubtitle"
-                        >
-                            Enter the verification code sent to your registered mobile number.
-                        </p>
-                    </header>
-
-                    <div
-                        class="auth-otp-panel"
-                        data-msg91-otp-panel
-                    >
-                        <div class="auth-otp-header">
-                            <div>
-                                <strong id="recoveryOtpStatus">
-                                    Verification code sent
-                                </strong>
-
-                                <span id="recoveryOtpDestination">
-                                    Enter the code you received by SMS or WhatsApp.
-                                </span>
-                            </div>
-
-                            <button
-                                type="button"
-                                class="auth-otp-change"
-                                id="changeRecoveryIdentifier"
-                            >
-                                Change
-                            </button>
-                        </div>
-
-                        <div class="auth-otp-row">
-                            <input
-                                type="text"
-                                id="recoveryOtp"
-                                name="recoveryOtp"
-                                class="auth-otp-input"
-                                inputmode="numeric"
-                                autocomplete="one-time-code"
-                                maxlength="8"
-                                minlength="4"
-                                pattern="[0-9]{4,8}"
-                                placeholder="0000"
-                                aria-label="Recovery verification code"
-                                aria-describedby="recoveryOtpFeedback recoveryOtpMessage"
-                                enterkeyhint="done"
-                            >
-
-                            <button
-                                type="button"
-                                class="auth-otp-verify"
-                                id="verifyRecoveryOtpButton"
-                            >
-                                Verify
-                            </button>
-                        </div>
-
-                        <div class="auth-otp-footer">
-                            <span
-                                id="recoveryOtpCountdown"
-                                aria-live="polite"
-                            >
-                                Resend available in 60s
-                            </span>
-
-                            <button
-                                type="button"
-                                class="auth-otp-resend"
-                                id="resendRecoveryOtpButton"
-                                disabled
-                            >
-                                Resend OTP
-                            </button>
-                        </div>
-
-                        <p
-                            class="auth-otp-feedback"
-                            id="recoveryOtpFeedback"
-                            aria-live="polite"
-                            hidden
-                        ></p>
-                    </div>
-
-                    <p
-                        id="recoveryOtpMessage"
-                        class="auth-message"
-                        aria-live="polite"
-                        aria-atomic="true"
-                        role="status"
-                        hidden
-                    ></p>
-
-                    <div class="auth-switch">
-                        <span>Need another recovery method?</span>
-
-                        <button
-                            type="button"
-                            class="auth-link auth-link-button"
-                            id="recoveryUseEmailButton"
-                        >
-                            Use email recovery
-                        </button>
-                    </div>
-                </section>
-
-
-                <!-- ==================================================
-                     STEP 3 — NEW PASSWORD
+                     STEP 2 — NEW PASSWORD
                      ================================================== -->
                 <section
                     id="resetPasswordStep"
@@ -643,76 +453,6 @@
         </section>
     </main>
 
-    <script src="auth.js" defer></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const mobileButton =
-                document.getElementById("useMobileRecoveryButton");
-
-            const emailGroup =
-                document.querySelector(
-                    "#forgotIdentifier"
-                )?.closest(".auth-field");
-
-            const mobileGroup =
-                document.getElementById("forgotMobileGroup");
-
-            const emailButton =
-                document.getElementById("sendRecoveryButton");
-
-            const mobileSendButton =
-                document.getElementById("sendRecoveryOtpButton");
-
-            const emailSwitchButton =
-                document.getElementById("recoveryUseEmailButton");
-
-            if (
-                !mobileButton ||
-                !mobileGroup ||
-                !emailButton ||
-                !mobileSendButton
-            ) {
-                return;
-            }
-
-            mobileButton.addEventListener("click", function () {
-                if (emailGroup) {
-                    emailGroup.hidden = true;
-                }
-
-                mobileGroup.hidden = false;
-
-                emailButton.hidden = true;
-                mobileSendButton.hidden = false;
-
-                mobileButton.hidden = true;
-
-                document
-                    .getElementById("forgotMobile")
-                    ?.focus();
-            });
-
-            emailSwitchButton?.addEventListener(
-                "click",
-                function () {
-                    document
-                        .getElementById("changeRecoveryIdentifier")
-                        ?.click();
-
-                    if (emailGroup) {
-                        emailGroup.hidden = false;
-                    }
-
-                    mobileGroup.hidden = true;
-
-                    emailButton.hidden = false;
-                    mobileSendButton.hidden = true;
-
-                    mobileButton.hidden = false;
-                }
-            );
-        });
-    </script>
+        <script src="./dist/auth.js" defer></script>
 </body>
 </html>

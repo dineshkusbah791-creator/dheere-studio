@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ES2020",
+    "moduleDetection": "legacy",
+    "lib": ["ES2021", "DOM"],
+    "strict": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": false,
+    "outDir": "./dist"
+  },
+  "include": [
+    "auth.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "backend"
+  ]
+}

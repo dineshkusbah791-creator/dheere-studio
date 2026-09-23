@@ -1117,16 +1117,12 @@ svg {
 }
 
 .auth-primary-button:active,
-.auth-secondary-button:active,
-.auth-field-action:active,
-.auth-otp-verify:active {
+.auth-secondary-button:active {
     transform: scale(0.985);
 }
 
 .auth-primary-button:disabled,
-.auth-secondary-button:disabled,
-.auth-field-action:disabled,
-.auth-otp-verify:disabled {
+.auth-secondary-button:disabled {
     cursor: not-allowed;
     opacity: 0.55;
 
@@ -1490,351 +1486,6 @@ svg {
 }
 
 /* ============================================================
-   OTP
-   ============================================================ */
-
-.auth-input-action {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-
-    gap: 8px;
-
-    background:
-        transparent !important;
-}
-
-.auth-field-action {
-    min-height: 48px;
-
-    padding: 0 15px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.105);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.032) !important;
-
-    color:
-        rgba(248, 250, 252, 0.92);
-
-    font-size: 0.73rem;
-    font-weight: 650;
-
-    white-space: nowrap;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.auth-field-action:hover {
-    background:
-        rgba(255, 255, 255, 0.065) !important;
-
-    border-color:
-        rgba(255, 255, 255, 0.18);
-
-    transform:
-        translateY(-1px);
-}
-
-.auth-otp-panel {
-    margin-top: -1px;
-    padding: 16px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.09);
-
-    border-radius: 15px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.045),
-            rgba(255, 255, 255, 0.02)
-        ) !important;
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.045),
-        0 12px 28px
-        rgba(0, 0, 0, 0.08);
-
-    animation:
-        authOtpEnter
-        0.32s
-        var(--auth-ease)
-        both;
-}
-
-.auth-otp-panel > * {
-    background:
-        transparent !important;
-}
-
-.auth-otp-header {
-    display: flex;
-
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 12px;
-
-    margin-bottom: 12px;
-
-    background:
-        transparent !important;
-}
-
-.auth-otp-header > div {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 3px;
-
-    background:
-        transparent !important;
-}
-
-.auth-otp-header strong,
-.auth-otp-header span {
-    background:
-        transparent !important;
-}
-
-.auth-otp-header strong {
-    color:
-        rgba(248, 250, 252, 0.95);
-
-    font-size: 0.77rem;
-    font-weight: 650;
-}
-
-.auth-otp-header span {
-    color:
-        rgba(148, 163, 184, 0.63);
-
-    font-size: 0.67rem;
-    line-height: 1.45;
-}
-
-.auth-otp-change {
-    flex: 0 0 auto;
-
-    padding: 2px 0;
-
-    border: 0;
-
-    background:
-        transparent !important;
-
-    color:
-        rgba(203, 213, 225, 0.59);
-
-    font-size: 0.68rem;
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.auth-otp-change:hover {
-    color: #fff;
-}
-
-.auth-otp-row {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-
-    gap: 8px;
-
-    background:
-        transparent !important;
-}
-
-.auth-otp-input {
-    width: 100%;
-    min-height: 48px;
-
-    padding: 11px 13px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.105);
-
-    border-radius: 12px;
-
-    outline: none;
-
-    background:
-        rgba(0, 0, 0, 0.18) !important;
-
-    color: #fff;
-
-    font-size: 1rem;
-
-    letter-spacing: 0.22em;
-    text-align: center;
-
-    font-variant-numeric:
-        tabular-nums;
-
-    caret-color: #fff;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.auth-otp-input::placeholder {
-    color:
-        rgba(148, 163, 184, 0.4);
-
-    letter-spacing: 0.08em;
-}
-
-.auth-otp-input:focus {
-    border-color:
-        rgba(216, 212, 255, 0.38);
-
-    background:
-        rgba(255, 255, 255, 0.045) !important;
-
-    box-shadow:
-        0 0 0 4px
-        var(--auth-focus);
-}
-
-.auth-otp-verify {
-    min-height: 48px;
-
-    padding: 0 15px;
-
-    border:
-        1px solid
-        #f8fafc;
-
-    border-radius: 12px;
-
-    background:
-        #f8fafc !important;
-
-    color:
-        #0b0c0e;
-
-    font-size: 0.73rem;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    white-space: nowrap;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-.auth-otp-verify:hover {
-    background:
-        #fff !important;
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 10px 22px
-        rgba(0, 0, 0, 0.16);
-}
-
-.auth-otp-footer {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 10px;
-
-    margin-top: 10px;
-
-    background:
-        transparent !important;
-}
-
-#mobileOtpCountdown,
-#recoveryOtpCountdown {
-    color:
-        rgba(148, 163, 184, 0.58);
-
-    background:
-        transparent !important;
-
-    font-size: 0.66rem;
-
-    font-variant-numeric:
-        tabular-nums;
-}
-
-.auth-otp-resend {
-    padding: 2px 0;
-
-    border: 0;
-
-    background:
-        transparent !important;
-
-    color:
-        var(--auth-accent);
-
-    font-size: 0.68rem;
-    font-weight: 650;
-
-    cursor: pointer;
-
-    transition:
-        color 0.2s ease;
-}
-
-.auth-otp-resend:hover {
-    color: #fff;
-}
-
-.auth-otp-resend:disabled {
-    color:
-        rgba(100, 116, 139, 0.58);
-
-    cursor: not-allowed;
-}
-
-.auth-otp-feedback {
-    margin: 9px 0 0;
-
-    color:
-        rgba(203, 213, 225, 0.67);
-
-    background:
-        transparent !important;
-
-    font-size: 0.67rem;
-    line-height: 1.45;
-}
-
-/* ============================================================
    MESSAGES
    ============================================================ */
 
@@ -2026,11 +1677,7 @@ svg {
 .auth-guest-link:focus-visible,
 .auth-primary-button:focus-visible,
 .auth-secondary-button:focus-visible,
-.auth-password-toggle:focus-visible,
-.auth-field-action:focus-visible,
-.auth-otp-change:focus-visible,
-.auth-otp-resend:focus-visible,
-.auth-otp-verify:focus-visible {
+.auth-password-toggle:focus-visible {
     outline:
         2px solid
         rgba(216, 212, 255, 0.82);
@@ -2040,8 +1687,7 @@ svg {
 
 .auth-field input:focus-visible,
 .auth-field select:focus-visible,
-.auth-field textarea:focus-visible,
-.auth-otp-input:focus-visible {
+.auth-field textarea:focus-visible {
     outline:
         2px solid
         rgba(216, 212, 255, 0.62);
@@ -2121,22 +1767,6 @@ svg {
         align-self: flex-start;
     }
 
-    .auth-input-action,
-    .auth-otp-row {
-        grid-template-columns: 1fr;
-    }
-
-    .auth-field-action,
-    .auth-otp-verify {
-        width: 100%;
-    }
-
-    .auth-otp-footer {
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
     .auth-password-strength {
         padding: 7px 9px;
     }
@@ -2146,7 +1776,6 @@ svg {
     .auth-primary-button:hover,
     .auth-secondary-button:hover,
     .auth-field-action:hover,
-    .auth-otp-verify:hover,
     .auth-guest-link:hover {
         transform: none;
     }
@@ -2177,24 +1806,6 @@ svg {
 
         filter:
             blur(0);
-    }
-}
-
-@keyframes authOtpEnter {
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(-7px)
-            scale(0.992);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
     }
 }
 
@@ -2248,7 +1859,6 @@ svg {
     .auth-field input,
     .auth-field select,
     .auth-field textarea,
-    .auth-otp-input,
     .auth-primary-button,
     .auth-secondary-button {
         border:
