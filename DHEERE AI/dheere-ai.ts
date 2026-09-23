@@ -41,6 +41,22 @@ const MAX_VISIBLE_MESSAGES =
 
 
 /* =========================================================
+   TYPES
+   ========================================================= */
+
+type AIMessageType =
+    | "user"
+    | "ai"
+    | "error";
+
+interface AIChatResponse {
+    success?: boolean;
+    answer?: string;
+    error?: string;
+}
+
+
+/* =========================================================
    STATE
    ========================================================= */
 
@@ -58,31 +74,40 @@ let aiMessageCount =
    DOM REFERENCES
    ========================================================= */
 
-let aiTrigger =
+let aiTrigger:
+    HTMLButtonElement | null =
     null;
 
-let aiPanel =
+let aiPanel:
+    HTMLElement | null =
     null;
 
-let aiCloseButton =
+let aiCloseButton:
+    HTMLButtonElement | null =
     null;
 
-let aiMessages =
+let aiMessages:
+    HTMLElement | null =
     null;
 
-let aiInput =
+let aiInput:
+    HTMLTextAreaElement | null =
     null;
 
-let aiSendButton =
+let aiSendButton:
+    HTMLButtonElement | null =
     null;
 
-let aiTyping =
+let aiTyping:
+    HTMLElement | null =
     null;
 
-let aiStatus =
+let aiStatus:
+    HTMLElement | null =
     null;
 
-let aiStatusText =
+let aiStatusText:
+    HTMLElement | null =
     null;
 
 
@@ -91,8 +116,8 @@ let aiStatusText =
    ========================================================= */
 
 function escapeHTML(
-    value
-) {
+    value: unknown
+): string {
 
     const div =
         document.createElement(
@@ -114,8 +139,8 @@ function escapeHTML(
    ========================================================= */
 
 async function parseResponse(
-    response
-) {
+    response: Response
+): Promise<AIChatResponse> {
 
     try {
 
@@ -135,9 +160,9 @@ async function parseResponse(
    ========================================================= */
 
 function setAIStatus(
-    text,
+    text: string,
     online = false
-) {
+): void {
 
     if (aiStatusText) {
 
@@ -163,8 +188,8 @@ function setAIStatus(
    ========================================================= */
 
 function setTyping(
-    visible
-) {
+    visible: boolean
+): void {
 
     if (!aiTyping) {
 
@@ -185,8 +210,8 @@ function setTyping(
    ========================================================= */
 
 function setSendButtonState(
-    disabled
-) {
+    disabled: boolean
+): void {
 
     if (!aiSendButton) {
 
@@ -204,7 +229,7 @@ function setSendButtonState(
    CREATE AI MARKUP
    ========================================================= */
 
-function createAIInterface() {
+function createAIInterface(): void {
 
     /*
      * Do not create duplicates if the page already contains
@@ -220,7 +245,7 @@ function createAIInterface() {
         aiTrigger =
             document.getElementById(
                 "dheereAiTrigger"
-            );
+            ) as HTMLButtonElement | null;
 
         aiPanel =
             document.getElementById(
@@ -230,7 +255,7 @@ function createAIInterface() {
         aiCloseButton =
             document.getElementById(
                 "dheereAiClose"
-            );
+            ) as HTMLButtonElement | null;
 
         aiMessages =
             document.getElementById(
@@ -240,12 +265,12 @@ function createAIInterface() {
         aiInput =
             document.getElementById(
                 "dheereAiInput"
-            );
+            ) as HTMLTextAreaElement | null;
 
         aiSendButton =
             document.getElementById(
                 "dheereAiSend"
-            );
+            ) as HTMLButtonElement | null;
 
         aiTyping =
             document.getElementById(
@@ -492,7 +517,7 @@ function createAIInterface() {
     aiTrigger =
         document.getElementById(
             "dheereAiTrigger"
-        );
+        ) as HTMLButtonElement | null;
 
     aiPanel =
         document.getElementById(
@@ -502,7 +527,7 @@ function createAIInterface() {
     aiCloseButton =
         document.getElementById(
             "dheereAiClose"
-        );
+        ) as HTMLButtonElement | null;
 
     aiMessages =
         document.getElementById(
@@ -512,12 +537,12 @@ function createAIInterface() {
     aiInput =
         document.getElementById(
             "dheereAiInput"
-        );
+        ) as HTMLTextAreaElement | null;
 
     aiSendButton =
         document.getElementById(
             "dheereAiSend"
-        );
+        ) as HTMLButtonElement | null;
 
     aiTyping =
         document.getElementById(
@@ -541,7 +566,7 @@ function createAIInterface() {
    OPEN PANEL
    ========================================================= */
 
-function openAI() {
+function openAI(): void {
 
     if (
         !aiPanel ||
@@ -601,7 +626,7 @@ function openAI() {
    CLOSE PANEL
    ========================================================= */
 
-function closeAI() {
+function closeAI(): void {
 
     if (
         !aiPanel ||
@@ -651,7 +676,7 @@ function closeAI() {
    TOGGLE PANEL
    ========================================================= */
 
-function toggleAI() {
+function toggleAI(): void {
 
     if (aiOpen) {
 
@@ -671,9 +696,9 @@ function toggleAI() {
    ========================================================= */
 
 function addMessage(
-    text,
-    type
-) {
+    text: string,
+    type: AIMessageType
+): HTMLDivElement | null {
 
     if (!aiMessages) {
 
@@ -795,7 +820,7 @@ function addMessage(
    SCROLL MESSAGES
    ========================================================= */
 
-function scrollMessages() {
+function scrollMessages(): void {
 
     if (!aiMessages) {
 
@@ -804,11 +829,20 @@ function scrollMessages() {
     }
 
 
+    const messages =
+        aiMessages;
+
     requestAnimationFrame(
         () => {
 
-            aiMessages.scrollTop =
-                aiMessages.scrollHeight;
+            if (!messages) {
+
+                return;
+
+            }
+
+            messages.scrollTop =
+                messages.scrollHeight;
 
         }
     );
@@ -820,7 +854,7 @@ function scrollMessages() {
    AUTO RESIZE INPUT
    ========================================================= */
 
-function resizeInput() {
+function resizeInput(): void {
 
     if (!aiInput) {
 
@@ -850,7 +884,7 @@ function resizeInput() {
    CLEAR INPUT
    ========================================================= */
 
-function clearInput() {
+function clearInput(): void {
 
     if (!aiInput) {
 
@@ -872,7 +906,7 @@ function clearInput() {
    SEND MESSAGE
    ========================================================= */
 
-async function sendMessage() {
+async function sendMessage(): Promise<void> {
 
     if (
         aiBusy ||
@@ -1093,7 +1127,7 @@ async function sendMessage() {
         );
 
 
-    } catch (error) {
+    } catch (error: unknown) {
 
         console.error(
 
@@ -1104,11 +1138,15 @@ async function sendMessage() {
         );
 
 
+        const errorMessage =
+            error instanceof Error
+                ? error.message
+                : "Unable to connect to Dheere AI.";
+
+
         addMessage(
 
-            error?.message ||
-
-            "Unable to connect to Dheere AI.",
+            errorMessage,
 
             "error"
 
@@ -1161,7 +1199,7 @@ async function sendMessage() {
    EVENT SETUP
    ========================================================= */
 
-function setupEvents() {
+function setupEvents(): void {
 
     if (aiTrigger) {
 
@@ -1169,7 +1207,7 @@ function setupEvents() {
 
             "click",
 
-            event => {
+            (event: MouseEvent) => {
 
                 event.preventDefault();
 
@@ -1188,7 +1226,7 @@ function setupEvents() {
 
             "click",
 
-            event => {
+            (event: MouseEvent) => {
 
                 event.preventDefault();
 
@@ -1208,7 +1246,7 @@ function setupEvents() {
     const form =
         document.getElementById(
             "dheereAiForm"
-        );
+        ) as HTMLFormElement | null;
 
 
     if (form) {
@@ -1217,11 +1255,11 @@ function setupEvents() {
 
             "submit",
 
-            event => {
+            (event: SubmitEvent) => {
 
                 event.preventDefault();
 
-                sendMessage();
+                void sendMessage();
 
             }
 
@@ -1254,7 +1292,7 @@ function setupEvents() {
 
             "keydown",
 
-            event => {
+            (event: KeyboardEvent) => {
 
                 if (
                     event.key ===
@@ -1264,7 +1302,7 @@ function setupEvents() {
 
                     event.preventDefault();
 
-                    sendMessage();
+                    void sendMessage();
 
                 }
 
@@ -1283,7 +1321,7 @@ function setupEvents() {
 
         "click",
 
-        event => {
+        (event: MouseEvent) => {
 
             if (!aiOpen) {
 
@@ -1299,16 +1337,26 @@ function setupEvents() {
             }
 
 
+            const target =
+                event.target;
+
+            if (!(target instanceof Node)) {
+
+                return;
+
+            }
+
+
             const clickedInsidePanel =
                 aiPanel.contains(
-                    event.target
+                    target
                 );
 
 
             const clickedTrigger =
                 aiTrigger?.contains(
-                    event.target
-                );
+                    target
+                ) ?? false;
 
 
             if (
@@ -1333,7 +1381,7 @@ function setupEvents() {
 
         "keydown",
 
-        event => {
+        (event: KeyboardEvent) => {
 
             if (
                 event.key ===
@@ -1361,7 +1409,7 @@ function setupEvents() {
 
             "click",
 
-            event => {
+            (event: MouseEvent) => {
 
                 event.stopPropagation();
 
@@ -1399,7 +1447,7 @@ function setupEvents() {
    INITIALIZE
    ========================================================= */
 
-function initializeDheereAI() {
+function initializeDheereAI(): void {
 
     createAIInterface();
 
@@ -1417,28 +1465,28 @@ function initializeDheereAI() {
    PUBLIC API
    ========================================================= */
 
-function openDheereAI() {
+function openDheereAI(): void {
 
     openAI();
 
 }
 
 
-function closeDheereAI() {
+function closeDheereAI(): void {
 
     closeAI();
 
 }
 
 
-function toggleDheereAI() {
+function toggleDheereAI(): void {
 
     toggleAI();
 
 }
 
 
-function sendDheereAIMessage() {
+function sendDheereAIMessage(): Promise<void> {
 
     return sendMessage();
 
