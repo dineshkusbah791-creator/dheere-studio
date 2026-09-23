@@ -1,5 +1,7 @@
 "use strict";
 
+export {};
+
 
 /* ============================================================
    LIVE PROFILE
@@ -218,7 +220,7 @@ function getAuthHeaders() {
         );
 
 
-    const headers = {
+    const headers: Record<string, string> = {
 
         "Content-Type":
             "application/json",
@@ -1970,9 +1972,11 @@ if (publicPostsFeed) {
                ---------------------------------------- */
 
             const likeButton =
-                event.target.closest(
-                    ".live-post-like-button"
-                );
+                event.target instanceof Element
+                    ? event.target.closest<HTMLElement>(
+                        ".live-post-like-button"
+                    )
+                    : null;
 
 
             if (likeButton) {
@@ -2017,9 +2021,11 @@ if (publicPostsFeed) {
                ---------------------------------------- */
 
             const commentButton =
-                event.target.closest(
-                    ".live-post-comment-button"
-                );
+                event.target instanceof Element
+                    ? event.target.closest<HTMLElement>(
+                        ".live-post-comment-button"
+                    )
+                    : null;
 
 
             if (commentButton) {
@@ -2113,7 +2119,7 @@ if (publicPostsFeed) {
 
 
                 const input =
-                    postCard.querySelector(
+                    postCard.querySelector<HTMLInputElement>(
                         ".live-comment-input"
                     );
 
@@ -2135,15 +2141,17 @@ if (publicPostsFeed) {
                ---------------------------------------- */
 
             const submitButton =
-                event.target.closest(
-                    ".live-submit-comment"
-                );
+                event.target instanceof Element
+                    ? event.target.closest<HTMLElement>(
+                        ".live-submit-comment"
+                    )
+                    : null;
 
 
             if (submitButton) {
 
                 const postCard =
-                    submitButton.closest(
+                    submitButton.closest<HTMLElement>(
                         ".public-post-card"
                     );
 
@@ -2160,7 +2168,7 @@ if (publicPostsFeed) {
 
 
                 const input =
-                    postCard.querySelector(
+                    postCard.querySelector<HTMLInputElement>(
                         ".live-comment-input"
                     );
 
@@ -2220,9 +2228,11 @@ if (publicPostsFeed) {
 
 
             const input =
-                event.target.closest(
-                    ".live-comment-input"
-                );
+                event.target instanceof Element
+                    ? event.target.closest<HTMLInputElement>(
+                        ".live-comment-input"
+                    )
+                    : null;
 
 
             if (!input) {
@@ -2242,7 +2252,7 @@ if (publicPostsFeed) {
 
 
             const submitButton =
-                postCard?.querySelector(
+                postCard?.querySelector<HTMLButtonElement>(
                     ".live-submit-comment"
                 );
 
