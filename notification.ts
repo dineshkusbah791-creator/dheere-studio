@@ -1,35 +1,46 @@
+export {};
+
 // ======================================================
 // NOTIFICATION MODULE
+// TypeScript migration — runtime behavior preserved.
 // ======================================================
+
+declare const API_BASE_URL: string;
+declare let currentUser: any;
+declare function getUserId(user: any): string;
 
 
 // ======================================================
 // NOTIFICATION ELEMENTS
 // ======================================================
 
+type NotificationData = Record<string, any>;
+
+type NotificationDateValue = string | number | Date | null | undefined;
+
 let notificationBell =
-    document.getElementById('notificationBell');
+    (document.getElementById('notificationBell') as HTMLButtonElement | null) ??
+    (document.getElementById('notificationButton') as HTMLButtonElement | null);
 
 let notificationPanel =
-    document.getElementById('notificationPanel');
+    document.getElementById('notificationPanel') as HTMLElement | null;
 
 let notificationList =
-    document.getElementById('notificationList');
+    document.getElementById('notificationList') as HTMLElement | null;
 
 let notificationBadge =
-    document.getElementById('notificationBadge');
+    document.getElementById('notificationBadge') as HTMLElement | null;
 
 let notificationMarkAllReadBtn =
-    document.getElementById(
-        'notificationMarkAllReadBtn'
-    );
+    (document.getElementById('notificationMarkAllReadBtn') as HTMLButtonElement | null) ??
+    (document.getElementById('markNotificationsReadBtn') as HTMLButtonElement | null);
 
 
 // ======================================================
 // NOTIFICATION STATE
 // ======================================================
 
-let notificationRefreshTimer =
+let notificationRefreshTimer: number | null =
     null;
 
 let notificationsLoading =
@@ -49,29 +60,27 @@ let notificationInitialized =
 function getNotificationElements() {
 
     notificationBell =
-        document.getElementById(
-            'notificationBell'
-        );
+        (document.getElementById('notificationBell') as HTMLButtonElement | null) ??
+        (document.getElementById('notificationButton') as HTMLButtonElement | null);
 
     notificationPanel =
         document.getElementById(
             'notificationPanel'
-        );
+        ) as HTMLElement | null;
 
     notificationList =
         document.getElementById(
             'notificationList'
-        );
+        ) as HTMLElement | null;
 
     notificationBadge =
         document.getElementById(
             'notificationBadge'
-        );
+        ) as HTMLElement | null;
 
     notificationMarkAllReadBtn =
-        document.getElementById(
-            'notificationMarkAllReadBtn'
-        );
+        (document.getElementById('notificationMarkAllReadBtn') as HTMLButtonElement | null) ??
+        (document.getElementById('markNotificationsReadBtn') as HTMLButtonElement | null);
 
 }
 
@@ -166,13 +175,13 @@ function toggleNotificationPanel() {
     }
 
 
-    const isHidden =
+    const isOpen =
         notificationPanel.classList.contains(
-            'hidden'
+            'active'
         );
 
 
-    if (isHidden) {
+    if (!isOpen) {
 
         notificationPanel.classList.remove(
             'hidden'
@@ -228,7 +237,7 @@ function closeNotificationPanel() {
 // OUTSIDE CLICK
 // ======================================================
 
-function handleNotificationOutsideClick(event) {
+function handleNotificationOutsideClick(event: MouseEvent) {
 
     if (
         !notificationPanel ||
@@ -237,13 +246,18 @@ function handleNotificationOutsideClick(event) {
         return;
     }
 
+    const target =
+        event.target instanceof Node
+            ? event.target
+            : null;
+
 
     if (
         notificationPanel.contains(
-            event.target
+            target
         ) ||
         notificationBell.contains(
-            event.target
+            target
         )
     ) {
 
@@ -261,7 +275,7 @@ function handleNotificationOutsideClick(event) {
 // ESCAPE
 // ======================================================
 
-function handleNotificationEscape(event) {
+function handleNotificationEscape(event: KeyboardEvent) {
 
     if (
         event.key ===
@@ -313,7 +327,7 @@ function resetNotificationsUI() {
 // ======================================================
 
 function updateNotificationBadge(
-    unreadCount
+    unreadCount: number
 ) {
 
     getNotificationElements();
@@ -367,7 +381,7 @@ function updateNotificationBadge(
 // ======================================================
 
 function getNotificationMessage(
-    notification
+    notification: NotificationData
 ) {
 
     const actor =
@@ -429,7 +443,7 @@ function getNotificationMessage(
 // ======================================================
 
 function formatNotificationDate(
-    dateValue
+    dateValue: NotificationDateValue
 ) {
 
     if (!dateValue) {
@@ -527,10 +541,10 @@ function formatNotificationDate(
 // ======================================================
 
 function getNotificationId(
-    notification
-) {
+    notification: NotificationData
+): string {
 
-    return (
+    return String(
         notification.id ||
         notification._id ||
         notification.notificationId ||
@@ -545,8 +559,8 @@ function getNotificationId(
 // ======================================================
 
 function isNotificationRead(
-    notification
-) {
+    notification: NotificationData
+): boolean {
 
     return (
         notification.read === true ||
@@ -561,8 +575,8 @@ function isNotificationRead(
 // ======================================================
 
 function createNotificationElement(
-    notification
-) {
+    notification: NotificationData
+): HTMLButtonElement {
 
     const id =
         getNotificationId(
@@ -784,7 +798,7 @@ function createNotificationElement(
 // ======================================================
 
 function renderNotifications(
-    notifications
+    notifications: NotificationData[]
 ) {
 
     getNotificationElements();
@@ -794,8 +808,9 @@ function renderNotifications(
         return;
     }
 
+    const list = notificationList;
 
-    notificationList.replaceChildren();
+    list.replaceChildren();
 
 
     if (
@@ -805,7 +820,7 @@ function renderNotifications(
         notifications.length === 0
     ) {
 
-        notificationList.innerHTML = `
+        list.innerHTML = `
 
             <div class="notification-empty">
 
@@ -836,7 +851,7 @@ function renderNotifications(
 
     const unreadNotifications =
         notifications.filter(
-            (notification) =>
+            (notification: NotificationData) =>
                 !isNotificationRead(
                     notification
                 )
@@ -847,7 +862,7 @@ function renderNotifications(
         unreadNotifications.length === 0
     ) {
 
-        notificationList.innerHTML = `
+        list.innerHTML = `
 
             <div class="notification-empty">
 
@@ -867,7 +882,7 @@ function renderNotifications(
 
 
     unreadNotifications.forEach(
-        (notification) => {
+        (notification: NotificationData) => {
 
             const element =
                 createNotificationElement(
@@ -877,7 +892,7 @@ function renderNotifications(
 
             if (element) {
 
-                notificationList.appendChild(
+                list.appendChild(
                     element
                 );
 
@@ -987,7 +1002,7 @@ async function loadNotifications() {
         );
 
 
-    } catch (error) {
+    } catch (error: unknown) {
 
         /*
          * Notification API errors should not
@@ -996,7 +1011,7 @@ async function loadNotifications() {
 
         console.warn(
             'Notifications unavailable:',
-            error.message
+            error instanceof Error ? error.message : String(error)
         );
 
 
@@ -1015,7 +1030,7 @@ async function loadNotifications() {
 // ======================================================
 
 async function markNotificationRead(
-    notificationId
+    notificationId: string
 ) {
 
     if (
