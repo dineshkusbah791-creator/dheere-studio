@@ -1,5 +1,3 @@
-"use strict";
-
 /* =========================================================
    PROFILE EDITOR MODULE
    =========================================================
@@ -28,6 +26,25 @@
 /* =========================================================
    IMPORTS
    ========================================================= */
+
+
+interface ProfileUser {
+    [key: string]: any;
+}
+
+interface ProfileFormData {
+    name: string;
+    username: string;
+    bio: string;
+    dateOfBirth: string;
+    gender: string;
+}
+
+interface ParsedResponse {
+    [key: string]: any;
+}
+
+type UsernameStatusType = "" | "available" | "taken" | "checking";
 
 import {
 
@@ -83,15 +100,15 @@ const PROFILE_USERNAME_REGEX =
    STATE
    ========================================================= */
 
-let usernameCheckTimer =
+let usernameCheckTimer: number | null =
     null;
 
 
-let usernameCheckToken =
+let usernameCheckToken: number =
     0;
 
 
-let usernameAvailable =
+let usernameAvailable: boolean =
     false;
 
 
@@ -102,82 +119,99 @@ let usernameAvailable =
 const editOverlay =
     document.getElementById(
         "editOverlay"
-    );
+    ) as HTMLElement | null;
 
 
 const closeEditBtn =
     document.getElementById(
         "closeEditBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 const cancelEditBtn =
     document.getElementById(
         "cancelEditBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 const saveProfileBtn =
     document.getElementById(
         "saveProfileBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 const editName =
     document.getElementById(
         "editName"
-    );
+    ) as HTMLInputElement | null;
 
 
 const editUsername =
     document.getElementById(
         "editUsername"
-    );
+    ) as HTMLInputElement | null;
 
 
 const editBio =
     document.getElementById(
         "editBio"
-    );
+    ) as HTMLTextAreaElement | null;
 
 
 const bioCounter =
     document.getElementById(
         "bioCounter"
-    );
+    ) as HTMLElement | null;
 
 
 const editEmail =
     document.getElementById(
         "editEmail"
-    );
+    ) as HTMLInputElement | null;
 
 
 const editDateOfBirth =
     document.getElementById(
         "editDateOfBirth"
-    );
+    ) as HTMLInputElement | null;
 
 
 const editGender =
     document.getElementById(
         "editGender"
-    );
+    ) as HTMLSelectElement | null;
 
 
 const usernameStatus =
     document.getElementById(
         "usernameStatus"
-    );
+    ) as HTMLElement | null;
 
 
 /* =========================================================
    RESPONSE HELPER
    ========================================================= */
 
+function getErrorMessage(
+    error: unknown,
+    fallback: string
+): string {
+    if (
+        error &&
+        typeof error === "object" &&
+        "message" in error &&
+        typeof (error as { message?: unknown }).message === "string"
+    ) {
+        return (error as { message: string }).message;
+    }
+
+    return fallback;
+}
+
+
 async function parseResponse(
-    response
-) {
+    response: Response
+): Promise<ParsedResponse> {
 
     try {
 
@@ -197,8 +231,8 @@ async function parseResponse(
    ========================================================= */
 
 function isValidDateOfBirth(
-    value
-) {
+    value: string
+): boolean {
 
     /*
      * Empty DOB is allowed because the field is optional.
@@ -238,12 +272,10 @@ function isValidDateOfBirth(
         year,
         month,
         day
-    ] =
+    ]: number[] =
         value
             .split("-")
-            .map(
-                Number
-            );
+            .map(Number);
 
 
     if (
@@ -325,9 +357,9 @@ function isValidDateOfBirth(
    ========================================================= */
 
 function setUsernameStatus(
-    message,
-    type = ""
-) {
+    message: string,
+    type: UsernameStatusType = ""
+): void {
 
     if (!usernameStatus) {
 
@@ -367,7 +399,7 @@ function setUsernameStatus(
    BIO COUNTER
    ========================================================= */
 
-function updateBioCounter() {
+function updateBioCounter(): void {
 
     if (
         !editBio ||
@@ -390,9 +422,9 @@ function updateBioCounter() {
    ========================================================= */
 
 function setSaveButtonState(
-    disabled,
-    text = "Save Changes"
-) {
+    disabled: boolean,
+    text: string = "Save Changes"
+): void {
 
     if (!saveProfileBtn) {
 
@@ -415,7 +447,7 @@ function setSaveButtonState(
    OPEN MODAL
    ========================================================= */
 
-function openEditModal() {
+function openEditModal(): boolean {
 
     const currentUser =
         getCurrentUser();
@@ -518,9 +550,10 @@ function openEditModal() {
     usernameCheckToken++;
 
 
-    clearTimeout(
-        usernameCheckTimer
-    );
+    if (usernameCheckTimer !== null) {
+        clearTimeout(usernameCheckTimer);
+        usernameCheckTimer = null;
+    }
 
 
     usernameAvailable =
@@ -566,7 +599,7 @@ function openEditModal() {
    CLOSE MODAL
    ========================================================= */
 
-function closeEditModal() {
+function closeEditModal(): void {
 
     if (!editOverlay) {
 
@@ -575,9 +608,10 @@ function closeEditModal() {
     }
 
 
-    clearTimeout(
-        usernameCheckTimer
-    );
+    if (usernameCheckTimer !== null) {
+        clearTimeout(usernameCheckTimer);
+        usernameCheckTimer = null;
+    }
 
 
     usernameCheckToken++;
@@ -604,7 +638,7 @@ function closeEditModal() {
    USERNAME AVAILABILITY
    ========================================================= */
 
-async function checkUsernameAvailability() {
+async function checkUsernameAvailability(): Promise<void> {
 
     const currentUser =
         getCurrentUser();
@@ -922,11 +956,12 @@ async function checkUsernameAvailability() {
    USERNAME INPUT
    ========================================================= */
 
-function handleUsernameInput() {
+function handleUsernameInput(): void {
 
-    clearTimeout(
-        usernameCheckTimer
-    );
+    if (usernameCheckTimer !== null) {
+        clearTimeout(usernameCheckTimer);
+        usernameCheckTimer = null;
+    }
 
 
     usernameCheckToken++;
@@ -1027,7 +1062,7 @@ function handleUsernameInput() {
    FORM VALIDATION
    ========================================================= */
 
-function validateProfileForm() {
+function validateProfileForm(): ProfileFormData | null {
 
     const name =
         editName?.value
@@ -1214,7 +1249,7 @@ function validateProfileForm() {
    SAVE PROFILE
    ========================================================= */
 
-async function saveProfile() {
+async function saveProfile(): Promise<boolean> {
 
     /*
      * Always read the latest current user from
@@ -1603,14 +1638,12 @@ async function saveProfile() {
 
         window.dispatchEvent(
 
-            new CustomEvent(
+            new CustomEvent<{ user: ProfileUser | null }>(
                 "dheere:profile-updated",
                 {
                     detail: {
-
                         user:
                             getCurrentUser()
-
                     }
                 }
             )
@@ -1638,9 +1671,10 @@ async function saveProfile() {
 
         alert(
 
-            error?.message ||
-
-            "Unable to update your profile."
+            getErrorMessage(
+                error,
+                "Unable to update your profile."
+            )
 
         );
 
@@ -1668,7 +1702,7 @@ async function saveProfile() {
    EVENT SETUP
    ========================================================= */
 
-function setupEditorEvents() {
+function setupEditorEvents(): void {
 
     if (closeEditBtn) {
 
@@ -1698,7 +1732,7 @@ function setupEditorEvents() {
 
         editOverlay.addEventListener(
             "click",
-            event => {
+            (event: MouseEvent) => {
 
                 if (
                     event.target ===
@@ -1721,7 +1755,7 @@ function setupEditorEvents() {
 
     document.addEventListener(
         "keydown",
-        event => {
+        (event: KeyboardEvent) => {
 
             if (
                 event.key !==
@@ -1763,9 +1797,10 @@ function setupEditorEvents() {
             "blur",
             () => {
 
-                clearTimeout(
-                    usernameCheckTimer
-                );
+                if (usernameCheckTimer !== null) {
+                    clearTimeout(usernameCheckTimer);
+                    usernameCheckTimer = null;
+                }
 
 
                 const currentUser =
@@ -1834,7 +1869,7 @@ function setupEditorEvents() {
 
         saveProfileBtn.addEventListener(
             "click",
-            async event => {
+            async (event: MouseEvent) => {
 
                 event.preventDefault();
 
@@ -1853,7 +1888,7 @@ function setupEditorEvents() {
    PUBLIC INITIALIZATION
    ========================================================= */
 
-function initializeProfileEditor() {
+function initializeProfileEditor(): void {
 
     setupEditorEvents();
 

@@ -1,5 +1,3 @@
-"use strict";
-
 /* =========================================================
    PROFILE MEDIA MODULE
    =========================================================
@@ -24,6 +22,32 @@
 /* =========================================================
    IMPORTS
    ========================================================= */
+
+interface ProfileUser {
+    [key: string]: any;
+}
+
+interface ImageValidationResult {
+    valid: boolean;
+    error: string;
+}
+
+function getErrorMessage(
+    error: unknown,
+    fallback: string
+): string {
+    if (
+        error &&
+        typeof error === "object" &&
+        "message" in error &&
+        typeof (error as { message?: unknown }).message === "string"
+    ) {
+        return (error as { message: string }).message;
+    }
+
+    return fallback;
+}
+
 
 import {
 
@@ -90,37 +114,37 @@ const ALLOWED_IMAGE_TYPES = new Set([
 const profileAvatar =
     document.getElementById(
         "profileAvatar"
-    );
+    ) as HTMLElement | null;
 
 
 const editAvatar =
     document.getElementById(
         "editAvatar"
-    );
+    ) as HTMLElement | null;
 
 
 const changePhotoBtn =
     document.getElementById(
         "changePhotoBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 const removePhotoBtn =
     document.getElementById(
         "removePhotoBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 const photoInput =
     document.getElementById(
         "photoInput"
-    );
+    ) as HTMLInputElement | null;
 
 
 const editOverlay =
     document.getElementById(
         "editOverlay"
-    );
+    ) as HTMLElement | null;
 
 
 /* =========================================================
@@ -128,8 +152,8 @@ const editOverlay =
    ========================================================= */
 
 function getInitials(
-    name
-) {
+    name: string | null | undefined
+): string {
 
     const value =
         String(
@@ -182,10 +206,10 @@ function getInitials(
    ========================================================= */
 
 function renderAvatar(
-    element,
-    name,
-    image
-) {
+    element: HTMLElement | null,
+    name: string | null | undefined,
+    image: string | null | undefined
+): void {
 
     if (!element) {
 
@@ -282,7 +306,7 @@ function renderAvatar(
    RENDER ALL PROFILE AVATARS
    ========================================================= */
 
-function renderProfileAvatars() {
+function renderProfileAvatars(): void {
 
     const user =
         getCurrentUser();
@@ -328,8 +352,8 @@ function renderProfileAvatars() {
    ========================================================= */
 
 function validateImageFile(
-    file
-) {
+    file: File | null | undefined
+): ImageValidationResult {
 
     if (!file) {
 
@@ -401,8 +425,8 @@ function validateImageFile(
    ========================================================= */
 
 function compressProfilePhoto(
-    file
-) {
+    file: File
+): Promise<string> {
 
     return new Promise(
         (
@@ -427,7 +451,7 @@ function compressProfilePhoto(
 
 
             reader.onload =
-                event => {
+                (event: ProgressEvent<FileReader>) => {
 
                     const image =
                         new Image();
@@ -576,7 +600,7 @@ function compressProfilePhoto(
 
                     image.src =
                         String(
-                            event.target.result ||
+                            event.target?.result ||
                             ""
                         );
 
@@ -598,9 +622,9 @@ function compressProfilePhoto(
    ========================================================= */
 
 function setChangePhotoButtonState(
-    disabled,
-    text = "Change photo"
-) {
+    disabled: boolean,
+    text: string = "Change photo"
+): void {
 
     if (!changePhotoBtn) {
 
@@ -620,9 +644,9 @@ function setChangePhotoButtonState(
 
 
 function setRemovePhotoButtonState(
-    disabled,
-    text = "Remove"
-) {
+    disabled: boolean,
+    text: string = "Remove"
+): void {
 
     if (!removePhotoBtn) {
 
@@ -646,8 +670,8 @@ function setRemovePhotoButtonState(
    ========================================================= */
 
 async function uploadProfilePhoto(
-    file
-) {
+    file: File | null | undefined
+): Promise<boolean> {
 
     const user =
         getCurrentUser();
@@ -665,6 +689,15 @@ async function uploadProfilePhoto(
 
         return false;
 
+    }
+
+
+    if (!file) {
+        alert(
+            "Please choose an image."
+        );
+
+        return false;
     }
 
 
@@ -833,7 +866,7 @@ async function uploadProfilePhoto(
 
         window.dispatchEvent(
 
-            new CustomEvent(
+            new CustomEvent<{ avatarUrl: string }>(
 
                 "dheere:profile-avatar-updated",
 
@@ -869,9 +902,10 @@ async function uploadProfilePhoto(
 
         alert(
 
-            error?.message ||
-
-            "Could not upload the profile photo."
+            getErrorMessage(
+                error,
+                "Could not upload the profile photo."
+            )
 
         );
 
@@ -903,7 +937,7 @@ async function uploadProfilePhoto(
    REMOVE PROFILE PHOTO
    ========================================================= */
 
-async function removeProfilePhoto() {
+async function removeProfilePhoto(): Promise<boolean> {
 
     const user =
         getCurrentUser();
@@ -1080,7 +1114,7 @@ async function removeProfilePhoto() {
 
         window.dispatchEvent(
 
-            new CustomEvent(
+            new CustomEvent<{ avatarUrl: string }>(
 
                 "dheere:profile-avatar-updated",
 
@@ -1116,9 +1150,10 @@ async function removeProfilePhoto() {
 
         alert(
 
-            error?.message ||
-
-            "Could not remove the profile photo."
+            getErrorMessage(
+                error,
+                "Could not remove the profile photo."
+            )
 
         );
 
@@ -1143,13 +1178,14 @@ async function removeProfilePhoto() {
    ========================================================= */
 
 function handlePhotoInputChange(
-    event
-) {
+    event: Event
+): void {
+
+    const input =
+        event.currentTarget as HTMLInputElement | null;
 
     const file =
-        event.target
-            ?.files
-            ?.[0];
+        input?.files?.[0] ?? null;
 
 
     if (!file) {
@@ -1170,7 +1206,7 @@ function handlePhotoInputChange(
    SETUP MEDIA EVENTS
    ========================================================= */
 
-function setupMediaEvents() {
+function setupMediaEvents(): void {
 
     /*
      * Change photo.
@@ -1185,7 +1221,7 @@ function setupMediaEvents() {
 
             "click",
 
-            event => {
+            (event: MouseEvent) => {
 
                 event.preventDefault();
 
@@ -1225,7 +1261,7 @@ function setupMediaEvents() {
 
             "click",
 
-            async event => {
+            async (event: MouseEvent) => {
 
                 event.preventDefault();
 
@@ -1294,7 +1330,7 @@ function setupMediaEvents() {
    INITIALIZE
    ========================================================= */
 
-function initializeProfileMedia() {
+function initializeProfileMedia(): void {
 
     setupMediaEvents();
 

@@ -1,5 +1,3 @@
-"use strict";
-
 /* =========================================================
    PROFILE SOCIAL MODULE
    =========================================================
@@ -47,6 +45,21 @@ import {
 
 
 
+type SocialRecord = Record<string, any>;
+type SocialRecords = SocialRecord[];
+
+function getErrorMessage(error: unknown, fallback: string): string {
+    if (error && typeof error === "object" && "message" in error) {
+        const message = (error as { message?: unknown }).message;
+        if (typeof message === "string" && message.trim()) {
+            return message;
+        }
+    }
+
+    return fallback;
+}
+
+
 /* =========================================================
    CONFIG
    ========================================================= */
@@ -69,15 +82,15 @@ const MAX_COMMENT_LENGTH =
    ========================================================= */
 
 const likeLoadingState =
-    new Set();
+    new Set<string>();
 
 
 const postEditingState =
-    new Set();
+    new Set<string>();
 
 
 const postDeletingState =
-    new Set();
+    new Set<string>();
 
 
 
@@ -88,31 +101,31 @@ const postDeletingState =
 const postsFeed =
     document.getElementById(
         "postsFeed"
-    );
+    ) as HTMLElement | null;
 
 
 const profilePostCount =
     document.getElementById(
         "profilePostCount"
-    );
+    ) as HTMLElement | null;
 
 
 const postContent =
     document.getElementById(
         "postContent"
-    );
+    ) as HTMLInputElement | HTMLTextAreaElement | null;
 
 
 const postCharacterCount =
     document.getElementById(
         "postCharacterCount"
-    );
+    ) as HTMLElement | null;
 
 
 const createPostBtn =
     document.getElementById(
         "createPostBtn"
-    );
+    ) as HTMLButtonElement | null;
 
 
 
@@ -121,8 +134,8 @@ const createPostBtn =
    ========================================================= */
 
 async function parseResponse(
-    response
-) {
+    response: Response
+): Promise<any> {
 
     try {
 
@@ -145,8 +158,8 @@ async function parseResponse(
    ========================================================= */
 
 function escapeHTML(
-    value
-) {
+    value: unknown
+): string {
 
     const div =
         document.createElement(
@@ -170,7 +183,7 @@ function escapeHTML(
    CURRENT USER ID
    ========================================================= */
 
-function getCurrentUserId() {
+function getCurrentUserId(): string {
 
     return String(
 
@@ -189,8 +202,8 @@ function getCurrentUserId() {
    ========================================================= */
 
 function getPostId(
-    post
-) {
+    post: SocialRecord | null | undefined
+): string {
 
     return String(
 
@@ -211,8 +224,8 @@ function getPostId(
    ========================================================= */
 
 function getPostAuthorId(
-    post
-) {
+    post: SocialRecord | null | undefined
+): string {
 
     return String(
 
@@ -233,8 +246,8 @@ function getPostAuthorId(
    ========================================================= */
 
 function isOwnPost(
-    post
-) {
+    post: SocialRecord | null | undefined
+): boolean {
 
     const currentUserId =
         getCurrentUserId();
@@ -270,8 +283,8 @@ function isOwnPost(
    ========================================================= */
 
 function formatPostDate(
-    value
-) {
+    value: unknown
+): string {
 
     if (!value) {
 
@@ -282,7 +295,7 @@ function formatPostDate(
 
     const date =
         new Date(
-            value
+            value as string | number | Date
         );
 
 
@@ -322,8 +335,8 @@ function formatPostDate(
    ========================================================= */
 
 function getPostLikes(
-    post
-) {
+    post: SocialRecord | null | undefined
+): number {
 
     const value =
         Number(
@@ -352,8 +365,8 @@ function getPostLikes(
    ========================================================= */
 
 function getPostCommentsCount(
-    post
-) {
+    post: SocialRecord | null | undefined
+): number {
 
     const value =
         Number(
@@ -387,8 +400,8 @@ function getPostCommentsCount(
    ========================================================= */
 
 function isPostLiked(
-    post
-) {
+    post: SocialRecord | null | undefined
+): boolean {
 
     return (
 
@@ -410,7 +423,7 @@ function isPostLiked(
    POST CHARACTER COUNT
    ========================================================= */
 
-function updatePostCharacterCount() {
+function updatePostCharacterCount(): void {
 
     if (
         !postContent ||
@@ -435,8 +448,8 @@ function updatePostCharacterCount() {
    ========================================================= */
 
 function triggerLikeAnimation(
-    button
-) {
+    button: HTMLElement
+): void {
 
     if (!button) {
 
@@ -491,9 +504,9 @@ function triggerLikeAnimation(
    ========================================================= */
 
 function renderComments(
-    container,
-    comments
-) {
+    container: HTMLElement,
+    comments: SocialRecords
+): void {
 
     if (!container) {
 
@@ -727,10 +740,10 @@ function renderComments(
    ========================================================= */
 
 async function loadPostComments(
-    postId,
-    commentsContainer,
-    commentCountElement
-) {
+    postId: string,
+    commentsContainer: HTMLElement,
+    commentCountElement: HTMLElement | null
+): Promise<void> {
 
     if (
         !postId ||
@@ -881,12 +894,12 @@ async function loadPostComments(
    ========================================================= */
 
 async function createPostComment(
-    postId,
-    input,
-    submitButton,
-    commentsContainer,
-    commentCountElement
-) {
+    postId: string,
+    input: HTMLInputElement | HTMLTextAreaElement | null,
+    submitButton: HTMLButtonElement | null,
+    commentsContainer: HTMLElement,
+    commentCountElement: HTMLElement | null
+): Promise<void> {
 
     if (
         !hasValidLoginSession()
@@ -1058,9 +1071,7 @@ async function createPostComment(
 
         alert(
 
-            error?.message ||
-
-            "Unable to add comment."
+            getErrorMessage(error, "Unable to add comment.")
 
         );
 
@@ -1088,10 +1099,10 @@ async function createPostComment(
    ========================================================= */
 
 async function updatePostComment(
-    postId,
-    commentId,
-    content
-) {
+    postId: string,
+    commentId: string,
+    content: any
+): Promise<SocialRecord | null> {
 
     const cleanPostId =
         String(
@@ -1305,9 +1316,9 @@ async function updatePostComment(
    ========================================================= */
 
 async function deletePostComment(
-    postId,
-    commentId
-) {
+    postId: string,
+    commentId: string
+): Promise<boolean> {
 
     const cleanPostId =
         String(
@@ -1479,9 +1490,9 @@ async function deletePostComment(
    ========================================================= */
 
 function togglePostMenu(
-    postElement,
-    button
-) {
+    postElement: HTMLElement,
+    button: HTMLButtonElement
+): void {
 
     if (
         !postElement ||
@@ -1526,7 +1537,7 @@ function togglePostMenu(
     const menu =
         postElement.querySelector(
             "[data-post-menu]"
-        );
+        ) as HTMLElement | null;
 
 
     if (!menu) {
@@ -1576,8 +1587,8 @@ function togglePostMenu(
    ========================================================= */
 
 function closePostMenus(
-    root = postsFeed
-) {
+    root: HTMLElement | null = postsFeed
+): void {
 
     if (!root) {
 
@@ -1594,7 +1605,7 @@ function closePostMenus(
 
             menu => {
 
-                menu.hidden =
+                (menu as HTMLElement).hidden =
                     true;
 
             }
@@ -1632,8 +1643,8 @@ function closePostMenus(
    ========================================================= */
 
 function beginCommentEdit(
-    commentElement
-) {
+    commentElement: HTMLElement
+): boolean {
 
     if (!commentElement) {
 
@@ -1760,7 +1771,7 @@ function beginCommentEdit(
     const input =
         contentElement.querySelector(
             ".post-comment-edit-input"
-        );
+        ) as HTMLTextAreaElement | null;
 
 
     if (input) {
@@ -1799,8 +1810,8 @@ function beginCommentEdit(
    ========================================================= */
 
 function autoResizeCommentEditor(
-    input
-) {
+    input: HTMLTextAreaElement
+): void {
 
     if (!input) {
 
@@ -1842,8 +1853,8 @@ function autoResizeCommentEditor(
    ========================================================= */
 
 function beginPostEdit(
-    postElement
-) {
+    postElement: HTMLElement
+): boolean {
 
     if (!postElement) {
 
@@ -1998,13 +2009,13 @@ function beginPostEdit(
     const input =
         contentElement.querySelector(
             ".post-edit-input"
-        );
+        ) as HTMLTextAreaElement | null;
 
 
     const counter =
         contentElement.querySelector(
             ".post-edit-character-count"
-        );
+        ) as HTMLElement | null;
 
 
     if (input) {
@@ -2103,9 +2114,9 @@ function beginPostEdit(
    ========================================================= */
 
 function updateProfileEditCounter(
-    input,
-    counter
-) {
+    input: HTMLTextAreaElement | null,
+    counter: HTMLElement | null
+): void {
 
     if (
         !input ||
@@ -2140,8 +2151,8 @@ function updateProfileEditCounter(
    ========================================================= */
 
 function cancelCommentEdit(
-    commentElement
-) {
+    commentElement: HTMLElement
+): void {
 
     if (!commentElement) {
 
@@ -2189,8 +2200,8 @@ function cancelCommentEdit(
    ========================================================= */
 
 async function saveCommentEdit(
-    commentElement
-) {
+    commentElement: HTMLElement
+): Promise<SocialRecord | null> {
 
     if (!commentElement) {
 
@@ -2202,7 +2213,7 @@ async function saveCommentEdit(
     const postElement =
         commentElement.closest(
             ".post-card"
-        );
+        ) as HTMLElement | null;
 
 
     const postId =
@@ -2262,7 +2273,7 @@ async function saveCommentEdit(
     const input =
         contentElement?.querySelector(
             ".post-comment-edit-input"
-        );
+        ) as HTMLTextAreaElement | null;
 
 
     if (
@@ -2317,18 +2328,18 @@ async function saveCommentEdit(
     const saveButton =
         commentElement.querySelector(
             '[data-profile-comment-action="save-edit"]'
-        );
+        ) as HTMLButtonElement | null;
 
 
     const cancelButton =
         commentElement.querySelector(
             '[data-profile-comment-action="cancel-edit"]'
-        );
+        ) as HTMLButtonElement | null;
 
 
     if (saveButton) {
 
-        saveButton.disabled =
+        (saveButton as HTMLButtonElement).disabled =
             true;
 
         saveButton.textContent =
@@ -2339,7 +2350,7 @@ async function saveCommentEdit(
 
     if (cancelButton) {
 
-        cancelButton.disabled =
+        (cancelButton as HTMLButtonElement).disabled =
             true;
 
     }
@@ -2436,9 +2447,7 @@ async function saveCommentEdit(
 
         alert(
 
-            error?.message ||
-
-            "Unable to update comment."
+            getErrorMessage(error, "Unable to update comment.")
 
         );
 
@@ -2449,7 +2458,7 @@ async function saveCommentEdit(
 
         if (saveButton) {
 
-            saveButton.disabled =
+            (saveButton as HTMLButtonElement).disabled =
                 false;
 
             saveButton.textContent =
@@ -2460,7 +2469,7 @@ async function saveCommentEdit(
 
         if (cancelButton) {
 
-            cancelButton.disabled =
+            (cancelButton as HTMLButtonElement).disabled =
                 false;
 
         }
@@ -2494,7 +2503,7 @@ function closeCommentMenus(
 
             menu => {
 
-                menu.hidden =
+                (menu as HTMLElement).hidden =
                     true;
 
             }
@@ -2531,9 +2540,9 @@ function closeCommentMenus(
    ========================================================= */
 
 function toggleCommentMenu(
-    commentElement,
-    button
-) {
+    commentElement: HTMLElement,
+    button: HTMLButtonElement
+): void {
 
     if (
         !commentElement ||
@@ -2573,7 +2582,7 @@ function toggleCommentMenu(
     const menu =
         commentElement.querySelector(
             ".post-comment-menu"
-        );
+        ) as HTMLElement | null;
 
 
     if (!menu) {
@@ -2615,9 +2624,9 @@ function toggleCommentMenu(
    ========================================================= */
 
 function animateCommentRemoval(
-    commentElement,
-    countElement
-) {
+    commentElement: HTMLElement,
+    countElement: HTMLElement | null
+): void {
 
     if (!commentElement) {
 
@@ -2686,8 +2695,8 @@ function animateCommentRemoval(
    ========================================================= */
 
 async function handleCommentClick(
-    event
-) {
+    event: any
+): Promise<void> {
 
     const actionButton =
         event.target.closest(
@@ -2722,7 +2731,7 @@ async function handleCommentClick(
     const postElement =
         commentElement.closest(
             ".post-card"
-        );
+        ) as HTMLElement | null;
 
 
     const postId =
@@ -2934,7 +2943,7 @@ async function handleCommentClick(
         }
 
 
-        actionButton.disabled =
+        (actionButton as HTMLButtonElement).disabled =
             true;
 
 
@@ -2961,7 +2970,7 @@ async function handleCommentClick(
                 const countElement =
                     postElement?.querySelector(
                         ".post-comment-count"
-                    );
+                    ) as HTMLElement | null;
 
 
                 animateCommentRemoval(
@@ -2990,15 +2999,13 @@ async function handleCommentClick(
 
             alert(
 
-                error?.message ||
-
-                "Unable to delete comment."
+                getErrorMessage(error, "Unable to delete comment.")
 
             );
 
         } finally {
 
-            actionButton.disabled =
+            (actionButton as HTMLButtonElement).disabled =
                 false;
 
 
@@ -3018,8 +3025,8 @@ async function handleCommentClick(
    ========================================================= */
 
 function renderPosts(
-    posts
-) {
+    posts: SocialRecords
+): void {
 
     if (!postsFeed) {
 
@@ -3439,8 +3446,8 @@ function renderPosts(
    ========================================================= */
 
 async function savePostEdit(
-    postElement
-) {
+    postElement: HTMLElement
+): Promise<void> {
 
     if (!postElement) {
 
@@ -3494,7 +3501,7 @@ async function savePostEdit(
     const input =
         contentElement?.querySelector(
             ".post-edit-input"
-        );
+        ) as HTMLTextAreaElement | null;
 
 
     if (
@@ -3565,18 +3572,18 @@ async function savePostEdit(
     const saveButton =
         postElement.querySelector(
             '[data-profile-post-action="save-edit"]'
-        );
+        ) as HTMLButtonElement | null;
 
 
     const cancelButton =
         postElement.querySelector(
             '[data-profile-post-action="cancel-edit"]'
-        );
+        ) as HTMLButtonElement | null;
 
 
     if (saveButton) {
 
-        saveButton.disabled =
+        (saveButton as HTMLButtonElement).disabled =
             true;
 
         saveButton.textContent =
@@ -3587,7 +3594,7 @@ async function savePostEdit(
 
     if (cancelButton) {
 
-        cancelButton.disabled =
+        (cancelButton as HTMLButtonElement).disabled =
             true;
 
     }
@@ -3791,9 +3798,7 @@ async function savePostEdit(
 
         alert(
 
-            error?.message ||
-
-            "Unable to update post."
+            getErrorMessage(error, "Unable to update post.")
 
         );
 
@@ -3806,7 +3811,7 @@ async function savePostEdit(
 
         if (saveButton) {
 
-            saveButton.disabled =
+            (saveButton as HTMLButtonElement).disabled =
                 false;
 
             saveButton.textContent =
@@ -3817,7 +3822,7 @@ async function savePostEdit(
 
         if (cancelButton) {
 
-            cancelButton.disabled =
+            (cancelButton as HTMLButtonElement).disabled =
                 false;
 
         }
@@ -3833,8 +3838,8 @@ async function savePostEdit(
    ========================================================= */
 
 function cancelPostEdit(
-    postElement
-) {
+    postElement: HTMLElement
+): void {
 
     if (!postElement) {
 
@@ -3882,10 +3887,10 @@ function cancelPostEdit(
    ========================================================= */
 
 async function toggleLike(
-    postId,
-    button,
-    countElement
-) {
+    postId: string,
+    button: HTMLButtonElement,
+    countElement: HTMLElement | null
+): Promise<void> {
 
     if (
         !hasValidLoginSession()
@@ -3927,7 +3932,7 @@ async function toggleLike(
     );
 
 
-    button.disabled =
+    (button as HTMLButtonElement).disabled =
         true;
 
 
@@ -4097,9 +4102,7 @@ async function toggleLike(
 
         alert(
 
-            error?.message ||
-
-            "Unable to update like."
+            getErrorMessage(error, "Unable to update like.")
 
         );
 
@@ -4110,7 +4113,7 @@ async function toggleLike(
         );
 
 
-        button.disabled =
+        (button as HTMLButtonElement).disabled =
             false;
 
     }
@@ -4124,8 +4127,8 @@ async function toggleLike(
    ========================================================= */
 
 async function deletePost(
-    postElement
-) {
+    postElement: HTMLElement
+): Promise<boolean> {
 
     if (!postElement) {
 
@@ -4229,7 +4232,7 @@ async function deletePost(
 
     if (deleteButton) {
 
-        deleteButton.disabled =
+        (deleteButton as HTMLButtonElement).disabled =
             true;
 
         deleteButton.textContent =
@@ -4435,9 +4438,7 @@ async function deletePost(
 
         alert(
 
-            error?.message ||
-
-            "Unable to delete post."
+            getErrorMessage(error, "Unable to delete post.")
 
         );
 
@@ -4462,7 +4463,7 @@ async function deletePost(
    ========================================================= */
 
 async function handlePostClick(
-    event
+    event: any
 ) {
 
     if (!postsFeed) {
@@ -4925,8 +4926,8 @@ async function handlePostClick(
    ========================================================= */
 
 function handlePostKeydown(
-    event
-) {
+    event: any
+): void {
 
     // ========================================================
     // COMMENT ENTER
@@ -5167,8 +5168,8 @@ function handlePostKeydown(
    ========================================================= */
 
 function handlePostInput(
-    event
-) {
+    event: any
+): void {
 
     const editInput =
         event.target.closest(
@@ -5236,8 +5237,8 @@ function handlePostInput(
    ========================================================= */
 
 function autoResizePostEditor(
-    input
-) {
+    input: HTMLTextAreaElement
+): void {
 
     if (!input) {
 
@@ -5277,7 +5278,7 @@ function autoResizePostEditor(
    SETUP SOCIAL EVENTS
    ========================================================= */
 
-function setupSocialEvents() {
+function setupSocialEvents(): void {
 
     if (
         postsFeed
@@ -5366,16 +5367,19 @@ function setupSocialEvents() {
 
         "click",
 
-        event => {
+        (event: MouseEvent) => {
+
+            const target =
+                event.target as Element | null;
 
             if (
-                event.target.closest(
+                target?.closest(
                     ".post-owner-actions"
                 )
 
                 ||
 
-                event.target.closest(
+                target?.closest(
                     ".post-comment-owner-actions"
                 )
 
@@ -5402,7 +5406,7 @@ function setupSocialEvents() {
    PROFILE UPDATE REACTION
    ========================================================= */
 
-function setupProfileUpdateListener() {
+function setupProfileUpdateListener(): void {
 
     window.addEventListener(
 
@@ -5792,7 +5796,7 @@ async function createPost() {
 
         alert(
 
-            error?.message ||
+            getErrorMessage(error, "An unexpected error occurred.") ||
 
             "Unable to publish post."
 
@@ -5825,7 +5829,7 @@ async function createPost() {
    INITIALIZE
    ========================================================= */
 
-function initializeProfileSocial() {
+function initializeProfileSocial(): void {
 
     setupSocialEvents();
 
