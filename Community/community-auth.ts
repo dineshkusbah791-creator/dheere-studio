@@ -7,6 +7,18 @@
 
 
 // ============================================================
+// TYPES
+// ============================================================
+
+type CommunityUser = Record<string, any>;
+
+type AuthError = Error & {
+    code?: string;
+};
+
+
+
+// ============================================================
 // STORAGE KEYS
 // ============================================================
 
@@ -23,7 +35,7 @@ const TOKEN_STORAGE_KEY =
 // GET AUTH TOKEN
 // ============================================================
 
-function getAuthToken() {
+function getAuthToken(): string | null {
 
     return localStorage.getItem(
         TOKEN_STORAGE_KEY
@@ -37,7 +49,7 @@ function getAuthToken() {
 // GET CURRENT USER
 // ============================================================
 
-function getCurrentUser() {
+function getCurrentUser(): CommunityUser | null {
 
     try {
 
@@ -56,7 +68,7 @@ function getCurrentUser() {
         }
 
 
-        const user =
+        const user: unknown =
             JSON.parse(
                 savedUser
             );
@@ -72,7 +84,7 @@ function getCurrentUser() {
         }
 
 
-        return user;
+        return user as CommunityUser;
 
 
     } catch (
@@ -101,8 +113,8 @@ function getCurrentUser() {
 // ============================================================
 
 function getUsername(
-    user = getCurrentUser()
-) {
+    user: CommunityUser | null = getCurrentUser()
+): string {
 
     return String(
 
@@ -123,8 +135,8 @@ function getUsername(
 // ============================================================
 
 function getUserId(
-    user = getCurrentUser()
-) {
+    user: CommunityUser | null = getCurrentUser()
+): string {
 
     return String(
 
@@ -148,7 +160,7 @@ function getUserId(
 // CHECK LOGIN SESSION
 // ============================================================
 
-function hasValidLoginSession() {
+function hasValidLoginSession(): boolean {
 
     const user =
         getCurrentUser();
@@ -171,13 +183,13 @@ function hasValidLoginSession() {
 // GET AUTH HEADERS
 // ============================================================
 
-function getAuthHeaders() {
+function getAuthHeaders(): Record<string, string> {
 
     const token =
         getAuthToken();
 
 
-    const headers = {
+    const headers: Record<string, string> = {
 
         "Content-Type":
             "application/json",
@@ -208,7 +220,7 @@ function getAuthHeaders() {
 // CLEAR AUTH STORAGE
 // ============================================================
 
-function clearAuthStorage() {
+function clearAuthStorage(): void {
 
     try {
 
@@ -255,7 +267,7 @@ function clearAuthStorage() {
 
 function handleAuthError(
     message = ""
-) {
+): AuthError {
 
     clearAuthStorage();
 
@@ -274,7 +286,7 @@ function handleAuthError(
 
             "Your login session has expired. Please login again."
 
-        );
+        ) as AuthError;
 
 
     authError.code =
@@ -291,7 +303,7 @@ function handleAuthError(
 // REQUIRE AUTHENTICATION
 // ============================================================
 
-function requireAuthentication() {
+function requireAuthentication(): boolean {
 
     if (
         hasValidLoginSession()
@@ -313,8 +325,8 @@ function requireAuthentication() {
 // ============================================================
 
 async function handleAuthenticatedResponse(
-    response
-) {
+    response: Response
+): Promise<AuthError | null> {
 
     if (
         response.status !==
@@ -326,7 +338,7 @@ async function handleAuthenticatedResponse(
     }
 
 
-    let result =
+    let result: CommunityUser | null =
         null;
 
 

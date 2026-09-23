@@ -1,7 +1,6 @@
 // ============================================================
 // COMMUNITY POSTS
-// Post loading, rendering, publishing, likes,
-// post editing and post deletion
+// TypeScript migration of the Community posts controller
 // ============================================================
 
 "use strict";
@@ -77,7 +76,7 @@ const postEditingState =
 // ============================================================
 
 function escapeHTML(
-    value
+    value: any
 ) {
 
     const div =
@@ -103,7 +102,7 @@ function escapeHTML(
 // ============================================================
 
 function formatPostDate(
-    dateValue
+    dateValue: any
 ) {
 
     if (!dateValue) {
@@ -161,7 +160,7 @@ function formatPostDate(
 // ============================================================
 
 function getPostId(
-    post
+    post: any
 ) {
 
     return String(
@@ -183,7 +182,7 @@ function getPostId(
 // ============================================================
 
 function getPostAuthorId(
-    post
+    post: any
 ) {
 
     return String(
@@ -223,7 +222,7 @@ function getCurrentUserId() {
 // ============================================================
 
 function getPostLikes(
-    post
+    post: any
 ) {
 
     const likes =
@@ -253,7 +252,7 @@ function getPostLikes(
 // ============================================================
 
 function getPostCommentsCount(
-    post
+    post: any
 ) {
 
     const count =
@@ -288,7 +287,7 @@ function getPostCommentsCount(
 // ============================================================
 
 function isPostLiked(
-    post
+    post: any
 ) {
 
     return (
@@ -312,7 +311,7 @@ function isPostLiked(
 // ============================================================
 
 function isOwnPost(
-    post
+    post: any
 ) {
 
     const currentUserId =
@@ -349,8 +348,8 @@ function isOwnPost(
 // ============================================================
 
 async function parseJSON(
-    response
-) {
+    response: Response
+): Promise<any> {
 
     try {
 
@@ -367,13 +366,57 @@ async function parseJSON(
 }
 
 
+function getErrorMessage(
+    error: unknown,
+    fallback: string
+): string {
+
+    if (
+        error instanceof Error &&
+        error.message
+    ) {
+
+        return error.message;
+
+    }
+
+    if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as { message?: unknown }).message === "string"
+    ) {
+
+        return (error as { message: string }).message;
+
+    }
+
+    return fallback;
+
+}
+
+
+function hasAuthRequiredCode(
+    error: unknown
+): boolean {
+
+    return (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        (error as { code?: unknown }).code === "AUTH_REQUIRED"
+    );
+
+}
+
+
 
 // ============================================================
 // AUTH FAILURE
 // ============================================================
 
 function processAuthFailure(
-    result
+    result: any
 ) {
 
     clearAuthStorage();
@@ -389,7 +432,7 @@ function processAuthFailure(
         );
 
 
-    error.code =
+    (error as any).code =
         "AUTH_REQUIRED";
 
 
@@ -404,8 +447,8 @@ function processAuthFailure(
 // ============================================================
 
 function updatePostCharacterCount(
-    textarea,
-    counter
+    textarea: HTMLTextAreaElement,
+    counter: HTMLElement | null | undefined
 ) {
 
     if (
@@ -430,7 +473,7 @@ function updatePostCharacterCount(
 // ============================================================
 
 function triggerLikeAnimation(
-    button
+    button: any
 ) {
 
     if (!button) {
@@ -489,7 +532,7 @@ function triggerLikeAnimation(
 // ============================================================
 
 function renderPostOwnerActions(
-    post
+    post: any
 ) {
 
     /*
@@ -575,7 +618,7 @@ function renderPostOwnerActions(
 // ============================================================
 
 function renderPost(
-    post
+    post: any
 ) {
 
     const postId =
@@ -869,8 +912,8 @@ function renderPost(
 // ============================================================
 
 function renderPosts(
-    posts,
-    postsFeed
+    posts: any,
+    postsFeed: any
 ) {
 
     if (!postsFeed) {
@@ -958,7 +1001,7 @@ function renderPosts(
 // ============================================================
 
 async function loadPosts(
-    postsFeed
+    postsFeed: any
 ) {
 
     if (!postsFeed) {
@@ -1128,8 +1171,9 @@ async function loadPosts(
             >
 
                 ${
-                    error?.code ===
-                    "AUTH_REQUIRED"
+                    hasAuthRequiredCode(
+                    error
+                )
 
                         ? "Please login again."
 
@@ -1162,9 +1206,9 @@ async function loadPosts(
 // ============================================================
 
 async function toggleLike(
-    postId,
-    button,
-    countElement
+    postId: any,
+    button: any,
+    countElement: any
 ) {
 
     const cleanPostId =
@@ -1390,9 +1434,10 @@ async function toggleLike(
 
         alert(
 
-            error?.message ||
-
-            "Unable to update like."
+            getErrorMessage(
+                error,
+                "Unable to update like."
+            )
 
         );
 
@@ -1421,8 +1466,8 @@ async function toggleLike(
 // ============================================================
 
 function togglePostMenu(
-    postCard,
-    button
+    postCard: HTMLElement,
+    button: HTMLElement
 ) {
 
     if (
@@ -1468,7 +1513,7 @@ function togglePostMenu(
 
 
     const menu =
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             "[data-post-menu]"
         );
 
@@ -1485,7 +1530,8 @@ function togglePostMenu(
 
 
     const feed =
-        postCard.closest(
+        closestElement<HTMLElement>(
+            postCard,
             ".posts-feed"
         );
 
@@ -1493,7 +1539,7 @@ function togglePostMenu(
     if (feed) {
 
         feed
-            .querySelectorAll(
+            .querySelectorAll<HTMLElement>(
                 "[data-post-menu]"
             )
             .forEach(
@@ -1507,7 +1553,7 @@ function togglePostMenu(
 
 
         feed
-            .querySelectorAll(
+            .querySelectorAll<HTMLButtonElement>(
                 ".post-menu-button"
             )
             .forEach(
@@ -1547,7 +1593,7 @@ function togglePostMenu(
 // ============================================================
 
 function closeAllPostMenus(
-    root
+    root: ParentNode
 ) {
 
     if (!root) {
@@ -1558,7 +1604,7 @@ function closeAllPostMenus(
 
 
     root
-        .querySelectorAll(
+        .querySelectorAll<HTMLElement>(
             "[data-post-menu]"
         )
         .forEach(
@@ -1602,7 +1648,7 @@ function closeAllPostMenus(
 // ============================================================
 
 function beginPostEdit(
-    postElement
+    postElement: any
 ) {
 
     if (!postElement) {
@@ -1799,7 +1845,7 @@ function beginPostEdit(
 // ============================================================
 
 function cancelPostEdit(
-    postElement
+    postElement: any
 ) {
 
     if (!postElement) {
@@ -1848,8 +1894,8 @@ function cancelPostEdit(
 // ============================================================
 
 async function updatePost(
-    postId,
-    content
+    postId: any,
+    content: any
 ) {
 
     const cleanPostId =
@@ -2067,7 +2113,7 @@ async function updatePost(
 // ============================================================
 
 async function savePostEdit(
-    postElement
+    postElement: any
 ) {
 
     if (!postElement) {
@@ -2316,9 +2362,10 @@ async function savePostEdit(
 
         alert(
 
-            error?.message ||
-
-            "Unable to update post."
+            getErrorMessage(
+                error,
+                "Unable to update post."
+            )
 
         );
 
@@ -2357,8 +2404,8 @@ async function savePostEdit(
 // ============================================================
 
 async function deletePost(
-    postId,
-    postElement
+    postId: any,
+    postElement: any
 ) {
 
     const cleanPostId =
@@ -2635,9 +2682,10 @@ async function deletePost(
 
         alert(
 
-            error?.message ||
-
-            "Unable to delete post."
+            getErrorMessage(
+                error,
+                "Unable to delete post."
+            )
 
         );
 
@@ -2662,7 +2710,7 @@ async function deletePost(
 // ============================================================
 
 async function toggleCommentsPanel(
-    postCard
+    postCard: HTMLElement | null
 ) {
 
     if (!postCard) {
@@ -2673,19 +2721,19 @@ async function toggleCommentsPanel(
 
 
     const panel =
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             ".post-comments-panel"
         );
 
 
     const commentsContainer =
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             ".post-comments-list"
         );
 
 
     const commentButton =
-        postCard.querySelector(
+        postCard.querySelector<HTMLButtonElement>(
             ".post-comment-button"
         );
 
@@ -2766,11 +2814,31 @@ async function toggleCommentsPanel(
 
         commentsContainer,
 
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             ".post-comment-count"
         )
 
     );
+
+}
+
+
+
+function closestElement<T extends Element>(
+    target: EventTarget | null,
+    selector: string
+): T | null {
+
+    if (!(target instanceof Element)) {
+
+        return null;
+
+    }
+
+
+    return target.closest(
+        selector
+    ) as T | null;
 
 }
 
@@ -2781,7 +2849,7 @@ async function toggleCommentsPanel(
 // ============================================================
 
 function bindPostActions(
-    postsFeed
+    postsFeed: HTMLElement
 ) {
 
     if (!postsFeed) {
@@ -2816,7 +2884,8 @@ function bindPostActions(
             // ================================================
 
             const menuButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     '[data-post-action="menu"]'
                 );
 
@@ -2831,7 +2900,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    menuButton.closest(
+                    closestElement<HTMLElement>(
+                        menuButton,
                         ".post-card"
                     );
 
@@ -2862,7 +2932,8 @@ function bindPostActions(
             // ================================================
 
             const editButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     '[data-post-action="edit"]'
                 );
 
@@ -2877,7 +2948,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    editButton.closest(
+                    closestElement<HTMLElement>(
+                        editButton,
                         ".post-card"
                     );
 
@@ -2929,7 +3001,8 @@ function bindPostActions(
             // ================================================
 
             const cancelEditButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     '[data-post-action="cancel-edit"]'
                 );
 
@@ -2944,7 +3017,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    cancelEditButton.closest(
+                    closestElement<HTMLElement>(
+                        cancelEditButton,
                         ".post-card"
                     );
 
@@ -2968,7 +3042,8 @@ function bindPostActions(
             // ================================================
 
             const saveEditButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     '[data-post-action="save-edit"]'
                 );
 
@@ -2983,7 +3058,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    saveEditButton.closest(
+                    closestElement<HTMLElement>(
+                        saveEditButton,
                         ".post-card"
                     );
 
@@ -3007,7 +3083,8 @@ function bindPostActions(
             // ================================================
 
             const deleteButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     '[data-post-action="delete"]'
                 );
 
@@ -3022,7 +3099,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    deleteButton.closest(
+                    closestElement<HTMLElement>(
+                        deleteButton,
                         ".post-card"
                     );
 
@@ -3083,7 +3161,8 @@ function bindPostActions(
             // ================================================
 
             const likeButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     ".post-like-button"
                 );
 
@@ -3096,7 +3175,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    likeButton.closest(
+                    closestElement<HTMLElement>(
+                        likeButton,
                         ".post-card"
                     );
 
@@ -3128,7 +3208,8 @@ function bindPostActions(
             // ================================================
 
             const commentButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     ".post-comment-button"
                 );
 
@@ -3141,7 +3222,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    commentButton.closest(
+                    closestElement<HTMLElement>(
+                        commentButton,
                         ".post-card"
                     );
 
@@ -3161,7 +3243,8 @@ function bindPostActions(
             // ================================================
 
             const submitButton =
-                event.target.closest(
+                closestElement<HTMLButtonElement>(
+                    event.target,
                     ".post-submit-comment"
                 );
 
@@ -3174,7 +3257,8 @@ function bindPostActions(
 
 
                 const postCard =
-                    submitButton.closest(
+                    closestElement<HTMLElement>(
+                        submitButton,
                         ".post-card"
                     );
 
@@ -3187,7 +3271,7 @@ function bindPostActions(
 
 
                 const input =
-                    postCard.querySelector(
+                    postCard.querySelector<HTMLInputElement>(
                         ".post-comment-input"
                     );
 
@@ -3238,7 +3322,8 @@ function bindPostActions(
             event => {
 
                 if (
-                    event.target.closest(
+                    closestElement<HTMLElement>(
+                        event.target,
                         ".post-owner-actions"
                     )
                 ) {
@@ -3270,7 +3355,8 @@ function bindPostActions(
         event => {
 
             const input =
-                event.target.closest(
+                closestElement<HTMLTextAreaElement>(
+                    event.target,
                     ".post-edit-input"
                 );
 
@@ -3283,7 +3369,8 @@ function bindPostActions(
 
 
             const postCard =
-                input.closest(
+                closestElement<HTMLElement>(
+                    input,
                     ".post-card"
                 );
 
@@ -3352,7 +3439,8 @@ function bindPostActions(
         event => {
 
             const input =
-                event.target.closest(
+                closestElement<HTMLTextAreaElement>(
+                    event.target,
                     ".post-edit-input"
                 );
 
@@ -3365,13 +3453,14 @@ function bindPostActions(
 
 
             const postCard =
-                input.closest(
+                closestElement<HTMLElement>(
+                    input,
                     ".post-card"
                 );
 
 
             const counter =
-                postCard?.querySelector(
+                postCard?.querySelector<HTMLElement>(
                     ".post-edit-character-count"
                 );
 
@@ -3397,8 +3486,8 @@ function bindPostActions(
 // ============================================================
 
 async function publishPost(
-    content,
-    options = {}
+    content: any,
+    options: any = {}
 ) {
 
     if (
@@ -3553,14 +3642,21 @@ async function publishPost(
 // POST COMPOSER
 // ============================================================
 
+interface PostComposerOptions {
+    textarea?: HTMLTextAreaElement | null;
+    counter?: HTMLElement | null;
+    publishButton?: HTMLButtonElement | null;
+    postsFeed?: HTMLElement | null;
+}
+
+
 function initializePostComposer(
     {
-        textarea,
-        counter,
-        publishButton,
-        postsFeed
-
-    } = {}
+        textarea = null,
+        counter = null,
+        publishButton = null,
+        postsFeed = null
+    }: PostComposerOptions = {}
 ) {
 
     if (
@@ -3707,9 +3803,10 @@ function initializePostComposer(
 
                     alert(
 
-                        error?.message ||
-
-                        "Could not publish post."
+                        getErrorMessage(
+                            error,
+                            "Could not publish post."
+                        )
 
                     );
 
@@ -3741,13 +3838,13 @@ function initializePostComposer(
 
 function initializePosts(
     {
-        postsFeed,
-        textarea,
-        counter,
-        publishButton,
-        refreshButton
-
-    } = {}
+            postsFeed,
+            textarea,
+            counter,
+            publishButton,
+            refreshButton
+    
+        }: any = {}
 ) {
 
     bindPostActions(

@@ -7,10 +7,33 @@
 
 
 // ============================================================
+// TYPES
+// ============================================================
+
+type VisionLanguage =
+    "english" |
+    "hinglish";
+
+
+interface VisionElements {
+    visionSection?: HTMLElement | null;
+    exploreVisionButton?: HTMLButtonElement | null;
+    englishButton?: HTMLButtonElement | null;
+    hinglishButton?: HTMLButtonElement | null;
+    englishCommunity?: HTMLElement | null;
+    hinglishCommunity?: HTMLElement | null;
+}
+
+
+
+// ============================================================
 // INTERNAL STATE
 // ============================================================
 
-const visionState = {
+const visionState: {
+    language: VisionLanguage;
+    visible: boolean;
+} = {
     language: "english",
     visible: false
 };
@@ -22,10 +45,10 @@ const visionState = {
 // ============================================================
 
 function setVisionVisibility(
-    visionSection,
-    exploreVisionButton,
-    visible
-) {
+    visionSection: HTMLElement | null | undefined,
+    exploreVisionButton: HTMLButtonElement | null | undefined,
+    visible: boolean
+): void {
 
     if (!visionSection) {
 
@@ -74,9 +97,9 @@ function setVisionVisibility(
 // ============================================================
 
 function toggleVision(
-    visionSection,
-    exploreVisionButton
-) {
+    visionSection: HTMLElement | null | undefined,
+    exploreVisionButton: HTMLButtonElement | null | undefined
+): void {
 
     setVisionVisibility(
 
@@ -115,16 +138,16 @@ function toggleVision(
 // ============================================================
 
 function setVisionLanguage(
-    language,
+    language: VisionLanguage | string,
     {
-        englishCommunity,
-        hinglishCommunity,
-        englishButton,
-        hinglishButton
-    } = {}
-) {
+        englishCommunity = null,
+        hinglishCommunity = null,
+        englishButton = null,
+        hinglishButton = null
+    }: VisionElements = {}
+): void {
 
-    const normalizedLanguage =
+    const normalizedLanguage: VisionLanguage =
         language ===
         "hinglish"
             ? "hinglish"
@@ -211,7 +234,7 @@ function setVisionLanguage(
 // GET CURRENT LANGUAGE
 // ============================================================
 
-function getVisionLanguage() {
+function getVisionLanguage(): VisionLanguage {
 
     return visionState.language;
 
@@ -223,7 +246,7 @@ function getVisionLanguage() {
 // IS VISION VISIBLE
 // ============================================================
 
-function isVisionVisible() {
+function isVisionVisible(): boolean {
 
     return visionState.visible;
 
@@ -237,15 +260,14 @@ function isVisionVisible() {
 
 function initializeVision(
     {
-        visionSection,
-        exploreVisionButton,
-        englishButton,
-        hinglishButton,
-        englishCommunity,
-        hinglishCommunity
-
-    } = {}
-) {
+        visionSection = null,
+        exploreVisionButton = null,
+        englishButton = null,
+        hinglishButton = null,
+        englishCommunity = null,
+        hinglishCommunity = null
+    }: VisionElements = {}
+): void {
 
     if (
         !visionSection

@@ -5,6 +5,27 @@
 
 "use strict";
 
+// ============================================================
+// TYPES
+// ============================================================
+
+type CommunityComment = Record<string, any>;
+type CommunityJson = Record<string, any>;
+type CommentRoot = HTMLElement;
+type CommentElement = HTMLElement;
+type CommentActionElement = HTMLButtonElement;
+
+type CommunityAuthError = Error & {
+    code?: string;
+};
+
+type CreateCommentOptions = {
+    inputElement?: HTMLInputElement | null;
+    commentsContainer?: HTMLElement | null;
+    countElement?: HTMLElement | null;
+};
+
+
 
 // ============================================================
 // IMPORTS
@@ -61,8 +82,8 @@ const commentsDeletingState =
 // ============================================================
 
 function escapeHTML(
-    value
-) {
+    value: unknown
+): string {
 
     const div =
         document.createElement(
@@ -87,8 +108,8 @@ function escapeHTML(
 // ============================================================
 
 function formatCommentDate(
-    dateValue
-) {
+    dateValue: unknown
+): string {
 
     if (!dateValue) {
 
@@ -99,7 +120,7 @@ function formatCommentDate(
 
     const date =
         new Date(
-            dateValue
+            dateValue as string | number | Date
         );
 
 
@@ -145,8 +166,8 @@ function formatCommentDate(
 // ============================================================
 
 function getCommentId(
-    comment
-) {
+    comment: CommunityComment | null | undefined
+): string {
 
     return String(
 
@@ -167,8 +188,8 @@ function getCommentId(
 // ============================================================
 
 function getCommentUserId(
-    comment
-) {
+    comment: CommunityComment | null | undefined
+): string {
 
     return String(
 
@@ -189,9 +210,9 @@ function getCommentUserId(
 // ============================================================
 
 function isOwnComment(
-    comment,
-    currentUserId = getUserId()
-) {
+    comment: CommunityComment | null | undefined,
+    currentUserId: string | null | undefined = getUserId()
+): boolean {
 
     const commentUserId =
         getCommentUserId(
@@ -228,9 +249,9 @@ function isOwnComment(
 // ============================================================
 
 function updateCommentCount(
-    countElement,
-    value
-) {
+    countElement: HTMLElement | null | undefined,
+    value: unknown
+): void {
 
     if (!countElement) {
 
@@ -271,8 +292,8 @@ function updateCommentCount(
 // ============================================================
 
 async function parseJSON(
-    response
-) {
+    response: Response
+): Promise<CommunityJson> {
 
     try {
 
@@ -291,12 +312,44 @@ async function parseJSON(
 
 
 // ============================================================
+function getErrorMessage(error: unknown): string {
+
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    if (error && typeof error === "object" && "message" in error) {
+        return String(
+            (error as { message?: unknown }).message ||
+            ""
+        );
+    }
+
+    return "";
+
+}
+
+
+function getErrorCode(error: unknown): string {
+
+    if (error && typeof error === "object" && "code" in error) {
+        return String(
+            (error as { code?: unknown }).code ||
+            ""
+        );
+    }
+
+    return "";
+
+}
+
+
 // AUTH ERROR
 // ============================================================
 
 function processAuthFailure(
-    result
-) {
+    result: CommunityJson
+): CommunityAuthError {
 
     clearAuthStorage();
 
@@ -308,7 +361,7 @@ function processAuthFailure(
 
             "Your login session has expired. Please login again."
 
-        );
+        ) as CommunityAuthError;
 
 
     error.code =
@@ -326,9 +379,9 @@ function processAuthFailure(
 // ============================================================
 
 function renderComment(
-    comment,
-    currentUserId = getUserId()
-) {
+    comment: CommunityComment | null | undefined,
+    currentUserId: string | null | undefined = getUserId()
+): string {
 
     const commentId =
         getCommentId(
@@ -541,10 +594,10 @@ function renderComment(
 // ============================================================
 
 function renderComments(
-    container,
-    comments,
-    currentUserId = getUserId()
-) {
+    container: CommentRoot | null | undefined,
+    comments: CommunityComment[],
+    currentUserId: string | null | undefined = getUserId()
+): void {
 
     if (!container) {
 
@@ -623,10 +676,10 @@ function renderComments(
 // ============================================================
 
 async function loadComments(
-    postId,
-    commentsContainer,
-    countElement
-) {
+    postId: string | number | null | undefined,
+    commentsContainer: HTMLElement | null | undefined,
+    countElement: HTMLElement | null | undefined
+): Promise<CommunityComment[]> {
 
     const cleanPostId =
         String(
@@ -789,7 +842,7 @@ async function loadComments(
             >
 
                 ${
-                    error?.code ===
+                    getErrorCode(error) ===
                     "AUTH_REQUIRED"
 
                         ? "Please login again."
@@ -823,10 +876,10 @@ async function loadComments(
 // ============================================================
 
 async function createComment(
-    postId,
-    content,
-    options = {}
-) {
+    postId: string | number | null | undefined,
+    content: unknown,
+    options: CreateCommentOptions = {}
+): Promise<CommunityComment | null> {
 
     const cleanPostId =
         String(
@@ -1065,10 +1118,10 @@ async function createComment(
 // ============================================================
 
 async function updateComment(
-    postId,
-    commentId,
-    content
-) {
+    postId: string | number | null | undefined,
+    commentId: string | number | null | undefined,
+    content: unknown
+): Promise<CommunityComment | null> {
 
     const cleanPostId =
         String(
@@ -1281,9 +1334,9 @@ async function updateComment(
 // ============================================================
 
 async function deleteComment(
-    postId,
-    commentId
-) {
+    postId: string | number | null | undefined,
+    commentId: string | number | null | undefined
+): Promise<boolean> {
 
     const cleanPostId =
         String(
@@ -1453,8 +1506,8 @@ async function deleteComment(
 // ============================================================
 
 function beginCommentEdit(
-    commentElement
-) {
+    commentElement: CommentElement | null | undefined
+): boolean {
 
     if (!commentElement) {
 
@@ -1486,7 +1539,7 @@ function beginCommentEdit(
     const postCard =
         commentElement.closest(
             ".post-card"
-        );
+        ) as HTMLElement | null;
 
 
     const postId =
@@ -1500,7 +1553,7 @@ function beginCommentEdit(
 
 
     const contentElement =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLElement>(
             "[data-comment-content]"
         );
 
@@ -1609,7 +1662,7 @@ function beginCommentEdit(
 
 
     const input =
-        contentElement.querySelector(
+        contentElement.querySelector<HTMLTextAreaElement>(
             ".post-comment-edit-input"
         );
 
@@ -1645,8 +1698,8 @@ function beginCommentEdit(
 // ============================================================
 
 function cancelCommentEdit(
-    commentElement
-) {
+    commentElement: CommentElement | null | undefined
+): void {
 
     if (!commentElement) {
 
@@ -1656,7 +1709,7 @@ function cancelCommentEdit(
 
 
     const contentElement =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLElement>(
             "[data-comment-content]"
         );
 
@@ -1701,8 +1754,8 @@ function cancelCommentEdit(
 // ============================================================
 
 async function saveCommentEdit(
-    commentElement
-) {
+    commentElement: CommentElement | null | undefined
+): Promise<CommunityComment | null> {
 
     if (!commentElement) {
 
@@ -1714,7 +1767,7 @@ async function saveCommentEdit(
     const postCard =
         commentElement.closest(
             ".post-card"
-        );
+        ) as HTMLElement | null;
 
 
     const postId =
@@ -1768,13 +1821,13 @@ async function saveCommentEdit(
 
 
     const contentElement =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLElement>(
             "[data-comment-content]"
         );
 
 
     const input =
-        contentElement?.querySelector(
+        contentElement?.querySelector<HTMLTextAreaElement>(
             ".post-comment-edit-input"
         );
 
@@ -1829,13 +1882,13 @@ async function saveCommentEdit(
 
 
     const saveButton =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLButtonElement>(
             '[data-comment-action="save-edit"]'
         );
 
 
     const cancelButton =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLButtonElement>(
             '[data-comment-action="cancel-edit"]'
         );
 
@@ -1950,7 +2003,7 @@ async function saveCommentEdit(
 
         alert(
 
-            error?.message ||
+            getErrorMessage(error) ||
 
             "Unable to update comment."
 
@@ -1991,9 +2044,9 @@ async function saveCommentEdit(
 // ============================================================
 
 function removeCommentElement(
-    commentElement,
-    countElement
-) {
+    commentElement: CommentElement | null | undefined,
+    countElement: HTMLElement | null | undefined
+): void {
 
     if (!commentElement) {
 
@@ -2100,9 +2153,9 @@ function removeCommentElement(
 // ============================================================
 
 function toggleCommentMenu(
-    commentElement,
-    button
-) {
+    commentElement: CommentElement | null | undefined,
+    button: CommentActionElement | null | undefined
+): void {
 
     if (
         !commentElement ||
@@ -2148,7 +2201,7 @@ function toggleCommentMenu(
 
 
     const menu =
-        commentElement.querySelector(
+        commentElement.querySelector<HTMLElement>(
             ".post-comment-menu"
         );
 
@@ -2173,12 +2226,12 @@ function toggleCommentMenu(
     if (list) {
 
         list
-            .querySelectorAll(
+            .querySelectorAll<HTMLElement>(
                 ".post-comment-menu"
             )
             .forEach(
 
-                otherMenu => {
+                (otherMenu: HTMLElement) => {
 
                     if (
                         otherMenu ===
@@ -2199,7 +2252,7 @@ function toggleCommentMenu(
                             .closest(
                                 ".post-comment-owner-actions"
                             )
-                            ?.querySelector(
+                            ?.querySelector<HTMLButtonElement>(
                                 ".post-comment-menu-button"
                             );
 
@@ -2245,8 +2298,8 @@ function toggleCommentMenu(
 // ============================================================
 
 function closeAllCommentMenus(
-    root
-) {
+    root: CommentRoot | null | undefined
+): void {
 
     if (!root) {
 
@@ -2256,10 +2309,7 @@ function closeAllCommentMenus(
 
 
     const scope =
-        root.querySelectorAll
-            ? root
-
-            : root.parentElement;
+        root;
 
 
     if (!scope) {
@@ -2270,12 +2320,12 @@ function closeAllCommentMenus(
 
 
     scope
-        .querySelectorAll(
+        .querySelectorAll<HTMLElement>(
             ".post-comment-menu"
         )
         .forEach(
 
-            menu => {
+            (menu: HTMLElement) => {
 
                 menu.hidden =
                     true;
@@ -2286,12 +2336,12 @@ function closeAllCommentMenus(
 
 
     scope
-        .querySelectorAll(
+        .querySelectorAll<HTMLButtonElement>(
             ".post-comment-menu-button"
         )
         .forEach(
 
-            button => {
+            (button: HTMLButtonElement) => {
 
                 button.setAttribute(
                     "aria-expanded",
@@ -2311,13 +2361,13 @@ function closeAllCommentMenus(
 // ============================================================
 
 async function handleCommentAction(
-    event
-) {
+    event: MouseEvent
+): Promise<void> {
 
     const actionElement =
-        event.target.closest(
+        (event.target as Element | null)?.closest(
             "[data-comment-action]"
-        );
+        ) as CommentActionElement | null;
 
 
     if (!actionElement) {
@@ -2334,7 +2384,7 @@ async function handleCommentAction(
     const commentElement =
         actionElement.closest(
             ".post-comment"
-        );
+        ) as CommentElement | null;
 
 
     if (!commentElement) {
@@ -2519,7 +2569,7 @@ async function handleCommentAction(
         const postCard =
             commentElement.closest(
                 ".post-card"
-            );
+            ) as HTMLElement | null;
 
 
         const postId =
@@ -2543,7 +2593,7 @@ async function handleCommentAction(
 
 
         const countElement =
-            postCard?.querySelector(
+            postCard?.querySelector<HTMLElement>(
                 ".post-comment-count"
             );
 
@@ -2629,7 +2679,7 @@ async function handleCommentAction(
 
             alert(
 
-                error?.message ||
+                getErrorMessage(error) ||
 
                 "Unable to delete comment."
 
@@ -2657,8 +2707,8 @@ async function handleCommentAction(
 // ============================================================
 
 function initializeCommentEvents(
-    commentsRoot
-) {
+    commentsRoot: CommentRoot | null | undefined
+): void {
 
     if (!commentsRoot) {
 
@@ -2685,7 +2735,7 @@ function initializeCommentEvents(
 
         "click",
 
-        event => {
+        (event: MouseEvent) => {
 
             handleCommentAction(
                 event
@@ -2700,12 +2750,12 @@ function initializeCommentEvents(
 
         "keydown",
 
-        event => {
+        (event: KeyboardEvent) => {
 
             const input =
-                event.target.closest(
+                (event.target as Element | null)?.closest(
                     ".post-comment-edit-input"
-                );
+                ) as HTMLTextAreaElement | null;
 
 
             if (!input) {
@@ -2718,7 +2768,7 @@ function initializeCommentEvents(
             const commentElement =
                 input.closest(
                     ".post-comment"
-                );
+                ) as CommentElement | null;
 
 
             if (!commentElement) {
@@ -2792,10 +2842,10 @@ function initializeCommentEvents(
 
             "click",
 
-            event => {
+            (event: MouseEvent) => {
 
                 if (
-                    event.target.closest(
+                    (event.target as Element | null)?.closest(
                         ".post-comment-owner-actions"
                     )
                 ) {
@@ -2824,9 +2874,9 @@ function initializeCommentEvents(
 // ============================================================
 
 function bindCommentInput(
-    input,
-    submitButton
-) {
+    input: HTMLInputElement | null | undefined,
+    submitButton: HTMLButtonElement | null | undefined
+): void {
 
     if (
         !input ||
@@ -2856,7 +2906,7 @@ function bindCommentInput(
 
         "keydown",
 
-        event => {
+        (event: KeyboardEvent) => {
 
             if (
                 event.key !==
@@ -2888,8 +2938,8 @@ function bindCommentInput(
 // ============================================================
 
 function bindCommentInputs(
-    commentsRoot
-) {
+    commentsRoot: CommentRoot | null | undefined
+): void {
 
     if (!commentsRoot) {
 
@@ -2899,21 +2949,21 @@ function bindCommentInputs(
 
 
     commentsRoot
-        .querySelectorAll(
+        .querySelectorAll<HTMLInputElement>(
             ".post-comment-input"
         )
         .forEach(
 
-            input => {
+            (input: HTMLInputElement) => {
 
                 const postCard =
                     input.closest(
                         ".post-card"
-                    );
+                    ) as HTMLElement | null;
 
 
                 const submitButton =
-                    postCard?.querySelector(
+                    postCard?.querySelector<HTMLButtonElement>(
                         ".post-submit-comment"
                     );
 
@@ -2943,8 +2993,12 @@ async function submitCommentFromForm(
         postCard,
         input,
         submitButton
+    }: {
+        postCard?: HTMLElement | null;
+        input?: HTMLInputElement | null;
+        submitButton?: HTMLButtonElement | null;
     }
-) {
+): Promise<CommunityComment | null> {
 
     if (
         !postCard ||
@@ -2968,13 +3022,13 @@ async function submitCommentFromForm(
 
 
     const commentsContainer =
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             ".post-comments-list"
         );
 
 
     const countElement =
-        postCard.querySelector(
+        postCard.querySelector<HTMLElement>(
             ".post-comment-count"
         );
 
@@ -3050,7 +3104,7 @@ async function submitCommentFromForm(
 
         alert(
 
-            error?.message ||
+            getErrorMessage(error) ||
 
             "Unable to add comment."
 
@@ -3080,8 +3134,8 @@ async function submitCommentFromForm(
 // ============================================================
 
 function initializeComments(
-    commentsRoot
-) {
+    commentsRoot: CommentRoot | null | undefined
+): void {
 
     if (!commentsRoot) {
 
