@@ -10,6 +10,40 @@ declare let currentUser: any;
 declare function getUserId(user: any): string;
 
 
+
+// ======================================================
+// AUTH HEADERS
+// ======================================================
+
+function getNotificationAuthHeaders(): Record<string, string> {
+
+    const token =
+        localStorage.getItem(
+            'dheereStudioToken'
+        );
+
+    const headers: Record<string, string> = {
+
+        'Accept':
+            'application/json',
+
+        'Content-Type':
+            'application/json'
+
+    };
+
+    if (token) {
+
+        headers.Authorization =
+            `Bearer ${token}`;
+
+    }
+
+    return headers;
+
+}
+
+
 // ======================================================
 // NOTIFICATION ELEMENTS
 // ======================================================
@@ -958,7 +992,17 @@ async function loadNotifications() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/notifications?userId=${encodeURIComponent(userId)}`
+                `${API_BASE_URL}/notifications?userId=${encodeURIComponent(userId)}`,
+                {
+                    method:
+                        'GET',
+
+                    headers:
+                        getNotificationAuthHeaders(),
+
+                    cache:
+                        'no-store'
+                }
             );
 
 
@@ -1066,12 +1110,8 @@ async function markNotificationRead(
                     method:
                         'PATCH',
 
-                    headers: {
-
-                        'Content-Type':
-                            'application/json'
-
-                    },
+                    headers:
+                        getNotificationAuthHeaders(),
 
                     body:
                         JSON.stringify({
@@ -1175,12 +1215,8 @@ async function markAllNotificationsRead() {
                     method:
                         'PATCH',
 
-                    headers: {
-
-                        'Content-Type':
-                            'application/json'
-
-                    },
+                    headers:
+                        getNotificationAuthHeaders(),
 
                     body:
                         JSON.stringify({

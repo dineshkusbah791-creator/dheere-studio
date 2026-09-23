@@ -1,3 +1,18 @@
+// ======================================================
+// AUTH HEADERS
+// ======================================================
+function getNotificationAuthHeaders() {
+    const token = localStorage.getItem('dheereStudioToken');
+    const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+    if (token) {
+        headers.Authorization =
+            `Bearer ${token}`;
+    }
+    return headers;
+}
 let notificationBell = document.getElementById('notificationBell') ??
     document.getElementById('notificationButton');
 let notificationPanel = document.getElementById('notificationPanel');
@@ -397,7 +412,11 @@ async function loadNotifications() {
     notificationsLoading =
         true;
     try {
-        const response = await fetch(`${API_BASE_URL}/notifications?userId=${encodeURIComponent(userId)}`);
+        const response = await fetch(`${API_BASE_URL}/notifications?userId=${encodeURIComponent(userId)}`, {
+            method: 'GET',
+            headers: getNotificationAuthHeaders(),
+            cache: 'no-store'
+        });
         const result = await response.json();
         if (requestId !==
             notificationRequestId) {
@@ -442,9 +461,7 @@ async function markNotificationRead(notificationId) {
     try {
         const response = await fetch(`${API_BASE_URL}/notifications/${encodeURIComponent(notificationId)}/read`, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getNotificationAuthHeaders(),
             body: JSON.stringify({
                 userId: userId
             })
@@ -490,9 +507,7 @@ async function markAllNotificationsRead() {
     try {
         const response = await fetch(`${API_BASE_URL}/notifications/read-all`, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getNotificationAuthHeaders(),
             body: JSON.stringify({
                 userId: userId
             })
