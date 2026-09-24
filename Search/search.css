@@ -1,0 +1,512 @@
+/* ======================================================
+   DHEERE STUDIO — SEARCH PAGE
+   ====================================================== */
+
+.search-page {
+
+    min-height: calc(100vh - 82px);
+
+    padding: 120px 0 110px;
+
+}
+
+.search-page-header {
+
+    width: min(1120px, calc(100% - 48px));
+
+    margin: 0 auto 42px;
+
+}
+
+.search-page-header .section-kicker {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 16px;
+
+    color: #9ca6b5;
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+}
+
+.search-page-header .section-kicker::before {
+
+    content: "";
+
+    width: 24px;
+
+    height: 1px;
+
+    background: currentColor;
+
+    opacity: 0.7;
+
+}
+
+.search-page-header h1 {
+
+    margin: 0;
+
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+
+    line-height: 0.98;
+
+    letter-spacing: -0.055em;
+
+}
+
+.search-page-header p {
+
+    max-width: 680px;
+
+    margin: 20px 0 0;
+
+    color: #929bab;
+
+    font-size: 1rem;
+
+    line-height: 1.8;
+
+}
+
+
+/* ======================================================
+   SEARCH CONTAINER
+   ====================================================== */
+
+.search-page-container {
+
+    width: min(1120px, calc(100% - 48px));
+
+    margin: 0 auto;
+
+}
+
+.search-page-input-wrapper {
+
+    position: relative;
+
+    width: min(820px, 100%);
+
+}
+
+.search-page-input-wrapper input {
+
+    width: 100%;
+
+    height: 68px;
+
+    padding: 0 72px 0 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 18px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 1rem;
+
+    box-sizing: border-box;
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    transition:
+
+        border-color 0.25s ease,
+
+        background 0.25s ease,
+
+        box-shadow 0.25s ease;
+
+}
+
+.search-page-input-wrapper input::placeholder {
+
+    color: #919aa8;
+
+    opacity: 0.8;
+
+}
+
+.search-page-input-wrapper input:focus {
+
+    border-color: rgba(255, 255, 255, 0.26);
+
+    background: rgba(255, 255, 255, 0.065);
+
+    box-shadow:
+
+        0 0 0 4px rgba(255, 255, 255, 0.035),
+
+        0 16px 45px rgba(0, 0, 0, 0.16);
+
+}
+
+.search-page-input-wrapper button {
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 12px;
+
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 12px;
+
+    transform: translateY(-50%);
+
+    background: rgba(255, 255, 255, 0.055);
+
+    color: inherit;
+
+    cursor: pointer;
+
+    transition:
+
+        background 0.2s ease,
+
+        border-color 0.2s ease,
+
+        transform 0.2s ease;
+
+}
+
+.search-page-input-wrapper button:hover {
+
+    background: rgba(255, 255, 255, 0.1);
+
+    border-color: rgba(255, 255, 255, 0.2);
+
+}
+
+.search-page-input-wrapper button:focus-visible {
+
+    outline: 2px solid rgba(255, 255, 255, 0.26);
+
+    outline-offset: 3px;
+
+}
+
+.search-page-input-wrapper button:active {
+
+    transform: translateY(-50%) scale(0.96);
+
+}
+
+.search-page-input-wrapper button svg {
+
+    width: 19px;
+
+    height: 19px;
+
+    pointer-events: none;
+
+}
+
+
+/* ======================================================
+   RESULTS
+   ====================================================== */
+
+.search-results {
+
+    width: min(820px, 100%);
+
+    margin-top: 18px;
+
+    display: none;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.11);
+
+    border-radius: 18px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255, 255, 255, 0.085),
+
+            rgba(255, 255, 255, 0.025)
+
+        );
+
+    backdrop-filter: blur(20px) saturate(135%);
+
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+
+    box-shadow:
+
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+
+        0 24px 70px rgba(0, 0, 0, 0.2);
+
+}
+
+.search-results.active {
+
+    display: block;
+
+}
+
+.search-result-item {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: transparent;
+
+    color: inherit;
+
+    text-align: left;
+
+    font: inherit;
+
+    cursor: pointer;
+
+    transition:
+
+        background 0.2s ease,
+
+        transform 0.2s ease;
+
+}
+
+.search-result-item:hover {
+
+    background: rgba(255, 255, 255, 0.06);
+
+    transform: translateX(3px);
+
+}
+
+.search-result-item:focus-visible {
+
+    outline: 2px solid rgba(255, 255, 255, 0.24);
+
+    outline-offset: -2px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+}
+
+.search-result-avatar {
+
+    width: 48px;
+
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: #d4d9e0;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+}
+
+.search-result-avatar img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+.search-result-info {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+.search-result-name {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 0.98rem;
+
+    font-weight: 650;
+
+}
+
+.search-result-username {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #8f98a6;
+
+    font-size: 0.8rem;
+
+}
+
+.search-message {
+
+    padding: 26px 18px;
+
+    color: #8f98a6;
+
+    text-align: center;
+
+    font-size: 0.86rem;
+
+}
+
+
+/* ======================================================
+   MOBILE
+   ====================================================== */
+
+@media (max-width: 700px) {
+
+    .search-page {
+
+        padding: 90px 0 80px;
+
+    }
+
+    .search-page-header,
+
+    .search-page-container {
+
+        width: min(100% - 32px, 1120px);
+
+    }
+
+    .search-page-header {
+
+        margin-bottom: 30px;
+
+    }
+
+    .search-page-header h1 {
+
+        font-size: clamp(2.2rem, 12vw, 3.4rem);
+
+    }
+
+    .search-page-header p {
+
+        margin-top: 16px;
+
+        font-size: 0.94rem;
+
+        line-height: 1.7;
+
+    }
+
+    .search-page-input-wrapper input {
+
+        height: 60px;
+
+        padding-left: 18px;
+
+        padding-right: 66px;
+
+    }
+
+    .search-page-input-wrapper button {
+
+        right: 8px;
+
+    }
+
+    .search-result-item {
+
+        gap: 12px;
+
+        padding: 12px;
+
+    }
+
+    .search-result-avatar {
+
+        width: 44px;
+
+        height: 44px;
+
+        flex-basis: 44px;
+
+    }
+
+}

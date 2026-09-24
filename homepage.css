@@ -417,6 +417,62 @@ header {
 
 
 /* ====================================================
+   NAV SEARCH ENTRY
+   Dedicated search page · icon only
+   ==================================================== */
+
+.nav-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 6px;
+}
+
+.nav-search-link {
+    width: 40px;
+    height: 40px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: #a8afbd;
+    text-decoration: none;
+
+    transition:
+        color .25s ease,
+        background .25s ease,
+        transform .25s ease;
+}
+
+.nav-search-link:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,.055);
+    transform: translateY(-1px);
+}
+
+.nav-search-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.nav-search-link:active {
+    transform: scale(.96);
+}
+
+.nav-search-link .search-icon {
+    width: 19px;
+    height: 19px;
+    display: block;
+    flex: 0 0 19px;
+    pointer-events: none;
+    opacity: .78;
+}
+
+/* ====================================================
    NAV RIGHT AREA
    ==================================================== */
 
@@ -4263,7 +4319,6 @@ html[data-dheere-mood] .auth-card {
    39. SEARCH / NOTIFICATION SURFACES — keep them quiet and functional
    ---------------------------------------------------------------------------- */
 
-#searchResults,
 #notificationPanel{
   border:1px solid rgba(255,255,255,.09);
   border-radius:14px;
@@ -4273,7 +4328,6 @@ html[data-dheere-mood] .auth-card {
   -webkit-backdrop-filter:blur(20px) saturate(135%);
 }
 
-#searchResults a,
 #notificationList > *{
   border-color:rgba(255,255,255,.05) !important;
 }
@@ -5518,45 +5572,6 @@ section h2 {
         inset 0 1px 0 rgba(255,255,255,.05);
 }
 
-/* ----------------------------------------------------------------------------
-   Search / notification controls — improve touch affordance
-   ---------------------------------------------------------------------------- */
-
-#userSearchInput {
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.035),
-        0 6px 18px rgba(0,0,0,.08);
-}
-
-#userSearchInput:focus {
-    box-shadow:
-        0 0 0 3px rgba(168,155,255,.045),
-        0 14px 38px rgba(0,0,0,.16),
-        inset 0 1px 0 rgba(255,255,255,.045);
-}
-
-.search-results {
-    border-color: rgba(255,255,255,.12);
-    background:
-        linear-gradient(145deg, rgba(20,22,28,.975), rgba(10,12,17,.985));
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.44),
-        inset 0 1px 0 rgba(255,255,255,.065);
-}
-
-.search-result-item {
-    transition:
-        transform .26s var(--studio-spring),
-        background .22s ease,
-        border-color .22s ease;
-}
-
-.search-result-item:hover,
-.search-result-item:focus-visible {
-    transform: translateX(2px);
-    background: linear-gradient(90deg, rgba(215,188,122,.065), rgba(255,255,255,.025));
-}
-
 .notification-button {
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.055),
@@ -6145,7 +6160,6 @@ button:not(.mood-card),
 
 .feedback-form input,
 .feedback-form textarea,
-#userSearchInput,
 .auth-card input,
 .auth-card textarea {
     transition:
@@ -6157,7 +6171,6 @@ button:not(.mood-card),
 
 .feedback-form input:hover,
 .feedback-form textarea:hover,
-#userSearchInput:hover,
 .auth-card input:hover,
 .auth-card textarea:hover {
     border-color: rgba(255,255,255,.17);
@@ -6165,7 +6178,6 @@ button:not(.mood-card),
 
 .feedback-form input:focus,
 .feedback-form textarea:focus,
-#userSearchInput:focus,
 .auth-card input:focus,
 .auth-card textarea:focus {
     transform: translateY(-1px);
@@ -6177,28 +6189,24 @@ button:not(.mood-card),
 }
 
 /* ----------------------------------------------------------------------------
-   Search results / notification panels: physical depth + touch feel
+   Notification / profile panels: physical depth + touch feel
    ---------------------------------------------------------------------------- */
 
-.search-results,
 .notification-panel,
 .profile-dropdown {
     transform-origin: top right;
 }
 
-.search-results:not([hidden]),
 .notification-panel.active,
 .profile-dropdown:not([hidden]) {
     animation: cinemaPanelIn .38s var(--cinema-spring) both;
 }
 
-.search-result-item,
 .notification-item,
 .profile-dropdown-item {
     -webkit-tap-highlight-color: transparent;
 }
 
-.search-result-item:active,
 .notification-item:active,
 .profile-dropdown-item:active {
     transform: scale(.992);
@@ -7795,42 +7803,23 @@ html[data-dheere-mood] .profile-dropdown-item:not(.profile-dropdown-item--danger
 }
 
 
-/* --------------------------------------------------------------------------
-   USER SEARCH RESULT ROWS
-   -------------------------------------------------------------------------- */
+/* ====================================================
+   NAV SEARCH — MOBILE
+   ==================================================== */
 
-.search-results {
-    pointer-events: auto !important;
-}
+@media (max-width: 650px) {
+    .nav-search {
+        margin-left: 3px;
+    }
 
-.search-result-item {
-    position: relative !important;
-    z-index: 2 !important;
+    .nav-search-link {
+        width: 38px;
+        height: 38px;
+    }
 
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    box-sizing: border-box !important;
-
-    cursor: pointer !important;
-    pointer-events: auto !important;
-
-    text-align: left !important;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-.search-result-item > * {
-    pointer-events: none !important;
-}
-
-.search-result-item:hover {
-    cursor: pointer !important;
-}
-
-.search-result-item:active {
-    cursor: pointer !important;
+    .nav-search-link .search-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+    }
 }
