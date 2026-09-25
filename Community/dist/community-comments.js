@@ -10,7 +10,7 @@ import { getUserId, getAuthHeaders, hasValidLoginSession, clearAuthStorage } fro
 // ============================================================
 // CONFIG
 // ============================================================
-const API_BASE_URL = "https://dheere-studio.onrender.com";
+const API_BASE_URL = "/api";
 const MAX_COMMENT_LENGTH = 1000;
 // ============================================================
 // INTERNAL STATE

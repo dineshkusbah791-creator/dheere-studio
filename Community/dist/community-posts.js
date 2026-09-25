@@ -11,7 +11,7 @@ import { initializeComments, loadComments, submitCommentFromForm } from "./commu
 // ============================================================
 // CONFIG
 // ============================================================
-const API_BASE_URL = "https://dheere-studio.onrender.com";
+const API_BASE_URL = "/api";
 const MAX_POST_LENGTH = 2000;
 // ============================================================
 // STATE
