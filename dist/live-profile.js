@@ -6,7 +6,7 @@
 /* ============================================================
    API CONFIG
    ============================================================ */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 const DEFAULT_AVATAR_URL = "./assets/user.png";
 const USER_STORAGE_KEY = "dheereStudioUser";
 const TOKEN_STORAGE_KEY = "dheereStudioToken";
@@ -986,4 +986,5 @@ if (document.readyState ===
 else {
     initializeLiveProfile();
 }
+export {};
 //# sourceMappingURL=live-profile.js.map

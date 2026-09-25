@@ -14,7 +14,7 @@ export {};
    ============================================================ */
 
 const API_BASE =
-    "https://dheere-studio.onrender.com";
+    "/api";
 
 
 const DEFAULT_AVATAR_URL =
