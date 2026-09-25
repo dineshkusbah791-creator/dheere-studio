@@ -77,7 +77,7 @@ import {
    ========================================================= */
 
 const API_BASE =
-    "https://dheere-studio.onrender.com";
+    "/api";
 
 
 const MAX_PHOTO_FILE_SIZE =

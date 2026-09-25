@@ -37,7 +37,7 @@ function getErrorMessage(error, fallback) {
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 const MAX_POST_LENGTH = 2000;
 const MAX_COMMENT_LENGTH = 1000;
 /* =========================================================

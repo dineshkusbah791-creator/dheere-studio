@@ -72,7 +72,7 @@ import {
    ========================================================= */
 
 const API_BASE =
-    "https://dheere-studio.onrender.com";
+    "/api";
 
 
 const PROFILE_BIO_MAX_LENGTH =

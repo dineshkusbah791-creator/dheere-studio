@@ -25,7 +25,7 @@ import { getCurrentUser, getUserId, getUsername, getAuthHeaders, hasValidLoginSe
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 const PROFILE_BIO_MAX_LENGTH = 150;
 const PROFILE_GENDERS = new Set([
     "",

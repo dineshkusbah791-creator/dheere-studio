@@ -30,7 +30,7 @@ import { getCurrentUser, getUserId, getDisplayName, getAvatarUrl, getAuthHeaders
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 const MAX_PHOTO_FILE_SIZE = 3 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 900;
 /* =========================================================

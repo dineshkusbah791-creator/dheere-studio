@@ -65,7 +65,7 @@ function getErrorMessage(error: unknown, fallback: string): string {
    ========================================================= */
 
 const API_BASE =
-    "https://dheere-studio.onrender.com";
+    "/api";
 
 
 const MAX_POST_LENGTH =

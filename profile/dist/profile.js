@@ -44,7 +44,7 @@ import { initializeProfileSocial, loadUserPosts } from "./profile-social.js";
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 /* =========================================================
    DOM ELEMENTS
    ========================================================= */
