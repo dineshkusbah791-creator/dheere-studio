@@ -29,7 +29,7 @@ declare const backToHome: EventListener;
 // ======================================================
 
 const API_BASE_URL =
-    'https://dheere-studio.onrender.com';
+    '/api';
 
 
 // ======================================================
