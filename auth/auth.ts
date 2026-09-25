@@ -18,7 +18,7 @@
        ============================================================ */
 
     const AUTH_CONFIG = Object.freeze({
-        API_BASE_URL: "https://dheere-studio.onrender.com",
+        API_BASE_URL: "/api",
 
         STORAGE: Object.freeze({
             USER: "dheereStudioUser",
