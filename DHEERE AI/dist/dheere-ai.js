@@ -18,12 +18,12 @@
    - Preserve chat during current page session
 
    Backend endpoint:
-   POST https://dheere-studio.onrender.com/ai-chat
+   POST /api/ai-chat
    ========================================================= */
 /* =========================================================
    CONFIG
    ========================================================= */
-const API_BASE = "https://dheere-studio.onrender.com";
+const API_BASE = "/api";
 const AI_ENDPOINT = `${API_BASE}/ai-chat`;
 const MAX_MESSAGE_LENGTH = 1000;
 const MAX_VISIBLE_MESSAGES = 100;
