@@ -1,0 +1,509 @@
+<nav
+                class="navbar"
+                aria-label="Main navigation"
+            >
+
+
+                <!-- ====================================================
+                     LOGO
+                     ==================================================== -->
+
+                <div class="nav-logo">
+
+                    <a
+                        href="index.html"
+                        aria-label="Dheere Studio homepage"
+                    >
+                        Dheere Studio
+                    </a>
+
+                </div>
+
+
+                <!-- ====================================================
+                     MAIN NAVIGATION
+                     ==================================================== -->
+
+                <div class="nav-links">
+
+                    <ul>
+
+                        <li>
+
+                            <a href="#projects">
+                                Projects
+                            </a>
+
+                        </li>
+
+
+
+
+                        <li>
+
+                            <a href="Community/community.html">
+                                Community
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="about.html">
+                                About
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="#feedback">
+                                Feedback
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a
+                                href="mood.html"
+                                class="dheere-mood-link"
+                            >
+                                Dheere Mood
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+                <!-- ====================================================
+                     SEARCH
+                     Dedicated search page
+                     ==================================================== -->
+
+                <div class="nav-search">
+
+                    <a
+                        class="nav-search-link"
+                        href="search/"
+                        aria-label="Open search"
+                        title="Search"
+                    >
+
+                        <svg
+                            class="search-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            ></circle>
+
+                            <path
+                                d="m20 20-4-4"
+                            ></path>
+
+                        </svg>
+
+                    </a>
+
+                </div>
+
+                <!-- ====================================================
+                     NOTIFICATIONS
+                     ==================================================== -->
+
+                <div
+                    class="notification-wrapper"
+                    id="notificationWrapper"
+                >
+
+                    <button
+                        id="notificationButton"
+                        class="notification-button"
+                        type="button"
+                        aria-label="Open notifications"
+                        aria-expanded="false"
+                        aria-controls="notificationPanel"
+                    >
+
+                        <svg
+                            class="notification-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+
+                            <path
+                                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                            ></path>
+
+                            <path
+                                d="M10 21h4"
+                            ></path>
+
+                        </svg>
+
+
+                        <span
+                            id="notificationBadge"
+                            class="notification-badge"
+                            aria-label="Unread notifications"
+                        >
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        id="notificationPanel"
+                        class="notification-panel"
+                        aria-hidden="true"
+                    >
+
+                        <div
+                            class="notification-panel-header"
+                        >
+
+                            <h2
+                                class="notification-panel-title"
+                            >
+                                Notifications
+                            </h2>
+
+
+                            <button
+                                id="markNotificationsReadBtn"
+                                class="notification-panel-action"
+                                type="button"
+                            >
+                                Mark all read
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="notificationList"
+                            class="notification-list"
+                        >
+
+                            <div
+                                class="notification-empty"
+                            >
+                                No notifications yet.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ====================================================
+                     AUTH / PROFILE NAVIGATION
+                     ==================================================== -->
+
+                <div class="nav-login">
+
+                    <a
+                        id="goToLoginBtn"
+                        class="button"
+                        href="auth/login.html"
+                        aria-label="Open login and registration"
+                    >
+                        Login
+                    </a>
+
+
+                    <!--
+                        Profile navigation.
+
+                        The profile link intentionally remains a normal
+                        link to profile/profile.html so the destination
+                        stays valid even before the dropdown behavior
+                        JavaScript is attached.
+
+                        Future JS can use:
+                        - profileBtn to toggle the menu
+                        - profileDropdown as the menu container
+                        - the menu action IDs for navigation / logout
+                    -->
+
+                    <div
+                        id="profileMenuWrapper"
+                        class="nav-profile-menu-wrapper hidden-profile"
+                    >
+
+                        <a
+                            id="profileBtn"
+                            class="nav-profile-link"
+                            href="profile/profile.html"
+                            aria-label="Open profile menu"
+                            aria-haspopup="menu"
+                            aria-expanded="false"
+                            aria-controls="profileDropdown"
+                        >
+
+                            <span
+                                id="navProfileAvatar"
+                                class="nav-profile-avatar"
+                                aria-hidden="true"
+                            >
+                                U
+                            </span>
+
+
+                            <span
+                                id="navUsername"
+                                class="nav-profile-name"
+                            >
+                                Profile
+                            </span>
+
+                        </a>
+
+
+                        <div
+                            id="profileDropdown"
+                            class="profile-dropdown"
+                            role="menu"
+                            aria-label="Profile menu"
+                            hidden
+                        >
+
+                            <div
+                                class="profile-dropdown-section"
+                                role="presentation"
+                            >
+
+                                <a
+                                    id="profileMenuProfile"
+                                    class="profile-dropdown-item"
+                                    href="profile/profile.html"
+                                    role="menuitem"
+                                    data-profile-action="profile"
+                                >
+
+                                    <span
+                                        class="profile-dropdown-icon"
+                                        aria-hidden="true"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            focusable="false"
+                                            aria-hidden="true"
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="8"
+                                                r="3.2"
+                                            ></circle>
+
+                                            <path
+                                                d="M5.5 20c.8-3.5 3-5.2 6.5-5.2s5.7 1.7 6.5 5.2"
+                                            ></path>
+                                        </svg>
+                                    </span>
+
+                                    <span
+                                        class="profile-dropdown-label"
+                                    >
+                                        My Profile
+                                    </span>
+
+                                </a>
+
+
+                                <a
+                                    id="profileMenuPosts"
+                                    class="profile-dropdown-item"
+                                    href="profile/profile.html"
+                                    role="menuitem"
+                                    data-profile-action="posts"
+                                >
+
+                                    <span
+                                        class="profile-dropdown-icon"
+                                        aria-hidden="true"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            focusable="false"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                d="M5 5.5h14"
+                                            ></path>
+
+                                            <path
+                                                d="M5 12h14"
+                                            ></path>
+
+                                            <path
+                                                d="M5 18.5h9"
+                                            ></path>
+                                        </svg>
+                                    </span>
+
+                                    <span
+                                        class="profile-dropdown-label"
+                                    >
+                                        My Posts
+                                    </span>
+
+                                </a>
+
+
+                                <a
+                                    id="profileMenuSettings"
+                                    class="profile-dropdown-item"
+                                    href="mood.html"
+                                    role="menuitem"
+                                    data-profile-action="settings"
+                                >
+
+                                    <span
+                                        class="profile-dropdown-icon"
+                                        aria-hidden="true"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            focusable="false"
+                                            aria-hidden="true"
+                                        >
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="3"
+                                            ></circle>
+
+                                            <path
+                                                d="M19.4 15a1.8 1.8 0 0 0 .35 2l.05.05-1.55 1.55-.05-.05a1.8 1.8 0 0 0-2-.35 1.8 1.8 0 0 0-1.05 1.65V20H11v-.15a1.8 1.8 0 0 0-1.05-1.65 1.8 1.8 0 0 0-2 .35l-.05.05-1.55-1.55.05-.05a1.8 1.8 0 0 0 .35-2A1.8 1.8 0 0 0 5.15 14H5v-2h.15a1.8 1.8 0 0 0 1.65-1.05 1.8 1.8 0 0 0-.35-2l-.05-.05 1.55-1.55.05.05a1.8 1.8 0 0 0 2 .35A1.8 1.8 0 0 0 11 6.15V6h2v.15a1.8 1.8 0 0 0 1.05 1.65 1.8 1.8 0 0 0 2-.35l.05-.05 1.55 1.55-.05.05a1.8 1.8 0 0 0-.35 2A1.8 1.8 0 0 0 18.85 12H19v2h-.15A1.8 1.8 0 0 0 19.4 15Z"
+                                            ></path>
+                                        </svg>
+                                    </span>
+
+                                    <span
+                                        class="profile-dropdown-label"
+                                    >
+                                        Settings
+                                    </span>
+
+                                </a>
+
+                            </div>
+
+
+                            <div
+                                class="profile-dropdown-divider"
+                                role="separator"
+                            ></div>
+
+
+                            <div
+                                class="profile-dropdown-section"
+                                role="presentation"
+                            >
+
+                                <button
+                                    id="profileMenuLogout"
+                                    class="profile-dropdown-item profile-dropdown-item--danger"
+                                    type="button"
+                                    role="menuitem"
+                                    data-profile-action="logout"
+                                >
+
+                                    <span
+                                        class="profile-dropdown-icon"
+                                        aria-hidden="true"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            focusable="false"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                d="M10 5H5.8A1.8 1.8 0 0 0 4 6.8v10.4A1.8 1.8 0 0 0 5.8 19H10"
+                                            ></path>
+
+                                            <path
+                                                d="M14 8l4 4-4 4"
+                                            ></path>
+
+                                            <path
+                                                d="M18 12H9"
+                                            ></path>
+                                        </svg>
+                                    </span>
+
+                                    <span
+                                        class="profile-dropdown-label"
+                                    >
+                                        Logout
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ====================================================
+                     MOBILE MENU
+                     ==================================================== -->
+
+                <div
+                    class="humbarger"
+                    aria-hidden="true"
+                >
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+
+            </nav>
